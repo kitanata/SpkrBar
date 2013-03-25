@@ -1,17 +1,12 @@
 {% extends 'base.html' %}
 
-{% block 'navigation' %}
-    <li class="active"><a href="/">Home</a></li>
-    <li><a href="#">Login</a></li>
-    <li><a href="#">Register</a></li>
-    <li><a href="/admin">Admin</a></li>
-{% endblock %}
-
 {% block 'content' %}
-    <div class="jumbotron">
-        <h2>Check out these awesome talks in your area...</h2>
-        <a class="btn btn-large btn-success" href="/talk/new">...or add your own.</a>
-    </div>
+    {% if user.is_anonymous %}
+        <div class="jumbotron">
+            <h2>Check out these awesome talks in your area...</h2>
+            <a class="btn btn-large btn-success" href="/talk/new">...or add your own.</a>
+        </div>
+    {% endif %}
 
     <div id="talks" class="row">
         <ul>

@@ -30,19 +30,31 @@
 
             <div class="masthead">
                 <ul class="nav nav-pills pull-right">
-                    {% block 'navigation' %}
-                    {% endblock %}
+                    {% if not user.is_anonymous %}
+                        <li><a href="/profile">Profile</a></li>
+                        <li><a href="/">Talks</a></li>
+                        <li><a href="/talk/new">Add Talk</a></li>
+                        <li><a href="/speakers">Speakers</a></li>
+                    {% endif %}
+
+                    {% if user.is_superuser %}
+                        <li><a href="/admin">Admin</a></li>
+                    {% endif %}
+
+                    {% if user.is_anonymous %}
+                        <li><a href="#">Login</a></li>
+                        <li><a href="#">Register</a></li>
+                    {% else %}
+                        <li><a href="/logout">Logout</a></li>
+                    {% endif %}
                 </ul>
                 <h3 class="muted">SpkrBar</h3>
             </div>
-
-            <hr>
 
             {% block 'content' %}
             {% endblock %}
 
             <div style="clear: both;"></div>
-            <hr>
 
             <div class="footer">
                 <p>&copy; Agile Hog LLC. 2013</p>
