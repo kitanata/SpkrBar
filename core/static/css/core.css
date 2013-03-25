@@ -6,7 +6,7 @@ body {
 /* Custom container */
 .container-narrow {
     margin: 0 auto;
-    max-width: 960px;
+    max-width: 940px;
 }
 .container-narrow > hr {
     margin: 30px 0;
@@ -32,4 +32,41 @@ body {
 }
 .marketing p + h4 {
     margin-top: 28px;
+}
+
+#talks ul {
+    list-style-type: none;
+    margin: 0px;
+}
+
+#talks ul li {
+    position: relative;
+
+    border: 1px solid #eee;
+    height: 200px;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+#talks ul li h4 {
+    height: 64px;
+    overflow: hidden;
+}
+
+#talks ul li a {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+#talks ul li img {
+    margin-right: 10px;
+}
+
+#talks ul li span i {
+}
+
+#talks ul li span div {
+    display: inline-block;
+    margin-top: 20px;
 }

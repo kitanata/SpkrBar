@@ -13,11 +13,23 @@
         <a class="btn btn-large btn-success" href="/talk/new">...or add your own.</a>
     </div>
 
-    <hr>
+    <div id="talks" class="row">
+        <ul>
+            {% for talk in object_list %}
+                <div class="span4">
+                    <li>
+                        <h4>{{ talk.name }}</h4>
+                        <img class="pull-left" src="{{STATIC_URL}}img/{% cycle 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 %}.jpeg">
+                        <span>
+                            {{ talk.description}}
+                            <i class="icon-globe"></i>
+                            <div>{{ talk.location.city}}</div>
+                        </span>
+                        <a href="/talk/{{talk.pk}}">More >></a>
+                    </li>
+                </div>
+            {% endfor %}
+        </ul>
+    </div>
 
-    <ul>
-        {% for talk in object_list %}
-            <li>{{ talk.name }}</li>
-        {% endfor %}
-    </ul>
 {% endblock %}
