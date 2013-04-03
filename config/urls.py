@@ -10,8 +10,13 @@ from core.views import TalkList
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', TalkList.as_view()),
-    url(r'^talk/new$', TalkList.as_view()),
+    url(r'^talk/new/$', TalkList.as_view()),
+    url(r'^profile/$', 'core.views.profile'),
     url(r'^load_fixtures/$', 'core.views.load_fixtures'),
+
+    url(r'^login/$', 'core.views.login_user'),
+    url(r'^logout/$', 'core.views.logout_user'),
+    url(r'^register/$', 'core.views.register_user'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     #url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

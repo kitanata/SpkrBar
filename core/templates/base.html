@@ -10,6 +10,7 @@
         <!-- Le styles -->
         <link href="{{STATIC_URL}}css/bootstrap.css" rel="stylesheet">
         <link href="{{STATIC_URL}}css/core.css" rel="stylesheet">
+        <link href="{{STATIC_URL}}css/font-awesome.min.css" rel="stylesheet">
 
         <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
@@ -42,8 +43,8 @@
                     {% endif %}
 
                     {% if user.is_anonymous %}
-                        <li><a href="#">Login</a></li>
-                        <li><a href="#">Register</a></li>
+                        <li><a href="/login">Login</a></li>
+                        <li><a href="/register">Register</a></li>
                     {% else %}
                         <li><a href="/logout">Logout</a></li>
                     {% endif %}
@@ -65,19 +66,6 @@
         <!-- Le javascript
         ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
-        <script src="{{STATIC_URL}}js/jquery.js"></script>
-        <script src="{{STATIC_URL}}js/bootstrap-transition.js"></script>
-        <script src="{{STATIC_URL}}js/bootstrap-alert.js"></script>
-        <script src="{{STATIC_URL}}js/bootstrap-modal.js"></script>
-        <script src="{{STATIC_URL}}js/bootstrap-dropdown.js"></script>
-        <script src="{{STATIC_URL}}js/bootstrap-scrollspy.js"></script>
-        <script src="{{STATIC_URL}}js/bootstrap-tab.js"></script>
-        <script src="{{STATIC_URL}}js/bootstrap-tooltip.js"></script>
-        <script src="{{STATIC_URL}}js/bootstrap-popover.js"></script>
-        <script src="{{STATIC_URL}}js/bootstrap-button.js"></script>
-        <script src="{{STATIC_URL}}js/bootstrap-collapse.js"></script>
-        <script src="{{STATIC_URL}}js/bootstrap-carousel.js"></script>
-        <script src="{{STATIC_URL}}js/bootstrap-typeahead.js"></script>
-
+        <script src="{{STATIC_URL}}js/jquery-1.9.1.min.js"></script>
     </body>
 </html>

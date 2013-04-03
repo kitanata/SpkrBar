@@ -1,9 +1,10 @@
 # Create your views here.
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 
 from django.views.generic import ListView
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
 
 from datetime import datetime
 import random
@@ -78,3 +79,43 @@ def load_fixtures(request):
 class TalkList(ListView):
     model = Talk
     template_name = "talk_list.html"
+
+
+def profile(request):
+    talks = Talk.objects.filter(speaker=request.user)[:5]
+
+    return render_to_response('profile.html', {'talks': talks},
+            context_instance=RequestContext(request))
+
+
+def login_user(request):
+
+    if request.method == "GET":
+        return render_to_response('login.html', 
+                context_instance=RequestContext(request))
+    else:
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return redirect('/profile/')
+            else:
+                error = "This account has been disabled."
+        else:
+            error = "Username or password is incorrect."
+
+        return render_to_response('login.html', {'error': error},
+                context_instance=RequestContext(request))
+
+        
+def logout_user(request):
+    logout(request)
+    return redirect('/')
+
+
+def register_user(request):
+    return render_to_response('register.html',
+            context_instance=RequestContext(request))
