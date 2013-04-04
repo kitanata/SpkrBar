@@ -6,9 +6,12 @@ from django.views.generic import ListView
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
+from django.db import IntegrityError
+
 from datetime import datetime
 import random
 from .models import Talk, Location
+from .forms import NewTalkForm
 
 random.seed(datetime.now())
 
@@ -65,9 +68,15 @@ def load_fixtures(request):
 
         talk = Talk()
 
+        year = random.choice([2013, 2014, 2015])
+        month = random.choice(range(1, 13))
+        day = random.choice(range(1,28))
+        hour = random.choice(range(0,24))
+        minute = random.choice([0, 15, 30, 45])
+
         talk.name = random.choice(verbs) + " " + random.choice(things) + ": " + random.choice(long_actions)
         talk.description = "A short description of this talk should go here"
-        talk.date = datetime.now()
+        talk.date = datetime(year, month, day, hour, minute)
         talk.location = location
         talk.speaker = speaker
         
@@ -77,12 +86,12 @@ def load_fixtures(request):
             context_instance=RequestContext(request))
 
 class TalkList(ListView):
-    model = Talk
+    queryset = Talk.objects.filter(date__gt=datetime.now()).order_by('-date')[:20]
     template_name = "talk_list.html"
 
 
 def profile(request):
-    talks = Talk.objects.filter(speaker=request.user)[:5]
+    talks = Talk.objects.filter(speaker=request.user).order_by('-date')[:5]
 
     return render_to_response('profile.html', {'talks': talks},
             context_instance=RequestContext(request))
@@ -117,5 +126,63 @@ def logout_user(request):
 
 
 def register_user(request):
-    return render_to_response('register.html',
+
+    if request.method == "GET":
+        return render_to_response('register.html',
+                context_instance=RequestContext(request))
+    else:
+        username = request.POST['username']
+        password = request.POST['password']
+        confirm = request.POST['confirm']
+        email = request.POST['email']
+
+        error = None
+
+        if password != confirm:
+            error = "Password does not match confirmation."
+
+        if not error:
+            try:
+                user = User.objects.create_user(username, email, password)
+                user.save()
+            except IntegrityError as e:
+                error = "That username is taken. Try another."
+
+        if not error:
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            return redirect('/profile/')
+
+        return render_to_response('register.html', {'error': error},
+                context_instance=RequestContext(request))
+
+def talk_new(request):
+
+    if request.method == 'POST': # If the form has been submitted...
+        form = NewTalkForm(request.POST)
+        if form.is_valid():
+            location = Location(
+                    name=form.cleaned_data['location_name'],
+                    address=form.cleaned_data['location_address'],
+                    city=form.cleaned_data['location_city'],
+                    state=form.cleaned_data['location_state'])
+
+            location.save()
+
+            talk = Talk(
+                    speaker=request.user,
+                    name=form.cleaned_data['name'],
+                    description=form.cleaned_data['description'],
+                    date=form.cleaned_data['date'],
+                    location=location)
+
+            talk.save()
+
+            return redirect('/profile/')
+    else:
+        form = NewTalkForm()
+
+    return render_to_response('talk_new.html', {'form' : form},
             context_instance=RequestContext(request))
+
+

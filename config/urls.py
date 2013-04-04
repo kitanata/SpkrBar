@@ -10,7 +10,8 @@ from core.views import TalkList
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', TalkList.as_view()),
-    url(r'^talk/new/$', TalkList.as_view()),
+    url(r'^talk/new/$', 'core.views.talk_new'),
+
     url(r'^profile/$', 'core.views.profile'),
     url(r'^load_fixtures/$', 'core.views.load_fixtures'),
 
