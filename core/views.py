@@ -10,7 +10,7 @@ from django.db import IntegrityError
 
 from datetime import datetime
 import random
-from .models import Talk, Location
+from .models import Talk, Location, UserProfile
 from .forms import NewTalkForm
 
 random.seed(datetime.now())
@@ -54,7 +54,7 @@ def load_fixtures(request):
             "Nebraska", "Washington DC", "Alaska", "Mississippi", "Hawaii",
             "Thailand", "China", "Russia"]
 
-    speaker = User.objects.get(username='raymond')
+    speaker = User.objects.get(username='raymond').get_profile()
 
     for i in range(0, 200):
 
@@ -78,9 +78,9 @@ def load_fixtures(request):
         talk.description = "A short description of this talk should go here"
         talk.date = datetime(year, month, day, hour, minute)
         talk.location = location
-        talk.speaker = speaker
         
         talk.save()
+        talk.speakers.add(speaker)
 
     return render_to_response('load_fixtures.html', 
             context_instance=RequestContext(request))
@@ -91,7 +91,7 @@ class TalkList(ListView):
 
 
 def profile(request):
-    talks = Talk.objects.filter(speaker=request.user).order_by('-date')[:5]
+    talks = Talk.objects.filter(speakers__in=[request.user.get_profile()]).order_by('-date')[:5]
 
     return render_to_response('profile.html', {'talks': talks},
             context_instance=RequestContext(request))
@@ -186,3 +186,6 @@ def talk_new(request):
             context_instance=RequestContext(request))
 
 
+class SpeakerList(ListView):
+    queryset = UserProfile.objects.all()[:20]
+    template_name = "speaker_list.html"

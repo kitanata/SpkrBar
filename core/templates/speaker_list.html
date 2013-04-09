@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block 'content' %}
+    <div id="speakers" class="row">
+        <ul>
+            {% for speaker in object_list %}
+                <div class="span4">
+                    <li>
+                        <h4>{{ speaker.get_full_name }}</h4>
+                        <img class="pull-left" src="{{STATIC_URL}}img/{% cycle 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 %}.jpeg">
+                        <span>
+                            <div>{{ speaker.location.city }}</div>
+                        </span>
+                        <a href="/speaker/{{talk.pk}}">More >></a>
+                    </li>
+                </div>
+            {% endfor %}
+        </ul>
+    </div>
+
+{% endblock %}
