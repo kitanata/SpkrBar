@@ -16,6 +16,7 @@ urlpatterns = patterns('',
     url(r'^speaker/(?P<speaker_id>\d+)/$', 'core.views.speaker_detail'),
 
     url(r'^profile/$', 'core.views.profile'),
+    url(r'^profile/edit/$', 'core.views.profile_edit'),
     url(r'^load_fixtures/$', 'core.views.load_fixtures'),
 
     url(r'^login/$', 'core.views.login_user'),

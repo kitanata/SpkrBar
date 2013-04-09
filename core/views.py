@@ -93,6 +93,7 @@ def load_fixtures(request):
     return render_to_response('load_fixtures.html', 
             context_instance=RequestContext(request))
 
+
 class TalkList(ListView):
     queryset = Talk.objects.filter(date__gt=datetime.now()).order_by('-date')[:20]
     template_name = "talk_list.html"
@@ -101,9 +102,16 @@ class TalkList(ListView):
 def profile(request):
     return speaker_profile(request, request.user.get_profile())
 
+
+def profile_edit(request):
+    return render_to_response('profile_edit.html',
+            context_instance=RequestContext(request))
+
+
 def speaker_detail(request, speaker_id):
     speaker = get_object_or_404(UserProfile, pk=speaker_id)
     return speaker_profile(request, speaker)
+
 
 def speaker_profile(request, speaker):
     talks = Talk.objects.filter(speakers__in=[speaker])
@@ -114,6 +122,7 @@ def speaker_profile(request, speaker):
             {'speaker': speaker, 'upcoming': upcoming, 'past': past},
             context_instance=RequestContext(request))
 
+    
 def login_user(request):
 
     if request.method == "GET":
@@ -173,6 +182,7 @@ def register_user(request):
         return render_to_response('register.html', {'error': error},
                 context_instance=RequestContext(request))
 
+        
 def talk_new(request):
 
     if request.method == 'POST': # If the form has been submitted...
