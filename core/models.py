@@ -27,8 +27,9 @@ class TalkTag(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
-    location = models.ForeignKey(Location, null=True)
+    photo = models.ImageField(upload_to="photo")
     about_me = models.CharField(max_length=500)
+    location = models.ForeignKey(Location, null=True)
     following = models.ManyToManyField('self', related_name='following')
     followers = models.ManyToManyField('self', related_name='followers')
 

@@ -5,13 +5,14 @@ from django.template import RequestContext
 from django.views.generic import ListView
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 from django.db import IntegrityError
 
 from datetime import datetime
 import random
 from .models import Talk, Location, UserProfile
-from .forms import NewTalkForm
+from .forms import NewTalkForm, EditProfileForm
 
 random.seed(datetime.now())
 
@@ -99,13 +100,49 @@ class TalkList(ListView):
     template_name = "talk_list.html"
 
 
+@login_required()
 def profile(request):
     return speaker_profile(request, request.user.get_profile())
 
 
+@login_required()
 def profile_edit(request):
+    if request.method == "POST":
+        form = EditProfileForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            user = request.user
+
+            names = form.cleaned_data['name'].split(' ')
+            first_name = names[0]
+            last_name = ' '.join(names[1:])
+
+            user.first_name = first_name
+            user.last_name = last_name
+            user.save()
+
+            photo = request.FILES['photo']
+
+            with open('core/static/img/photo/' + photo.name, 'wb+') as destination:
+                for chunk in photo.chunks():
+                    destination.write(chunk)
+
+            profile = user.get_profile()
+            profile.about_me = form.cleaned_data['about_me']
+            profile.photo = photo.name
+            profile.save()
+
+            return redirect('/profile/')
+
+    else:
+        profile = request.user.get_profile()
+        form = EditProfileForm({
+            'name':request.user.get_full_name(),
+            'about_me':profile.about_me
+        })
+
     return render_to_response('profile_edit.html', 
-            {'speaker': request.user.get_profile()},
+            {'form': form, 'speaker': request.user.get_profile()},
             context_instance=RequestContext(request))
 
 

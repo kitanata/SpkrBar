@@ -4,7 +4,11 @@
     <div class="row">
         <div class="span3" style="height:300px">
             <div class="well profile-picture">
-                <i class="icon-user profile-placeholder"></i>
+                {% if speaker.photo %}
+                <img src="{{STATIC_URL}}img/photo/{{ speaker.photo}}"></img>
+                {% else %}
+                    <i class="icon-user profile-placeholder"></i>
+                {% endif %}
             </div>
         </div>
 

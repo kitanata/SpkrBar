@@ -1,31 +1,47 @@
 {% extends 'base.html' %}
 
 {% block 'content' %}
-    {% if error %}
+    {% if form.errors %}
         <div class="alert alert-error">
-            {{error}}
+            {{form.errors}}
         </div>
     {% endif %}
 
-    <form class="profile-form" action="/profile/edit" method="POST">
+    <form class="profile-form" action="/profile/edit/" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
         <div class="row">
             <div class="span3" style="height:300px">
                 <div class="well profile-picture">
-                    <i class="icon-user profile-placeholder"></i>
+                    {% if speaker.photo %}
+                    <img src="{{STATIC_URL}}img/photo/{{ speaker.photo}}"></img>
+                    {% else %}
+                        <i class="icon-user profile-placeholder"></i>
+                    {% endif %}
                 </div>
             </div>
 
             <div class="span9" style="height:280px">
                 <label for="name">Name:</label>
-                <input id="name" name="name" class="profile-name-input pull-right" type="text" value="{{ speaker.user.get_full_name }}"></h2>
+                <div class="profile-name-input pull-right">
+                    {{ form.name }}
+                </div>
                 <hr />
 
                 <label for="about">About Me:</label>
-                <textarea id="about" name="about" class="profile-about-me-input pull-right">{{ speaker.about_me }}</textarea>
+                <div class="profile-about-me-input pull-right">
+                    {{ form.about_me }}
+                </div>
             </div>
         </div>
 
         <div class="row">
+            <div class="span12">
+                <h2>Upload Profile Photo</h2>
+                <div class="profile-upload-file">
+                    {{ form.photo }}
+                </div>
+            </div>
+
             <div class="span12">
                 <h2>Links</h2>
                 <hr />

@@ -147,15 +147,20 @@ body {
     margin-top: 20px;
 }
 
-.profile-name-input {
+.profile-name-input input {
     width:550px;
 }
 
-.profile-about-me-input {
+.profile-about-me-input textarea {
     width:550px;
     height: 202px;
 }
 
 .profile-form label {
     display: inline;
+}
+
+.profile-upload-file input {
+    font-size: 16px;
+    line-height: 0px;
 }

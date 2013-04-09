@@ -16,3 +16,10 @@ class NewTalkForm(forms.Form):
     location_address = forms.CharField(max_length=140)
     location_city = forms.CharField(max_length=140)
     location_state = forms.CharField(max_length=40)
+
+
+
+class EditProfileForm(forms.Form):
+    name = forms.CharField(max_length=140)
+    about_me = forms.CharField(max_length=1400, widget=forms.Textarea)
+    photo = forms.FileField(required=False)
