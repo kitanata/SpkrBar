@@ -7,5 +7,36 @@
         </div>
     {% endif %}
 
-    HELLO WORLD!
+    <form class="profile-form" action="/profile/edit" method="POST">
+        <div class="row">
+            <div class="span3" style="height:300px">
+                <div class="well profile-picture">
+                    <i class="icon-user profile-placeholder"></i>
+                </div>
+            </div>
+
+            <div class="span9" style="height:280px">
+                <label for="name">Name:</label>
+                <input id="name" name="name" class="profile-name-input pull-right" type="text" value="{{ speaker.user.get_full_name }}"></h2>
+                <hr />
+
+                <label for="about">About Me:</label>
+                <textarea id="about" name="about" class="profile-about-me-input pull-right">{{ speaker.about_me }}</textarea>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="span12">
+                <h2>Links</h2>
+                <hr />
+                {% for link in speaker.user_links %}
+                    <p>
+                        {{ link.type_name }}: <a href="{{link.url_target}}">{{ link.link_name }}</a>
+                    </p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <input class="btn" type="submit" value="Save Profile"></input>
+    </form>
 {% endblock %}

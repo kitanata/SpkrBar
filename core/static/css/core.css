@@ -146,3 +146,16 @@ body {
 .footer {
     margin-top: 20px;
 }
+
+.profile-name-input {
+    width:550px;
+}
+
+.profile-about-me-input {
+    width:550px;
+    height: 202px;
+}
+
+.profile-form label {
+    display: inline;
+}

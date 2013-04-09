@@ -104,7 +104,8 @@ def profile(request):
 
 
 def profile_edit(request):
-    return render_to_response('profile_edit.html',
+    return render_to_response('profile_edit.html', 
+            {'speaker': request.user.get_profile()},
             context_instance=RequestContext(request))
 
 

@@ -8,36 +8,17 @@
             </div>
         </div>
 
-        <div class="span6" style="height:280px">
+        <div class="span9" style="height:280px">
             <h2>{{ speaker.user.get_full_name }}</h2>
             <hr />
             {{ speaker.about_me }}
-        </div>
-
-        <div class="span3" style="height:280px">
-            <h2>Links</h2>
-            <hr />
-            {% for link in speaker.user_links %}
-                <p>
-                    {{ link.type_name }}: <a href="{{link.url_target}}">{{ link.link_name }}</a>
-                </p>
-            {% endfor %}
         </div>
     </div>
 
     <div class="row">
         <div class="span3">
             <div class="row">
-                <div class="span3" style="height:290px">
-                    <h2>Known for</h2>
-                    <hr />
-                    <ul class="profile-expert">
-                        <li>Game Design</li>
-                        <li>Gamification</li>
-                        <li>Web Development</li>
-                        <li>Visualization</li>
-                    </ul>
-
+                <div class="span3">
                     <div style="margin-top: 20px">
                         <i class="icon-star icon-3x", style="color:gold"></i>
                         <i class="icon-star icon-3x", style="color:gold"></i>
@@ -49,9 +30,31 @@
             </div>
 
             <div class="row">
-                <div class="span3" style="height:550px; margin-top: 20px">
+                <div class="span3" style="margin-top:40px">
+                    <h2>Known for</h2>
+                    <ul class="profile-expert">
+                        <li>Game Design</li>
+                        <li>Gamification</li>
+                        <li>Web Development</li>
+                        <li>Visualization</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span3" style="margin-top:40px">
+                    <h2>Links</h2>
+                    {% for link in speaker.user_links %}
+                        <p>
+                            {{ link.type_name }}: <a href="{{link.url_target}}">{{ link.link_name }}</a>
+                        </p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span3" style="margin-top: 40px">
                     <h2>Past Talks</h2>
-                    <hr />
                     <ul class="profile-past-talks">
                         {% for talk in past %}
                             <li><a href="/talk/{{talk.id}}">{{ talk.name|truncatechars:30 }}</a></li>
