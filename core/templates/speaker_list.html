@@ -4,14 +4,20 @@
     <div id="speakers" class="row">
         <ul>
             {% for speaker in object_list %}
-                <div class="span4">
+                <div class="span6">
                     <li>
-                        <h4>{{ speaker.get_full_name }}</h4>
-                        <img class="pull-left" src="{{STATIC_URL}}img/{% cycle 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 %}.jpeg">
-                        <span>
-                            <div>{{ speaker.location.city }}</div>
-                        </span>
-                        <a href="/speaker/{{talk.pk}}">More >></a>
+                        <div class="speaker">
+                            <img class="pull-left" src="{{STATIC_URL}}img/{% cycle 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 %}.jpeg">
+
+                            <div class="about pull-left">
+                                <h4>{{ speaker.user.get_full_name }}</h4>
+                                {{ speaker.about_me }}
+
+                                <div class="speaker-link">
+                                    <a href="/speaker/{{speaker.pk}}">More >></a>
+                                </div>
+                            </div>
+                        </div>
                     </li>
                 </div>
             {% endfor %}

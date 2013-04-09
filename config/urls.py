@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^talk/new/$', 'core.views.talk_new'),
 
     url(r'^speakers/$', SpeakerList.as_view()),
+    url(r'^speaker/(?P<speaker_id>\d+)/$', 'core.views.speaker_detail'),
 
     url(r'^profile/$', 'core.views.profile'),
     url(r'^load_fixtures/$', 'core.views.load_fixtures'),

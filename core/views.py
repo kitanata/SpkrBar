@@ -1,5 +1,5 @@
 # Create your views here.
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template import RequestContext
 
 from django.views.generic import ListView
@@ -54,7 +54,15 @@ def load_fixtures(request):
             "Nebraska", "Washington DC", "Alaska", "Mississippi", "Hawaii",
             "Thailand", "China", "Russia"]
 
-    speaker = User.objects.get(username='raymond').get_profile()
+    user = User.objects.get(username='raymond')
+    user.first_name = "Raymond"
+    user.last_name = "Chandler III"
+    user.email = "raymondchandleriii@gmail.com"
+    user.save()
+
+    speaker = user.get_profile()
+    speaker.about_me = "I'm a little teapot, short and stout!"
+    speaker.save()
 
     for i in range(0, 200):
 
@@ -91,11 +99,20 @@ class TalkList(ListView):
 
 
 def profile(request):
-    talks = Talk.objects.filter(speakers__in=[request.user.get_profile()]).order_by('-date')[:5]
+    return speaker_profile(request, request.user.get_profile())
 
-    return render_to_response('profile.html', {'talks': talks},
+def speaker_detail(request, speaker_id):
+    speaker = get_object_or_404(UserProfile, pk=speaker_id)
+    return speaker_profile(request, speaker)
+
+def speaker_profile(request, speaker):
+    talks = Talk.objects.filter(speakers__in=[speaker])
+    upcoming = talks.filter(date__gt=datetime.now()).order_by('-date')[:5]
+    past = talks.filter(date__lt=datetime.now()).order_by('date')[:20]
+
+    return render_to_response('speaker_profile.html', 
+            {'speaker': speaker, 'upcoming': upcoming, 'past': past},
             context_instance=RequestContext(request))
-
 
 def login_user(request):
 
@@ -189,3 +206,5 @@ def talk_new(request):
 class SpeakerList(ListView):
     queryset = UserProfile.objects.all()[:20]
     template_name = "speaker_list.html"
+
+

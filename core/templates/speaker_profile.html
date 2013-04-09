@@ -9,26 +9,19 @@
         </div>
 
         <div class="span6" style="height:280px">
-            <h2>{{ user.get_full_name }}</h2>
+            <h2>{{ speaker.user.get_full_name }}</h2>
             <hr />
-            Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro. De carne lumbering animata corpora quaeritis. Summus brains sit​​, morbo vel maleficia? De apocalypsi gorger omero undead survivor dictum mauris. Hi mindless mortuis soulless creaturas, imo evil stalking monstra adventus resi dentevil vultus comedat cerebella viventium. Qui animated corpse, cricket bat max brucks terribilem incessu zomby.
+            {{ speaker.about_me }}
         </div>
 
         <div class="span3" style="height:280px">
             <h2>Links</h2>
             <hr />
-            <p>
-                Blog: <a href="http://www.codearchaeologist.org">Code Archaeologist</a>
-            </p>
-            <p>
-                Github: <a href="http://www.github.com/kitanata">Kitanata</a>
-            </p>
-            <p>
-                Linked In: <a href="#">My Linked In Profile</a>
-            </p>
-            <p>
-                Facebook: <a href="#">My Facebook Profile</a>
-            </p>
+            {% for link in speaker.user_links %}
+                <p>
+                    {{ link.type_name }}: <a href="{{link.url_target}}">{{ link.link_name }}</a>
+                </p>
+            {% endfor %}
         </div>
     </div>
 
@@ -59,17 +52,10 @@
                 <div class="span3" style="height:550px; margin-top: 20px">
                     <h2>Past Talks</h2>
                     <hr />
-                    <ul class="profile-expert">
-                        <li>Talk 1</li>
-                        <li>Talk 2</li>
-                        <li>Talk 3</li>
-                        <li>Talk 4</li>
-                        <li>Talk 5</li>
-                        <li>Talk 6</li>
-                        <li>Talk 7</li>
-                        <li>Talk 8</li>
-                        <li>Talk 9</li>
-                        <li>Talk 10</li>
+                    <ul class="profile-past-talks">
+                        {% for talk in past %}
+                            <li><a href="/talk/{{talk.id}}">{{ talk.name|truncatechars:30 }}</a></li>
+                        {% endfor %}
                     </ul>
                 </div>
             </div>
@@ -80,8 +66,8 @@
                 <h2>Upcoming Talks</h2>
                 <hr />
                 <div class="row">
-                    {% for talk in talks %}
-                        <div class="span9" style="height:200px; margin-bottom:20px">
+                    {% for talk in upcoming %}
+                        <div class="span9" style="margin-bottom:10px">
                             <div class="well">
                                 <h4>
                                     <div class="pull-left">

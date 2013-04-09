@@ -117,3 +117,32 @@ body {
     padding: 2px 0px;
 }
 
+.profile-past-talks {
+    list-style-type: none;
+
+    margin: 0px;
+    font-size: 14px;
+    line-height: 18px;
+}
+
+.profile-past-talks li {
+    padding: 2px 0px;
+}
+
+#speakers ul {
+    list-style-type: none;
+
+    margin: 0px;
+}
+
+.about {
+    margin-left: 20px;
+}
+
+.about h4 {
+    margin-top: 0px;
+}
+
+.footer {
+    margin-top: 20px;
+}

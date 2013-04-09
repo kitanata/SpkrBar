@@ -40,6 +40,7 @@ class UserProfile(models.Model):
 
 
 class UserLink(models.Model):
+    type_name = models.CharField(max_length=40)
     link_name = models.CharField(max_length=200)
     url_target = models.URLField(max_length=140)
 
