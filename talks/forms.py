@@ -8,7 +8,11 @@ from django import forms
 # 'SplitDateTimeField', 'IPAddressField', 'GenericIPAddressField', 'FilePathField',
 # 'SlugField', 'TypedChoiceField', 'TypedMultipleChoiceField'
 
-class EditProfileForm(forms.Form):
+class NewTalkForm(forms.Form):
     name = forms.CharField(max_length=140)
-    about_me = forms.CharField(max_length=1400, widget=forms.Textarea)
-    photo = forms.FileField(required=False)
+    description = forms.CharField(widget=forms.Textarea)
+    date = forms.DateTimeField()
+    location_name = forms.CharField(max_length=140)
+    location_address = forms.CharField(max_length=140)
+    location_city = forms.CharField(max_length=140)
+    location_state = forms.CharField(max_length=40)

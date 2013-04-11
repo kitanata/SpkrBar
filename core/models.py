@@ -14,15 +14,8 @@ class Location(models.Model):
         return self.name
 
 
-
 class UserTag(models.Model):
     name = models.CharField(max_length=140)
-
-
-
-class TalkTag(models.Model):
-    name = models.CharField(max_length=140)
-
 
 
 class UserProfile(models.Model):
@@ -46,31 +39,6 @@ class UserLink(models.Model):
     url_target = models.URLField(max_length=140)
 
     profile = models.ForeignKey(UserProfile)
-
-
-
-class Talk(models.Model):
-    speakers = models.ManyToManyField(UserProfile)
-    name = models.CharField(max_length=40)
-    description = models.CharField(max_length=800)
-    location = models.ForeignKey(Location)
-    date = models.DateTimeField(default=datetime.now())
-
-    tags = models.ManyToManyField(TalkTag)
-
-    def speaker_name(self):
-        return self.speaker.get_full_name()
-
-    def __str__(self):
-        return self.name
-
-
-
-class TalkReview(models.Model):
-    talk = models.ForeignKey(Talk)
-    reviewer = models.ForeignKey(UserProfile)
-    rating = models.IntegerField(default=3)
-    comments = models.CharField(max_length=140)
 
 
 def create_profile(sender, **kw):

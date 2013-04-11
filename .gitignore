@@ -2,3 +2,5 @@
 *.pyc
 *.swp
 *.swo
+CACHE
+database.db3

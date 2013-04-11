@@ -5,12 +5,14 @@ from django.views.generic import TemplateView
 from django.contrib import admin
 admin.autodiscover()
 
-from core.views import TalkList, SpeakerList
+from core.views import SpeakerList
+from talks.views import TalkList
 
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', TalkList.as_view()),
-    url(r'^talk/new/$', 'core.views.talk_new'),
+    url(r'^talk/new/$', 'talks.views.talk_new'),
+    url(r'^talk/(?P<talk_id>\d+)/$', 'talks.views.talk_detail'),
 
     url(r'^speakers/$', SpeakerList.as_view()),
     url(r'^speaker/(?P<speaker_id>\d+)/$', 'core.views.speaker_detail'),

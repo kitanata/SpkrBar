@@ -22,13 +22,13 @@
 
             <div class="span9" style="height:280px">
                 <label for="name">Name:</label>
-                <div class="profile-name-input pull-right">
+                <div class="pull-right">
                     {{ form.name }}
                 </div>
                 <hr />
 
                 <label for="about">About Me:</label>
-                <div class="profile-about-me-input pull-right">
+                <div class="pull-right">
                     {{ form.about_me }}
                 </div>
             </div>
@@ -37,9 +37,7 @@
         <div class="row">
             <div class="span12">
                 <h2>Upload Profile Photo</h2>
-                <div class="profile-upload-file">
-                    {{ form.photo }}
-                </div>
+                {{ form.photo }}
             </div>
 
             <div class="span12">

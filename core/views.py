@@ -1,7 +1,9 @@
 # Create your views here.
+from datetime import datetime
+import random
+
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template import RequestContext
-
 from django.views.generic import ListView
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -9,10 +11,9 @@ from django.contrib.auth.decorators import login_required
 
 from django.db import IntegrityError
 
-from datetime import datetime
-import random
-from .models import Talk, Location, UserProfile
-from .forms import NewTalkForm, EditProfileForm
+from .models import Location, UserProfile
+from talks.models import Talk
+from .forms import EditProfileForm
 
 random.seed(datetime.now())
 
@@ -93,11 +94,6 @@ def load_fixtures(request):
 
     return render_to_response('load_fixtures.html', 
             context_instance=RequestContext(request))
-
-
-class TalkList(ListView):
-    queryset = Talk.objects.filter(date__gt=datetime.now()).order_by('-date')[:20]
-    template_name = "talk_list.html"
 
 
 @login_required()
@@ -221,35 +217,11 @@ def register_user(request):
                 context_instance=RequestContext(request))
 
         
-def talk_new(request):
 
-    if request.method == 'POST': # If the form has been submitted...
-        form = NewTalkForm(request.POST)
-        if form.is_valid():
-            location = Location(
-                    name=form.cleaned_data['location_name'],
-                    address=form.cleaned_data['location_address'],
-                    city=form.cleaned_data['location_city'],
-                    state=form.cleaned_data['location_state'])
 
-            location.save()
-
-            talk = Talk(
-                    speaker=request.user,
-                    name=form.cleaned_data['name'],
-                    description=form.cleaned_data['description'],
-                    date=form.cleaned_data['date'],
-                    location=location)
-
-            talk.save()
-
-            return redirect('/profile/')
-    else:
-        form = NewTalkForm()
-
-    return render_to_response('talk_new.html', {'form' : form},
-            context_instance=RequestContext(request))
-
+def speaker_detail(request, speaker_id):
+    speaker = get_object_or_404(UserProfile, pk=speaker_id)
+    return speaker_profile(request, speaker)
 
 class SpeakerList(ListView):
     queryset = UserProfile.objects.all()[:20]

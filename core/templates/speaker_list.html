@@ -7,7 +7,11 @@
                 <div class="span6">
                     <li>
                         <div class="speaker">
-                            <img class="pull-left" src="{{STATIC_URL}}img/{% cycle 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 %}.jpeg">
+                            {% if speaker.photo %}
+                                <img class="pull-left" src="{{STATIC_URL}}img/photo/{{ speaker.photo}}"></img>
+                            {% else %}
+                                <i class="pull-left icon-user profile-placeholder"></i>
+                            {% endif %}
 
                             <div class="about pull-left">
                                 <h4>{{ speaker.user.get_full_name }}</h4>
