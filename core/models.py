@@ -9,6 +9,7 @@ class Location(models.Model):
     address = models.CharField(max_length=140)
     city = models.CharField(max_length=140)
     state = models.CharField(max_length=140)
+    zip_code = models.CharField(max_length=9)
 
     def __str__(self):
         return self.name

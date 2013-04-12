@@ -56,6 +56,8 @@ def load_fixtures(request):
             "Nebraska", "Washington DC", "Alaska", "Mississippi", "Hawaii",
             "Thailand", "China", "Russia"]
 
+    location_zips = ['43204', '90210', '86753', '32526', '32536']
+
     user = User.objects.get(username='raymond')
     user.first_name = "Raymond"
     user.last_name = "Chandler III"
@@ -74,6 +76,7 @@ def load_fixtures(request):
             location.address = random.choice(location_addresses)
             location.city = random.choice(location_cities)
             location.state = random.choice(location_states)
+            location.zip_code = random.choice(location_zips)
             location.save()
 
         talk = Talk()
@@ -85,7 +88,7 @@ def load_fixtures(request):
         minute = random.choice([0, 15, 30, 45])
 
         talk.name = random.choice(verbs) + " " + random.choice(things) + ": " + random.choice(long_actions)
-        talk.description = "A short description of this talk should go here"
+        talk.abstract = "A short description of this talk should go here"
         talk.date = datetime(year, month, day, hour, minute)
         talk.location = location
         

@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.views.generic import ListView
 from django.template import RequestContext
 
@@ -43,6 +43,7 @@ def talk_new(request):
 
     
 def talk_detail(request, talk_id):
+    talk = get_object_or_404(Talk, pk=talk_id)
 
-    return render_to_response('talk_detail.html',
+    return render_to_response('talk_detail.html', {'talk': talk},
             context_instance=RequestContext(request))

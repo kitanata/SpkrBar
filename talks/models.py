@@ -11,7 +11,7 @@ class TalkTag(models.Model):
 class Talk(models.Model):
     speakers = models.ManyToManyField(UserProfile)
     name = models.CharField(max_length=40)
-    description = models.CharField(max_length=800)
+    abstract = models.CharField(max_length=800)
     location = models.ForeignKey(Location)
     date = models.DateTimeField(default=datetime.now())
 
