@@ -1,8 +1,10 @@
 from django.contrib import admin
-from .models import Location, UserProfile
+from .models import Location, UserProfile, UserTag, UserLink
 
 class LocationAdmin(admin.ModelAdmin):
     list_display = ['name', 'address', 'city', 'state']
 
 admin.site.register(Location, LocationAdmin)
 admin.site.register(UserProfile, admin.ModelAdmin)
+admin.site.register(UserTag, admin.ModelAdmin)
+admin.site.register(UserLink, admin.ModelAdmin)

@@ -3,7 +3,7 @@
 {% block 'content' %}
     <div id="profile">
         <div class="row">
-            <div class="span3" style="height:300px">
+            <div class="span3">
                 <div class="well picture">
                     {% if speaker.photo %}
                         <img src="{{STATIC_URL}}img/photo/{{ speaker.photo}}"></img>
@@ -13,7 +13,7 @@
                 </div>
             </div>
 
-            <div class="span9" style="height:280px">
+            <div class="span9">
                 <h2>{{ speaker.user.get_full_name }}</h2>
                 <hr />
                 {{ speaker.about_me }}
@@ -38,10 +38,9 @@
                     <div class="span3" style="margin-top:40px">
                         <h2>Known for</h2>
                         <ul class="expert-area">
-                            <li>Game Design</li>
-                            <li>Gamification</li>
-                            <li>Web Development</li>
-                            <li>Visualization</li>
+                            {% for tag in speaker.tags.all %}
+                            <li>{{tag}}</li>
+                            {% endfor %}
                         </ul>
                     </div>
                 </div>
@@ -49,9 +48,9 @@
                 <div class="row">
                     <div class="span3" style="margin-top:40px">
                         <h2>Links</h2>
-                        {% for link in speaker.user_links %}
+                        {% for link in speaker.userlink_set.all %}
                             <p>
-                                {{ link.type_name }}: <a href="{{link.url_target}}">{{ link.link_name }}</a>
+                                {{ link.type_name|title }}: <a href="{{link.url_target}}">{{ link.link_name }}</a>
                             </p>
                         {% endfor %}
                     </div>
@@ -62,7 +61,10 @@
                         <h2>Past Talks</h2>
                         <ul class="past-talks">
                             {% for talk in past %}
-                                <li><a href="/talk/{{talk.id}}">{{ talk.name|truncatechars:30 }}</a></li>
+                                <h3>{{ talk.date }}</h3>
+                                {% for talk in talk.talks %}
+                                    <li><a href="/talk/{{talk.id}}">{{ talk.name|truncatechars:30 }}</a></li>
+                                {% endfor %}
                             {% endfor %}
                         </ul>
                     </div>
@@ -74,21 +76,19 @@
                     <h2>Upcoming Talks</h2>
                     <hr />
                     <div class="row">
-                        {% for talk in upcoming %}
+                        {% for talks in upcoming %}
                             <div class="span9" style="margin-bottom:10px">
-                                <div class="well">
-                                    <h4>
-                                        <div class="pull-left">
-                                            {{ talk.name|truncatewords:5 }}
-                                        </div>
-                                        <div class="pull-right">
-                                            {{ talk.date }}
-                                        </div>
-                                    </h4>
-                                    <div style="clear:both"></div>
-                                    <hr />
-                                    <p>{{ talk.description }}</h3>
-                                </div>
+                                <h3>{{ talks.date }}</h3>
+
+                                {% for talk in talks.talks %}
+                                    <div class="well">
+                                        <h4>{{ talk.name|truncatechars:70 }}</h4>
+                                        <h5>{{ talk.date }}</h5>
+                                        <div style="clear:both"></div>
+                                        <hr />
+                                        <p>{{ talk.abstract }}</h3>
+                                    </div>
+                                {% endfor %}
                             </div>
                         {% endfor %}
                     </div>

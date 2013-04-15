@@ -1,5 +1,7 @@
 #profile {
     .picture {
+        max-width: 200px;
+
         padding: 10px;
 
         i {
@@ -35,7 +37,7 @@
 
 }
 
-.profile-form {
+.profile-form, .profile-photo-form {
 
     .picture {
         padding: 10px;
@@ -47,12 +49,12 @@
     }
 
     #id_name {
-        width:550px;
+        width: 368px;
     }
 
     #id_about_me {
-        width:550px;
-        height: 202px;
+        width: 368px;
+        height: 100%;
     }
 
     #id_photo {
@@ -62,5 +64,37 @@
 
     label {
         display: inline;
+    }
+
+    .submit-btn {
+        margin-top: 40px;
+    }
+}
+
+.profile-link-form {
+    select {
+        width: 100%;
+    }
+
+    input {
+        width: 200px;
+    }
+}
+
+.profile-tag-form {
+    margin-top: 40px;
+
+    #id_name {
+        width: 450px;
+    }
+}
+
+.edit-links {
+    height: 300px;
+
+    .link-list {
+        height: 230px;
+        border-left: 1px solid lighten(gray, 20%);
+        padding-left: 10px;
     }
 }

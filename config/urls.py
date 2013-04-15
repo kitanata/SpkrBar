@@ -19,6 +19,10 @@ urlpatterns = patterns('',
 
     url(r'^profile/$', 'core.views.profile'),
     url(r'^profile/edit/$', 'core.views.profile_edit'),
+    url(r'^profile/edit/photo/$', 'core.views.profile_edit_photo'),
+    url(r'^profile/edit/link/new/$', 'core.views.profile_link_new'),
+    url(r'^profile/edit/tag/new/$', 'core.views.profile_tag_new'),
+
     url(r'^load_fixtures/$', 'core.views.load_fixtures'),
 
     url(r'^login/$', 'core.views.login_user'),

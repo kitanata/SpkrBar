@@ -1,5 +1,6 @@
 # Create your views here.
 from datetime import datetime
+from itertools import groupby
 import random
 
 from django.shortcuts import render_to_response, redirect, get_object_or_404
@@ -8,12 +9,13 @@ from django.views.generic import ListView
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 
 from django.db import IntegrityError
 
-from .models import Location, UserProfile
+from .models import Location, UserProfile, UserLink, UserTag
 from talks.models import Talk
-from .forms import EditProfileForm
+from .forms import EditProfileForm, ProfilePhotoForm, ProfileLinkForm, ProfileTagForm
 
 random.seed(datetime.now())
 
@@ -107,7 +109,7 @@ def profile(request):
 @login_required()
 def profile_edit(request):
     if request.method == "POST":
-        form = EditProfileForm(request.POST, request.FILES)
+        form = EditProfileForm(request.POST)
 
         if form.is_valid():
             user = request.user
@@ -120,29 +122,105 @@ def profile_edit(request):
             user.last_name = last_name
             user.save()
 
-            photo = request.FILES['photo']
-
-            with open('core/static/img/photo/' + photo.name, 'wb+') as destination:
-                for chunk in photo.chunks():
-                    destination.write(chunk)
-
             profile = user.get_profile()
             profile.about_me = form.cleaned_data['about_me']
-            profile.photo = photo.name
             profile.save()
 
             return redirect('/profile/')
 
     else:
-        profile = request.user.get_profile()
-        form = EditProfileForm({
-            'name':request.user.get_full_name(),
-            'about_me':profile.about_me
-        })
+        return profile_form_view(request)
 
-    return render_to_response('profile_edit.html', 
-            {'form': form, 'speaker': request.user.get_profile()},
-            context_instance=RequestContext(request))
+
+@login_required()
+def profile_edit_photo(request):
+    if request.method == "POST":
+        form = ProfilePhotoForm(request.FILES)
+
+        if form.is_valid():
+            profile = request.user.get_profile()
+
+            if 'photo' in request.FILES:
+                photo = request.FILES['photo']
+
+                with open('core/static/img/photo/' + photo.name, 'wb+') as destination:
+                    for chunk in photo.chunks():
+                        destination.write(chunk)
+
+                profile.photo = photo.name
+
+            profile.save()
+
+            return redirect('/profile/')
+    return profile_form_view(request)
+
+
+
+@login_required
+def profile_link_new(request):
+    if request.method == "POST":
+        form = ProfileLinkForm(request.POST)
+
+        if form.is_valid():
+            profile = request.user.get_profile()
+
+            link_model = UserLink()
+
+            link_model.type_name = form.cleaned_data['type']
+            link_model.link_name = form.cleaned_data['name']
+            link_model.url_target = form.cleaned_data['url']
+            link_model.profile = profile
+
+            link_model.save()
+
+            return redirect('/profile/edit/')
+    return profile_form_view(request)
+
+
+
+@login_required
+def profile_tag_new(request):
+    if request.method == "POST":
+        form = ProfileTagForm(request.POST)
+
+        if form.is_valid():
+            profile = request.user.get_profile()
+
+            tag_name = form.cleaned_data['name']
+
+            try:
+                tag_model = UserTag.objects.get(name=tag_name)
+            except ObjectDoesNotExist as e:
+                tag_model = UserTag(name=tag_name)
+                tag_model.save()
+
+            profile.tags.add(tag_model)
+            profile.save()
+
+            return redirect('/profile/edit/')
+    return profile_form_view(request)
+
+
+
+@login_required
+def profile_form_view(request):
+    profile = request.user.get_profile()
+    profile_form = EditProfileForm({
+        'name':request.user.get_full_name(),
+        'about_me':profile.about_me
+    })
+    photo_form = ProfilePhotoForm()
+    link_form = ProfileLinkForm()
+    tag_form = ProfileTagForm()
+
+    return render_to_response('profile_edit.html', {
+        'speaker': request.user.get_profile(),
+        'profile_form': profile_form,
+        'photo_form': photo_form,
+        'tag_form': tag_form,
+        'link_form': link_form},
+        context_instance=RequestContext(request))
+
 
 
 def speaker_detail(request, speaker_id):
@@ -152,8 +230,22 @@ def speaker_detail(request, speaker_id):
 
 def speaker_profile(request, speaker):
     talks = Talk.objects.filter(speakers__in=[speaker])
-    upcoming = talks.filter(date__gt=datetime.now()).order_by('-date')[:5]
-    past = talks.filter(date__lt=datetime.now()).order_by('date')[:20]
+
+    upcoming = talks.filter(date__gt=datetime.now()).order_by('date')[:5]
+    upcoming = [{
+        'month_num': k,
+        'date': datetime(month=k[0], year=k[1], day=1).strftime("%B %Y"),
+        'talks': list(g)} for k, g in groupby(upcoming, key=lambda x: (x.date.month, x.date.year))]
+    upcoming.sort(key=lambda x: x['month_num'])
+
+    past = talks.filter(date__lt=datetime.now()).order_by('-date')[:20]
+    past = [{
+        'month_num': k,
+        'date': datetime(month=k[0], year=k[1], day=1).strftime("%B %Y"),
+        'talks': list(g)} for k, g in groupby(past, key=lambda x: (x.date.month, x.date.year))]
+    past.sort(key=lambda x: x['month_num'], reverse=True)
+
+    print past
 
     return render_to_response('speaker_profile.html', 
             {'speaker': speaker, 'upcoming': upcoming, 'past': past},

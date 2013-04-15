@@ -3,54 +3,139 @@
 {% block 'content' %}
     {% if form.errors %}
         <div class="alert alert-error">
-            {{form.errors}}
+            {{profile_form.errors}}
         </div>
-    {% endif %}
+        {% endif %}
 
-    <form class="profile-form" action="/profile/edit/" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
+    <div id="profile">
         <div class="row">
-            <div class="span3" style="height:300px">
-                <div class="well picture">
-                    {% if speaker.photo %}
-                        <img src="{{STATIC_URL}}img/photo/{{ speaker.photo}}"></img>
-                    {% else %}
-                        <i class="icon-user"></i>
-                    {% endif %}
-                </div>
-            </div>
-
-            <div class="span9" style="height:280px">
-                <label for="name">Name:</label>
-                <div class="pull-right">
-                    {{ form.name }}
-                </div>
+            <div class="span6">
+                <h2>Your Profile Photo</h2>
                 <hr />
 
-                <label for="about">About Me:</label>
-                <div class="pull-right">
-                    {{ form.about_me }}
+                <div class="row">
+                    <div class="span6">
+                        <div class="well picture">
+                            {% if speaker.photo %}
+                                <img src="{{STATIC_URL}}img/photo/{{ speaker.photo}}"></img>
+                            {% else %}
+                                <i class="icon-user"></i>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
+
+                <form class="profile-photo-form" action="/profile/edit/photo/" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="row">
+                        <div class="span6">
+                            <label for="photo_id">New Photo:</label>
+                            {{ photo_form.photo }}
+                        </div>
+                    </div>
+
+                    <input class="btn submit-btn" type="submit" value="Upload Photo"></input>
+                </form>
+            </div>
+
+            <div class="span6">
+                <h2>Your Details</h2>
+                <hr />
+
+                <form class="profile-form" action="/profile/edit/" method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="span6">
+                            <div class="row">
+                                <div class="span1">
+                                    <label for="name">Name:</label>
+                                </div>
+                                <div class="span5">
+                                    {{ profile_form.name }}
+                                </div>
+                            </div>
+
+                            <hr />
+
+                            <div class="row">
+                                <div class="span1">
+                                    <label for="about">About:</label>
+                                </div>
+                                <div class="span5">
+                                    {{ profile_form.about_me }}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="span12">
+                            <input class="btn submit-btn" type="submit" value="Save Profile"></input>
+                        </div>
+                    </div>
+                </form>
+
             </div>
         </div>
 
-        <div class="row">
-            <div class="span12">
-                <h2>Upload Profile Photo</h2>
-                {{ form.photo }}
-            </div>
 
-            <div class="span12">
+        <div class="row">
+            <div class="span6">
                 <h2>Links</h2>
                 <hr />
-                {% for link in speaker.user_links %}
-                    <p>
-                        {{ link.type_name }}: <a href="{{link.url_target}}">{{ link.link_name }}</a>
-                    </p>
+
+                <div class="row">
+                    <div class="edit-links">
+                        <div class="span3">
+                            <form class="profile-link-form" action="/profile/edit/link/new/" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+
+                                <label for="id_type">Link Type:</label>
+                                {{ link_form.type }}
+
+                                <label for="id_name">Name:</label>
+                                {{ link_form.name }}
+
+                                <label for="id_url">Url:</label>
+                                {{ link_form.url }}
+
+                                <div>
+                                    <input class="btn submit-btn" type="submit" value="Add New Link"></input>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="span3">
+                            <div class="link-list">
+                                {% for link in speaker.userlink_set.all %}
+                                    <p>
+                                        {{ link.type_name|title }}: <a href="{{link.url_target}}">{{ link.link_name }}</a>
+                                    </p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="span6">
+                <h2>What are you known for?</h2>
+                <hr />
+
+                {% for tag in speaker.tags.all %}
+                    <div class="label label-info">{{tag|title}}</div>
                 {% endfor %}
+
+                <form action="/profile/edit/tag/new/" method="POST" class="profile-tag-form">
+                    {% csrf_token %}
+                    {{ tag_form.name }}
+
+                    <div></div>
+                    <input class="btn submit-btn" type="submit" value="Add New Tag" />
+                </form>
             </div>
         </div>
-
-        <input class="btn" type="submit" value="Save Profile"></input>
-    </form>
+    </div>
 {% endblock %}
