@@ -37,7 +37,6 @@
     <body>
 
         <div class="container-narrow">
-
             <div class="masthead">
                 <ul class="nav nav-pills pull-right">
                     {% if not user.is_anonymous %}
@@ -79,18 +78,22 @@
                         <li><a href="/logout">Logout</a></li>
                     {% endif %}
                 </ul>
-                <h3 class="muted">SpkrBar</h3>
+                <img src="{{STATIC_URL}}img/logo.png"></img>
             </div>
 
-            {% block 'content' %}
+            {% block 'callout' %}
             {% endblock %}
+
+            <div class="content-container">
+                {% block 'content' %}
+                {% endblock %}
+            </div>
 
             <div style="clear: both;"></div>
 
             <div class="footer">
                 <p>&copy; Agile Hog LLC. 2013</p>
             </div>
-
         </div> <!-- /container -->
 
         <!-- Le javascript

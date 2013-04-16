@@ -1,13 +1,16 @@
 {% extends 'talk_base.html' %}
 
-{% block 'content' %}
+{% block 'callout' %}
     {% if user.is_anonymous %}
-        <div class="jumbotron">
-            <h2>Check out these awesome talks in your area...</h2>
-            <a class="btn btn-large btn-success" href="/register/">...or add your own.</a>
+        <div class="jumbotron callout">
+            <h2 class="btn-warning">Finally, a place for speakers.</h2>
+            <a class="btn btn-large btn-warning" href="/register/">Add your talk.</a>
         </div>
     {% endif %}
+{% endblock %}
 
+
+{% block 'content' %}
     <div class="row">
         <div class="span12">
             <h2>Upcoming Talks</h2>

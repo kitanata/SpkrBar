@@ -1,16 +1,64 @@
+@STATIC_URL: '/static/';
+@bodyBorderColor: rgb(175,150,130);
+
 body {
-    padding-top: 20px;
-    padding-bottom: 40px;
+    padding-top: 0px;
+    padding-bottom: 80px;
+    background-color: rgb(230, 190, 160);
+
+    .callout {
+        position: relative;
+        height: 140px;
+        margin: 0px 0px 40px 0px;
+        padding: 40px 20px 150px 0px;
+
+        background-image: url('@{STATIC_URL}img/audi_callout.jpg');
+        color: white;
+        text-align: left;
+
+        h2 {
+            width: 440px;
+            padding: 5px 20px 10px 20px;
+            border-radius: 0px 10px 10px 0px;
+        }
+
+        a {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+        }
+    }
+
+    .masthead {
+        padding: 20px 20px 10px 20px;
+    }
+
+    .container-narrow {
+        margin: 0 auto;
+        max-width: 980px;
+        background-color: white;
+
+        border-left: 2px solid @bodyBorderColor;
+        border-right: 2px solid @bodyBorderColor;
+        border-bottom: 2px solid @bodyBorderColor;
+
+        -webkit-box-shadow: 0px 3px 5px 2px @bodyBorderColor;
+        box-shadow: 0px 3px 5px 2px @bodyBorderColor;
+    }
+
+    .container-narrow > hr {
+        margin: 30px 0;
+    }
+
+    .content-container {
+        margin-left: 20px;
+    }
+
+    .footer {
+        margin: 20px 20px 0px 20px;
+    }
 }
 
-/* Custom container */
-.container-narrow {
-    margin: 0 auto;
-    max-width: 940px;
-}
-.container-narrow > hr {
-    margin: 30px 0;
-}
 
 /* Main marketing message and sign up button */
 .jumbotron {
@@ -56,8 +104,4 @@ body {
     width: 100%;
     height: 100%;
     background-color: yellow;
-}
-
-.footer {
-    margin-top: 20px;
 }
