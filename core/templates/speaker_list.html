@@ -2,44 +2,42 @@
 
 {% block 'content' %}
     <div id="speakers" class="row">
-        <ul>
-            {% for speaker in object_list %}
-                <div class="span6">
-                    <li>
-                        <div class="row">
-                            <div class="span2">
-                                {% if speaker.photo %}
-                                    <img class="pull-left" src="{{STATIC_URL}}img/photo/{{ speaker.photo}}"></img>
-                                {% else %}
-                                    <i class="pull-left icon-user profile-placeholder"></i>
-                                {% endif %}
-                            </div>
+        {% for speaker in object_list %}
+        <div class="span6">
+            <div class="well">
+                <div class="row">
+                    <div class="span2">
+                        {% if speaker.photo %}
+                            <img class="pull-left" src="{{STATIC_URL}}img/photo/{{ speaker.photo}}"></img>
+                        {% else %}
+                            <i class="pull-left icon-user profile-placeholder"></i>
+                        {% endif %}
+                    </div>
 
-                            <div class="span4">
-                                <h4>{{ speaker.user.get_full_name }}</h4>
+                    <div class="span3">
+                        <h4>{{ speaker.user.get_full_name }}</h4>
 
-                                Expert In:
-                                {% for tag in speaker.tags.all|slice:":5" %}
-                                    <div class="label label-info">{{tag|title}}</div>
-                                {% endfor %}
+                        Expert In:
+                        {% for tag in speaker.tags.all|slice:":5" %}
+                            <div class="label label-info">{{tag|title}}</div>
+                        {% endfor %}
 
-                                <div class="about">
-                                    {{ speaker.about_me }}
-                                </div>
-
-                                <div class="follow">
-                                    <a href="/follow/{{speaker.pk}}">Follow This Speaker</a>
-                                </div>
-
-                                <div class="speaker-link">
-                                    <a href="/speaker/{{speaker.pk}}">More >></a>
-                                </div>
-                            </div>
+                        <div class="about">
+                            {{ speaker.about_me }}
                         </div>
-                    </li>
+
+                        <div class="follow">
+                            <a href="/follow/{{speaker.pk}}">Follow This Speaker</a>
+                        </div>
+
+                        <div class="speaker-link">
+                            <a href="/speaker/{{speaker.pk}}">More >></a>
+                        </div>
+                    </div>
                 </div>
-            {% endfor %}
-        </ul>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 
 {% endblock %}
