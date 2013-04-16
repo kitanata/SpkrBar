@@ -231,7 +231,7 @@ def speaker_detail(request, speaker_id):
 def speaker_profile(request, speaker):
     talks = Talk.objects.filter(speakers__in=[speaker])
 
-    upcoming = talks.filter(date__gt=datetime.now()).order_by('date')[:5]
+    upcoming = talks.filter(date__gt=datetime.now()).order_by('date')[:10]
     upcoming = [{
         'month_num': k,
         'date': datetime(month=k[0], year=k[1], day=1).strftime("%B %Y"),
