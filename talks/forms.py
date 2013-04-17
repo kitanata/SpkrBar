@@ -1,4 +1,5 @@
 from django import forms
+from datetimewidget.widgets import DateTimeWidget
 
 # 'Field', 'CharField', 'IntegerField',
 # 'DateField', 'TimeField', 'DateTimeField', 'TimeField',
@@ -10,8 +11,8 @@ from django import forms
 
 class NewTalkForm(forms.Form):
     name = forms.CharField(max_length=140)
-    description = forms.CharField(widget=forms.Textarea)
-    date = forms.DateTimeField()
+    abstract = forms.CharField(widget=forms.Textarea)
+    date = forms.DateTimeField(widget=DateTimeWidget)
     location_name = forms.CharField(max_length=140)
     location_address = forms.CharField(max_length=140)
     location_city = forms.CharField(max_length=140)

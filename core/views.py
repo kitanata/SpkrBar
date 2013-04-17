@@ -102,11 +102,6 @@ def load_fixtures(request):
 
 
 @login_required()
-def profile(request):
-    return speaker_profile(request, request.user.get_profile())
-
-
-@login_required()
 def profile_edit(request):
     if request.method == "POST":
         form = EditProfileForm(request.POST)
@@ -126,7 +121,7 @@ def profile_edit(request):
             profile.about_me = form.cleaned_data['about_me']
             profile.save()
 
-            return redirect('/profile/')
+            return redirect('/speaker/' + request.user.username)
 
     else:
         return profile_form_view(request)
@@ -151,7 +146,7 @@ def profile_edit_photo(request):
 
             profile.save()
 
-            return redirect('/profile/')
+            return redirect('/speaker/' + request.user.username)
     return profile_form_view(request)
 
 
@@ -223,33 +218,43 @@ def profile_form_view(request):
 
 
 
-def speaker_detail(request, speaker_id):
-    speaker = get_object_or_404(UserProfile, pk=speaker_id)
-    return speaker_profile(request, speaker)
-
-
-def speaker_profile(request, speaker):
+def speaker_detail(request, username):
+    speaker = get_object_or_404(User, username=username).get_profile()
     talks = Talk.objects.filter(speakers__in=[speaker])
 
     upcoming = talks.filter(date__gt=datetime.now()).order_by('date')[:10]
-    upcoming = [{
-        'month_num': k,
-        'date': datetime(month=k[0], year=k[1], day=1).strftime("%B %Y"),
-        'talks': list(g)} for k, g in groupby(upcoming, key=lambda x: (x.date.month, x.date.year))]
-    upcoming.sort(key=lambda x: x['month_num'])
+    upcoming = talks_from_queryset(upcoming)
 
     past = talks.filter(date__lt=datetime.now()).order_by('-date')[:20]
-    past = [{
-        'month_num': k,
-        'date': datetime(month=k[0], year=k[1], day=1).strftime("%B %Y"),
-        'talks': list(g)} for k, g in groupby(past, key=lambda x: (x.date.month, x.date.year))]
-    past.sort(key=lambda x: x['month_num'], reverse=True)
-
-    print past
+    past = talks_from_queryset(past, reverse=True)
 
     return render_to_response('speaker_profile.html', 
             {'speaker': speaker, 'upcoming': upcoming, 'past': past},
             context_instance=RequestContext(request))
+
+
+def speaker_talks(request, username):
+    speaker = get_object_or_404(User, username=username).get_profile()
+    talks = Talk.objects.filter(speakers__in=[speaker])
+
+    upcoming = talks.filter(date__gt=datetime.now()).order_by('date')
+    upcoming = talks_from_queryset(upcoming)
+
+    past = talks.filter(date__lt=datetime.now()).order_by('-date')
+    past = talks_from_queryset(past, reverse=True)
+
+    return render_to_response('speaker_talks.html',
+            {'speaker': speaker, 'upcoming': upcoming, 'past': past},
+            context_instance=RequestContext(request))
+
+
+def talks_from_queryset(queryset, reverse=False):
+    queryset = [{
+        'month_num': k,
+        'date': datetime(month=k[0], year=k[1], day=1).strftime("%B %Y"),
+        'talks': list(g)} for k, g in groupby(queryset, key=lambda x: (x.date.month, x.date.year))]
+    queryset.sort(key=lambda x: x['month_num'], reverse=reverse)
+    return queryset
 
     
 def login_user(request):
@@ -265,7 +270,7 @@ def login_user(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                return redirect('/profile/')
+                return redirect('/speaker/' + request.user.username)
             else:
                 error = "This account has been disabled."
         else:
@@ -306,17 +311,13 @@ def register_user(request):
         if not error:
             user = authenticate(username=username, password=password)
             login(request, user)
-            return redirect('/profile/')
+            return redirect('/speaker/' + request.user.username)
 
         return render_to_response('register.html', {'error': error},
                 context_instance=RequestContext(request))
 
         
 
-
-def speaker_detail(request, speaker_id):
-    speaker = get_object_or_404(UserProfile, pk=speaker_id)
-    return speaker_profile(request, speaker)
 
 class SpeakerList(ListView):
     queryset = UserProfile.objects.all()[:20]

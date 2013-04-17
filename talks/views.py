@@ -5,6 +5,7 @@ from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.views.generic import ListView
 from django.template import RequestContext
 
+from core.models import Location
 from .models import Talk
 from .forms import NewTalkForm
 
@@ -36,15 +37,16 @@ def talk_new(request):
             location.save()
 
             talk = Talk(
-                    speaker=request.user,
                     name=form.cleaned_data['name'],
-                    description=form.cleaned_data['description'],
+                    abstract=form.cleaned_data['abstract'],
                     date=form.cleaned_data['date'],
                     location=location)
 
             talk.save()
+            talk.speakers.add(request.user.get_profile())
+            talk.save()
 
-            return redirect('/profile/')
+            return redirect('/talk/' + str(talk.id))
     else:
         form = NewTalkForm()
 

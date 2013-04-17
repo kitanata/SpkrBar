@@ -21,6 +21,11 @@
             {% endblock %}
         {% endcompress %}
 
+        <script src="{{STATIC_URL}}js/jquery-1.9.1.min.js"></script>
+        {% block 'head' %}
+        {% endblock %}
+
+
         <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
         <script src="../assets/js/html5shiv.js"></script>
@@ -48,7 +53,7 @@
                                 <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="/profile">My Profile</a></li>
+                                <li><a href="/speaker/{{ user.username }}">My Profile</a></li>
                                 <li><a href="/profile/edit">Edit Profile</a></li>
                             </ul>
                         </li>
@@ -59,7 +64,8 @@
                                 <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="/">Talks</a></li>
+                                <li><a href="/">All Talks</a></li>
+                                <li><a href="/speaker/{{ user.username}}/talks">My Talks</a></li>
                                 <li><a href="/talk/new">Add Talk</a></li>
                             </ul>
                         </li>
@@ -100,7 +106,6 @@
         ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
         {% compress js %}
-            <script src="{{STATIC_URL}}js/jquery-1.9.1.min.js"></script>
             <script src="{{STATIC_URL}}js/bootstrap-dropdown.js"></script>
         {% endcompress %}
     </body>

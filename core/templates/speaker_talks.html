@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block 'content' %}
+    <div id="profile">
+        <div class="row">
+            <div class="span4">
+                <div class="well picture">
+                    {% if speaker.photo %}
+                        <img src="{{STATIC_URL}}img/photo/{{ speaker.photo}}"></img>
+                    {% else %}
+                        <i class="icon-user"></i>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="span8">
+                <div class="row">
+                    <div class="span5">
+                        <h2>{{ speaker.user.get_full_name }}</h2>
+                    </div>
+                    <div class="span3">
+                        <div style="margin-top: 10px">
+                            <i class="icon-star icon-3x", style="color:gold"></i>
+                            <i class="icon-star icon-3x", style="color:gold"></i>
+                            <i class="icon-star icon-3x", style="color:gold"></i>
+                            <i class="icon-star icon-3x", style="color:gold"></i>
+                            <i class="icon-star icon-3x", style="color:gray"></i>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="span8">
+                        {{ speaker.about_me }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="span12">
+                <h2>Upcoming Talks</h2>
+                <hr />
+
+                <div class="row">
+                    {% for talks in upcoming %}
+                        <div class="span12" style="margin-bottom:10px">
+                            <h3>{{ talks.date }}</h3>
+
+                            <div class="row">
+                                {% for talk in talks.talks %}
+                                    <div class="span4">
+                                        <div class="well">
+                                            <h4><a href="/talk/{{talk.id}}">{{ talk.name|truncatechars:70 }}</a></h4>
+                                            <h5>{{ talk.date }}</h5>
+                                            <div style="clear:both"></div>
+                                            <hr />
+                                            <p>{{ talk.abstract }}</h3>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="span12" style="margin-top: 40px">
+                <h2>Past Talks</h2>
+                <hr />
+
+                <div class="row">
+                    {% for talks in past %}
+                        <div class="span12" style="margin-bottom:10px">
+                            <h3>{{ talks.date }}</h3>
+
+                            <div class="row">
+                                {% for talk in talks.talks %}
+                                    <div class="span4">
+                                        <div class="well">
+                                            <h4><a href="/talk/{{talk.id}}">{{ talk.name|truncatechars:70 }}</a></h4>
+                                            <h5>{{ talk.date }}</h5>
+                                            <div style="clear:both"></div>
+                                            <hr />
+                                            <p>{{ talk.abstract }}</h3>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

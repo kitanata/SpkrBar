@@ -33,9 +33,11 @@
                             <label for="photo_id">New Photo:</label>
                             {{ photo_form.photo }}
                         </div>
-                    </div>
 
-                    <input class="btn submit-btn" type="submit" value="Upload Photo"></input>
+                        <div class="span6">
+                            <input class="btn btn-warning" type="submit" value="Upload Photo"></input>
+                        </div>
+                    </div>
                 </form>
             </div>
 
@@ -56,8 +58,6 @@
                                 </div>
                             </div>
 
-                            <hr />
-
                             <div class="row">
                                 <div class="span1">
                                     <label for="about">About:</label>
@@ -72,7 +72,7 @@
 
                     <div class="row">
                         <div class="span12">
-                            <input class="btn submit-btn" type="submit" value="Save Profile"></input>
+                            <input class="btn btn-warning" type="submit" value="Save Profile"></input>
                         </div>
                     </div>
                 </form>
@@ -102,7 +102,7 @@
                                 {{ link_form.url }}
 
                                 <div>
-                                    <input class="btn submit-btn" type="submit" value="Add New Link"></input>
+                                    <input class="btn btn-warning" type="submit" value="Add New Link"></input>
                                 </div>
                             </form>
                         </div>
@@ -133,7 +133,7 @@
                     {{ tag_form.name }}
 
                     <div></div>
-                    <input class="btn submit-btn" type="submit" value="Add New Tag" />
+                    <input class="btn btn-warning" type="submit" value="Add New Tag" />
                 </form>
             </div>
         </div>

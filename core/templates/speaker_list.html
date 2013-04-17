@@ -15,7 +15,7 @@
                     </div>
 
                     <div class="span3">
-                        <h4>{{ speaker.user.get_full_name }}</h4>
+                        <h4><a href="/speaker/{{speaker.user.username}}">{{ speaker.user.get_full_name }}</a></h4>
 
                         Expert In:
                         {% for tag in speaker.tags.all|slice:":5" %}
@@ -30,9 +30,6 @@
                             <a href="/follow/{{speaker.pk}}">Follow This Speaker</a>
                         </div>
 
-                        <div class="speaker-link">
-                            <a href="/speaker/{{speaker.pk}}">More >></a>
-                        </div>
                     </div>
                 </div>
             </div>
