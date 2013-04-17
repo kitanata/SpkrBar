@@ -59,3 +59,17 @@ def talk_detail(request, talk_id):
 
     return render_to_response('talk_detail.html', {'talk': talk},
             context_instance=RequestContext(request))
+
+
+def talk_edit(request, talk_id):
+    talk = get_object_or_404(Talk, pk=talk_id)
+
+    return render_to_response('talk_edit.html', {'talk': talk},
+            context_instance=RequestContext(request))
+
+
+def talk_delete(request, talk_id):
+    talk = get_object_or_404(Talk, pk=talk_id)
+    talk.delete()
+
+    return redirect('/speaker/' + request.user.username)
