@@ -8,7 +8,7 @@
             <ul class="speakers">
                 {% for speaker in talk.speakers.all %}
                     <li>
-                        <div class="speaker">
+                        <div class="speaker well">
                             {% if speaker.photo %}
                                 <img src="{{STATIC_URL}}img/photo/{{ speaker.photo}}"></img>
                             {% else %}
@@ -27,12 +27,19 @@
                 {% endfor %}
             </ul>
 
-            <h3>Tags</h3>
-            <ul>
-                {% for tag in talk.tags.all %}
-                <li>{{ tag.name }}</li>
-                {% endfor %}
-            </ul>
+            <div class="tags">
+                <h3>Tags</h3>
+                <ul>
+                    {% for tag in talk.tags.all %}
+                    <li>{{ tag.name }}</li>
+                    {% endfor %}
+                </ul>
+
+                <form action="/talk/{{talk.id}}/tag/new" method="POST">
+                    <input type="text" placeholder="My Tag"/>
+                    <input class="btn btn-warning" type="submit" value="Tag this talk" />
+                </form>
+            </div>
 
             <h3>Location</h3>
             <div class="location">
@@ -43,18 +50,39 @@
         </div>
 
         <div class="span9">
+            <div class="navbar pull-right">
+                {% if user.get_profile in talk.speakers.all %}
+                <div class="btn-group">
+                    <a class="btn btn-warning" href="/talk/{{talk.id}}/edit">Edit</a>
+                    <a class="btn btn-warning delete-talk" data-name="{{talk.name}}" data-id="{{talk.id}}" href="#delete-talk-popup">Delete</a>
+                </div>
+                {% endif %}
+            </div>
+            <div class="clearfix"></div>
+
             <h2>{{ talk.name }}</h2>
-            <p>{{talk.date}}</p>
+            <p>{{ talk.date }}</p>
 
 
             <h3>Abstract</h3>
-            <p>{{talk.abstract}}</p>
+            <p>{{ talk.abstract }}</p>
+
+            {% if talk.talkvideo_set.all %}
+                <h3>Videos</h2>
+                {% for video in talk.talkvideo_set.all %}
+                    {% if video.video_type == "YOUTUBE" %}
+                        <iframe width="300" height="225" src="{{ video.url_target }}" frameborder="0" allowfullscreen></iframe>
+                    {% elif video.video_type == "VIMEO" %}
+                        <iframe src="{{ video.url_target }}" width="300" height="225" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
 
             <div class="comments">
                 <h3>Comments</h3>
 
                 <form class="add-comment-form" action="#" method="POST">
-                    <textarea>Add your comment...</textarea><br />
+                    <textarea placeholder="Add your comment..."></textarea><br />
                     <input class="btn btn-warning" type="submit" value="Submit Comment" />
                 </form>
 
@@ -84,4 +112,30 @@
         </div>
     </div>
 </div>
+
+<!-- This contains the hidden content for inline calls -->
+<div style='display:none'>
+    <div id="delete-talk-popup" style="background-color:white; padding: 40px;">
+        <h2 class="delete-talk-name"></h2>
+        <div style="font-size: 18px;">
+            <p>Are you sure you want to delete this talk?</p>
+            <p><b>This operation cannot be undone.</b></p>
+        </div>
+
+        <a class="delete-confirm-link btn btn-danger" href="#" style="margin-top: 20px;">Yes. Delete this talk<a>
+    </div>
+</div>
+{% endblock %}
+
+{% block 'scripts' %}
+<script type="text/javascript">
+    $('.delete-talk').colorbox({inline: true, width:"300px"});
+
+    $('.delete-talk').click(function(el){
+        var sel = $(el.currentTarget)
+
+        $('.delete-talk-name').text(sel.data('name'))
+        $('.delete-confirm-link').attr('href', "/talk/" + sel.data('id') + "/delete/")
+    });
+</script>
 {% endblock %}

@@ -1,6 +1,8 @@
 from django import forms
 from datetimewidget.widgets import DateTimeWidget
 
+from .models import Talk
+
 # 'Field', 'CharField', 'IntegerField',
 # 'DateField', 'TimeField', 'DateTimeField', 'TimeField',
 # 'RegexField', 'EmailField', 'FileField', 'ImageField', 'URLField',
@@ -9,11 +11,11 @@ from datetimewidget.widgets import DateTimeWidget
 # 'SplitDateTimeField', 'IPAddressField', 'GenericIPAddressField', 'FilePathField',
 # 'SlugField', 'TypedChoiceField', 'TypedMultipleChoiceField'
 
-class NewTalkForm(forms.Form):
-    name = forms.CharField(max_length=140)
-    abstract = forms.CharField(widget=forms.Textarea)
-    date = forms.DateTimeField(widget=DateTimeWidget)
-    location_name = forms.CharField(max_length=140)
-    location_address = forms.CharField(max_length=140)
-    location_city = forms.CharField(max_length=140)
-    location_state = forms.CharField(max_length=40)
+class TalkForm(forms.ModelForm):
+    class Meta:
+        model = Talk
+        widgets = {
+            'abstract': forms.Textarea(attrs={'cols': 80, 'rows': 5}),
+            'date': DateTimeWidget()
+        }
+        exclude = ('speakers', 'media', 'tags')

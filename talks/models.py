@@ -17,9 +17,6 @@ class Talk(models.Model):
 
     tags = models.ManyToManyField(TalkTag)
 
-    def speaker_name(self):
-        return self.speaker.get_full_name()
-
     def __str__(self):
         return self.name
 
@@ -30,3 +27,21 @@ class TalkReview(models.Model):
     reviewer = models.ForeignKey(UserProfile)
     rating = models.IntegerField(default=3)
     comments = models.CharField(max_length=140)
+
+
+
+class TalkVideo(models.Model):
+    YOUTUBE = 'YOUTUBE'
+    VIMEO = 'VIMEO'
+
+    LINK_TYPE_CHOICES = (
+        (YOUTUBE, 'Youtube'),
+        (VIMEO, 'Vimeo'),
+    )
+
+    talk = models.ForeignKey(Talk)
+    video_type = models.CharField(max_length=40, choices=LINK_TYPE_CHOICES, default=YOUTUBE)
+    url_target = models.URLField(max_length=140)
+
+    def talk_name(self):
+        return self.talk.name

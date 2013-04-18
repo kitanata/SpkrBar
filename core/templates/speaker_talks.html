@@ -56,6 +56,13 @@
                                             <div style="clear:both"></div>
                                             <hr />
                                             <p>{{ talk.abstract }}</h3>
+
+                                            {% if speaker in talk.speakers.all %}
+                                            <div class="btn-group">
+                                                <a class="btn btn-warning" href="/talk/{{talk.id}}/edit">Edit</a>
+                                                <a class="btn btn-warning delete-talk" data-name="{{talk.name}}" data-id="{{talk.id}}" href="#delete-talk-popup">Delete</a>
+                                            </div>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 {% endfor %}
@@ -96,4 +103,30 @@
         </div>
 
     </div>
+
+    <!-- This contains the hidden content for inline calls -->
+    <div style='display:none'>
+        <div id="delete-talk-popup" style="background-color:white; padding: 40px;">
+            <h2 class="delete-talk-name"></h2>
+            <div style="font-size: 18px;">
+                <p>Are you sure you want to delete this talk?</p>
+                <p><b>This operation cannot be undone.</b></p>
+            </div>
+
+            <a class="delete-confirm-link btn btn-danger" href="#" style="margin-top: 20px;">Yes. Delete this talk<a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block 'scripts' %}
+<script type="text/javascript">
+    $('.delete-talk').colorbox({inline: true, width:"300px"});
+
+    $('.delete-talk').click(function(el){
+        var sel = $(el.currentTarget)
+
+        $('.delete-talk-name').text(sel.data('name'))
+        $('.delete-confirm-link').attr('href', "/talk/" + sel.data('id') + "/delete/")
+    });
+</script>
 {% endblock %}

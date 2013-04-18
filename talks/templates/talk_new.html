@@ -14,40 +14,58 @@
             {% endif %}
 
             <div class="row">
-                <form id="new-talk-form" action="/talk/new/" method="POST">
-                    {% csrf_token %}
-
-                    <div class="span6">
+                <div class="span6">
+                    <form id="new-talk-form" action="/talk/new/" method="POST">
+                        {% csrf_token %}
                         <div class="row">
                             <div class="span6">
                                 <h2>What are you talking about?</h2>
                                 <hr />
                             </div>
 
+                            {% for error in talk_form.errors %}
+                                <div class="alert">
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <strong>Warning!</strong> {{ error }}
+                                </div>
+                            {% endfor %}
+
                             <div class="span2">
                                 <label for="id_name">Talk Title:</label>
                             </div>
                             <div class="span4">
-                                {{ form.name }}
+                                {{ talk_form.name }}
                             </div>
 
                             <div class="span2">
                                 <label for="id_abstract">Abstract:</label>
                             </div>
                             <div class="span4">
-                                {{ form.abstract }}
+                                {{ talk_form.abstract }}
                             </div>
 
                             <div class="span2">
                                 <label for="id_date">Date and Time:</label>
                             </div>
                             <div class="span4">
-                                {{ form.date }}
+                                {{ talk_form.date }}
+                            </div>
+
+                            <div class="span2">
+                                <label for="id_location">Location:</label>
+                            </div>
+                            <div class="span4">
+                                {{ talk_form.location }}
                             </div>
                         </div>
-                    </div>
 
-                    <div class="span6">
+                        <input class="btn btn-warning" type="submit" value="Submit your talk"/>
+                    </form>
+                </div>
+
+                <div class="span6">
+                    <form id="new-talk-form" action="/location/new/" method="POST">
+                        {% csrf_token %}
                         <div class="row">
                             <div class="span6">
                                 <h2>Where are you talking at?</h2>
@@ -55,38 +73,45 @@
                             </div>
 
                             <div class="span2">
-                                <label for="id_location_name">Location Name:</label>
+                                <label for="id_location_name">Name:</label>
                             </div>
                             <div class="span4">
-                                {{ form.location_name }}
+                                {{ location_form.name }}
                             </div>
 
                             <div class="span2">
-                                <label for="id_location_address">Location Address:</label>
+                                <label for="id_location_address">Address:</label>
                             </div>
                             <div class="span4">
-                                {{ form.location_address }}
+                                {{ location_form.address }}
                             </div>
 
                             <div class="span2">
-                                <label for="id_city">Location City:</label>
+                                <label for="id_city">City:</label>
                             </div>
                             <div class="span4">
-                                {{ form.location_city }}
+                                {{ location_form.city }}
                             </div>
 
                             <div class="span2">
-                                <label for="id_state">Location State:</label>
+                                <label for="id_state">State:</label>
                             </div>
                             <div class="span4">
-                                {{ form.location_state }}
+                                {{ location_form.state }}
+                            </div>
+
+                            <div class="span2">
+                                <label for="id_state">Zip Code:</label>
+                            </div>
+                            <div class="span4">
+                                {{ location_form.zip_code }}
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <input class="btn btn-warning" type="submit" value="Submit your talk"/>
-            </form>
+                        <input class="btn btn-warning" type="submit" value="Add Location"/>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

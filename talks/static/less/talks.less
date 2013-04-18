@@ -27,25 +27,23 @@
         list-style-type: none;
         margin: 0px;
 
-        .speaker img {
-            max-width: 120px;
-        }
+        .speaker h4 { width: 100%; }
 
-        .speaker i {
-            font-size: 120px;
-        }
+        .speaker i { font-size: 120px; }
     }
 
     .add-comment-form {
 
         textarea {
-            width: 100%;
+            width: 680px;
             height: 120px;
         }
     }
 }
 
 #new-talk-form {
+    height: 400px;
+    position: relative;
 
     label {
         text-align: right;
@@ -56,7 +54,12 @@
 
     textarea { width: 95%; }
 
-    input[type=submit] { width: 200px; }
+    input[type=submit] { 
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        width: 200px; 
+    }
 
     .talk-location {
         margin-top: 40px;

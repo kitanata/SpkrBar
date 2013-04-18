@@ -1,6 +1,6 @@
 from django import forms
 
-from models import UserLink
+from models import UserLink, Location
 
 # 'Field', 'CharField', 'IntegerField',
 # 'DateField', 'TimeField', 'DateTimeField', 'TimeField',
@@ -24,3 +24,7 @@ class ProfileLinkForm(forms.Form):
 
 class ProfileTagForm(forms.Form):
     name = forms.CharField(max_length=140)
+
+class LocationForm(forms.ModelForm):
+    class Meta:
+        model = Location

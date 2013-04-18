@@ -6,8 +6,9 @@ from django.views.generic import ListView
 from django.template import RequestContext
 
 from core.models import Location
+from core.forms import LocationForm
 from .models import Talk
-from .forms import NewTalkForm
+from .forms import TalkForm
 
 def talk_list(request):
 
@@ -26,32 +27,23 @@ def talk_list(request):
 def talk_new(request):
 
     if request.method == 'POST': # If the form has been submitted...
-        form = NewTalkForm(request.POST)
-        if form.is_valid():
-            location = Location(
-                    name=form.cleaned_data['location_name'],
-                    address=form.cleaned_data['location_address'],
-                    city=form.cleaned_data['location_city'],
-                    state=form.cleaned_data['location_state'])
+        talk_form = TalkForm(request.POST)
+        location_form = None
 
-            location.save()
-
-            talk = Talk(
-                    name=form.cleaned_data['name'],
-                    abstract=form.cleaned_data['abstract'],
-                    date=form.cleaned_data['date'],
-                    location=location)
-
-            talk.save()
+        if talk_form.is_valid():
+            talk = talk_form.save()
             talk.speakers.add(request.user.get_profile())
             talk.save()
 
             return redirect('/talk/' + str(talk.id))
     else:
-        form = NewTalkForm()
+        talk_form = TalkForm()
+        location_form = LocationForm()
 
-    return render_to_response('talk_new.html', {'form' : form},
-            context_instance=RequestContext(request))
+    return render_to_response('talk_new.html', {
+        'talk_form' : talk_form,
+        'location_form' : location_form
+        }, context_instance=RequestContext(request))
 
     
 def talk_detail(request, talk_id):
@@ -64,8 +56,21 @@ def talk_detail(request, talk_id):
 def talk_edit(request, talk_id):
     talk = get_object_or_404(Talk, pk=talk_id)
 
-    return render_to_response('talk_edit.html', {'talk': talk},
-            context_instance=RequestContext(request))
+    if request.method == 'POST': # If the form has been submitted...
+        talk_form = TalkForm(request.POST)
+        if talk_form.is_valid():
+            talk = talk_form.save()
+            talk.save()
+
+            return redirect('/talk/' + str(talk.id))
+    else:
+        talk_form = TalkForm(instance=talk)
+        location_form = LocationForm()
+
+    return render_to_response('talk_edit.html', {
+        'talk_form': talk_form,
+        'location_form': location_form
+        }, context_instance=RequestContext(request))
 
 
 def talk_delete(request, talk_id):
@@ -73,3 +78,14 @@ def talk_delete(request, talk_id):
     talk.delete()
 
     return redirect('/speaker/' + request.user.username)
+
+
+def location_new(request):
+    if request.method == 'POST': # If the form has been submitted...
+        location_form = LocationForm(request.POST)
+
+        if location_form.is_valid():
+            location = location_form.save()
+            location.save()
+
+    return redirect('/talk/new')

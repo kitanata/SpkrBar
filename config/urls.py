@@ -15,6 +15,8 @@ urlpatterns = patterns('',
     url(r'^talk/(?P<talk_id>\d+)/edit/$', 'talks.views.talk_edit'),
     url(r'^talk/(?P<talk_id>\d+)/delete/$', 'talks.views.talk_delete'),
 
+    url(r'^location/new/$', 'talks.views.location_new'),
+
     url(r'^speakers/$', SpeakerList.as_view()),
     url(r'^speaker/(?P<username>\w+)/$', 'core.views.speaker_detail'),
     url(r'^speaker/(?P<username>\w+)/talks/$', 'core.views.speaker_talks'),
