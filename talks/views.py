@@ -27,12 +27,22 @@ def talk_list(request):
 def talk_new(request):
 
     if request.method == 'POST': # If the form has been submitted...
-        talk_form = TalkForm(request.POST)
+        talk_form = TalkForm(request.POST, request.FILES)
         location_form = None
 
         if talk_form.is_valid():
             talk = talk_form.save()
             talk.speakers.add(request.user.get_profile())
+
+            if 'photo' in request.FILES:
+                photo = request.FILES['photo']
+
+                with open('talk/static/img/photo/' + photo.name, 'wb+') as destination:
+                    for chunk in photo.chunks():
+                        destination.write(chunk)
+
+                talk.photo = photo.name
+
             talk.save()
 
             return redirect('/talk/' + str(talk.id))

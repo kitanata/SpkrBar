@@ -15,6 +15,7 @@ class Talk(models.Model):
     location = models.ForeignKey(Location)
     date = models.DateTimeField(default=datetime.now())
 
+    photo = models.ImageField(upload_to="photo")
     tags = models.ManyToManyField(TalkTag)
 
     def __str__(self):
@@ -24,7 +25,7 @@ class Talk(models.Model):
 
 class TalkReview(models.Model):
     talk = models.ForeignKey(Talk)
-    reviewer = models.ForeignKey(UserProfile)
+    reviewer = models.ForeignKey(UserProfile, null=True)
     rating = models.IntegerField(default=3)
     comments = models.CharField(max_length=140)
 

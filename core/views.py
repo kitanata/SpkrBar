@@ -93,6 +93,7 @@ def load_fixtures(request):
         talk.abstract = "A short description of this talk should go here"
         talk.date = datetime(year, month, day, hour, minute)
         talk.location = location
+        talk.photo = str(random.choice(range(1, 21))) + ".jpeg"
         
         talk.save()
         talk.speakers.add(speaker)
