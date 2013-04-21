@@ -9,12 +9,12 @@
 
     <div id="profile">
         <div class="row">
-            <div class="span6">
-                <h2>Your Profile Photo</h2>
+            <div class="span3">
+                <h2>Profile Photo</h2>
                 <hr />
 
                 <div class="row">
-                    <div class="span6">
+                    <div class="span3">
                         <div class="well picture">
                             {% if speaker.photo %}
                                 <img src="{{STATIC_URL}}img/photo/{{ speaker.photo}}"></img>
@@ -29,31 +29,31 @@
                     {% csrf_token %}
 
                     <div class="row">
-                        <div class="span6">
+                        <div class="span3">
                             <label for="photo_id">New Photo:</label>
                             {{ photo_form.photo }}
                         </div>
 
-                        <div class="span6">
+                        <div class="span3">
                             <input class="btn btn-warning" type="submit" value="Upload Photo"></input>
                         </div>
                     </div>
                 </form>
             </div>
 
-            <div class="span6">
-                <h2>Your Details</h2>
+            <div class="span9">
+                <h2>About You</h2>
                 <hr />
 
                 <form class="profile-form" action="/profile/edit/" method="POST">
                     {% csrf_token %}
                     <div class="row">
-                        <div class="span6">
+                        <div class="span9">
                             <div class="row">
                                 <div class="span1">
                                     <label for="name">Name:</label>
                                 </div>
-                                <div class="span5">
+                                <div class="span7">
                                     {{ profile_form.name }}
                                 </div>
                             </div>
@@ -62,7 +62,7 @@
                                 <div class="span1">
                                     <label for="about">About:</label>
                                 </div>
-                                <div class="span5">
+                                <div class="span7">
                                     {{ profile_form.about_me }}
                                 </div>
                             </div>
@@ -71,7 +71,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="span12">
+                        <div class="span9">
                             <input class="btn btn-warning" type="submit" value="Save Profile"></input>
                         </div>
                     </div>
@@ -82,9 +82,20 @@
 
 
         <div class="row">
-            <div class="span6">
+            <div class="span3">
                 <h2>Links</h2>
                 <hr />
+                <div class="row">
+                    <div class="span3">
+                        <div class="link-list">
+                            {% for link in speaker.userlink_set.all %}
+                                <p>
+                                    {{ link.type_name|title }}: <a href="{{link.url_target}}">{{ link.link_name }}</a>
+                                </p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
 
                 <div class="row">
                     <div class="edit-links">
@@ -106,21 +117,11 @@
                                 </div>
                             </form>
                         </div>
-
-                        <div class="span3">
-                            <div class="link-list">
-                                {% for link in speaker.userlink_set.all %}
-                                    <p>
-                                        {{ link.type_name|title }}: <a href="{{link.url_target}}">{{ link.link_name }}</a>
-                                    </p>
-                                {% endfor %}
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="span6">
+            <div class="span9">
                 <h2>What are you known for?</h2>
                 <hr />
 

@@ -17,10 +17,12 @@
                     <div class="span3">
                         <h4><a href="/speaker/{{speaker.user.username}}">{{ speaker.user.get_full_name }}</a></h4>
 
-                        Expert In:
-                        {% for tag in speaker.tags.all|slice:":5" %}
-                            <div class="label label-info">{{tag|title}}</div>
-                        {% endfor %}
+                        {% if speaker.tags.all %}
+                            Expert In:
+                            {% for tag in speaker.tags.all|slice:":5" %}
+                                <div class="label label-info">{{tag|title}}</div>
+                            {% endfor %}
+                        {% endif %}
 
                         <div class="about">
                             {{ speaker.about_me }}

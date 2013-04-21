@@ -30,7 +30,11 @@
                             <li>
                                 <h4><a href="/talk/{{talk.pk}}">{{ talk.name|truncatechars:30 }}</a></h4>
                                 <h5>{{ talk.date }}</h5>
-                                <img class="pull-left" src="{{STATIC_URL}}img/{% cycle 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 %}.jpeg">
+                                {% if talk.photo %}
+                                <img class="pull-left" src="{{STATIC_URL}}img/photo/{{talk.photo}}">
+                                {% else %}
+                                <i class="icon-camera profile-placeholder pull-left"></i>
+                                {% endif %}
                                 <span>
                                     {{ talk.abstract|truncatechars:80 }}
                                     <i class="icon-globe"></i>

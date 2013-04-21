@@ -3,7 +3,7 @@
 {% block 'content' %}
     <div id="profile">
         <div class="row">
-            <div class="span4">
+            <div class="span3">
                 <div class="well picture">
                     {% if speaker.photo %}
                         <img src="{{STATIC_URL}}img/photo/{{ speaker.photo}}"></img>
@@ -13,7 +13,7 @@
                 </div>
             </div>
 
-            <div class="span8">
+            <div class="span9">
                 <div class="row">
                     <div class="span5">
                         <h2>{{ speaker.user.get_full_name }}</h2>
@@ -30,7 +30,7 @@
                 </div>
                 <hr />
                 <div class="row">
-                    <div class="span8">
+                    <div class="span9">
                         {{ speaker.about_me }}
                     </div>
                 </div>
@@ -38,14 +38,14 @@
         </div>
 
         <div class="row">
-            <div class="span4">
+            <div class="span3">
                 <div class="row">
-                    <div class="span4">
+                    <div class="span3">
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="span4" style="margin-top:40px">
+                    <div class="span3" style="margin-top:40px">
                         <h2>Known for</h2>
                         <ul class="expert-area">
                             {% for tag in speaker.tags.all %}
@@ -56,7 +56,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="span4" style="margin-top:40px">
+                    <div class="span3" style="margin-top:40px">
                         <h2>Links</h2>
                         {% for link in speaker.userlink_set.all %}
                             <p>
@@ -67,13 +67,13 @@
                 </div>
 
                 <div class="row">
-                    <div class="span4" style="margin-top: 40px">
+                    <div class="span3" style="margin-top: 40px">
                         <h2>Past Talks</h2>
                         <ul class="past-talks">
                             {% for talk in past %}
                                 <h3>{{ talk.date }}</h3>
                                 {% for talk in talk.talks %}
-                                    <li><a href="/talk/{{talk.id}}">{{ talk.name|truncatechars:40 }}</a></li>
+                                    <li><a href="/talk/{{talk.id}}">{{ talk.name|truncatechars:30 }}</a></li>
                                 {% endfor %}
                             {% endfor %}
                         </ul>
@@ -81,18 +81,18 @@
                 </div>
             </div>
 
-            <div class="span8">
+            <div class="span9">
                 <h2>Upcoming Talks</h2>
                 <hr />
 
                 <div class="row">
                     {% for talks in upcoming %}
-                        <div class="span8" style="margin-bottom:10px">
+                        <div class="span9" style="margin-bottom:10px">
                             <h3>{{ talks.date }}</h3>
 
                             <div class="row">
                                 {% for talk in talks.talks %}
-                                    <div class="span4">
+                                    <div class="span9">
                                         <div class="well">
                                             <h4><a href="/talk/{{talk.id}}">{{ talk.name|truncatechars:70 }}</a></h4>
                                             <h5>{{ talk.date }}</h5>

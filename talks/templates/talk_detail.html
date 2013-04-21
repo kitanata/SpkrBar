@@ -4,53 +4,77 @@
 <div id="talk">
     <div class="row">
         <div class="span3">
-            <h3>Speakers</h3>
-            <ul class="speakers">
-                {% for speaker in talk.speakers.all %}
-                    <li>
-                        <div class="speaker well">
-                            {% if speaker.photo %}
-                                <img src="{{STATIC_URL}}img/photo/{{ speaker.photo}}"></img>
-                            {% else %}
-                                <i class="icon-user profile-placeholder"></i>
-                            {% endif %}
-
-                            <div class="about">
-                                <h4>
-                                    <a href="/speaker/{{speaker.user.username}}">
-                                    {{ speaker.user.get_full_name }}
-                                    </a>
-                                </h4>
-                            </div>
-                        </div>
-                    </li>
-                {% endfor %}
-            </ul>
-
-            <div class="tags">
-                <h3>Tags</h3>
-                <ul>
-                    {% for tag in talk.tags.all %}
-                    <li>{{ tag.name }}</li>
-                    {% endfor %}
-                </ul>
-
-                <form action="/talk/{{talk.id}}/tag/new" method="POST">
-                    <input type="text" placeholder="My Tag"/>
-                    <input class="btn btn-warning" type="submit" value="Tag this talk" />
-                </form>
+            <div class="row">
+                <div class="span3">
+                    <div class="well talk-photo">
+                        {% if talk.photo %}
+                            <img src="{{STATIC_URL}}img/photo/{{ talk.photo}}"></img>
+                        {% else %}
+                            <i class="icon-camera profile-placeholder"></i>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
 
-            <h3>Location</h3>
-            <div class="location">
-                <h4>{{ talk.location.name }}</h4>
-                <p>{{talk.location.address}}</p>
-                <p>{{talk.location.city}}, {{ talk.location.state }} {{ talk.location.zip_code }}</p>
+            <div class="row">
+                <div class="span3">
+                    <h3>Speakers</h3>
+                    <ul class="speakers">
+                        {% for speaker in talk.speakers.all %}
+                            <li>
+                                <div class="speaker well">
+                                    {% if speaker.photo %}
+                                        <img src="{{STATIC_URL}}img/photo/{{ speaker.photo}}"></img>
+                                    {% else %}
+                                        <i class="icon-camera profile-placeholder"></i>
+                                    {% endif %}
+
+                                    <div class="about">
+                                        <h4>
+                                            <a href="/speaker/{{speaker.user.username}}">
+                                            {{ speaker.user.get_full_name }}
+                                            </a>
+                                        </h4>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span3">
+                    <div class="tags">
+                        <h3>Tags</h3>
+                        <ul>
+                            {% for tag in talk.tags.all %}
+                            <li>{{ tag.name }}</li>
+                            {% endfor %}
+                        </ul>
+
+                        <form action="/talk/{{talk.id}}/tag/new" method="POST">
+                            <input type="text" placeholder="My Tag"/>
+                            <input class="btn btn-warning" type="submit" value="Tag this talk" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span3">
+                    <h3>Location</h3>
+                    <div class="location">
+                        <h4>{{ talk.location.name }}</h4>
+                        <p>{{talk.location.address}}</p>
+                        <p>{{talk.location.city}}, {{ talk.location.state }} {{ talk.location.zip_code }}</p>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="span9">
-            <div class="navbar pull-right">
+            <div class="navbar pull-right" style="margin-top:10px">
                 {% if user.get_profile in talk.speakers.all %}
                 <div class="btn-group">
                     <a class="btn btn-warning" href="/talk/{{talk.id}}/edit">Edit</a>
@@ -58,11 +82,11 @@
                 </div>
                 {% endif %}
             </div>
+
+            <h2 class="pull-left" style="width:560px;">{{ talk.name }}</h2>
             <div class="clearfix"></div>
 
-            <h2>{{ talk.name }}</h2>
             <p>{{ talk.date }}</p>
-
 
             <h3>Abstract</h3>
             <p>{{ talk.abstract }}</p>
@@ -82,6 +106,7 @@
                 <h3>Comments</h3>
 
                 <form class="add-comment-form" action="#" method="POST">
+                    {% csrf_token %}
                     <textarea placeholder="Add your comment..."></textarea><br />
                     <input class="btn btn-warning" type="submit" value="Submit Comment" />
                 </form>
