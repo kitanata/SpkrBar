@@ -1,7 +1,7 @@
 {% extends 'talk_base.html' %}
 
 {% block 'head' %}
-    {{ form.media }}
+    {{ talk_form.media }}
 {% endblock %}
 
 {% block 'content' %}
@@ -22,44 +22,33 @@
                                 <h2>What are you talking about?</h2>
                                 <hr />
                             </div>
-
-                            {% for error in talk_form.errors %}
-                                <div class="alert">
-                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                    <strong>Warning!</strong> {{ error }}
-                                </div>
-                            {% endfor %}
-
-                            <div class="span2">
-                                <label for="id_name">Talk Title:</label>
-                            </div>
-                            <div class="span4">
-                                {{ talk_form.name }}
-                            </div>
-
-                            <div class="span2">
-                                <label for="id_abstract">Abstract:</label>
-                            </div>
-                            <div class="span4">
-                                {{ talk_form.abstract }}
-                            </div>
-
-                            <div class="span2">
-                                <label for="id_date">Date and Time:</label>
-                            </div>
-                            <div class="span4">
-                                {{ talk_form.date }}
-                            </div>
-
-                            <div class="span2">
-                                <label for="id_location">Location:</label>
-                            </div>
-                            <div class="span4">
-                                {{ talk_form.location }}
-                            </div>
                         </div>
 
-                        <input class="btn btn-warning" type="submit" value="Submit your talk"/>
+                        {% for field in talk_form %}
+                            {% if field.errors %}
+                                <div class="alert">
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <strong>Warning!</strong> {{ field.label }} {{ field.errors }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% for field in talk_form %}
+                            <div class="row">
+                                <div class="span1">
+                                    <label>{{field.label}}:</label>
+                                </div>
+                                <div class="span5">
+                                    {{ field }}
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        <div class="row">
+                            <div class="span6">
+                                <input class="btn btn-warning" type="submit" value="Save Talk"/>
+                            </div>
+                        </div>
                     </form>
                 </div>
 
@@ -71,44 +60,33 @@
                                 <h2>Where are you talking at?</h2>
                                 <hr />
                             </div>
-
-                            <div class="span2">
-                                <label for="id_location_name">Name:</label>
-                            </div>
-                            <div class="span4">
-                                {{ location_form.name }}
-                            </div>
-
-                            <div class="span2">
-                                <label for="id_location_address">Address:</label>
-                            </div>
-                            <div class="span4">
-                                {{ location_form.address }}
-                            </div>
-
-                            <div class="span2">
-                                <label for="id_city">City:</label>
-                            </div>
-                            <div class="span4">
-                                {{ location_form.city }}
-                            </div>
-
-                            <div class="span2">
-                                <label for="id_state">State:</label>
-                            </div>
-                            <div class="span4">
-                                {{ location_form.state }}
-                            </div>
-
-                            <div class="span2">
-                                <label for="id_state">Zip Code:</label>
-                            </div>
-                            <div class="span4">
-                                {{ location_form.zip_code }}
-                            </div>
                         </div>
 
-                        <input class="btn btn-warning" type="submit" value="Add Location"/>
+                        {% for field in location_form %}
+                            {% if field.errors %}
+                                <div class="alert">
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <strong>Warning!</strong> {{ field.label }} {{ field.errors }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% for field in location_form %}
+                            <div class="row">
+                                <div class="span1">
+                                    <label>{{field.label}}:</label>
+                                </div>
+                                <div class="span5">
+                                    {{ field }}
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        <div class="row">
+                            <div class="span6">
+                                <input class="btn btn-warning" type="submit" value="Add Location"/>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
