@@ -10,12 +10,12 @@ class TalkTag(models.Model):
 
 class Talk(models.Model):
     speakers = models.ManyToManyField(UserProfile)
-    name = models.CharField(max_length=40)
+    name = models.CharField(max_length=140)
     abstract = models.CharField(max_length=800)
     location = models.ForeignKey(Location)
     date = models.DateTimeField(default=datetime.now())
 
-    photo = models.ImageField(upload_to="photo")
+    photo = models.ImageField(upload_to="photo", blank=True)
     tags = models.ManyToManyField(TalkTag)
 
     def __str__(self):

@@ -67,15 +67,15 @@ def talk_edit(request, talk_id):
     talk = get_object_or_404(Talk, pk=talk_id)
 
     if request.method == 'POST': # If the form has been submitted...
-        talk_form = TalkForm(request.POST)
+        talk_form = TalkForm(request.POST, instance=talk)
         if talk_form.is_valid():
             talk = talk_form.save()
-            talk.save()
 
             return redirect('/talk/' + str(talk.id))
     else:
         talk_form = TalkForm(instance=talk)
-        location_form = LocationForm()
+
+    location_form = LocationForm()
 
     return render_to_response('talk_edit.html', {
         'talk_form': talk_form,
