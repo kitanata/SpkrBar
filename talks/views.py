@@ -4,10 +4,11 @@ from itertools import groupby
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.views.generic import ListView
 from django.template import RequestContext
+from django.core.exceptions import ObjectDoesNotExist
 
 from core.models import Location
 from core.forms import LocationForm
-from .models import Talk
+from .models import Talk, TalkTag
 from .forms import TalkForm
 
 def talk_list(request):
@@ -99,3 +100,20 @@ def location_new(request):
             location.save()
 
     return redirect('/talk/new')
+
+
+def talk_tag_new(request, talk_id):
+    talk = get_object_or_404(Talk, pk=talk_id)
+
+    if request.method == "POST":
+        tag = request.POST['tag']
+
+        try:
+            tag_obj = TalkTag.objects.get(name=tag)
+        except ObjectDoesNotExist as e:
+            tag_obj = TalkTag(name=tag)
+            tag_obj.save()
+
+        talk.tags.add(tag_obj)
+
+    return redirect('/talk/' + talk_id)

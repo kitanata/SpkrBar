@@ -53,8 +53,9 @@
                             {% endfor %}
                         </ul>
 
-                        <form action="/talk/{{talk.id}}/tag/new" method="POST">
-                            <input type="text" placeholder="My Tag"/>
+                        <form action="/talk/{{talk.id}}/tag/new/" method="POST">
+                            {% csrf_token %}
+                            <input name="tag" type="text" placeholder="My Tag"/>
                             <input class="btn btn-warning" type="submit" value="Tag this talk" />
                         </form>
                     </div>
