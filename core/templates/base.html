@@ -70,9 +70,11 @@
                                 <li><a href="/talk/new">Add Talk</a></li>
                             </ul>
                         </li>
-
-                        <li><a href="/speakers">Speakers</a></li>
+                    {% else %}
+                        <li><a href="/">Talks</a></li>
                     {% endif %}
+
+                    <li><a href="/speakers">Speakers</a></li>
 
                     {% if user.is_superuser %}
                         <li><a href="/admin">Admin</a></li>

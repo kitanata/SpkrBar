@@ -8,7 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from core.models import Location
 from core.forms import LocationForm
-from .models import Talk, TalkTag
+from .models import Talk, TalkTag, TalkComment
 from .forms import TalkForm
 
 def talk_list(request):
@@ -115,5 +115,20 @@ def talk_tag_new(request, talk_id):
             tag_obj.save()
 
         talk.tags.add(tag_obj)
+
+    return redirect('/talk/' + talk_id)
+
+
+def talk_comment_new(request, talk_id):
+    talk = get_object_or_404(Talk, pk=talk_id)
+
+    if request.method == "POST":
+        if request.user.get_profile() not in talk.speakers.all():
+            comment = TalkComment(
+                    talk=talk,
+                    reviewer=request.user.get_profile(),
+                    comment = request.POST['comment'])
+
+            comment.save()
 
     return redirect('/talk/' + talk_id)

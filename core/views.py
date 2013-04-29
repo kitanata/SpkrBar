@@ -60,6 +60,17 @@ def load_fixtures(request):
 
     location_zips = ['43204', '90210', '86753', '32526', '32536']
 
+    user_first_names = ['Kenneth', 'Bill', 'John', 'Mike', 'Susan', 'Junell',
+            'Dharma', 'Shaniquha', 'Damien', 'Dominic', 'Tyler', 'Edward',
+            'Jameson', 'Jim', 'Ron', 'Dharani', 'Priya', 'Venkat']
+
+    user_last_names = ["O'Neil", 'Brown', 'Smith', 'Jackson', 'Ramachandra',
+            'Rajeshwer', 'Howard', 'Wooten', 'Berry', 'Frauenfelder',
+            'Bender', 'Fry', 'Hogue']
+
+    user_description = "Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro. De carne lumbering animata corpora quaeritis. Summus brains sit morbo vel maleficia? De apocalypsi gorger omero undead survivor dictum mauris. Hi mindless mortuis soulless creaturas, imo evil stalking monstra adventus resi dentevil vultus comedat cerebella viventium. Qui animated corpse, cricket bat max brucks terribilem incessu zomby. The voodoo sacerdos flesh eater, suscitat mortuos comedere carnem virus."
+    talk_description = user_description
+
     user = User.objects.get(username='raymond')
     user.first_name = "Raymond"
     user.last_name = "Chandler III"
@@ -72,6 +83,7 @@ def load_fixtures(request):
 
     for i in range(0, 200):
 
+        #Every 10 make a new location and user/speaker
         if i % 10 == 0:
             location = Location()
             location.name = random.choice(location_names)
@@ -80,6 +92,18 @@ def load_fixtures(request):
             location.state = random.choice(location_states)
             location.zip_code = random.choice(location_zips)
             location.save()
+
+            first_name = random.choice(user_first_names)
+            last_name = random.choice(user_last_names)
+            un = "test" + str(i / 10)
+            new_user = User.objects.create_user(un, 'test@spkrbar.com', 'abcd1234')
+            new_user.first_name = first_name
+            new_user.last_name = last_name
+            new_user.save()
+
+            speaker = new_user.get_profile()
+            speaker.about_me = user_description
+            speaker.save()
 
         talk = Talk()
 
@@ -90,7 +114,7 @@ def load_fixtures(request):
         minute = random.choice([0, 15, 30, 45])
 
         talk.name = random.choice(verbs) + " " + random.choice(things) + ": " + random.choice(long_actions)
-        talk.abstract = "A short description of this talk should go here"
+        talk.abstract = talk_description
         talk.date = datetime(year, month, day, hour, minute)
         talk.location = location
         talk.photo = str(random.choice(range(1, 21))) + ".jpeg"
@@ -122,7 +146,7 @@ def profile_edit(request):
             profile.about_me = form.cleaned_data['about_me']
             profile.save()
 
-            return redirect('/speaker/' + request.user.username)
+            return redirect('/profile/edit/')
 
     else:
         return profile_form_view(request)
@@ -147,7 +171,7 @@ def profile_edit_photo(request):
 
             profile.save()
 
-            return redirect('/speaker/' + request.user.username)
+            return redirect('/profile/edit/')
     return profile_form_view(request)
 
 
@@ -223,7 +247,7 @@ def speaker_detail(request, username):
     speaker = get_object_or_404(User, username=username).get_profile()
     talks = Talk.objects.filter(speakers__in=[speaker])
 
-    upcoming = talks.filter(date__gt=datetime.now()).order_by('date')[:10]
+    upcoming = talks.filter(date__gt=datetime.now()).order_by('date')[:5]
     upcoming = talks_from_queryset(upcoming)
 
     past = talks.filter(date__lt=datetime.now()).order_by('-date')[:20]

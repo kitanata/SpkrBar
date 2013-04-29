@@ -16,6 +16,7 @@ urlpatterns = patterns('',
     url(r'^talk/(?P<talk_id>\d+)/delete/$', 'talks.views.talk_delete'),
 
     url(r'^talk/(?P<talk_id>\d+)/tag/new/$', 'talks.views.talk_tag_new'),
+    url(r'^talk/(?P<talk_id>\d+)/comment/new/$', 'talks.views.talk_comment_new'),
 
     url(r'^location/new/$', 'talks.views.location_new'),
 

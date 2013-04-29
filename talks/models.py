@@ -23,11 +23,17 @@ class Talk(models.Model):
 
 
 
-class TalkReview(models.Model):
+class TalkComment(models.Model):
     talk = models.ForeignKey(Talk)
     reviewer = models.ForeignKey(UserProfile, null=True)
-    rating = models.IntegerField(default=3)
-    comments = models.CharField(max_length=140)
+    comment = models.CharField(max_length=140)
+    datetime = models.DateTimeField(default=datetime.now())
+
+
+
+class TalkEndorsement(models.Model):
+    talk = models.ForeignKey(Talk)
+    endorser = models.ForeignKey(UserProfile)
 
 
 
