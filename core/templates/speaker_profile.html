@@ -42,32 +42,32 @@
 
         <div class="row">
             <div class="span3">
-                <div class="row">
-                    <div class="span3">
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="span3">
-                        <h2>Known for</h2>
-                        <ul class="expert-area">
-                            {% for tag in speaker.tags.all %}
-                            <li class="label label-info">{{tag}}</li>
+                {% if speaker.tags.all %}
+                    <div class="row">
+                        <div class="span3">
+                            <h2>Known for</h2>
+                            <ul class="expert-area">
+                                {% for tag in speaker.tags.all %}
+                                <li class="label label-info">{{tag}}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if speaker.userlink_set.all %}
+                    <div class="row">
+                        <div class="span3" style="margin-top:40px">
+                            <h2>Links</h2>
+                            {% for link in speaker.userlink_set.all %}
+                                <p>
+                                    <a href="{{link.url_target}}" target="_blank">My {{ link.type_name|title }} Account</a>
+                                </p>
                             {% endfor %}
-                        </ul>
+                        </div>
                     </div>
-                </div>
-
-                <div class="row">
-                    <div class="span3" style="margin-top:40px">
-                        <h2>Links</h2>
-                        {% for link in speaker.userlink_set.all %}
-                            <p>
-                                <a href="{{link.url_target}}" target="_blank">My {{ link.type_name|title }} Account</a>
-                            </p>
-                        {% endfor %}
-                    </div>
-                </div>
+                {% endif %}
 
                 {% if speaker.followers.all %}
                 <div class="row">
