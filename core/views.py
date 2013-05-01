@@ -187,7 +187,6 @@ def profile_link_new(request):
             link_model = UserLink()
 
             link_model.type_name = form.cleaned_data['type']
-            link_model.link_name = form.cleaned_data['name']
             link_model.url_target = form.cleaned_data['url']
             link_model.profile = profile
 

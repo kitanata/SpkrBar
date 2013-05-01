@@ -19,11 +19,13 @@ class ProfilePhotoForm(forms.Form):
 
 class ProfileLinkForm(forms.Form):
     type = forms.ChoiceField(UserLink.LINK_TYPE_CHOICES)
-    name = forms.CharField(max_length=200)
-    url = forms.URLField(max_length=140)
+    url = forms.URLField(max_length=140, 
+            widget=forms.TextInput(attrs={'placeholder': 'http://'}))
+    
 
 class ProfileTagForm(forms.Form):
-    name = forms.CharField(max_length=140)
+    name = forms.CharField(max_length=140,
+            widget=forms.TextInput(attrs={'placeholder': 'What are you known for?'}))
 
 class LocationForm(forms.ModelForm):
     class Meta:

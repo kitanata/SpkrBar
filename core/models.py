@@ -55,7 +55,6 @@ class UserLink(models.Model):
     )
 
     type_name = models.CharField(max_length=40, choices=LINK_TYPE_CHOICES, default=TWITTER)
-    link_name = models.CharField(max_length=200)
     url_target = models.URLField(max_length=140)
 
     profile = models.ForeignKey(UserProfile)

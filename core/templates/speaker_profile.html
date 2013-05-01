@@ -19,13 +19,7 @@
                         <h2>{{ speaker.user.get_full_name }}</h2>
                     </div>
                     <div class="span3">
-                        <div style="margin-top: 10px">
-                            <i class="icon-star icon-3x", style="color:gold"></i>
-                            <i class="icon-star icon-3x", style="color:gold"></i>
-                            <i class="icon-star icon-3x", style="color:gold"></i>
-                            <i class="icon-star icon-3x", style="color:gold"></i>
-                            <i class="icon-star icon-3x", style="color:gray"></i>
-                        </div>
+
                     </div>
                 </div>
                 <hr />
@@ -45,7 +39,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="span3" style="margin-top:40px">
+                    <div class="span3">
                         <h2>Known for</h2>
                         <ul class="expert-area">
                             {% for tag in speaker.tags.all %}
@@ -60,59 +54,70 @@
                         <h2>Links</h2>
                         {% for link in speaker.userlink_set.all %}
                             <p>
-                                {{ link.type_name|title }}: <a href="{{link.url_target}}">{{ link.link_name }}</a>
+                                <a href="{{link.url_target}}" target="_blank">My {{ link.type_name|title }} Account</a>
                             </p>
                         {% endfor %}
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="span3" style="margin-top: 40px">
-                        <h2>Past Talks</h2>
-                        <ul class="past-talks">
-                            {% for talk in past %}
-                                <h3>{{ talk.date }}</h3>
-                                {% for talk in talk.talks %}
-                                    <li><a href="/talk/{{talk.id}}">{{ talk.name|truncatechars:30 }}</a></li>
+                {% if past %}
+                    <div class="row">
+                        <div class="span3" style="margin-top: 40px">
+                            <h2>Past Talks</h2>
+                            <ul class="past-talks">
+                                {% for talk in past %}
+                                    <h3>{{ talk.date }}</h3>
+                                    {% for talk in talk.talks %}
+                                        <li><a href="/talk/{{talk.id}}">{{ talk.name|truncatechars:30 }}</a></li>
+                                    {% endfor %}
                                 {% endfor %}
-                            {% endfor %}
-                        </ul>
+                            </ul>
+                        </div>
                     </div>
-                </div>
+                {% endif %}
             </div>
 
             <div class="span9">
-                <h2>Upcoming Talks</h2>
-                <hr />
+                {% if upcoming %}
+                    <h2>Upcoming Talks</h2>
+                    <hr />
 
-                <div class="row">
-                    {% for talks in upcoming %}
-                        <div class="span9" style="margin-bottom:10px">
-                            <h3>{{ talks.date }}</h3>
+                    <div class="row">
+                        {% for talks in upcoming %}
+                            <div class="span9" style="margin-bottom:10px">
+                                <h3>{{ talks.date }}</h3>
 
-                            <div class="row">
-                                {% for talk in talks.talks %}
-                                    <div class="span9">
-                                        <div class="well">
-                                            <h4><a href="/talk/{{talk.id}}">{{ talk.name|truncatechars:70 }}</a></h4>
-                                            <h5>{{ talk.date }}</h5>
-                                            <div style="clear:both"></div>
-                                            <hr />
-                                            <p>{{ talk.abstract }}</h3>
+                                <div class="row">
+                                    {% for talk in talks.talks %}
+                                        <div class="span9">
+                                            <div class="well">
+                                                <h4><a href="/talk/{{talk.id}}">{{ talk.name|truncatechars:70 }}</a></h4>
+                                                <h5>{{ talk.date }}</h5>
+                                                <div style="clear:both"></div>
+                                                <hr />
+                                                <p>{{ talk.abstract }}</h3>
 
-                                            {% if speaker in talk.speakers.all %}
-                                            <div class="btn-group">
-                                                <a class="btn btn-warning" href="/talk/{{talk.id}}/edit">Edit</a>
-                                                <a class="btn btn-warning delete-talk" data-name="{{talk.name}}" data-id="{{talk.id}}" href="#delete-talk-popup">Delete</a>
+                                                {% if speaker in talk.speakers.all %}
+                                                <div class="btn-group">
+                                                    <a class="btn btn-warning" href="/talk/{{talk.id}}/edit">Edit</a>
+                                                    <a class="btn btn-warning delete-talk" data-name="{{talk.name}}" data-id="{{talk.id}}" href="#delete-talk-popup">Delete</a>
+                                                </div>
+                                                {% endif %}
                                             </div>
-                                            {% endif %}
                                         </div>
-                                    </div>
-                                {% endfor %}
+                                    {% endfor %}
+                                </div>
                             </div>
-                        </div>
-                    {% endfor %}
-                </div>
+                        {% endfor %}
+                    </div>
+                {% elif speaker == user.get_profile %}
+                    <h4>
+                        You don't have any upcoming talks. Would you like to 
+                        <a class="btn btn-warning" href="/talk/new">add one now?</a>
+                    </h4>
+                {% else %}
+                    <h2>No upcoming talks.</h2>
+                {% endif %}
             </div>
         </div>
     </div>

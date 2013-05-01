@@ -43,7 +43,7 @@
 }
 
 .profile-form {
-    min-height: 400px;
+    min-height: 240px;
 }
 
 .profile-photo-form {
@@ -90,7 +90,7 @@
 
 .profile-link-form {
     position: relative;
-    min-height: 300px;
+    min-height: 200px;
 
     select {
         width: 100%;
@@ -101,6 +101,7 @@
     }
 
     input[type=submit] {
+        width: 120px;
         margin-top: 40px;
         position: absolute;
         bottom: 0px;
@@ -110,14 +111,19 @@
 
 .profile-tag-form {
     position: relative;
-    margin-top: 40px;
-    min-height: 300px;
+    min-height: 100px;
+    margin-top: 20px;
 
-    #id_name {
-        width: 688px;
+    select {
+        width: 100%;
+    }
+
+    input {
+        width: 200px;
     }
 
     input[type=submit] {
+        width: 120px;
         margin-top: 40px;
         position: absolute;
         bottom: 0px;
@@ -133,4 +139,8 @@
         border-left: 1px solid lighten(gray, 20%);
         padding-left: 10px;
     }
+}
+
+.edit-tags {
+    height: 100px;
 }

@@ -73,34 +73,36 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="span12" style="margin-top: 40px">
-                <h2>Past Talks</h2>
-                <hr />
+        {% if past %}
+            <div class="row">
+                <div class="span12" style="margin-top: 40px">
+                    <h2>Past Talks</h2>
+                    <hr />
 
-                <div class="row">
-                    {% for talks in past %}
-                        <div class="span12" style="margin-bottom:10px">
-                            <h3>{{ talks.date }}</h3>
+                    <div class="row">
+                        {% for talks in past %}
+                            <div class="span12" style="margin-bottom:10px">
+                                <h3>{{ talks.date }}</h3>
 
-                            <div class="row">
-                                {% for talk in talks.talks %}
-                                    <div class="span4">
-                                        <div class="well">
-                                            <h4><a href="/talk/{{talk.id}}">{{ talk.name|truncatechars:70 }}</a></h4>
-                                            <h5>{{ talk.date }}</h5>
-                                            <div style="clear:both"></div>
-                                            <hr />
-                                            <p>{{ talk.abstract }}</h3>
+                                <div class="row">
+                                    {% for talk in talks.talks %}
+                                        <div class="span4">
+                                            <div class="well">
+                                                <h4><a href="/talk/{{talk.id}}">{{ talk.name|truncatechars:70 }}</a></h4>
+                                                <h5>{{ talk.date }}</h5>
+                                                <div style="clear:both"></div>
+                                                <hr />
+                                                <p>{{ talk.abstract }}</h3>
+                                            </div>
                                         </div>
-                                    </div>
-                                {% endfor %}
+                                    {% endfor %}
+                                </div>
                             </div>
-                        </div>
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
-        </div>
+        {% endif %}
 
     </div>
 

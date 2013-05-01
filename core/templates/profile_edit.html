@@ -10,9 +10,6 @@
     <div id="profile">
         <div class="row">
             <div class="span3">
-                <h2>Profile Photo</h2>
-                <hr />
-
                 <div class="row">
                     <div class="span3">
                         <div class="well picture">
@@ -80,6 +77,34 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="span3">
+                <h2>Known For?</h2>
+                <hr />
+                <div class="row">
+                    <div class="span3">
+                        <ul class="expert-area">
+                            {% for tag in speaker.tags.all %}
+                                <li class="label label-info">{{tag|title}}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="edit-tags">
+                        <div class="span3">
+                            <form action="/profile/edit/tag/new/" method="POST" class="profile-tag-form">
+                                {% csrf_token %}
+                                {{ tag_form.name }}
+
+                                <input class="btn btn-warning" type="submit" value="Add New Tag" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="row">
             <div class="span3">
@@ -90,7 +115,7 @@
                         <div class="link-list">
                             {% for link in speaker.userlink_set.all %}
                                 <p>
-                                    {{ link.type_name|title }}: <a href="{{link.url_target}}">{{ link.link_name }}</a>
+                                    <a href="{{link.url_target}}">My {{ link.type_name|title }} Account</a>
                                 </p>
                             {% endfor %}
                         </div>
@@ -106,36 +131,14 @@
                                 <label for="id_type">Link Type:</label>
                                 {{ link_form.type }}
 
-                                <label for="id_name">Name:</label>
-                                {{ link_form.name }}
-
                                 <label for="id_url">Url:</label>
                                 {{ link_form.url }}
 
-                                <div>
-                                    <input class="btn btn-warning" type="submit" value="Add New Link"></input>
-                                </div>
+                                <input class="btn btn-warning" type="submit" value="Add New Link"></input>
                             </form>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="span9">
-                <h2>What are you known for?</h2>
-                <hr />
-
-                {% for tag in speaker.tags.all %}
-                    <div class="label label-info">{{tag|title}}</div>
-                {% endfor %}
-
-                <form action="/profile/edit/tag/new/" method="POST" class="profile-tag-form">
-                    {% csrf_token %}
-                    {{ tag_form.name }}
-
-                    <div></div>
-                    <input class="btn btn-warning" type="submit" value="Add New Tag" />
-                </form>
             </div>
         </div>
     </div>
