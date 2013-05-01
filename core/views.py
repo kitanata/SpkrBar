@@ -257,21 +257,6 @@ def speaker_detail(request, username):
             context_instance=RequestContext(request))
 
 
-def speaker_talks(request, username):
-    speaker = get_object_or_404(User, username=username).get_profile()
-    talks = Talk.objects.filter(speakers__in=[speaker])
-
-    upcoming = talks.filter(date__gt=datetime.now()).order_by('date')
-    upcoming = talks_from_queryset(upcoming)
-
-    past = talks.filter(date__lt=datetime.now()).order_by('-date')
-    past = talks_from_queryset(past, reverse=True)
-
-    return render_to_response('speaker_talks.html',
-            {'speaker': speaker, 'upcoming': upcoming, 'past': past},
-            context_instance=RequestContext(request))
-
-
 def speaker_follow(request, username):
     speaker = get_object_or_404(User, username=username).get_profile()
     user_profile = request.user.get_profile()
