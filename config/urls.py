@@ -23,6 +23,7 @@ urlpatterns = patterns('',
     url(r'^speakers/$', SpeakerList.as_view()),
     url(r'^speaker/(?P<username>\w+)/$', 'core.views.speaker_detail'),
     url(r'^speaker/(?P<username>\w+)/talks/$', 'core.views.speaker_talks'),
+    url(r'^speaker/(?P<username>\w+)/follow/$', 'core.views.speaker_follow'),
 
     url(r'^profile/edit/$', 'core.views.profile_edit'),
     url(r'^profile/edit/photo/$', 'core.views.profile_edit_photo'),

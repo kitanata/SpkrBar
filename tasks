@@ -1,8 +1,3 @@
-1. Follower Mechanics
-- As a speaker I should be able to follow another speaker
-- As a speaker speakers that I follow should show on my profile page
-- As a speaker speakers that follow me should show on my profile page
-
 2. Endorsements
 - As an attendee or other speaker I should be able to "endorse or like" a talk.
 - As an attendee or speaker talks that I like should show on my profile page.
@@ -12,11 +7,18 @@
 - As a speaker I should be able to hide my profile or show my profile.
 - As a speaker I should be able to clone a talk for another occassion.
 
-4. Location Improvements
+4. Notifications
+- As a speaker when someone follows me.
+- As a speaker when someone comments on one of my talks.
+- As a speaker when someone tags one of my talks.
+- As a speaker when someone endorses one of my talks.
+- As a speaker when someone I am following publishes a new talk.
+
+5. Location Improvements
 - When adding a talk the location selector should be a search typeahead control
 - Locations should be geo encoded
 
-5. Advanced Ratings
+6. Advanced Ratings
 - As an attendee I should be able to rate a speaker on 5 qualities.
    - Engagement - Did the speaker keep attendees at the talk engaged and interested in the topic being presented?
    - Knowledge - Did the speaker seem extremely knowledgable on the subject?
@@ -25,7 +27,7 @@
    - Discussion - Did the speaker encourage further discussion on the topic and answer questions appropriately?
 - As a speaker I should be able to enable or disable this on my talks.
 
-6. Mobile App
+7. Mobile App
 - As an attendee I should be able to endorse talks on my mobile phone.
 - As an attendee I should be able to search for talks by name on my mobile phone.
 - As an attendee I should be able to comment on a talk on my mobile phone.

@@ -29,9 +29,12 @@
                         </div>
 
                         <div class="follow">
-                            <a href="/follow/{{speaker.pk}}">Follow This Speaker</a>
+                        {% if speaker not in user.get_profile.following.all %}
+                            <a href="/speaker/{{speaker.user.username}}/follow?last=/speakers">Follow This Speaker</a>
+                        {% else %}
+                            <div class="label label-warning">Following this speaker</div>
+                        {% endif %}
                         </div>
-
                     </div>
                 </div>
             </div>

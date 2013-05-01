@@ -15,11 +15,21 @@
 
             <div class="span9">
                 <div class="row">
-                    <div class="span5">
+                    <div class="span6">
                         <h2>{{ speaker.user.get_full_name }}</h2>
                     </div>
                     <div class="span3">
-
+                        <div class="edit-buttons btn-group">
+                            {% if speaker == user.get_profile %}
+                                <a class="btn btn-warning" href="/profile/edit">Edit Profile</a>
+                                <a class="btn btn-warning" href="/speaker/{{ user.username}}/talks">My Talks</a>
+                                <a class="btn btn-warning" href="/talk/new">Add Talk</a>
+                            {% elif speaker not in user.get_profile.following.all %}
+                                <a class="btn btn-warning" href="/speaker/{{speaker.user.username}}/follow?last=/speaker/{{speaker.user.username}}">Follow Me</a>
+                            {% else %}
+                                <div class="label label-warning">Following</div>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
                 <hr />
@@ -60,6 +70,36 @@
                     </div>
                 </div>
 
+                {% if speaker.followers.all %}
+                <div class="row">
+                    <div class="span3" style="margin-top:40px">
+                        <h2>Followers</h2>
+                        {% for profile in speaker.followers.all %}
+                            <p>
+                                <a href="/speaker/{{profile.user.username}}">
+                                    {{ profile.user.get_full_name }}
+                                </a>
+                            </p>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if speaker.following.all %}
+                <div class="row">
+                    <div class="span3" style="margin-top:40px">
+                        <h2>Following</h2>
+                        {% for profile in speaker.following.all %}
+                            <p>
+                                <a href="/speaker/{{profile.user.username}}">
+                                    {{ profile.user.get_full_name }}
+                                </a>
+                            </p>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
                 {% if past %}
                     <div class="row">
                         <div class="span3" style="margin-top: 40px">
@@ -87,26 +127,41 @@
                             <div class="span9" style="margin-bottom:10px">
                                 <h3>{{ talks.date }}</h3>
 
-                                <div class="row">
-                                    {% for talk in talks.talks %}
+                                {% for talk in talks.talks %}
+                                    <div class="row">
                                         <div class="span9">
-                                            <div class="well">
-                                                <h4><a href="/talk/{{talk.id}}">{{ talk.name|truncatechars:70 }}</a></h4>
-                                                <h5>{{ talk.date }}</h5>
-                                                <div style="clear:both"></div>
-                                                <hr />
-                                                <p>{{ talk.abstract }}</h3>
-
-                                                {% if speaker in talk.speakers.all %}
-                                                <div class="btn-group">
-                                                    <a class="btn btn-warning" href="/talk/{{talk.id}}/edit">Edit</a>
-                                                    <a class="btn btn-warning delete-talk" data-name="{{talk.name}}" data-id="{{talk.id}}" href="#delete-talk-popup">Delete</a>
+                                            <div class="well talk">
+                                                <div class="header">
+                                                    <div class="title">
+                                                        <h4><a href="/talk/{{talk.id}}">{{ talk.name|truncatechars:70 }}</a></h4>
+                                                        <h5>{{ talk.date }}</h5>
+                                                    </div>
+                                                    <div class="buttons">
+                                                        {% if user.get_profile in talk.speakers.all %}
+                                                            <div class="btn-group">
+                                                                <a class="btn btn-warning" href="/talk/{{talk.id}}/edit">Edit</a>
+                                                                <a class="btn btn-warning delete-talk" data-name="{{talk.name}}" data-id="{{talk.id}}" href="#delete-talk-popup">Delete</a>
+                                                            </div>
+                                                        {% endif %}
+                                                    </div>
+                                                    <hr />
                                                 </div>
-                                                {% endif %}
+
+                                                <div class="picture">
+                                                    {% if talk.photo %}
+                                                    <img class="pull-left" src="{{STATIC_URL}}img/photo/{{talk.photo}}">
+                                                    {% else %}
+                                                    <i class="icon-camera profile-placeholder pull-left"></i>
+                                                    {% endif %}
+                                                </div>
+
+                                                <div class="description">
+                                                    <p>{{ talk.abstract }}</h3>
+                                                </div>
                                             </div>
                                         </div>
-                                    {% endfor %}
-                                </div>
+                                    </div>
+                                {% endfor %}
                             </div>
                         {% endfor %}
                     </div>
