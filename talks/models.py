@@ -22,6 +22,11 @@ class Talk(models.Model):
         return self.name
 
 
+class TalkEvent(models.Model):
+    talk = models.ForeginKey(Talk)
+    location = models.ForeginKey(Location)
+    date = models.DateTimeField(default=datetime.now())
+
 
 class TalkComment(models.Model):
     talk = models.ForeignKey(Talk)

@@ -1,11 +1,21 @@
-2. Endorsements
+1. Endorsements
 - As an attendee or other speaker I should be able to "endorse or like" a talk.
 - As an attendee or speaker talks that I like should show on my profile page.
 
-3. Publishing
+2. Publishing
 - As a speaker I should be able to hide talks and show talks.
 - As a speaker I should be able to hide my profile or show my profile.
-- As a speaker I should be able to clone a talk for another occassion.
+- Talks should be able to have new events attached to them. I may have given
+the same talk several times and so I simply would like to add a new "Event" which
+pairs the talk, the location, and the date and time. People comment on the talk
+across events, not on the single event.
+- The talk onboarding process should be:
+    1. Describe the talk
+    2. Pick a location and time for the talk (Possibly create a new location)
+    4. Return to profile
+
+3. Attendees
+- As a user I should be able to show that I have attended a talk.
 
 4. Notifications
 - As a speaker when someone follows me.
@@ -13,10 +23,14 @@
 - As a speaker when someone tags one of my talks.
 - As a speaker when someone endorses one of my talks.
 - As a speaker when someone I am following publishes a new talk.
+- As a speaker when someone confirmed themselves as attending one of my talks.
 
 5. Location Improvements
 - When adding a talk the location selector should be a search typeahead control
 - Locations should be geo encoded
+- Locations for a talk should be a second step to the talk integration.
+- When creating a talk I should be able to search for a location or
+-    add a new one to the talk.
 
 6. Advanced Ratings
 - As an attendee I should be able to rate a speaker on 5 qualities.
@@ -32,3 +46,7 @@
 - As an attendee I should be able to search for talks by name on my mobile phone.
 - As an attendee I should be able to comment on a talk on my mobile phone.
 - As an attendee I should be able to search for speakers by name on my mobile phone.
+
+8. Social Integrations
+- As an attendee I should be able to use the app by just logging in with my facebook account.
+- As a speaker I should be able to import my data and networks from linked in.
