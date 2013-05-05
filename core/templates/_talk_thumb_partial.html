@@ -1,0 +1,30 @@
+<div class="span3">
+    <div class="talk-thumb">
+        <div class="picture">
+            {% if talk.photo %}
+            <img src="{{STATIC_URL}}img/photo/{{talk.photo}}">
+            {% else %}
+            <i class="icon-camera profile-placeholder"></i>
+            {% endif %}
+        </div>
+
+        <div class="header">
+            <div class="title">
+                <h4><a href="/talk/{{talk.id}}">
+                    {{ talk.name|truncatechars:45 }}
+                    {% if talk.endorsements.count %}
+                        ({{ talk.endorsements.count }} <i class="icon-thumbs-up"></i>)
+                    {% endif %}
+                </a></h4>
+                <h5>{{ talk.date }}</h5>
+            </div>
+            <div class="buttons">
+                {% if user.get_profile in talk.attendees.all and user.get_profile not in talk.endorsements.all %}
+                    <a class="btn btn-warning" href="/talk/{{talk.id}}/endorse">
+                        <i class="icon-thumbs-up"></i> Endorse
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

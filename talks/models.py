@@ -18,13 +18,16 @@ class Talk(models.Model):
     photo = models.ImageField(upload_to="photo", blank=True)
     tags = models.ManyToManyField(TalkTag)
 
+    attendees = models.ManyToManyField(UserProfile, related_name='talks_attending')
+    endorsements = models.ManyToManyField(UserProfile, related_name='talks_endorsed')
+
     def __str__(self):
         return self.name
 
 
 class TalkEvent(models.Model):
-    talk = models.ForeginKey(Talk)
-    location = models.ForeginKey(Location)
+    talk = models.ForeignKey(Talk)
+    location = models.ForeignKey(Location)
     date = models.DateTimeField(default=datetime.now())
 
 
@@ -33,13 +36,6 @@ class TalkComment(models.Model):
     reviewer = models.ForeignKey(UserProfile, null=True)
     comment = models.CharField(max_length=140)
     datetime = models.DateTimeField(default=datetime.now())
-
-
-
-class TalkEndorsement(models.Model):
-    talk = models.ForeignKey(Talk)
-    endorser = models.ForeignKey(UserProfile)
-
 
 
 class TalkVideo(models.Model):

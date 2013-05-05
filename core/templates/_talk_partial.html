@@ -3,16 +3,32 @@
         <div class="well talk">
             <div class="header">
                 <div class="title">
-                    <h4><a href="/talk/{{talk.id}}">{{ talk.name|truncatechars:70 }}</a></h4>
+                    <h4><a href="/talk/{{talk.id}}">
+                        {{ talk.name|truncatechars:70 }}
+                        {% if talk.endorsements.count %}
+                            ({{ talk.endorsements.count }} <i class="icon-thumbs-up"></i>)
+                        {% endif %}
+                    </a></h4>
                     <h5>{{ talk.date }}</h5>
                 </div>
                 <div class="buttons">
-                    {% if user.get_profile in talk.speakers.all %}
-                        <div class="btn-group">
+                    <div class="btn-group">
+                        {% if user.get_profile in talk.speakers.all %}
                             <a class="btn btn-warning" href="/talk/{{talk.id}}/edit">Edit</a>
                             <a class="btn btn-warning delete-talk" data-name="{{talk.name}}" data-id="{{talk.id}}" href="#delete-talk-popup">Delete</a>
-                        </div>
-                    {% endif %}
+                        {% elif not user.is_anonymous %}
+                            {% if user.get_profile in talk.attendees.all and user.get_profile not in talk.endorsements.all %}
+                                <a class="btn btn-warning" href="/talk/{{talk.id}}/endorse">
+                                    <i class="icon-thumbs-up"></i> Endorse
+                                </a>
+                            {% endif %}
+                            {% if user.get_profile not in talk.attendees.all %}
+                                <a class="btn btn-warning" href="/talk/{{talk.id}}/attend">
+                                    <i class="icon-calendar"></i> Attend
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
                 </div>
                 <hr />
             </div>
@@ -21,7 +37,7 @@
                 {% if talk.photo %}
                 <img class="pull-left" src="{{STATIC_URL}}img/photo/{{talk.photo}}">
                 {% else %}
-                <i class="icon-camera profile-placeholder pull-left"></i>
+                <i class="icon-camera profile-placeholder"></i>
                 {% endif %}
             </div>
 

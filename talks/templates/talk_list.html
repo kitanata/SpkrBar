@@ -37,8 +37,10 @@
                                 {% endif %}
                                 <span>
                                     {{ talk.abstract|truncatechars:80 }}
-                                    <i class="icon-globe"></i>
-                                    <div>{{ talk.location.city}}</div>
+                                    <div class="location">
+                                        <i class="icon-globe"></i>
+                                        <div>{{ talk.location.city}}</div>
+                                    </div>
                                 </span>
                             </li>
                         </div>

@@ -68,9 +68,21 @@ def talk_edit(request, talk_id):
     talk = get_object_or_404(Talk, pk=talk_id)
 
     if request.method == 'POST': # If the form has been submitted...
-        talk_form = TalkForm(request.POST, instance=talk)
+        talk_form = TalkForm(request.POST, request.FILES, instance=talk)
+
         if talk_form.is_valid():
             talk = talk_form.save()
+
+            if 'photo' in request.FILES:
+                photo = request.FILES['photo']
+
+                with open('talks/static/img/photo/' + photo.name, 'wb+') as destination:
+                    for chunk in photo.chunks():
+                        destination.write(chunk)
+
+                talk.photo = photo.name
+
+            talk.save()
 
             return redirect('/talk/' + str(talk.id))
     else:
@@ -130,5 +142,22 @@ def talk_comment_new(request, talk_id):
                     comment = request.POST['comment'])
 
             comment.save()
+
+    return redirect('/talk/' + talk_id)
+
+def talk_endorsement_new(request, talk_id):
+    talk = get_object_or_404(Talk, pk=talk_id)
+    
+    talk.endorsements.add(request.user.get_profile())
+    talk.save()
+
+    return redirect('/talk/' + talk_id)
+
+
+def talk_attendee_new(request, talk_id):
+    talk = get_object_or_404(Talk, pk=talk_id)
+
+    talk.attendees.add(request.user.get_profile())
+    talk.save()
 
     return redirect('/talk/' + talk_id)

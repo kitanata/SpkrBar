@@ -75,59 +75,83 @@
         </div>
 
         <div class="span9">
-            <div class="navbar pull-right" style="margin-top:10px">
-                {% if user.get_profile in talk.speakers.all %}
-                <div class="btn-group">
-                    <a class="btn btn-warning" href="/talk/{{talk.id}}/edit">Edit</a>
-                    <a class="btn btn-warning delete-talk" data-name="{{talk.name}}" data-id="{{talk.id}}" href="#delete-talk-popup">Delete</a>
+            <div class="talk-detail">
+                <div class="navbar pull-right" style="margin-top:10px">
+                    <div class="btn-group">
+                        {% if user.get_profile in talk.speakers.all %}
+                            <a class="btn btn-warning" href="/talk/{{talk.id}}/edit">Edit</a>
+                            <a class="btn btn-warning delete-talk" data-name="{{talk.name}}" data-id="{{talk.id}}" href="#delete-talk-popup">Delete</a>
+                        {% elif not user.is_anonymous %}
+                            {% if user.get_profile in talk.attendees.all and user.get_profile not in talk.endorsements.all %}
+                                <a class="btn btn-warning" href="/talk/{{talk.id}}/endorse">
+                                    <i class="icon-thumbs-up"></i> Endorse
+                                </a>
+                            {% endif %}
+                            {% if user.get_profile not in talk.attendees.all %}
+                                <a class="btn btn-warning" href="/talk/{{talk.id}}/attend">
+                                    <i class="icon-calendar"></i> Attend
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
                 </div>
+
+                <h2 class="pull-left">
+                    {{ talk.name }}
+                    {% if talk.endorsements.count %}
+                        ({{ talk.endorsements.count }} <i class="icon-thumbs-up"></i>)
+                    {% endif %}
+                </h2>
+                <div class="clearfix"></div>
+
+                <p>{{ talk.date }}</p>
+
+                <h3>Abstract</h3>
+                <p>{{ talk.abstract }}</p>
+
+                {% if talk.talkvideo_set.all %}
+                    <h3>Videos</h2>
+                    {% for video in talk.talkvideo_set.all %}
+                        {% if video.video_type == "YOUTUBE" %}
+                            <iframe width="300" height="225" src="{{ video.url_target }}" frameborder="0" allowfullscreen></iframe>
+                        {% elif video.video_type == "VIMEO" %}
+                            <iframe src="{{ video.url_target }}" width="300" height="225" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+                {% if talk.attendees.all %}
+                    <h3>Attendees</h3>
+                    {% for profile in talk.attendees.all %}
+                        <a href="/speaker/{{profile.user.username}}">{{profile.user.get_full_name}}</a>
+                    {% endfor %}
+                {% endif %}
+
+                {% if user.get_profile not in talk.speakers.all %}
+                    <div class="comments">
+                        <h3>Comments</h3>
+
+                        <form class="add-comment-form" action="/talk/{{talk.id}}/comment/new/" method="POST">
+                            {% csrf_token %}
+                            <textarea name='comment' placeholder="Add your comment..."></textarea><br />
+                            <input class="btn btn-warning" type="submit" value="Submit Comment" />
+                        </form>
+
+                        {% if talk.talkcomment_set.all %}
+                            <ul>
+                                {% for comment in talk.talkcomment_set.all %}
+                                    <li>
+                                        <h4>{{comment.reviewer.user.get_full_name}} said...</h4>
+                                        <p>
+                                            {{comment.comment}}
+                                        </p>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
                 {% endif %}
             </div>
-
-            <h2 class="pull-left" style="width:560px;">{{ talk.name }}</h2>
-            <div class="clearfix"></div>
-
-            <p>{{ talk.date }}</p>
-
-            <h3>Abstract</h3>
-            <p>{{ talk.abstract }}</p>
-
-            {% if talk.talkvideo_set.all %}
-                <h3>Videos</h2>
-                {% for video in talk.talkvideo_set.all %}
-                    {% if video.video_type == "YOUTUBE" %}
-                        <iframe width="300" height="225" src="{{ video.url_target }}" frameborder="0" allowfullscreen></iframe>
-                    {% elif video.video_type == "VIMEO" %}
-                        <iframe src="{{ video.url_target }}" width="300" height="225" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
-
-
-            {% if user.get_profile not in talk.speakers.all %}
-                <div class="comments">
-                    <h3>Comments</h3>
-
-                    <form class="add-comment-form" action="/talk/{{talk.id}}/comment/new/" method="POST">
-                        {% csrf_token %}
-                        <textarea name='comment' placeholder="Add your comment..."></textarea><br />
-                        <input class="btn btn-warning" type="submit" value="Submit Comment" />
-                    </form>
-
-                    {% if talk.talkcomment_set.all %}
-                        <ul>
-                            {% for comment in talk.talkcomment_set.all %}
-                                <li>
-                                    <h4>{{comment.reviewer.user.get_full_name}} said...</h4>
-                                    <p>
-                                        {{comment.comment}}
-                                    </p>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                </div>
-            {% endif %}
         </div>
     </div>
 </div>

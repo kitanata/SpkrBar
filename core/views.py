@@ -252,9 +252,17 @@ def speaker_detail(request, username):
     past = talks.filter(date__lt=datetime.now()).order_by('-date')[:20]
     past = talks_from_queryset(past, reverse=True)
 
-    return render_to_response('speaker_profile.html', 
-            {'speaker': speaker, 'upcoming': upcoming, 'past': past},
-            context_instance=RequestContext(request))
+    attending = speaker.talks_attending.filter(date__gt=datetime.now()).order_by('date')
+
+    attended = speaker.talks_attending.filter(date__lt=datetime.now()).order_by('-date')
+    attended = talks_from_queryset(attended, reverse=True)
+
+    return render_to_response('speaker_profile.html', {
+        'speaker': speaker,
+        'upcoming': upcoming,
+        'past': past,
+        'attending': attending,
+        'attended': attended }, context_instance=RequestContext(request))
 
 
 def speaker_follow(request, username):
