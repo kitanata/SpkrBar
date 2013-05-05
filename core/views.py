@@ -118,6 +118,9 @@ def load_fixtures(request):
         talk.date = datetime(year, month, day, hour, minute)
         talk.location = location
         talk.photo = str(random.choice(range(1, 21))) + ".jpeg"
+
+        if i % 3 == 0:
+            talk.published = False
         
         talk.save()
         talk.speakers.add(speaker)
@@ -244,7 +247,13 @@ def profile_form_view(request):
 
 def speaker_detail(request, username):
     speaker = get_object_or_404(User, username=username).get_profile()
-    talks = Talk.objects.filter(speakers__in=[speaker])
+
+    if speaker != request.user.get_profile():
+        talks = Talk.objects.filter(published=True)
+    else:
+        talks = Talk.objects
+
+    talks = talks.filter(speakers__in=[speaker])
 
     upcoming = talks.filter(date__gt=datetime.now()).order_by('date')[:5]
     upcoming = talks_from_queryset(upcoming)
@@ -262,7 +271,9 @@ def speaker_detail(request, username):
         'upcoming': upcoming,
         'past': past,
         'attending': attending,
-        'attended': attended }, context_instance=RequestContext(request))
+        'attended': attended,
+        'last': '/speaker/' + username
+        }, context_instance=RequestContext(request))
 
 
 def speaker_follow(request, username):

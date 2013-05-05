@@ -13,7 +13,8 @@ from .forms import TalkForm
 
 def talk_list(request):
 
-    talks = Talk.objects.filter(date__gt=datetime.now()).order_by('date')[:20]
+    talks = Talk.objects.filter(published=True, date__gt=datetime.now()
+            ).order_by('date')[:20]
 
     talks = [{
         'month_num': k,
@@ -145,13 +146,17 @@ def talk_comment_new(request, talk_id):
 
     return redirect('/talk/' + talk_id)
 
+
 def talk_endorsement_new(request, talk_id):
     talk = get_object_or_404(Talk, pk=talk_id)
     
     talk.endorsements.add(request.user.get_profile())
     talk.save()
 
-    return redirect('/talk/' + talk_id)
+    if 'last' in request.GET:
+        return redirect(request.GET['last'])
+    else:
+        return redirect('/talk/' + talk_id)
 
 
 def talk_attendee_new(request, talk_id):
@@ -160,4 +165,29 @@ def talk_attendee_new(request, talk_id):
     talk.attendees.add(request.user.get_profile())
     talk.save()
 
-    return redirect('/talk/' + talk_id)
+    if 'last' in request.GET:
+        return redirect(request.GET['last'])
+    else:
+        return redirect('/talk/' + talk_id)
+
+
+def talk_archive(request, talk_id):
+    talk = get_object_or_404(Talk, pk=talk_id)
+    talk.published = False
+    talk.save()
+
+    if 'last' in request.GET:
+        return redirect(request.GET['last'])
+    else:
+        return redirect('/talk/' + talk_id)
+
+
+def talk_publish(request, talk_id):
+    talk = get_object_or_404(Talk, pk=talk_id)
+    talk.published = True
+    talk.save()
+
+    if 'last' in request.GET:
+        return redirect(request.GET['last'])
+    else:
+        return redirect('/talk/' + talk_id)

@@ -21,11 +21,15 @@
                     <div class="span3">
                         <div class="edit-buttons btn-group">
                             {% if speaker == user.get_profile %}
-                                <a class="btn btn-warning" href="/profile/edit">Edit Profile</a>
-                                <a class="btn btn-warning" href="/talk/new">Add Talk</a>
+                                <a class="btn btn-warning" href="/profile/edit">
+                                    <i class="icon-pencil"></i> Edit Profile
+                                </a>
+                                <a class="btn btn-warning" href="/talk/new">
+                                    <i class="icon-plus"></i> Add Talk
+                                </a>
                             {% elif speaker not in user.get_profile.following.all %}
                                 <a class="btn btn-warning" href="/speaker/{{speaker.user.username}}/follow?last=/speaker/{{speaker.user.username}}">Follow Me</a>
-                            {% else %}
+                                {% elif not user.is_anonymous %}
                                 <div class="label label-warning">Following</div>
                             {% endif %}
                         </div>
@@ -134,43 +138,47 @@
             </div>
 
             <div class="span9">
-                {% if attending %}
-                    <h2>Attending</h2>
-                    <hr />
+                <div class="row">
+                    <div class="span9">
+                        {% if attending %}
+                            <h2>Attending</h2>
+                            <hr />
 
-                    <div class="row">
-                        {% for talk in attending %}
-                            {% include '_talk_thumb_partial.html' %}
-                        {% endfor %}
-                    </div>
-
-                {% endif %}
-            </div>
-
-            <div class="span9" style="margin-top:40px;">
-                {% if upcoming %}
-                    <h2>Upcoming Talks</h2>
-                    <hr />
-
-                    <div class="row">
-                        {% for talks in upcoming %}
-                            <div class="span9" style="margin-bottom:10px">
-                                <h3>{{ talks.date }}</h3>
-
-                                {% for talk in talks.talks %}
-                                    {% include '_talk_partial.html' %}
+                            <div class="row">
+                                {% for talk in attending %}
+                                    {% include '_talk_thumb_partial.html' %}
                                 {% endfor %}
                             </div>
-                        {% endfor %}
+
+                        {% endif %}
                     </div>
-                {% elif speaker == user.get_profile %}
-                    <h4>
-                        You don't have any upcoming talks. Would you like to 
-                        <a class="btn btn-warning" href="/talk/new">add one now?</a>
-                    </h4>
-                {% else %}
-                    <h2>No upcoming talks.</h2>
-                {% endif %}
+
+                    <div class="span9" style="margin-top:40px;">
+                        {% if upcoming %}
+                            <h2>Upcoming Talks</h2>
+                            <hr />
+
+                            <div class="row">
+                                {% for talks in upcoming %}
+                                    <div class="span9" style="margin-bottom:10px">
+                                        <h3>{{ talks.date }}</h3>
+
+                                        {% for talk in talks.talks %}
+                                            {% include '_talk_partial.html' %}
+                                        {% endfor %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% elif speaker == user.get_profile %}
+                            <h4>
+                                You don't have any upcoming talks. Would you like to 
+                                <a class="btn btn-warning" href="/talk/new">add one now?</a>
+                            </h4>
+                        {% else %}
+                            <h2>No upcoming talks.</h2>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         </div>
     </div>

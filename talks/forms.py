@@ -74,4 +74,4 @@ class TalkForm(forms.ModelForm):
             'date': DateTimeWidget(),
             'photo': CustomClearableFileInput()
         }
-        exclude = ('speakers', 'media', 'tags', 'attendees', 'endorsements')
+        exclude = ('speakers', 'media', 'published', 'tags', 'attendees', 'endorsements')

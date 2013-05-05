@@ -19,6 +19,8 @@ urlpatterns = patterns('',
     url(r'^talk/(?P<talk_id>\d+)/comment/new/$', 'talks.views.talk_comment_new'),
     url(r'^talk/(?P<talk_id>\d+)/attend/$', 'talks.views.talk_attendee_new'),
     url(r'^talk/(?P<talk_id>\d+)/endorse/$', 'talks.views.talk_endorsement_new'),
+    url(r'^talk/(?P<talk_id>\d+)/publish/$', 'talks.views.talk_publish'),
+    url(r'^talk/(?P<talk_id>\d+)/archive/$', 'talks.views.talk_archive'),
 
     url(r'^location/new/$', 'talks.views.location_new'),
 

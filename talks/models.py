@@ -15,6 +15,8 @@ class Talk(models.Model):
     location = models.ForeignKey(Location)
     date = models.DateTimeField(default=datetime.now())
 
+    published = models.BooleanField(default=True)
+
     photo = models.ImageField(upload_to="photo", blank=True)
     tags = models.ManyToManyField(TalkTag)
 

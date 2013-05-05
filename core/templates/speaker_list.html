@@ -28,13 +28,15 @@
                     </div>
                 </div>
 
-                <div class="follow">
-                    {% if speaker not in user.get_profile.following.all %}
-                        <a class="btn btn-warning" href="/speaker/{{speaker.user.username}}/follow?last=/speakers">Follow</a>
-                    {% else %}
-                        <div class="label label-warning">Following</div>
-                    {% endif %}
-                </div>
+                {% if not user.is_anonymous and user.get_profile != speaker %}
+                    <div class="follow">
+                        {% if speaker not in user.get_profile.following.all %}
+                            <a class="btn btn-warning" href="/speaker/{{speaker.user.username}}/follow?last=/speakers">Follow</a>
+                        {% else %}
+                            <div class="label label-warning">Following</div>
+                        {% endif %}
+                    </div>
+                {% endif %}
             </div>
         </div>
         {% endfor %}
