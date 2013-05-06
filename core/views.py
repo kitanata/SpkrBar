@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 
 from django.db import IntegrityError
+from django.db.models import Q
 
 from .models import Location, UserProfile, UserLink, UserTag
 from talks.models import Talk
@@ -156,6 +157,24 @@ def profile_edit(request):
 
 
 @login_required()
+def profile_publish(request):
+    profile = request.user.get_profile()
+    profile.published=True
+    profile.save()
+
+    return redirect('/speaker/' + request.user.username)
+
+
+@login_required()
+def profile_archive(request):
+    profile = request.user.get_profile()
+    profile.published=False
+    profile.save()
+
+    return redirect('/speaker/' + request.user.username)
+
+
+@login_required()
 def profile_edit_photo(request):
     if request.method == "POST":
         form = ProfilePhotoForm(request.FILES)
@@ -244,12 +263,22 @@ def profile_form_view(request):
         context_instance=RequestContext(request))
 
 
+def speakers(request):
+    if request.user.is_anonymous():
+        speakers = UserProfile.objects.filter(Q(published=True))[:20]
+    else:
+        speakers = UserProfile.objects.filter(Q(published=True) | Q(user=request.user))[:20]
+
+    return render_to_response('speaker_list.html', {
+        'speakers': speakers
+        }, context_instance=RequestContext(request))
+
 
 def speaker_detail(request, username):
     speaker = get_object_or_404(User, username=username).get_profile()
 
-    if speaker != request.user.get_profile():
-        talks = Talk.objects.filter(published=True)
+    if not request.user.is_anonymous():
+        talks = Talk.objects.filter(Q(published=True) | Q(speakers__in=[request.user.get_profile()]))
     else:
         talks = Talk.objects
 
@@ -261,10 +290,26 @@ def speaker_detail(request, username):
     past = talks.filter(date__lt=datetime.now()).order_by('-date')[:20]
     past = talks_from_queryset(past, reverse=True)
 
-    attending = speaker.talks_attending.filter(date__gt=datetime.now()).order_by('date')
+    if request.user.is_anonymous():
+        following = speaker.following.filter(published=True)
+        followers = speaker.followers.filter(published=True)
+        attending = speaker.talks_attending.filter(date__gt=datetime.now()).order_by('date')
 
-    attended = speaker.talks_attending.filter(date__lt=datetime.now()).order_by('-date')
-    attended = talks_from_queryset(attended, reverse=True)
+        attended = speaker.talks_attending.filter(date__lt=datetime.now()).order_by('-date')
+        attended = talks_from_queryset(attended, reverse=True)
+    else:
+        following = speaker.following.filter(Q(published=True) | Q(user=request.user))
+        followers = speaker.followers.filter(Q(published=True) | Q(user=request.user))
+        attending = speaker.talks_attending.filter(
+                Q(published=True) | Q(speakers__in=[request.user.get_profile()]),
+                Q(speakers__published=True),
+                date__gt=datetime.now()).order_by('date')
+
+        attended = speaker.talks_attending.filter(
+                Q(published=True) | Q(speakers__in=[request.user.get_profile()]),
+                Q(speakers__published=True),
+                date__lt=datetime.now()).order_by('-date')
+        attended = talks_from_queryset(attended, reverse=True)
 
     return render_to_response('speaker_profile.html', {
         'speaker': speaker,
@@ -272,6 +317,8 @@ def speaker_detail(request, username):
         'past': past,
         'attending': attending,
         'attended': attended,
+        'following': following,
+        'followers': followers,
         'last': '/speaker/' + username
         }, context_instance=RequestContext(request))
 
@@ -361,10 +408,3 @@ def register_user(request):
                 context_instance=RequestContext(request))
 
         
-
-
-class SpeakerList(ListView):
-    queryset = UserProfile.objects.all()[:20]
-    template_name = "speaker_list.html"
-
-

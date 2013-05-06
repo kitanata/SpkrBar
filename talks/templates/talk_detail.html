@@ -21,23 +21,25 @@
                     <h3>Speakers</h3>
                     <ul class="speakers">
                         {% for speaker in talk.speakers.all %}
-                            <li>
-                                <div class="speaker well">
-                                    {% if speaker.photo %}
-                                        <img src="{{STATIC_URL}}img/photo/{{ speaker.photo}}"></img>
-                                    {% else %}
-                                        <i class="icon-camera profile-placeholder"></i>
-                                    {% endif %}
+                            {% if speaker.published %}
+                                <li>
+                                    <div class="speaker well">
+                                        {% if speaker.photo %}
+                                            <img src="{{STATIC_URL}}img/photo/{{ speaker.photo}}"></img>
+                                        {% else %}
+                                            <i class="icon-camera profile-placeholder"></i>
+                                        {% endif %}
 
-                                    <div class="about">
-                                        <h4>
-                                            <a href="/speaker/{{speaker.user.username}}">
-                                            {{ speaker.user.get_full_name }}
-                                            </a>
-                                        </h4>
+                                        <div class="about">
+                                            <h4>
+                                                <a href="/speaker/{{speaker.user.username}}">
+                                                {{ speaker.user.get_full_name }}
+                                                </a>
+                                            </h4>
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
+                                </li>
+                            {% endif %}
                         {% endfor %}
                     </ul>
                 </div>
@@ -102,9 +104,9 @@
                     {% endfor %}
                 {% endif %}
 
-                {% if talk.attendees.all %}
+                {% if attendees %}
                     <h3>Attendees</h3>
-                    {% for profile in talk.attendees.all %}
+                    {% for profile in attendees %}
                         <a href="/speaker/{{profile.user.username}}">{{profile.user.get_full_name}}</a>
                     {% endfor %}
                 {% endif %}

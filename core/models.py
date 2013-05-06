@@ -27,6 +27,8 @@ class UserProfile(models.Model):
     photo = models.ImageField(upload_to="photo")
     about_me = models.CharField(max_length=500)
     location = models.ForeignKey(Location, null=True)
+    published = models.BooleanField(default=True)
+
     following = models.ManyToManyField('self', related_name="followers", symmetrical=False)
 
     tags = models.ManyToManyField(UserTag)

@@ -21,6 +21,16 @@
                     <div class="span3">
                         <div class="edit-buttons btn-group">
                             {% if speaker == user.get_profile %}
+                                {% if speaker.published %}
+                                    <a class="btn btn-warning" href="/profile/archive">
+                                        <i class="icon-ban-circle"></i> Hide
+                                    </a>
+                                {% else %}
+                                    <a class="btn btn-warning" href="/profile/publish">
+                                        <i class="icon-ok"></i> Publish
+                                    </a>
+                                {% endif %}
+
                                 <a class="btn btn-warning" href="/profile/edit">
                                     <i class="icon-pencil"></i> Edit Profile
                                 </a>
@@ -73,34 +83,34 @@
                     </div>
                 {% endif %}
 
-                {% if speaker.followers.all %}
-                <div class="row">
-                    <div class="span3" style="margin-top:40px">
-                        <h2>Followers</h2>
-                        {% for profile in speaker.followers.all %}
-                            <p>
-                                <a href="/speaker/{{profile.user.username}}">
-                                    {{ profile.user.get_full_name }}
-                                </a>
-                            </p>
-                        {% endfor %}
+                {% if followers %}
+                    <div class="row">
+                        <div class="span3" style="margin-top:40px">
+                            <h2>Followers</h2>
+                            {% for profile in followers %}
+                                <p>
+                                    <a href="/speaker/{{profile.user.username}}">
+                                        {{ profile.user.get_full_name }}
+                                    </a>
+                                </p>
+                            {% endfor %}
+                        </div>
                     </div>
-                </div>
                 {% endif %}
 
-                {% if speaker.following.all %}
-                <div class="row">
-                    <div class="span3" style="margin-top:40px">
-                        <h2>Following</h2>
-                        {% for profile in speaker.following.all %}
-                            <p>
-                                <a href="/speaker/{{profile.user.username}}">
-                                    {{ profile.user.get_full_name }}
-                                </a>
-                            </p>
-                        {% endfor %}
+                {% if following %}
+                    <div class="row">
+                        <div class="span3" style="margin-top:40px">
+                            <h2>Following</h2>
+                            {% for profile in following %}
+                                    <p>
+                                        <a href="/speaker/{{profile.user.username}}">
+                                            {{ profile.user.get_full_name }}
+                                        </a>
+                                    </p>
+                            {% endfor %}
+                        </div>
                     </div>
-                </div>
                 {% endif %}
 
                 {% if attended %}

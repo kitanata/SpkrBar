@@ -5,8 +5,6 @@ from django.views.generic import TemplateView
 from django.contrib import admin
 admin.autodiscover()
 
-from core.views import SpeakerList
-
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'talks.views.talk_list'),
@@ -24,7 +22,7 @@ urlpatterns = patterns('',
 
     url(r'^location/new/$', 'talks.views.location_new'),
 
-    url(r'^speakers/$', SpeakerList.as_view()),
+    url(r'^speakers/$', 'core.views.speakers'),
     url(r'^speaker/(?P<username>\w+)/$', 'core.views.speaker_detail'),
     url(r'^speaker/(?P<username>\w+)/follow/$', 'core.views.speaker_follow'),
 
@@ -32,6 +30,8 @@ urlpatterns = patterns('',
     url(r'^profile/edit/photo/$', 'core.views.profile_edit_photo'),
     url(r'^profile/edit/link/new/$', 'core.views.profile_link_new'),
     url(r'^profile/edit/tag/new/$', 'core.views.profile_tag_new'),
+    url(r'^profile/publish/$', 'core.views.profile_publish'),
+    url(r'^profile/archive/$', 'core.views.profile_archive'),
 
     url(r'^load_fixtures/$', 'core.views.load_fixtures'),
 

@@ -6,6 +6,8 @@ from django.views.generic import ListView
 from django.template import RequestContext
 from django.core.exceptions import ObjectDoesNotExist
 
+from django.db.models import Q
+
 from core.models import Location
 from core.forms import LocationForm
 from .models import Talk, TalkTag, TalkComment
@@ -13,9 +15,17 @@ from .forms import TalkForm
 
 def talk_list(request):
 
-    talks = Talk.objects.filter(published=True, date__gt=datetime.now()
-            ).order_by('date')[:20]
-
+    if request.user.is_anonymous():
+        talks = Talk.objects.filter(
+                speakers__published=True,
+                published=True, date__gt=datetime.now()
+                ).order_by('date')[:20]
+    else:
+        talks = Talk.objects.filter(
+                Q(speakers__published=True) | Q(speakers__in=[request.user.get_profile()]),
+                published=True, date__gt=datetime.now()
+                ).order_by('date')[:20]
+    
     talks = [{
         'month_num': k,
         'date': datetime(month=k[0], year=k[1], day=1).strftime("%B %Y"),
@@ -61,8 +71,15 @@ def talk_new(request):
 def talk_detail(request, talk_id):
     talk = get_object_or_404(Talk, pk=talk_id)
 
-    return render_to_response('talk_detail.html', {'talk': talk},
-            context_instance=RequestContext(request))
+    if request.user.is_anonymous():
+        attendees = talk.attendees.filter(Q(published=True))
+    else:
+        attendees = talk.attendees.filter(Q(published=True) | Q(user=request.user))
+
+    return render_to_response('talk_detail.html', {
+        'talk': talk,
+        'attendees': attendees
+        }, context_instance=RequestContext(request))
 
 
 def talk_edit(request, talk_id):
