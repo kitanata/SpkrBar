@@ -13,6 +13,7 @@
             <link href="{{STATIC_URL}}css/bootstrap.css" rel="stylesheet">
             <link href="{{STATIC_URL}}css/font-awesome.min.css" rel="stylesheet">
             <link href="{{STATIC_URL}}css/colorbox.css" rel="stylesheet">
+            <link href="{{STATIC_URL}}css/leaflet.css" rel="stylesheet">
 
             <link href="{{STATIC_URL}}less/core.less" rel="stylesheet" type="text/less">
             <link href="{{STATIC_URL}}less/profile.less" rel="stylesheet" type="text/less">
@@ -47,6 +48,7 @@
                 <ul class="nav nav-pills pull-right">
                     <li><a href="/">Talks</a></li>
                     <li><a href="/speakers">Speakers</a></li>
+                    <li><a href="/locations">Locations</a></li>
 
                     {% if not user.is_anonymous %}
                         <li><a href="/speaker/{{ user.username }}">My Profile</a></li>
@@ -92,9 +94,10 @@
         {% compress js %}
         <script src="{{STATIC_URL}}js/bootstrap-dropdown.js"></script>
         <script src="{{STATIC_URL}}js/jquery.colorbox-min.js"></script>
+        <script src="{{STATIC_URL}}js/leaflet.js"></script>
+        {% endcompress %}
 
         {% block 'scripts' %}
         {% endblock %}
-        {% endcompress %}
     </body>
 </html>

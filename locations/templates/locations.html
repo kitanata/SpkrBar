@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block 'content' %}
+    <div id="locations" class="row">
+        {% for location in locations %}
+        <div class="span6">
+            <div class="well location">
+                <h3><a href="/location/{{location.id}}">{{ location.name }}</a></h3>
+
+                {{ location.address }}<br />
+                {{ location.city }}, {{location.state}}, {{location.zip_code}}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

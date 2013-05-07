@@ -8,8 +8,8 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from django.db.models import Q
 
-from core.models import Location
-from core.forms import LocationForm
+from locations.models import Location
+from locations.forms import LocationForm
 from .models import Talk, TalkTag, TalkComment
 from .forms import TalkForm
 

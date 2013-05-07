@@ -33,6 +33,9 @@ urlpatterns = patterns('',
     url(r'^profile/publish/$', 'core.views.profile_publish'),
     url(r'^profile/archive/$', 'core.views.profile_archive'),
 
+    url(r'^locations/$', 'locations.views.locations'),
+    url(r'^location/(?P<location_id>\d+)/$', 'locations.views.location'),
+
     url(r'^load_fixtures/$', 'core.views.load_fixtures'),
 
     url(r'^login/$', 'core.views.login_user'),

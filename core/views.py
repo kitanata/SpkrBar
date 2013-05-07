@@ -46,20 +46,15 @@ def load_fixtures(request):
             "Baboon Fun Park", "The Wilde Syde: Animal Safari", "Anonymous",
             "The Clap Trap", "Game Design Group", "Board Gamers R' US"]
 
-    location_addresses = ["101 5th Ave", "221B Baker Street", "345 E First Street",
-            "404 Found Boulevard", "1020 Rodero Drive", "4598 Morse Road", 
-            "1108 City Park Ave", "1125 Kinnear Ave", "50 N Warren Ave",
-            "200 S Hague Drive", "18559 ZipCode Lane"]
-
-    location_cities = ["Columbus", "South Bend", "Indianapolis", "Chicago", 
-            "Los Angeles", "New Bork", "London", "QueensBurg", "Meow City",
-            "Volcano", "Deer Park", "La Grange", "Misty Road"]
-
-    location_states = ["Ohio", "Indiana", "New Bork", "Florida", "California",
-            "Nebraska", "Washington DC", "Alaska", "Mississippi", "Hawaii",
-            "Thailand", "China", "Russia"]
-
-    location_zips = ['43204', '90210', '86753', '32526', '32536']
+    location_addrs = [
+            ("1275 Kinnear Road", "Columbus", "Ohio", "43204"),
+            ("7003 Post Road", "Dublin", "Ohio", "43016"),
+            ("200 Georgesville Road", "Columbus", "Ohio", "43228"),
+            ("1100 Rock and Roll Boulevard", "Cleveland", "Ohio", "44114"),
+            ("1268 Missouri Street", "San Francisco", "California", "94107"),
+            ("326 N Main Street", "Crestview", "Florida", "32536"),
+            ("3900 Chagrin Drive", "Columbus", "Ohio", "43219"),
+            ("1400 E Angela Blvd", "South Bend", "Indiana", "46617")]
 
     user_first_names = ['Kenneth', 'Bill', 'John', 'Mike', 'Susan', 'Junell',
             'Dharma', 'Shaniquha', 'Damien', 'Dominic', 'Tyler', 'Edward',
@@ -88,10 +83,11 @@ def load_fixtures(request):
         if i % 10 == 0:
             location = Location()
             location.name = random.choice(location_names)
-            location.address = random.choice(location_addresses)
-            location.city = random.choice(location_cities)
-            location.state = random.choice(location_states)
-            location.zip_code = random.choice(location_zips)
+            addr = random.choice(location_addrs)
+            location.address = addr[0]
+            location.city = addr[1]
+            location.state = addr[2]
+            location.zip_code = addr[3]
             location.save()
 
             first_name = random.choice(user_first_names)
@@ -278,7 +274,8 @@ def speaker_detail(request, username):
     speaker = get_object_or_404(User, username=username).get_profile()
 
     if not request.user.is_anonymous():
-        talks = Talk.objects.filter(Q(published=True) | Q(speakers__in=[request.user.get_profile()]))
+        talks = Talk.objects.filter(Q(published=True, speakers__published=True
+            ) | Q(speakers__in=[request.user.get_profile()]))
     else:
         talks = Talk.objects
 

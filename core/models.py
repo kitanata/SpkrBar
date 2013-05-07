@@ -3,17 +3,7 @@ from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from datetime import datetime
 
-
-class Location(models.Model):
-    name = models.CharField(max_length=140)
-    address = models.CharField(max_length=140)
-    city = models.CharField(max_length=140)
-    state = models.CharField(max_length=140)
-    zip_code = models.CharField(max_length=9)
-
-    def __str__(self):
-        return self.name
-
+from locations.models import Location
 
 class UserTag(models.Model):
     name = models.CharField(max_length=140)

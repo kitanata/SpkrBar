@@ -1,5 +1,10 @@
-1. Publishing
-- As a speaker I should be able to hide my profile or show my profile.
+1. Location Improvements
+- When adding a talk the location selector should be a search typeahead control
+- Locations for a talk should be a second step to the talk integration.
+- When creating a talk I should be able to search for a location or
+-    add a new one to the talk.
+
+2. Talk - Event Relationship
 - Talks should be able to have new events attached to them. I may have given
 the same talk several times and so I simply would like to add a new "Event" which
 pairs the talk, the location, and the date and time. People comment on the talk
@@ -9,7 +14,7 @@ across events, not on the single event.
     2. Pick a location and time for the talk (Possibly create a new location)
     4. Return to profile
 
-2. Notifications
+3. Notifications
 - As a speaker when someone follows me.
 - As a speaker when someone comments on one of my talks.
 - As a speaker when someone tags one of my talks.
@@ -17,17 +22,10 @@ across events, not on the single event.
 - As a speaker when someone I am following publishes a new talk.
 - As a speaker when someone confirmed themselves as attending one of my talks.
 
-3. Polish
+4. Polish
 - Polish the site.
 
-3. Location Improvements
-- When adding a talk the location selector should be a search typeahead control
-- Locations should be geo encoded
-- Locations for a talk should be a second step to the talk integration.
-- When creating a talk I should be able to search for a location or
--    add a new one to the talk.
-
-4. Advanced Ratings
+5. Advanced Ratings
 - As an attendee I should be able to rate a speaker on 5 qualities.
    - Engagement - Did the speaker keep attendees at the talk engaged and interested in the topic being presented?
    - Knowledge - Did the speaker seem extremely knowledgable on the subject?
@@ -36,12 +34,12 @@ across events, not on the single event.
    - Discussion - Did the speaker encourage further discussion on the topic and answer questions appropriately?
 - As a speaker I should be able to enable or disable this on my talks.
 
-5. Mobile App
+6. Mobile App
 - As an attendee I should be able to endorse talks on my mobile phone.
 - As an attendee I should be able to search for talks by name on my mobile phone.
 - As an attendee I should be able to comment on a talk on my mobile phone.
 - As an attendee I should be able to search for speakers by name on my mobile phone.
 
-6. Social Integrations
+7. Social Integrations
 - As an attendee I should be able to use the app by just logging in with my facebook account.
 - As a speaker I should be able to import my data and networks from linked in.
