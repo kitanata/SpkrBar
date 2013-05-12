@@ -1,8 +1,8 @@
 <div class="span3">
     <div class="talk-thumb">
         <div class="picture">
-            {% if talk.photo %}
-            <img src="{{STATIC_URL}}img/photo/{{talk.photo}}">
+            {% if event.talk.photo %}
+            <img src="{{STATIC_URL}}img/photo/{{event.talk.photo}}">
             {% else %}
             <i class="icon-camera profile-placeholder"></i>
             {% endif %}
@@ -10,17 +10,17 @@
 
         <div class="header">
             <div class="title">
-                <h4><a href="/talk/{{talk.id}}">
-                    {{ talk.name|truncatechars:45 }}
-                    {% if talk.endorsements.count %}
-                        ({{ talk.endorsements.count }} <i class="icon-thumbs-up"></i>)
+                <h4><a href="/talk/{{event.talk.id}}">
+                    {{ event.talk.name|truncatechars:45 }}
+                    {% if event.talk.endorsements.count %}
+                        ({{ event.talk.endorsements.count }} <i class="icon-thumbs-up"></i>)
                     {% endif %}
                 </a></h4>
-                <h5>{{ talk.date }}</h5>
+                <h5>{{ event.date }}</h5>
             </div>
             <div class="buttons">
-                {% if user.get_profile in talk.attendees.all and user.get_profile not in talk.endorsements.all %}
-                    <a class="btn btn-warning" href="/talk/{{talk.id}}/endorse">
+                {% if user.get_profile in event.attendees.all and user.get_profile not in event.talk.endorsements.all %}
+                    <a class="btn btn-warning" href="/talk/{{event.talk.id}}/endorse">
                         <i class="icon-thumbs-up"></i> Endorse
                     </a>
                 {% endif %}

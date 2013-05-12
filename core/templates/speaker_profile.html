@@ -134,10 +134,10 @@
                         <div class="span3" style="margin-top: 40px">
                             <h2>Past Talks</h2>
                             <ul class="past-talks">
-                                {% for talk in past %}
-                                    <h3>{{ talk.date }}</h3>
-                                    {% for talk in talk.talks %}
-                                        <li><a href="/talk/{{talk.id}}">{{ talk.name|truncatechars:30 }}</a></li>
+                                {% for group in past %}
+                                    <h3>{{ group.date }}</h3>
+                                    {% for event in group.events %}
+                                        <li><a href="/talk/{{event.talk.id}}">{{ event.talk.name|truncatechars:30 }}</a></li>
                                     {% endfor %}
                                 {% endfor %}
                             </ul>
@@ -169,11 +169,11 @@
                             <hr />
 
                             <div class="row">
-                                {% for talks in upcoming %}
+                                {% for group in upcoming %}
                                     <div class="span9" style="margin-bottom:10px">
-                                        <h3>{{ talks.date }}</h3>
+                                        <h3>{{ group.date }}</h3>
 
-                                        {% for talk in talks.talks %}
+                                        {% for event in group.events %}
                                             {% include '_talk_partial.html' %}
                                         {% endfor %}
                                     </div>

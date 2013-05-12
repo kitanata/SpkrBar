@@ -4,7 +4,12 @@
     {% if user.is_anonymous %}
         <div class="jumbotron callout">
             <h2 class="btn-warning">Finally, a place for speakers.</h2>
-            <a class="btn btn-large btn-warning" href="/register/">Add your talk.</a>
+            <a class="btn btn-large btn-warning" href="/register/">Register Now.</a>
+        </div>
+    {% else %}
+        <div class="jumbotron callout">
+            <h2 class="btn-warning">Finally, a place for speakers.</h2>
+            <a class="btn btn-large btn-warning" href="/talk/new/">Add your talk.</a>
         </div>
     {% endif %}
 {% endblock %}
@@ -17,33 +22,16 @@
         </div>
     </div>
 
-    {% for talk in talks %}
+    {% for group in event_groups %}
         <div class="row">
             <div class="span12">
-                <h3>{{ talk.date }}</h3>
+                <h3>{{ group.date }}</h3>
             </div>
 
             <div class="talks">
                 <ul>
-                    {% for talk in talk.talks %}
-                        <div class="span4">
-                            <li>
-                                <h4><a href="/talk/{{talk.pk}}">{{ talk.name|truncatechars:30 }}</a></h4>
-                                <h5>{{ talk.date }}</h5>
-                                {% if talk.photo %}
-                                <img class="pull-left" src="{{STATIC_URL}}img/photo/{{talk.photo}}">
-                                {% else %}
-                                <i class="icon-camera profile-placeholder pull-left"></i>
-                                {% endif %}
-                                <span>
-                                    {{ talk.abstract|truncatechars:80 }}
-                                    <div class="location">
-                                        <i class="icon-globe"></i>
-                                        <div>{{ talk.location.city}}</div>
-                                    </div>
-                                </span>
-                            </li>
-                        </div>
+                    {% for event in group.events %}
+                        {% include '_talk_thumb_detailed_partial.html' %}
                     {% endfor %}
                 </ul>
             </div>

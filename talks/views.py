@@ -10,30 +10,29 @@ from django.db.models import Q
 
 from locations.models import Location
 from locations.forms import LocationForm
-from .models import Talk, TalkTag, TalkComment
+from core.models import UserProfile
+from .models import Talk, TalkEvent, TalkTag, TalkComment
 from .forms import TalkForm
+from .helpers import group_talk_events_by_date
 
 def talk_list(request):
 
     if request.user.is_anonymous():
-        talks = Talk.objects.filter(
-                speakers__published=True,
-                published=True, date__gt=datetime.now()
+        events = TalkEvent.objects.filter(
+                talk__speakers__published=True,
+                talk__published=True, date__gt=datetime.now()
                 ).order_by('date')[:20]
     else:
-        talks = Talk.objects.filter(
-                Q(speakers__published=True) | Q(speakers__in=[request.user.get_profile()]),
-                published=True, date__gt=datetime.now()
+        events = TalkEvent.objects.filter(
+                Q(talk__speakers__published=True) | Q(talk__speakers__in=[request.user.get_profile()]),
+                talk__published=True, date__gt=datetime.now()
                 ).order_by('date')[:20]
-    
-    talks = [{
-        'month_num': k,
-        'date': datetime(month=k[0], year=k[1], day=1).strftime("%B %Y"),
-        'talks': list(g)} for k, g in groupby(talks, key=lambda x: (x.date.month, x.date.year))]
-    talks.sort(key=lambda x: x['month_num'])
 
-    return render_to_response("talk_list.html", {'talks': talks},
-            context_instance=RequestContext(request))
+    event_groups = group_talk_events_by_date(events)
+
+    return render_to_response("talk_list.html", {
+        'event_groups': event_groups
+        }, context_instance=RequestContext(request))
 
 
 def talk_new(request):
@@ -71,13 +70,17 @@ def talk_new(request):
 def talk_detail(request, talk_id):
     talk = get_object_or_404(Talk, pk=talk_id)
 
+    events = TalkEvent.objects.filter(talk__id=talk_id)
+    attendees = UserProfile.objects.filter(events_attending__in=events)
+
     if request.user.is_anonymous():
-        attendees = talk.attendees.filter(Q(published=True))
+        attendees = attendees.filter(Q(published=True))
     else:
-        attendees = talk.attendees.filter(Q(published=True) | Q(user=request.user))
+        attendees = attendees.filter(Q(published=True) | Q(user=request.user))
 
     return render_to_response('talk_detail.html', {
         'talk': talk,
+        'events': events.filter(date__gt=datetime.now()),
         'attendees': attendees
         }, context_instance=RequestContext(request))
 

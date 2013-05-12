@@ -15,7 +15,8 @@ from django.db import IntegrityError
 from django.db.models import Q
 
 from .models import Location, UserProfile, UserLink, UserTag
-from talks.models import Talk
+from talks.models import Talk, TalkEvent
+from talks.helpers import group_talk_events_by_date
 from .forms import EditProfileForm, ProfilePhotoForm, ProfileLinkForm, ProfileTagForm
 
 random.seed(datetime.now())
@@ -112,8 +113,6 @@ def load_fixtures(request):
 
         talk.name = random.choice(verbs) + " " + random.choice(things) + ": " + random.choice(long_actions)
         talk.abstract = talk_description
-        talk.date = datetime(year, month, day, hour, minute)
-        talk.location = location
         talk.photo = str(random.choice(range(1, 21))) + ".jpeg"
 
         if i % 3 == 0:
@@ -121,6 +120,13 @@ def load_fixtures(request):
         
         talk.save()
         talk.speakers.add(speaker)
+
+        event = TalkEvent()
+        event.talk = talk
+        event.date = datetime(year, month, day, hour, minute)
+        event.location = location
+        event.save()
+
 
     return render_to_response('load_fixtures.html', 
             context_instance=RequestContext(request))
@@ -274,39 +280,33 @@ def speaker_detail(request, username):
     speaker = get_object_or_404(User, username=username).get_profile()
 
     if not request.user.is_anonymous():
-        talks = Talk.objects.filter(Q(published=True, speakers__published=True
-            ) | Q(speakers__in=[request.user.get_profile()]))
+        talks = TalkEvent.objects.filter(Q(talk__published=True, talk__speakers__published=True
+            ) | Q(talk__speakers__in=[request.user.get_profile()]))
     else:
-        talks = Talk.objects
+        talks = TalkEvent.objects
 
-    talks = talks.filter(speakers__in=[speaker])
+    talks = talks.filter(talk__speakers__in=[speaker])
 
     upcoming = talks.filter(date__gt=datetime.now()).order_by('date')[:5]
-    upcoming = talks_from_queryset(upcoming)
+    upcoming = group_talk_events_by_date(upcoming)
 
     past = talks.filter(date__lt=datetime.now()).order_by('-date')[:20]
-    past = talks_from_queryset(past, reverse=True)
+    past = group_talk_events_by_date(past, reverse=True)
 
     if request.user.is_anonymous():
         following = speaker.following.filter(published=True)
         followers = speaker.followers.filter(published=True)
-        attending = speaker.talks_attending.filter(date__gt=datetime.now()).order_by('date')
 
-        attended = speaker.talks_attending.filter(date__lt=datetime.now()).order_by('-date')
-        attended = talks_from_queryset(attended, reverse=True)
+        attending = speaker.published_upcoming_events_attending()
+        attended = speaker.published_past_events_attended()
+        attended = group_talk_events_by_date(attended, reverse=True)
     else:
         following = speaker.following.filter(Q(published=True) | Q(user=request.user))
         followers = speaker.followers.filter(Q(published=True) | Q(user=request.user))
-        attending = speaker.talks_attending.filter(
-                Q(published=True) | Q(speakers__in=[request.user.get_profile()]),
-                Q(speakers__published=True),
-                date__gt=datetime.now()).order_by('date')
 
-        attended = speaker.talks_attending.filter(
-                Q(published=True) | Q(speakers__in=[request.user.get_profile()]),
-                Q(speakers__published=True),
-                date__lt=datetime.now()).order_by('-date')
-        attended = talks_from_queryset(attended, reverse=True)
+        attending = speaker.published_upcoming_events_attending()
+        attended = speaker.published_past_events_attended()
+        attended = group_talk_events_by_date(attended, reverse=True)
 
     return render_to_response('speaker_profile.html', {
         'speaker': speaker,
@@ -336,15 +336,6 @@ def speaker_follow(request, username):
         return redirect('/')
 
 
-def talks_from_queryset(queryset, reverse=False):
-    queryset = [{
-        'month_num': k,
-        'date': datetime(month=k[0], year=k[1], day=1).strftime("%B %Y"),
-        'talks': list(g)} for k, g in groupby(queryset, key=lambda x: (x.date.month, x.date.year))]
-    queryset.sort(key=lambda x: x['month_num'], reverse=reverse)
-    return queryset
-
-    
 def login_user(request):
 
     if request.method == "GET":

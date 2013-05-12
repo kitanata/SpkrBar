@@ -16,13 +16,13 @@ def locations(request):
 def location(request, location_id):
     location = get_object_or_404(Location, pk=location_id)
 
-    talks = location.talk_set
+    events = location.talkevent_set
 
     if not request.user.is_anonymous():
-        talks = talks.filter(Q(published=True, speakers__published=True) | Q(speakers__in=[request.user.get_profile()]))
+        events = talks.filter(Q(published=True, speakers__published=True) | Q(speakers__in=[request.user.get_profile()]))
 
-    upcoming = talks.filter(date__gt=datetime.now()).order_by('date')[:5]
-    past = talks.filter(date__lt=datetime.now()).order_by('-date')[:20]
+    upcoming = events.filter(date__gt=datetime.now()).order_by('date')[:5]
+    past = events.filter(date__lt=datetime.now()).order_by('-date')[:20]
 
     return render_to_response('location.html', {
         'location': location,

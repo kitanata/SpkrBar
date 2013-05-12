@@ -12,15 +12,11 @@ class Talk(models.Model):
     speakers = models.ManyToManyField(UserProfile)
     name = models.CharField(max_length=140)
     abstract = models.CharField(max_length=800)
-    location = models.ForeignKey(Location)
-    date = models.DateTimeField(default=datetime.now())
-
     published = models.BooleanField(default=True)
 
     photo = models.ImageField(upload_to="photo", blank=True)
     tags = models.ManyToManyField(TalkTag)
 
-    attendees = models.ManyToManyField(UserProfile, related_name='talks_attending')
     endorsements = models.ManyToManyField(UserProfile, related_name='talks_endorsed')
 
     def __str__(self):
@@ -31,6 +27,8 @@ class TalkEvent(models.Model):
     talk = models.ForeignKey(Talk)
     location = models.ForeignKey(Location)
     date = models.DateTimeField(default=datetime.now())
+
+    attendees = models.ManyToManyField(UserProfile, related_name='events_attending')
 
 
 class TalkComment(models.Model):
