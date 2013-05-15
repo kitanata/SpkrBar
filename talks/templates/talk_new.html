@@ -1,94 +1,90 @@
 {% extends 'talk_base.html' %}
 
-{% block 'head' %}
-    {{ talk_form.media }}
-{% endblock %}
-
 {% block 'content' %}
-    <div class="row">
-        <div class="span12">
-            {% if error %}
-                <div class="alert alert-error">
-                    {{error}}
+    {% if talk_form.errors %}
+        <div class="alert alert-error">
+            {{talk_form.errors}}
+        </div>
+    {% endif %}
+
+    <div id="talk">
+        <div class="row">
+            <form id="new-talk-form" action="/talk/new/" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="span3">
+                    <div class="well talk-photo">
+                        <i class="icon-camera profile-placeholder"></i>
+                    </div>
+
+                    {{ talk_form.photo }}
                 </div>
-            {% endif %}
 
-            <div class="row">
-                <div class="span6">
-                    <form id="new-talk-form" action="/talk/new/" method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="row">
-                            <div class="span6">
-                                <h2>What are you talking about?</h2>
-                                <hr />
-                            </div>
+                <div class="span9">
+                    <div class="row">
+                        <div class="span9">
+                            <h2>What are you talking about?</h2>
+                            <hr />
                         </div>
+                    </div>
 
-                        {% for field in talk_form %}
-                            {% if field.errors %}
-                                <div class="alert">
-                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                    <strong>Warning!</strong> {{ field.label }} {{ field.errors }}
-                                </div>
+                    {% for field in talk_form %}
+                        {% if field.errors %}
+                            <div class="alert">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                <strong>Warning!</strong> {{ field.label }} {{ field.errors }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+                    <div class="row">
+                        <div class="span1">
+                            <label>{{talk_form.name.label}}:</label>
+                        </div>
+                        <div class="span8">
+                            {{ talk_form.name }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="span1">
+                            <label>{{talk_form.abstract.label}}:</label>
+                        </div>
+                        <div class="span8">
+                            {{ talk_form.abstract }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="span9">
+                            <input class="btn btn-warning" type="submit" value="Save Talk"/>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            <div class="span3">
+                <h3>Speakers</h3>
+                <ul class="speakers">
+                    <li>
+                        <div class="speaker well">
+                            {% if user.get_profile.photo %}
+                                <img src="{{STATIC_URL}}img/photo/{{ user.get_profile.photo}}"></img>
+                            {% else %}
+                                <i class="icon-camera profile-placeholder"></i>
                             {% endif %}
-                        {% endfor %}
 
-                        {% for field in talk_form %}
-                            <div class="row">
-                                <div class="span1">
-                                    <label>{{field.label}}:</label>
-                                </div>
-                                <div class="span5">
-                                    {{ field }}
-                                </div>
-                            </div>
-                        {% endfor %}
-
-                        <div class="row">
-                            <div class="span6">
-                                <input class="btn btn-warning" type="submit" value="Save Talk"/>
+                            <div class="about">
+                                <h4>
+                                    <a href="/speaker/{{user.username}}">
+                                    {{ user.get_full_name }}
+                                    </a>
+                                </h4>
                             </div>
                         </div>
-                    </form>
-                </div>
-
-                <div class="span6">
-                    <form id="new-talk-form" action="/location/new/" method="POST">
-                        {% csrf_token %}
-                        <div class="row">
-                            <div class="span6">
-                                <h2>Where are you talking at?</h2>
-                                <hr />
-                            </div>
-                        </div>
-
-                        {% for field in location_form %}
-                            {% if field.errors %}
-                                <div class="alert">
-                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                    <strong>Warning!</strong> {{ field.label }} {{ field.errors }}
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-
-                        {% for field in location_form %}
-                            <div class="row">
-                                <div class="span1">
-                                    <label>{{field.label}}:</label>
-                                </div>
-                                <div class="span5">
-                                    {{ field }}
-                                </div>
-                            </div>
-                        {% endfor %}
-
-                        <div class="row">
-                            <div class="span6">
-                                <input class="btn btn-warning" type="submit" value="Add Location"/>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

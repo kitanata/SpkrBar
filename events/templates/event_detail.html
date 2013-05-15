@@ -1,14 +1,14 @@
-{% extends 'talk_base.html' %}
+{% extends 'event_base.html' %}
 
 {% block 'content' %}
-<div id="talk">
+<div id="event-detail">
     <div class="row">
         <div class="span3">
             <div class="row">
                 <div class="span3">
                     <div class="well talk-photo">
-                        {% if talk.photo %}
-                            <img src="{{STATIC_URL}}img/photo/{{ talk.photo}}"></img>
+                        {% if event.talk.photo %}
+                            <img src="{{STATIC_URL}}img/photo/{{ event.talk.photo}}"></img>
                         {% else %}
                             <i class="icon-camera profile-placeholder"></i>
                         {% endif %}
@@ -18,21 +18,31 @@
 
             <div class="row">
                 <div class="span3">
+                    <h3>Location</h3>
+                    {% with event.location as location %}
+                        {% include "_event_location_map.html" %}
+                    {% endwith %}
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="span3">
                     <h3>Speaker</h3>
                     <ul class="speakers">
-                        {% if talk.speaker.published %}
+                        {% if event.talk.speaker.published %}
                             <li>
                                 <div class="speaker well">
-                                    {% if talk.speaker.photo %}
-                                        <img src="{{STATIC_URL}}img/photo/{{ talk.speaker.photo}}"></img>
+                                    {% if event.talk.speaker.photo %}
+                                        <img src="{{STATIC_URL}}img/photo/{{ event.talk.speaker.photo}}"></img>
                                     {% else %}
                                         <i class="icon-user profile-placeholder"></i>
                                     {% endif %}
 
                                     <div class="about">
                                         <h4>
-                                            <a href="/speaker/{{talk.speaker.user.username}}">
-                                            {{ talk.speaker.user.get_full_name }}
+                                            <a href="/speaker/{{event.talk.speaker.user.username}}">
+                                            {{ event.talk.speaker.user.get_full_name }}
                                             </a>
                                         </h4>
                                     </div>
@@ -48,12 +58,12 @@
                     <div class="tags">
                         <h3>Tags</h3>
                         <ul>
-                            {% for tag in talk.tags.all %}
+                            {% for tag in event.talk.tags.all %}
                             <li>{{ tag.name }}</li>
                             {% endfor %}
                         </ul>
 
-                        <form action="/talk/{{talk.id}}/tag/new/" method="POST">
+                        <form action="/talk/{{event.talk.id}}/tag/new/" method="POST">
                             {% csrf_token %}
                             <input name="tag" type="text" placeholder="My Tag"/>
                             <input class="btn btn-warning" type="submit" value="Tag this talk" />
@@ -61,43 +71,31 @@
                     </div>
                 </div>
             </div>
-
-            {% if events or talk.speaker == user.get_profile and events %}
-                <div class="row">
-                    <div class="span3">
-                        <h3>Future Events</h3>
-
-                        {% for event in events %}
-                            <div class="location">
-                                <h4>{{ event.location.name }}</h4>
-                                <h5>{{ event.date }}</h5>
-                                <p>{{event.location.address}}</p>
-                                <p>{{event.location.city}}, {{ event.location.state }} {{ event.location.zip_code }}</p>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            {% endif %}
         </div>
 
         <div class="span9">
-            <div class="talk-detail">
+            <div>
                 {% include '_talk_edit_links_partial.html' %}
 
-                <h2 class="pull-left">
-                    {{ talk.name }}
-                    {% if talk.endorsements.count %}
-                        ({{ talk.endorsements.count }} <i class="icon-thumbs-up"></i>)
+                <h2 class="date">{{event.date}}</h2>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="talk-detail">
+                <h2 class="talk-name">
+                    <a href="{{event.talk.get_absolute_url}}">{{ event.talk.name }}</a>
+                    {% if event.talk.endorsements.count %}
+                        ({{ event.talk.endorsements.count }} <i class="icon-thumbs-up"></i>)
                     {% endif %}
                 </h2>
                 <div class="clearfix"></div>
 
                 <h3>Abstract</h3>
-                <p>{{ talk.abstract }}</p>
+                <p>{{ event.talk.abstract }}</p>
 
-                {% if talk.talkvideo_set.all %}
+                {% if event.talk.talkvideo_set.all %}
                     <h3>Videos</h2>
-                    {% for video in talk.talkvideo_set.all %}
+                    {% for video in event.talk.talkvideo_set.all %}
                         {% if video.video_type == "YOUTUBE" %}
                             <iframe width="300" height="225" src="{{ video.url_target }}" frameborder="0" allowfullscreen></iframe>
                         {% elif video.video_type == "VIMEO" %}
@@ -113,21 +111,21 @@
                     {% endfor %}
                 {% endif %}
 
-                {% if talk.talkcomment_set.all or talk.speaker != user.get_profile %}
+                {% if event.talk.talkcomment_set.all or event.talk.speaker != user.get_profile %}
                     <div class="comments">
                         <h3>Comments</h3>
 
-                        {% if talk.speaker != user.get_profile %}
-                            <form class="add-comment-form" action="/talk/{{talk.id}}/comment/new/" method="POST">
+                        {% if event.talk.speaker != user.get_profile %}
+                            <form class="add-comment-form" action="/talk/{{event.talk.id}}/comment/new/" method="POST">
                                 {% csrf_token %}
                                 <textarea name='comment' placeholder="Add your comment..."></textarea><br />
                                 <input class="btn btn-warning" type="submit" value="Submit Comment" />
                             </form>
                         {% endif %}
 
-                        {% if talk.talkcomment_set.all %}
+                        {% if event.talk.talkcomment_set.all %}
                             <ul>
-                                {% for comment in talk.talkcomment_set.all %}
+                                {% for comment in event.talk.talkcomment_set.all %}
                                     <li>
                                         <h4>{{comment.reviewer.user.get_full_name}} said...</h4>
                                         <p>

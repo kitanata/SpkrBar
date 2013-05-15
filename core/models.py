@@ -28,25 +28,23 @@ class UserProfile(models.Model):
 
     def published_upcoming_events_attending(self, user_profile=None):
         if user_profile:
-            return self.events_attending.filter(
-                    Q(talk__published=True) | Q(talk__speakers__in=[request.user.get_profile()]),
-                    talk__speakers__published=True, date__gt=datetime.now()
-                    ).order_by('date')
+            events = self.events_attending.filter(
+                    Q(talk__published=True, talk__speaker__published=True
+                        ) | Q(talk__speaker=request.user.get_profile()))
         else:
-            return self.events_attending.filter(
-                    talk__published=True, talk__speakers__published=True, date__gt=datetime.now()
-                    ).order_by('date')
+            events = self.events_attending.filter(talk__published=True, talk__speaker__published=True)
+        
+        return events.filter(date__gt=datetime.now()).order_by('date')
 
     def published_past_events_attended(self, user_profile=None):
         if user_profile:
-            return self.events_attending.filter(
-                Q(talk__published=True) | Q(talk__speakers__in=[request.user.get_profile()]),
-                talk__speakers__published=True, date__lt=datetime.now()
-                ).order_by('-date')
+            events = self.events_attending.filter(
+                    Q(talk__published=True, talk__speaker__published=True
+                        ) | Q(talk__speaker=request.user.get_profile()))
         else:
-            return self.events_attending.filter(
-                talk__published=True, talk__speakers__published=True, date__lt=datetime.now()
-                ).order_by('-date')
+            events = self.events_attending.filter(talk__published=True, talk__speaker__published=True)
+
+        return events.filter(date__lt=datetime.now()).order_by('-date')
 
 
 

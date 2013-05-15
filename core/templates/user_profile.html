@@ -20,11 +20,22 @@
                     </div>
                     <div class="span3">
                         <div class="edit-buttons btn-group">
-                            {% if not user.is_anonymouse and speaker not in user.get_profile.following.all %}
-                                <a class="btn btn-warning" href="/speaker/{{speaker.user.username}}/follow?last=/speaker/{{speaker.user.username}}">Follow Me</a>
-                                {% elif not user.is_anonymous %}
-                                <div class="label label-warning">Following</div>
+                            {% if speaker.published %}
+                                <a class="btn btn-warning" href="/profile/archive">
+                                    <i class="icon-ban-circle"></i> Hide
+                                </a>
+                            {% else %}
+                                <a class="btn btn-warning" href="/profile/publish">
+                                    <i class="icon-ok"></i> Publish
+                                </a>
                             {% endif %}
+
+                            <a class="btn btn-warning" href="/profile/edit">
+                                <i class="icon-pencil"></i> Edit Profile
+                            </a>
+                            <a class="btn btn-warning" href="/talk/new">
+                                <i class="icon-plus"></i> Add Talk
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -160,6 +171,15 @@
                         {% endif %}
                     </div>
 
+                    {% if not talks %}
+                        <div class="span9">
+                            <h4>
+                                You don't have any talks. Would you like to 
+                                <a class="btn btn-warning" href="/talk/new">add one now?</a>
+                            </h4>
+                        </div>
+                    {% endif %}
+
                     {% if upcoming %}
                         <div class="span9" style="margin-top: 40px;">
                             <h2>Future Events</h2>
@@ -193,8 +213,6 @@
                                         </ul>
                                     </div>
                                 </div>
-                            {% else %}
-                                <h2>This speaker hasn't added any talks.</h2>
                             {% endif %}
                         </div>
                     {% endif %}

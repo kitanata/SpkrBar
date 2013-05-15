@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
 {% block 'content' %}
-    {% if form.errors %}
+    {% if profile_form.errors %}
         <div class="alert alert-error">
             {{profile_form.errors}}
         </div>
-        {% endif %}
+    {% endif %}
 
     <div id="profile">
         <div class="row">

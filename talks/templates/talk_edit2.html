@@ -1,0 +1,149 @@
+{% extends 'talk_base.html' %}
+
+{% block 'content' %}
+    {% if talk_form.errors %}
+        <div class="alert alert-error">
+            {{talk_form.errors}}
+        </div>
+    {% endif %}
+
+    <div id="talk">
+        <div class="row">
+            <div class="span3">
+                <div class="row">
+                    <div class="span3">
+                        <div class="well talk-photo">
+                            {% if talk.photo %}
+                                <img src="{{STATIC_URL}}img/photo/{{ talk.photo}}"></img>
+                            {% else %}
+                                <i class="icon-camera profile-placeholder"></i>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="span3">
+                        <h3>Speakers</h3>
+                        <ul class="speakers">
+                            {% for speaker in talk.speakers.all %}
+                                {% if speaker.published %}
+                                    <li>
+                                        <div class="speaker well">
+                                            {% if speaker.photo %}
+                                                <img src="{{STATIC_URL}}img/photo/{{ speaker.photo}}"></img>
+                                            {% else %}
+                                                <i class="icon-camera profile-placeholder"></i>
+                                            {% endif %}
+
+                                            <div class="about">
+                                                <h4>
+                                                    <a href="/speaker/{{speaker.user.username}}">
+                                                    {{ speaker.user.get_full_name }}
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="span3">
+                        <div class="tags">
+                            <h3>Tags</h3>
+                            <ul>
+                                {% for tag in talk.tags.all %}
+                                <li>{{ tag.name }}</li>
+                                {% endfor %}
+                            </ul>
+
+                            <form action="/talk/{{talk.id}}/tag/new/" method="POST">
+                                {% csrf_token %}
+                                <input name="tag" type="text" placeholder="My Tag"/>
+                                <input class="btn btn-warning" type="submit" value="Tag this talk" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="span3">
+                        <h3>Future Events</h3>
+
+                        {% for event in events %}
+                            <div class="location">
+                                <h4>{{ event.location.name }}</h4>
+                                <h5>{{ event.date }}</h5>
+                                <p>{{event.location.address}}</p>
+                                <p>{{event.location.city}}, {{ event.location.state }} {{ event.location.zip_code }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="span9">
+                <div class="talk-detail">
+                    {% include '_talk_edit_links_partial.html' %}
+
+                    <h2 class="pull-left">
+                        {{ talk.name }}
+                        {% if talk.endorsements.count %}
+                            ({{ talk.endorsements.count }} <i class="icon-thumbs-up"></i>)
+                        {% endif %}
+                    </h2>
+                    <div class="clearfix"></div>
+
+                    <h3>Abstract</h3>
+                    <p>{{ talk.abstract }}</p>
+
+                    {% if talk.talkvideo_set.all %}
+                        <h3>Videos</h2>
+                        {% for video in talk.talkvideo_set.all %}
+                            {% if video.video_type == "YOUTUBE" %}
+                                <iframe width="300" height="225" src="{{ video.url_target }}" frameborder="0" allowfullscreen></iframe>
+                            {% elif video.video_type == "VIMEO" %}
+                                <iframe src="{{ video.url_target }}" width="300" height="225" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+
+                    {% if attendees %}
+                        <h3>Attendees</h3>
+                        {% for profile in attendees %}
+                            <a href="/speaker/{{profile.user.username}}">{{profile.user.get_full_name}}</a>
+                        {% endfor %}
+                    {% endif %}
+
+                    {% if user.get_profile not in talk.speakers.all %}
+                        <div class="comments">
+                            <h3>Comments</h3>
+
+                            {% if talk.talkcomment_set.all %}
+                                <ul>
+                                    {% for comment in talk.talkcomment_set.all %}
+                                        <li>
+                                            <h4>{{comment.reviewer.user.get_full_name}} said...</h4>
+                                            <p>
+                                                {{comment.comment}}
+                                            </p>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block 'scripts' %}
+<script type="text/javascript">
+</script>
+{% endblock %}

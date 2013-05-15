@@ -1,0 +1,160 @@
+{% extends 'event_base.html' %}
+
+{% block 'head' %}
+    {{ form.media }}
+{% endblock %}
+
+{% block 'content' %}
+<div id="event-new">
+    <div class="row">
+        <div class="span3">
+            <div class="well talk-photo">
+                {% if talk.photo %}
+                    <img src="{{STATIC_URL}}img/photo/{{ talk.photo}}"></img>
+                {% else %}
+                    <i class="icon-camera profile-placeholder"></i>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="span9">
+            <div class="talk-detail">
+                <h2>
+                    {{ talk.name }}
+                    {% if talk.endorsements.count %}
+                        ({{ talk.endorsements.count }} <i class="icon-thumbs-up"></i>)
+                    {% endif %}
+                </h2>
+                <div class="clearfix"></div>
+
+                <h3>Abstract</h3>
+                <p>{{ talk.abstract }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span6">
+            <h2>Create a new Event</h2>
+            <div class="row">
+                <div class="span1">
+                    <div style="margin-top:5px;">
+                        Location:
+                    </div>
+                </div>
+                <div class="span5">
+                    <input id="id_location" placeholder="Enter the location name or city or state" type="text" autocomplete="off"></input>
+                    <span class="search addon">
+                        <i class="icon-search"></i>
+                    </span>
+
+                    <button id="add-location" href="#add-location-popup" class="btn btn-warning">
+                        <i class="icon-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span1">
+                    <div style="margin-top: 5px;">
+                        Date:
+                    </div>
+                </div>
+                <div class="span5">
+                    <input id="id_date" type="text"></input>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span6">
+                    <button id="create-event" class="btn btn-warning" type="submit">Create Event</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="span6">
+            <div id="map"></div>
+        </div>
+    </div>
+</div>
+
+<div style="display:none">
+    <div id="add-location-popup" style="background-color:white; padding: 40px;">
+        <h2>Add New Location</h2>
+        <form action="/location/new/?next=/talk/{{talk.pk}}/event/new" method="POST">
+            {% csrf_token %}
+            {{ location_form.as_p }}
+
+            <button class="btn btn-warning" type="submit">Add Location</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block 'scripts' %}
+<script type="text/javascript">
+    $('#add-location').colorbox({inline: true, width:"300px"});
+
+    L.Icon.Default.imagePath = '{{STATIC_URL}}img/';
+
+    // create a map in the "map" div, set the view to a given place and zoom
+    var map = L.map('map').setView([39.95, -82.95], 6);
+
+    // add an OpenStreetMap tile layer
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+    var locationModels = {}
+    var locations = []
+
+    {% for location in locations %}
+        var name = "{{location.name}} - {{location.city}}, {{location.state}}"
+        locations.push(name);
+        locationModels[name] = {
+            id: "{{location.pk}}",
+            querystring: "{{location.geocode_querystring}}"
+        };
+
+        var url = "http://nominatim.openstreetmap.org/search/{{location.geocode_querystring}}?format=json"
+
+        $.get(url, function(data) {
+            if(data.length != 0) {
+                L.marker([data[0].lat, data[0].lon]).addTo(map).bindPopup(
+                    '<h4><a href="{{location.get_absolute_url}}">{{location.name}}</a></h4><br />{{location.address}}<br />{{location.city}}, {{location.state}} {{location.zip_code}}');
+            }
+        });
+    {% endfor %}
+
+    var currentLocation = null;
+    $('#id_location').typeahead({
+        source: locations, 
+        updater: function(selection){
+            currentLocation = locationModels[selection];
+
+            var url = "http://nominatim.openstreetmap.org/search/" + currentLocation.querystring + "?format=json"
+
+            $.get(url, function(data) {
+                if(data.length != 0) {
+                    map.setView([data[0].lat, data[0].lon], 12);
+                }
+            });
+
+            return selection;
+        }
+    });
+
+    $('#id_date').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii'
+    });
+
+    $('#create-event').on('click', function(){
+        $.post("/talk/{{talk.pk}}/event/new/", {
+            'location': currentLocation.id,
+            'date': $("#id_date").val()
+        }, function(){
+            window.location = "{{talk.get_absolute_url}}"
+        });
+    });
+</script>
+            <form action="/talk/{{talk.pk}}/event/new/" method="POST">
+{% endblock %}

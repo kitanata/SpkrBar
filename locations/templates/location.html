@@ -60,21 +60,19 @@
             }).addTo(map);
 
         var url = "http://nominatim.openstreetmap.org/search/{{city_querystring}}?format=json"
-        console.log(url);
-
         $.get(url, function(data) {
             if(data.length != 0) {
                 map.setView([data[0].lat, data[0].lon], 12);
+
+                var url = "http://nominatim.openstreetmap.org/search/{{querystring}}?format=json"
+                $.get(url, function(data) {
+                    if(data.length != 0) {
+                        L.marker([data[0].lat, data[0].lon]).addTo(map).bindPopup(
+                        '<h4>{{location.name}}</h4><br />{{location.address}}<br />{{location.city}}, {{location.state}} {{location.zip_code}}').openPopup();
+                    }
+                });
             }
         });
 
-        var url = "http://nominatim.openstreetmap.org/search/{{querystring}}?format=json"
-        console.log(url);
-
-        $.get(url, function(data) {
-            if(data.length != 0) {
-                L.marker([data[0].lat, data[0].lon]).addTo(map).bindPopup('The Location is Here').openPopup();
-            }
-        });
     </script>
 {% endblock %}

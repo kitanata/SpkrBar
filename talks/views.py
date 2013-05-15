@@ -8,32 +8,15 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from django.db.models import Q
 
+from events.models import Event
 from locations.models import Location
 from locations.forms import LocationForm
 from core.models import UserProfile
-from .models import Talk, TalkEvent, TalkTag, TalkComment
+
+
+from .models import Talk, TalkTag, TalkComment
 from .forms import TalkForm
 from .helpers import group_talk_events_by_date
-
-def talk_list(request):
-
-    if request.user.is_anonymous():
-        events = TalkEvent.objects.filter(
-                talk__speakers__published=True,
-                talk__published=True, date__gt=datetime.now()
-                ).order_by('date')[:20]
-    else:
-        events = TalkEvent.objects.filter(
-                Q(talk__speakers__published=True) | Q(talk__speakers__in=[request.user.get_profile()]),
-                talk__published=True, date__gt=datetime.now()
-                ).order_by('date')[:20]
-
-    event_groups = group_talk_events_by_date(events)
-
-    return render_to_response("talk_list.html", {
-        'event_groups': event_groups
-        }, context_instance=RequestContext(request))
-
 
 def talk_new(request):
 
@@ -42,13 +25,15 @@ def talk_new(request):
         location_form = None
 
         if talk_form.is_valid():
-            talk = talk_form.save()
-            talk.speakers.add(request.user.get_profile())
+            talk = Talk()
+            talk.name = talk_form.cleaned_data['name']
+            talk.abstract = talk_form.cleaned_data['abstract']
+            talk.speaker = request.user.get_profile()
 
             if 'photo' in request.FILES:
                 photo = request.FILES['photo']
 
-                with open('talk/static/img/photo/' + photo.name, 'wb+') as destination:
+                with open('talks/static/img/photo/' + photo.name, 'wb+') as destination:
                     for chunk in photo.chunks():
                         destination.write(chunk)
 
@@ -70,7 +55,7 @@ def talk_new(request):
 def talk_detail(request, talk_id):
     talk = get_object_or_404(Talk, pk=talk_id)
 
-    events = TalkEvent.objects.filter(talk__id=talk_id)
+    events = Event.objects.filter(talk__id=talk_id)
     attendees = UserProfile.objects.filter(events_attending__in=events)
 
     if request.user.is_anonymous():
@@ -112,6 +97,7 @@ def talk_edit(request, talk_id):
     location_form = LocationForm()
 
     return render_to_response('talk_edit.html', {
+        'talk': talk,
         'talk_form': talk_form,
         'location_form': location_form
         }, context_instance=RequestContext(request))
@@ -122,17 +108,6 @@ def talk_delete(request, talk_id):
     talk.delete()
 
     return redirect('/speaker/' + request.user.username)
-
-
-def location_new(request):
-    if request.method == 'POST': # If the form has been submitted...
-        location_form = LocationForm(request.POST)
-
-        if location_form.is_valid():
-            location = location_form.save()
-            location.save()
-
-    return redirect('/talk/new')
 
 
 def talk_tag_new(request, talk_id):
@@ -155,14 +130,25 @@ def talk_tag_new(request, talk_id):
 def talk_comment_new(request, talk_id):
     talk = get_object_or_404(Talk, pk=talk_id)
 
+    if talk.speaker == request.user.get_profile():
+        return redirect('/talk/' + talk_id)
+
     if request.method == "POST":
-        if request.user.get_profile() not in talk.speakers.all():
+        anon = UserProfile.get(user__username="anonymous")
+
+        if request.user.is_anonymous():
+            comment = TalkComment(
+                    talk=talk,
+                    reviewer=anon,
+                    comment= request.POST['comment'])
+        else:
             comment = TalkComment(
                     talk=talk,
                     reviewer=request.user.get_profile(),
-                    comment = request.POST['comment'])
+                    comment= request.POST['comment'])
 
-            comment.save()
+        comment.save()
+
 
     return redirect('/talk/' + talk_id)
 

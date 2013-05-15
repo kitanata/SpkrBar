@@ -1,6 +1,6 @@
 <div class="span4">
     <li>
-        <h4><a href="/talk/{{event.talk.pk}}">{{ event.talk.name|truncatechars:30 }}</a></h4>
+        <h4><a href="/event/{{event.pk}}">{{ event.talk.name|truncatechars:30 }}</a></h4>
         <h5>{{ event.date }}</h5>
         {% if event.talk.photo %}
         <img class="pull-left" src="{{STATIC_URL}}img/photo/{{event.talk.photo}}">

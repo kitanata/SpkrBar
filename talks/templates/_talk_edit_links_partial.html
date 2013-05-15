@@ -1,0 +1,39 @@
+<div class="navbar pull-right" style="margin-top:10px">
+    <div class="btn-group talk-links">
+        {% if user.get_profile == talk.speaker %}
+            {% if talk.published %}
+                <a href="/talk/{{talk.id}}/event/new" class="btn btn-warning" data-toggle="tooltip" data-original-title="Add New Event">
+                    <i class="icon-plus"></i>
+                </a>
+                <a class="btn btn-warning" href="/talk/{{talk.id}}/archive?last={{last}}" data-toggle="tooltip" data-original-title="Archive Talk">
+                    <i class="icon-ban-circle"></i>
+                </a>
+            {% else %}
+                <a class="btn btn-warning" href="/talk/{{talk.id}}/publish?last={{last}}" data-toggle="tooltip" data-original-title="Publish Talk">
+                    <i class="icon-ok"></i>
+                </a>
+            {% endif %}
+            <a class="btn btn-warning" href="/talk/{{talk.id}}/edit" data-toggle="tooltip" data-original-title="Edit Talk">
+                <i class="icon-pencil"></i>
+            </a>
+            <a class="btn btn-warning delete-talk" data-name="{{talk.name}}" data-id="{{talk.id}}" href="#delete-talk-popup" data-toggle="tooltip" data-original-title="Delete Talk">
+                <i class="icon-trash"></i>
+            </a>
+        {% elif not user.is_anonymous %}
+            {% if user.get_profile in talk.attendees.all and user.get_profile not in talk.endorsements.all %}
+                <a class="btn btn-warning" href="/talk/{{talk.id}}/endorse?last={{last}}">
+                    <i class="icon-thumbs-up"></i> Endorse
+                </a>
+            {% endif %}
+            {% if user.get_profile not in talk.attendees.all %}
+                <a class="btn btn-warning" href="/talk/{{talk.id}}/attend?last={{last}}">
+                    <i class="icon-calendar"></i> Attend
+                </a>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('.talk-links a').tooltip()
+</script>

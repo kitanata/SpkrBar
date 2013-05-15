@@ -1,7 +1,7 @@
 from datetime import datetime
 from itertools import groupby
 
-def group_talk_events_by_date(talks, reverse=False):
+def group_events_by_date(talks, reverse=False):
     talks = [{
         'month_num': k,
         'date': datetime(month=k[0], year=k[1], day=1).strftime("%B %Y"),

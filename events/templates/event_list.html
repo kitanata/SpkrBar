@@ -1,4 +1,4 @@
-{% extends 'talk_base.html' %}
+{% extends 'event_base.html' %}
 
 {% block 'callout' %}
     {% if user.is_anonymous %}
@@ -28,14 +28,11 @@
                 <h3>{{ group.date }}</h3>
             </div>
 
-            <div class="talks">
-                <ul>
-                    {% for event in group.events %}
-                        {% include '_talk_thumb_detailed_partial.html' %}
-                    {% endfor %}
-                </ul>
-            </div>
+            <ul class="events">
+                {% for event in group.events %}
+                    {% include '_event_thumb_detail_partial.html' %}
+                {% endfor %}
+            </ul>
         </div>
     {% endfor %}
-
 {% endblock %}

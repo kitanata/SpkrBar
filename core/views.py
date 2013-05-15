@@ -15,8 +15,11 @@ from django.db import IntegrityError
 from django.db.models import Q
 
 from .models import Location, UserProfile, UserLink, UserTag
-from talks.models import Talk, TalkEvent
-from talks.helpers import group_talk_events_by_date
+from talks.models import Talk
+
+from events.models import Event
+from events.helpers import group_events_by_date
+
 from .forms import EditProfileForm, ProfilePhotoForm, ProfileLinkForm, ProfileTagForm
 
 random.seed(datetime.now())
@@ -78,6 +81,11 @@ def load_fixtures(request):
     speaker.about_me = "I'm a little teapot, short and stout!"
     speaker.save()
 
+    user = User.objects.create_user('anonymous', "anonymouse@spkrbar.com", "Golden Unicorns are Furry.")
+    user.first_name = "John/Jane"
+    user.last_name = "Doe"
+    user.save()
+
     for i in range(0, 200):
 
         #Every 10 make a new location and user/speaker
@@ -117,11 +125,11 @@ def load_fixtures(request):
 
         if i % 3 == 0:
             talk.published = False
-        
+       
+        talk.speaker = speaker
         talk.save()
-        talk.speakers.add(speaker)
 
-        event = TalkEvent()
+        event = Event()
         event.talk = talk
         event.date = datetime(year, month, day, hour, minute)
         event.location = location
@@ -279,19 +287,21 @@ def speakers(request):
 def speaker_detail(request, username):
     speaker = get_object_or_404(User, username=username).get_profile()
 
-    if not request.user.is_anonymous():
-        talks = TalkEvent.objects.filter(Q(talk__published=True, talk__speakers__published=True
-            ) | Q(talk__speakers__in=[request.user.get_profile()]))
+    if request.user.is_anonymous():
+        events = Event.published_events()
+        talks = Talk.published_talks()
     else:
-        talks = TalkEvent.objects
+        events = Event.published_events(user_profile=request.user.get_profile())
+        talks = Talk.published_talks(user_profile=request.user.get_profile())
 
-    talks = talks.filter(talk__speakers__in=[speaker])
+    events = events.filter(talk__speaker=speaker)
+    talks = talks.filter(speaker=speaker)
 
-    upcoming = talks.filter(date__gt=datetime.now()).order_by('date')[:5]
-    upcoming = group_talk_events_by_date(upcoming)
+    upcoming = events.filter(date__gt=datetime.now()).order_by('date')[:5]
+    upcoming = group_events_by_date(upcoming)
 
-    past = talks.filter(date__lt=datetime.now()).order_by('-date')[:20]
-    past = group_talk_events_by_date(past, reverse=True)
+    past = events.filter(date__lt=datetime.now()).order_by('-date')[:20]
+    past = group_events_by_date(past, reverse=True)
 
     if request.user.is_anonymous():
         following = speaker.following.filter(published=True)
@@ -299,17 +309,23 @@ def speaker_detail(request, username):
 
         attending = speaker.published_upcoming_events_attending()
         attended = speaker.published_past_events_attended()
-        attended = group_talk_events_by_date(attended, reverse=True)
+        attended = group_events_by_date(attended, reverse=True)
     else:
         following = speaker.following.filter(Q(published=True) | Q(user=request.user))
         followers = speaker.followers.filter(Q(published=True) | Q(user=request.user))
 
         attending = speaker.published_upcoming_events_attending()
         attended = speaker.published_past_events_attended()
-        attended = group_talk_events_by_date(attended, reverse=True)
+        attended = group_events_by_date(attended, reverse=True)
 
-    return render_to_response('speaker_profile.html', {
+    template = 'speaker_profile.html'
+
+    if not request.user.is_anonymous() and request.user.get_profile() == speaker:
+        template = 'user_profile.html'
+
+    return render_to_response(template, {
         'speaker': speaker,
+        'talks': talks,
         'upcoming': upcoming,
         'past': past,
         'attending': attending,

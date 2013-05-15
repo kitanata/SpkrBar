@@ -1,16 +1,7 @@
 1. Talk Onboarding Process
-- When adding a talk the location selector should be a search typeahead control
-- Locations for a talk should be a second step to the talk integration.
-- When creating a talk I should be able to search for a location or
--    add a new one to the talk.
-- Talks should be able to have new events attached to them. I may have given
-the same talk several times and so I simply would like to add a new "Event" which
-pairs the talk, the location, and the date and time. People comment on the talk
-across events, not on the single event.
-- The talk onboarding process should be:
-    1. Describe the talk
-    2. Pick a location and time for the talk (Possibly create a new location)
-    4. Return to profile
+- People comment on and endorse the talk across events, not on the single event.
+- Attendees only attend a single event.
+- The published property should be a member of an event not of a talk
 
 2. Notifications
 - As a speaker when someone follows me.
@@ -23,7 +14,7 @@ across events, not on the single event.
 3. Polish
 - Polish the site.
 
-4. Advanced Ratings
+4. Advanced Ratings (Survey)
 - As an attendee I should be able to rate a speaker on 5 qualities.
    - Engagement - Did the speaker keep attendees at the talk engaged and interested in the topic being presented?
    - Knowledge - Did the speaker seem extremely knowledgable on the subject?
@@ -45,3 +36,4 @@ across events, not on the single event.
 7. Other Stuff
 - If I click on a tag it should have me tag it too. Maybe with a plus sign.
 - A blog on the front page.
+- Guest Speakers

@@ -33,13 +33,7 @@ class CustomClearableFileInput(ClearableFileInput):
         if value and hasattr(value, "url"):
             template = """
                 <div class="row">
-                    <div class="span2">
-                        %(initial)s
-                    </div>
                     <div class="span3">
-                        %(clear_template)s
-                        <br />
-                        %(input_text)s:
                         %(input)s
                     </div>
                 </div>
@@ -53,16 +47,15 @@ class CustomClearableFileInput(ClearableFileInput):
                 """
 
 
-            substitutions['initial'] = ('<img src="' + settings.STATIC_URL + 'img/photo/%s" alt="%s"/>'
-                                        % (escape(value.url),
-                                           escape(force_unicode(value))))
+            substitutions['initial'] = ''
+
             if not self.is_required:
                 checkbox_name = self.clear_checkbox_name(name)
                 checkbox_id = self.clear_checkbox_id(checkbox_name)
                 substitutions['clear_checkbox_name'] = conditional_escape(checkbox_name)
                 substitutions['clear_checkbox_id'] = conditional_escape(checkbox_id)
-                substitutions['clear'] = CheckboxInput().render(checkbox_name, False, attrs={'id': checkbox_id})
-                substitutions['clear_template'] = clear_template % substitutions
+                substitutions['clear'] = ''
+                substitutions['clear_template'] = ''
 
         return mark_safe(template % substitutions)
 
@@ -74,4 +67,4 @@ class TalkForm(forms.ModelForm):
             'date': DateTimeWidget(),
             'photo': CustomClearableFileInput()
         }
-        exclude = ('speakers', 'media', 'published', 'tags', 'attendees', 'endorsements')
+        exclude = ('speaker', 'media', 'published', 'tags', 'attendees', 'endorsements')
