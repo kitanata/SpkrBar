@@ -64,6 +64,7 @@ def talk_detail(request, talk_id):
         attendees = attendees.filter(Q(published=True) | Q(user=request.user))
 
     return render_to_response('talk_detail.html', {
+        'last': talk.get_absolute_url(),
         'talk': talk,
         'events': events.filter(date__gt=datetime.now()),
         'attendees': attendees
