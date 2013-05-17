@@ -4,7 +4,7 @@
     <div id="speakers" class="row">
         {% for speaker in speakers %}
         <div class="span6">
-            <div class="well speaker">
+            <div class="speaker">
                 <div class="picture">
                     {% if speaker.photo %}
                         <img class="pull-left" src="{{STATIC_URL}}img/photo/{{ speaker.photo}}"></img>
