@@ -2,157 +2,11 @@
 
 {% block 'content' %}
     <div id="profile">
-        <div class="row">
-            <div class="span3">
-                <div class="well picture">
-                    {% if speaker.photo %}
-                        <img src="{{STATIC_URL}}img/photo/{{ speaker.photo}}"></img>
-                    {% else %}
-                        <i class="icon-user"></i>
-                    {% endif %}
-                </div>
-            </div>
-
-            <div class="span9">
-                <div class="row">
-                    <div class="span6">
-                        <h2>{{ speaker.user.get_full_name }}</h2>
-                    </div>
-                    <div class="span3">
-                        <div class="edit-buttons btn-group">
-                            {% if speaker.published %}
-                                <a class="btn btn-warning" href="/profile/archive">
-                                    <i class="icon-ban-circle"></i> Hide
-                                </a>
-                            {% else %}
-                                <a class="btn btn-warning" href="/profile/publish">
-                                    <i class="icon-ok"></i> Publish
-                                </a>
-                            {% endif %}
-
-                            <a class="btn btn-warning" href="/profile/edit">
-                                <i class="icon-pencil"></i> Edit Profile
-                            </a>
-                            <a class="btn btn-warning" href="/talk/new">
-                                <i class="icon-plus"></i> Add Talk
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <hr />
-                <div class="row">
-                    <div class="span9">
-                        {{ speaker.about_me }}
-                    </div>
-                </div>
-            </div>
-        </div>
+        {% include '_profile_header_partial.html' %}
 
         <div class="row">
             <div class="span3">
-
-                {% if speaker.tags.all %}
-                    <div class="row">
-                        <div class="span3">
-                            <h2>Known for</h2>
-                            <ul class="expert-area">
-                                {% for tag in speaker.tags.all %}
-                                <li class="label label-info">{{tag}}</li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-                {% endif %}
-
-                {% if speaker.userlink_set.all %}
-                    <div class="row">
-                        <div class="span3" style="margin-top:40px">
-                            <h2>Links</h2>
-                            {% for link in speaker.userlink_set.all %}
-                                <p>
-                                    <a href="{{link.url_target}}" target="_blank">My {{ link.type_name|title }} Account</a>
-                                </p>
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% endif %}
-
-                {% if followers %}
-                    <div class="row">
-                        <div class="span3" style="margin-top:40px">
-                            <h2>Followers</h2>
-                            {% for profile in followers %}
-                                <p>
-                                    <a href="/speaker/{{profile.user.username}}">
-                                        {{ profile.user.get_full_name }}
-                                    </a>
-                                </p>
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% endif %}
-
-                {% if following %}
-                    <div class="row">
-                        <div class="span3" style="margin-top:40px">
-                            <h2>Following</h2>
-                            {% for profile in following %}
-                                    <p>
-                                        <a href="/speaker/{{profile.user.username}}">
-                                            {{ profile.user.get_full_name }}
-                                        </a>
-                                    </p>
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% endif %}
-
-                {% if attended %}
-                <div class="row">
-                    <div class="span3" style="margin-top: 40px">
-                        <h2>Attended</h2>
-                        <ul class="past-talks">
-                            {% for talk in attended %}
-                                <h3>{{ talk.date }}</h3>
-                                {% for talk in talk.talks %}
-                                    <li><a href="/talk/{{talk.id}}">{{ talk.name|truncatechars:30 }}</a></li>
-                                {% endfor %}
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-                {% endif %}
-
-                {% if upcoming and talks %}
-                    <div class="span3" style="margin-top: 40px;">
-                        <h2>My Talks</h2>
-
-                        <div class="row">
-                            <ul class="past-talks">
-                                {% for talk in talks %}
-                                    <li><a href="/talk/{{talk.id}}">{{ talk.name|truncatechars:30 }}</a></li>
-                                {% endfor %}
-                            <ul>
-                        </div>
-                    </div>
-                {% endif %}
-
-
-                {% if past %}
-                    <div class="row">
-                        <div class="span3" style="margin-top: 40px">
-                            <h2>Past Events</h2>
-                            <ul class="past-talks">
-                                {% for group in past %}
-                                    <h3>{{ group.date }}</h3>
-                                    {% for event in group.events %}
-                                        <li><a href="/event/{{event.id}}">{{ event.talk.name|truncatechars:30 }}</a></li>
-                                    {% endfor %}
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-                {% endif %}
+                {% include '_profile_sidebar_partial.html' %}
             </div>
 
             <div class="span9">
@@ -180,42 +34,11 @@
                         </div>
                     {% endif %}
 
-                    {% if upcoming %}
-                        <div class="span9" style="margin-top: 40px;">
-                            <h2>Future Events</h2>
-
-                            {% for group in upcoming %}
-                                <div class="row">
-                                    <div class="span9">
-                                        <h3>{{ group.date }}</h3>
-                                        <div class="talks">
-                                            <ul>
-                                                {% for event in group.events %}
-                                                    {% include '_event_thumb_detail_partial.html' %}
-                                                {% endfor %}
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <div class="span9" style="margin-top: 40px;">
-                            {% if talks %}
-                                <h2>My Talks</h2>
-
-                                <div class="row">
-                                    <div class="talks">
-                                        <ul>
-                                            {% for talk in talks %}
-                                                {% include '_talk_thumb_detail_partial.html' %}
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
-                                </div>
-                            {% endif %}
-                        </div>
-                    {% endif %}
+                    <div class="span9" style="margin-top: 40px;">
+                        {% if talks %}
+                            {% include '_profile_my_talks_partial.html' %}
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>

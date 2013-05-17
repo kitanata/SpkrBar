@@ -1,0 +1,31 @@
+<div class="span6">
+    <li>
+        <div class="title">
+            <a href="/event/{{event.pk}}">{{ event.talk.name|truncatechars:40 }}</a><br />
+
+            <div class="pull-left">
+                <div class="location">
+                    <a href="{{ event.location.get_absolute_url }}">at {{ event.location.name }}</a><br />
+                    in {{ event.location.city }}, {{ event.location.state }}
+                </div>
+            </div>
+
+            <div class="pull-right">
+                <div class="time pull-right">
+                    {{ event.date.date }}<br />
+                    {{ event.date.time }}
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="description">
+            {% if event.talk.photo %}
+            <img class="pull-left" src="{{STATIC_URL}}img/photo/{{event.talk.photo}}">
+            {% else %}
+            <i class="icon-camera profile-placeholder pull-left"></i>
+            {% endif %}
+            <span>{{ event.talk.abstract|truncatechars:140 }}</span>
+        </div>
+    </li>
+</div>

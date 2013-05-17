@@ -1,4 +1,4 @@
-{% extends 'locations_base.html' %}
+{% extends 'base.html' %}
 
 {% block 'content' %}
     <div id="location-detail" class="row">
@@ -21,28 +21,28 @@
 
         {% if upcoming %}
             <div class="span12">
-                <h2>Upcoming talks</h2>
+                <h2>Upcoming Events</h2>
                 <hr />
-
-                <div class="row">
-                    {% for event in upcoming %}
-                        {% include '_talk_thumb_partial.html' %}
-                    {% endfor %}
-                </div>
             </div>
+
+            <ul class="events">
+                {% for event in upcoming %}
+                    {% include '_event_slate_detail_partial.html' %}
+                {% endfor %}
+            </ul>
         {% endif %}
 
         {% if past %}
             <div class="span12">
-                <h2>Past talks</h2>
+                <h2>Past Events</h2>
                 <hr />
-
-                <div class="row">
-                    {% for event in past %}
-                        {% include '_talk_thumb_partial.html' %}
-                    {% endfor %}
-                </div>
             </div>
+
+            <ul class="events">
+                {% for event in past %}
+                    {% include '_event_slate_detail_partial.html' %}
+                {% endfor %}
+            </ul>
         {% endif %}
     </div>
 {% endblock %}

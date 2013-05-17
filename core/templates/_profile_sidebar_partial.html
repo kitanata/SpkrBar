@@ -1,0 +1,33 @@
+{% if upcoming %}
+    <div class="row">
+        <div class="span3" style="margin-top: 40px">
+            <h2>Future Events</h2>
+            {% with upcoming as event_groups %}
+                {% include '_event_group_list_partial.html' %}
+            {% endwith %}
+        </div>
+    </div>
+{% endif %}
+
+{% if past %}
+    <div class="row">
+        <div class="span3" style="margin-top: 40px">
+            <h2>Past Events</h2>
+            {% with past as event_groups %}
+                {% include '_event_group_list_partial.html' %}
+            {% endwith %}
+        </div>
+    </div>
+{% endif %}
+
+{% if attended %}
+<div class="row">
+    <div class="span3" style="margin-top: 40px">
+        <h2>Attended</h2>
+        {% with attended as event_groups %}
+            {% include '_event_group_list_partial.html' %}
+        {% endwith %}
+    </div>
+</div>
+{% endif %}
+

@@ -1,0 +1,107 @@
+<div class="row">
+    <div class="span3">
+        <div class="well picture">
+            {% if speaker.photo %}
+                <img src="{{STATIC_URL}}img/photo/{{ speaker.photo}}"></img>
+            {% else %}
+                <i class="icon-user"></i>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="span9">
+        <div class="row">
+            <div class="span6">
+                <h2>{{ speaker.user.get_full_name }}</h2>
+            </div>
+            {% if not user.is_anonymous and speaker == user.get_profile %}
+                <div class="span3">
+                    <div class="edit-buttons btn-group">
+                        {% if speaker.published %}
+                            <a class="btn btn-warning" href="/profile/archive">
+                                <i class="icon-ban-circle"></i> Hide
+                            </a>
+                        {% else %}
+                            <a class="btn btn-warning" href="/profile/publish">
+                                <i class="icon-ok"></i> Publish
+                            </a>
+                        {% endif %}
+
+                        <a class="btn btn-warning" href="/profile/edit">
+                            <i class="icon-pencil"></i> Edit Profile
+                        </a>
+                        <a class="btn btn-warning" href="/talk/new">
+                            <i class="icon-plus"></i> Add Talk
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <hr />
+        <div class="row">
+            <div class="span9">
+                {{ speaker.about_me }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="features">
+    <div class="row">
+        <div class="span3">
+            <h2>Known for</h2>
+            {% if speaker.tags.all %}
+                <ul class="expert-area">
+                    {% for tag in speaker.tags.all %}
+                    <li class="label label-info">{{tag}}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                No User Tags
+            {% endif %}
+        </div>
+
+        <div class="span3">
+            <h2>Links</h2>
+            {% if speaker.userlink_set.all %}
+                {% for link in speaker.userlink_set.all %}
+                    <p>
+                        <a href="{{link.url_target}}" target="_blank">My {{ link.type_name|title }} Account</a>
+                    </p>
+                {% endfor %}
+            {% else %}
+                No Outside Links
+            {% endif %}
+        </div>
+
+        <div class="span3">
+            <h2>Followers</h2>
+            {% if followers %}
+                {% for profile in followers %}
+                    <p>
+                        <a href="/speaker/{{profile.user.username}}">
+                            {{ profile.user.get_full_name }}
+                        </a>
+                    </p>
+                {% endfor %}
+            {% else %}
+                No Followers
+            {% endif %}
+        </div>
+
+        <div class="span3">
+            <h2>Following</h2>
+            {% if following %}
+                {% for profile in following %}
+                        <p>
+                            <a href="/speaker/{{profile.user.username}}">
+                                {{ profile.user.get_full_name }}
+                            </a>
+                        </p>
+                {% endfor %}
+            {% else %}
+                Not Following Anyone
+            {% endif %}
+        </div>
+    </div>
+</div>

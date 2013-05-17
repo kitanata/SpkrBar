@@ -1,0 +1,11 @@
+<h2>My Talks</h2>
+
+<div class="row">
+    <div class="talks">
+        <ul>
+            {% for talk in talks %}
+                {% include '_talk_thumb_detail_partial.html' %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>

@@ -135,7 +135,7 @@ def talk_comment_new(request, talk_id):
         return redirect('/talk/' + talk_id)
 
     if request.method == "POST":
-        anon = UserProfile.get(user__username="anonymous")
+        anon = get_object_or_404(UserProfile, user__username="anonymous")
 
         if request.user.is_anonymous():
             comment = TalkComment(
