@@ -20,13 +20,12 @@
                 <i class="icon-trash"></i>
             </a>
         {% elif not user.is_anonymous %}
-            {% if user.get_profile in talk.attendees.all and user.get_profile not in talk.endorsements.all %}
+            {% if user_attending and not user_endorsed %}
                 <a class="btn btn-warning" href="/talk/{{talk.id}}/endorse?last={{last}}">
                     <i class="icon-thumbs-up"></i> Endorse
                 </a>
-            {% endif %}
-            {% if user.get_profile not in talk.attendees.all %}
-                <a class="btn btn-warning" href="/talk/{{talk.id}}/attend?last={{last}}">
+            {% elif event and not user_attending %}
+                <a class="btn btn-warning" href="/event/{{event.id}}/attend?last={{last}}">
                     <i class="icon-calendar"></i> Attend
                 </a>
             {% endif %}

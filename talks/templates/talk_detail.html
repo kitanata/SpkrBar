@@ -2,20 +2,9 @@
 
 {% block 'content' %}
 <div id="talk">
+    {% include '_talk_header_partial.html' %}
     <div class="row">
         <div class="span3">
-            <div class="row">
-                <div class="span3">
-                    <div class="well talk-photo">
-                        {% if talk.photo %}
-                            <img src="{{STATIC_URL}}img/photo/{{ talk.photo}}"></img>
-                        {% else %}
-                            <i class="icon-camera profile-placeholder"></i>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-
             <div class="row">
                 <div class="span3">
                     <h3>Speaker</h3>
@@ -65,16 +54,6 @@
 
         <div class="span9">
             <div class="talk-detail">
-                {% include '_talk_edit_links_partial.html' %}
-
-                <h2 class="pull-left">
-                    {{ talk.name }}
-                    {% if talk.endorsements.count %}
-                        ({{ talk.endorsements.count }} <i class="icon-thumbs-up"></i>)
-                    {% endif %}
-                </h2>
-                <div class="clearfix"></div>
-
                 <h3>Abstract</h3>
                 <p>{{ talk.abstract }}</p>
 

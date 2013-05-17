@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'events.views.event_list'),
     url(r'^event/(?P<event_id>\d+)/$', 'events.views.event_detail'),
+    url(r'^event/(?P<event_id>\d+)/attend/$', 'events.views.event_attendee_new'),
     url(r'^talk/(?P<talk_id>\d+)/event/new/$', 'events.views.event_new'),
 
     url(r'^talk/new/$', 'talks.views.talk_new'),
@@ -18,7 +19,6 @@ urlpatterns = patterns('',
 
     url(r'^talk/(?P<talk_id>\d+)/tag/new/$', 'talks.views.talk_tag_new'),
     url(r'^talk/(?P<talk_id>\d+)/comment/new/$', 'talks.views.talk_comment_new'),
-    url(r'^talk/(?P<talk_id>\d+)/attend/$', 'talks.views.talk_attendee_new'),
     url(r'^talk/(?P<talk_id>\d+)/endorse/$', 'talks.views.talk_endorsement_new'),
     url(r'^talk/(?P<talk_id>\d+)/publish/$', 'talks.views.talk_publish'),
     url(r'^talk/(?P<talk_id>\d+)/archive/$', 'talks.views.talk_archive'),

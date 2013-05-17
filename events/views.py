@@ -32,14 +32,28 @@ def event_list(request):
 def event_detail(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
 
-    if request.user.is_anonymous:
+    user_attending = False
+    user_endorsed = False
+    will_have_links = False
+
+    if request.user.is_anonymous():
         attendees = event.attendees.filter(Q(published=True))
     else:
         attendees = event.attendees.filter(Q(published=True) | Q(user=request.user))
+        user_attending = (request.user.get_profile() in attendees)
+        user_endorsed = (request.user.get_profile() in event.talk.endorsements.all())
+
+        will_have_links = (request.user.get_profile() == event.talk.speaker)
+
+    if not user_attending or not user_endorsed:
+        will_have_links = True
 
     return render_to_response('event_detail.html', {
         'event': event,
         'attendees': attendees,
+        'user_attending': user_attending,
+        'user_endorsed': user_endorsed,
+        'will_have_links': will_have_links,
         }, context_instance=RequestContext(request))
 
 
@@ -64,3 +78,17 @@ def event_new(request, talk_id):
             'location_form': location_form,
             'locations': locations,
             }, context_instance=RequestContext(request))
+
+
+def event_attendee_new(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+
+    event.attendees.add(request.user.get_profile())
+    event.save()
+
+    if 'last' in request.GET and request.GET['last'] != '':
+        return redirect(request.GET['last'])
+    else:
+        return redirect('/event/' + event_id)
+
+

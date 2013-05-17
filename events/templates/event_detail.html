@@ -2,20 +2,10 @@
 
 {% block 'content' %}
 <div id="event-detail">
+    {% include '_event_header_partial.html' %}
+
     <div class="row">
         <div class="span3">
-            <div class="row">
-                <div class="span3">
-                    <div class="well talk-photo">
-                        {% if event.talk.photo %}
-                            <img src="{{STATIC_URL}}img/photo/{{ event.talk.photo}}"></img>
-                        {% else %}
-                            <i class="icon-camera profile-placeholder"></i>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-
             <div class="row">
                 <div class="span3">
                     <h3>Location</h3>
@@ -74,22 +64,7 @@
         </div>
 
         <div class="span9">
-            <div>
-                {% include '_talk_edit_links_partial.html' %}
-
-                <h2 class="date">{{event.date}}</h2>
-                <div class="clearfix"></div>
-            </div>
-
             <div class="talk-detail">
-                <h2 class="talk-name">
-                    <a href="{{event.talk.get_absolute_url}}">{{ event.talk.name }}</a>
-                    {% if event.talk.endorsements.count %}
-                        ({{ event.talk.endorsements.count }} <i class="icon-thumbs-up"></i>)
-                    {% endif %}
-                </h2>
-                <div class="clearfix"></div>
-
                 <h3>Abstract</h3>
                 <p>{{ event.talk.abstract }}</p>
 

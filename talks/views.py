@@ -51,23 +51,37 @@ def talk_new(request):
         'location_form' : location_form
         }, context_instance=RequestContext(request))
 
-    
+   
 def talk_detail(request, talk_id):
     talk = get_object_or_404(Talk, pk=talk_id)
 
     events = Event.objects.filter(talk__id=talk_id)
     attendees = UserProfile.objects.filter(events_attending__in=events)
 
+    user_attending = False
+    user_endorsed = False
+    will_have_links = False
+
     if request.user.is_anonymous():
         attendees = attendees.filter(Q(published=True))
     else:
+        user_attending = (request.user.get_profile() in attendees)
+        user_endorsed = (request.user.get_profile() in talk.endorsements.all())
         attendees = attendees.filter(Q(published=True) | Q(user=request.user))
+
+        will_have_links = (request.user.get_profile() == talk.speaker)
+
+    if not user_attending or not user_endorsed:
+        will_have_links = True
 
     return render_to_response('talk_detail.html', {
         'last': talk.get_absolute_url(),
         'talk': talk,
         'events': events.filter(date__gt=datetime.now()),
-        'attendees': attendees
+        'attendees': attendees,
+        'user_attending': user_attending,
+        'user_endorsed': user_endorsed,
+        'will_have_links': will_have_links,
         }, context_instance=RequestContext(request))
 
 
@@ -160,19 +174,7 @@ def talk_endorsement_new(request, talk_id):
     talk.endorsements.add(request.user.get_profile())
     talk.save()
 
-    if 'last' in request.GET:
-        return redirect(request.GET['last'])
-    else:
-        return redirect('/talk/' + talk_id)
-
-
-def talk_attendee_new(request, talk_id):
-    talk = get_object_or_404(Talk, pk=talk_id)
-
-    talk.attendees.add(request.user.get_profile())
-    talk.save()
-
-    if 'last' in request.GET:
+    if 'last' in request.GET and request.GET['last'] != '':
         return redirect(request.GET['last'])
     else:
         return redirect('/talk/' + talk_id)
@@ -183,7 +185,7 @@ def talk_archive(request, talk_id):
     talk.published = False
     talk.save()
 
-    if 'last' in request.GET:
+    if 'last' in request.GET and request.GET['last'] != '':
         return redirect(request.GET['last'])
     else:
         return redirect('/talk/' + talk_id)
@@ -194,7 +196,7 @@ def talk_publish(request, talk_id):
     talk.published = True
     talk.save()
 
-    if 'last' in request.GET:
+    if 'last' in request.GET and request.GET['last'] != '':
         return redirect(request.GET['last'])
     else:
         return redirect('/talk/' + talk_id)
