@@ -1,13 +1,15 @@
-<div class="span9">
-    {% if attending %}
-        <h2>Attending</h2>
-        <hr />
+<div class="row">
+    <div class="span9">
+        {% if attending %}
+            <h2>Attending</h2>
+            <hr />
 
-        <div class="row">
-            {% for event in attending %}
-                {% include '_event_thumb_detail_partial.html' %}
-            {% endfor %}
-        </div>
+            <div class="row">
+                {% for event in attending %}
+                    {% include '_event_thumb_detail_partial.html' %}
+                {% endfor %}
+            </div>
 
-    {% endif %}
+        {% endif %}
+    </div>
 </div>

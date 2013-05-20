@@ -16,9 +16,7 @@
 
         <div class="span9">
             {% if will_have_links %}
-                {% with event.talk as talk %}
-                    {% include '_talk_edit_links_partial.html' %}
-                {% endwith %}
+                {% include '_event_edit_links_partial.html' %}
 
                 <h2 class="short date pull-left">{{event.date}}</h2>
                 <div class="clearfix"></div>

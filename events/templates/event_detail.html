@@ -117,29 +117,22 @@
     </div>
 </div>
 
-<!-- This contains the hidden content for inline calls -->
-<div style='display:none'>
-    <div id="delete-talk-popup" style="background-color:white; padding: 40px;">
-        <h2 class="delete-talk-name"></h2>
-        <div style="font-size: 18px;">
-            <p>Are you sure you want to delete this talk?</p>
-            <p><b>This operation cannot be undone.</b></p>
-        </div>
-
-        <a class="delete-confirm-link btn btn-danger" href="#" style="margin-top: 20px;">Yes. Delete this talk<a>
-    </div>
-</div>
 {% endblock %}
 
 {% block 'scripts' %}
-<script type="text/javascript">
-    $('.delete-talk').colorbox({inline: true, width:"300px"});
+    <script type="text/javascript">
+        $('.talk-links a').tooltip()
 
-    $('.delete-talk').click(function(el){
-        var sel = $(el.currentTarget)
+        $('.delete-event').colorbox({inline: true, width:"400px"});
 
-        $('.delete-talk-name').text(sel.data('name'))
-        $('.delete-confirm-link').attr('href', "/talk/" + sel.data('id') + "/delete/")
-    });
-</script>
+        $('.delete-event').click(function(el){
+            var sel = $(el.currentTarget)
+
+            $('.delete-event-name').text(sel.data('name'))
+            $('.delete-event-date').text(sel.data('date'))
+            $('.delete-event-time').text(sel.data('time'))
+            $('.delete-event-location').text(sel.data('location'))
+            $('.delete-confirm-link').attr('href', "/event/" + sel.data('id') + "/delete/")
+        });
+    </script>
 {% endblock %}

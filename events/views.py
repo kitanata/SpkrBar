@@ -80,6 +80,38 @@ def event_new(request, talk_id):
             }, context_instance=RequestContext(request))
 
 
+def event_edit(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+
+    if request.method == "POST":
+        event.date = datetime.strptime(request.POST['date'], "%Y-%m-%d %H:%M")
+        event.location = get_object_or_404(Location, pk=request.POST['location'])
+        event.save()
+
+        return HttpResponse(json.dumps({}), mimetype="application/json")
+    else:
+        location_form = LocationForm()
+
+        locations = Location.objects.all()
+
+        date = event.date.strftime("%Y-%m-%d %H:%M")
+
+        return render_to_response('event_edit.html', {
+            'event': event,
+            'date': date,
+            'location_form': location_form,
+            'locations': locations
+            }, context_instance=RequestContext(request))
+
+
+def event_delete(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+    talk = event.talk
+    event.delete()
+
+    return redirect(talk)
+
+
 def event_attendee_new(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
 

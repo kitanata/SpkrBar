@@ -9,6 +9,8 @@ urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'events.views.event_list'),
     url(r'^event/(?P<event_id>\d+)/$', 'events.views.event_detail'),
+    url(r'^event/(?P<event_id>\d+)/edit/$', 'events.views.event_edit'),
+    url(r'^event/(?P<event_id>\d+)/delete/$', 'events.views.event_delete'),
     url(r'^event/(?P<event_id>\d+)/attend/$', 'events.views.event_attendee_new'),
     url(r'^talk/(?P<talk_id>\d+)/event/new/$', 'events.views.event_new'),
 

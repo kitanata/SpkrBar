@@ -320,7 +320,7 @@ def speaker_detail(request, username):
 
     template = 'speaker_profile.html'
 
-    if not request.user.is_anonymous() and request.user.get_profile() == speaker:
+    if request.user == speaker.user:
         template = 'user_profile.html'
 
     return render_to_response(template, {

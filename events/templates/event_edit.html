@@ -9,8 +9,8 @@
     <div class="row">
         <div class="span3">
             <div class="well talk-photo">
-                {% if talk.photo %}
-                    <img src="{{STATIC_URL}}img/photo/{{ talk.photo}}"></img>
+                {% if event.talk.photo %}
+                    <img src="{{STATIC_URL}}img/photo/{{ event.talk.photo}}"></img>
                 {% else %}
                     <i class="icon-camera profile-placeholder"></i>
                 {% endif %}
@@ -20,21 +20,21 @@
         <div class="span9">
             <div class="talk-detail">
                 <h2>
-                    {{ talk.name }}
-                    {% if talk.endorsements.count %}
-                        ({{ talk.endorsements.count }} <i class="icon-thumbs-up"></i>)
+                    {{ event.talk.name }}
+                    {% if event.talk.endorsements.count %}
+                        ({{ event.talk.endorsements.count }} <i class="icon-thumbs-up"></i>)
                     {% endif %}
                 </h2>
                 <div class="clearfix"></div>
 
                 <h3>Abstract</h3>
-                <p>{{ talk.abstract }}</p>
+                <p>{{ event.talk.abstract }}</p>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="span6">
-            <h2>Create a new Event</h2>
+            <h2>Edit Event</h2>
             <div class="row">
                 <div class="span1">
                     <div style="margin-top:5px;">
@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <div class="span5">
-                    <input id="id_location" placeholder="Enter the location name or city or state" type="text" autocomplete="off"></input>
+                    <input id="id_location" placeholder="Enter the location name or city or state" value="{{event.location.form_str}}" type="text" autocomplete="off"></input>
                     <span class="search addon">
                         <i class="icon-search"></i>
                     </span>
@@ -60,13 +60,13 @@
                     </div>
                 </div>
                 <div class="span5">
-                    <input id="id_date" type="text"></input>
+                    <input id="id_date" type="text" value="{{date}}"></input>
                 </div>
             </div>
 
             <div class="row">
                 <div class="span6">
-                    <button id="create-event" class="btn btn-warning" type="submit">Create Event</button>
+                    <button id="create-event" class="btn btn-warning" type="submit">Save Event</button>
                 </div>
             </div>
         </div>
@@ -125,34 +125,39 @@
         });
     {% endfor %}
 
-    var currentLocation = null;
+    currentLocation = locationModels["{{event.location.form_str}}"];
+
+    var selectLocation = function(location){
+        var url = "http://nominatim.openstreetmap.org/search/" + location.querystring + "?format=json"
+
+        $.get(url, function(data) {
+            if(data.length != 0) {
+                map.setView([data[0].lat, data[0].lon], 12);
+            }
+        });
+    };
+
     $('#id_location').typeahead({
         source: locations, 
         updater: function(selection){
             currentLocation = locationModels[selection];
-
-            var url = "http://nominatim.openstreetmap.org/search/" + currentLocation.querystring + "?format=json"
-
-            $.get(url, function(data) {
-                if(data.length != 0) {
-                    map.setView([data[0].lat, data[0].lon], 12);
-                }
-            });
-
+            selectLocation(currentLocation);
             return selection;
         }
     });
+
+    selectLocation(currentLocation);
 
     $('#id_date').datetimepicker({
         format: 'yyyy-mm-dd hh:ii'
     });
 
     $('#create-event').on('click', function(){
-        $.post("/talk/{{talk.pk}}/event/new/", {
+        $.post("/event/{{event.pk}}/edit/", {
             'location': currentLocation.id,
             'date': $("#id_date").val()
         }, function(){
-            window.location = "{{talk.get_absolute_url}}"
+            window.location = "{{event.get_absolute_url}}"
         });
     });
 </script>

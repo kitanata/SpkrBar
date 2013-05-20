@@ -22,3 +22,6 @@ class Event(models.Model):
         else:
             return klass.objects.filter(talk__speaker__published=True, talk__published=True)
 
+    def get_absolute_url(self):
+        return "/event/" + str(self.pk)
+

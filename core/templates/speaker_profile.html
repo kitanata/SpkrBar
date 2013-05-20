@@ -10,17 +10,8 @@
             </div>
 
             <div class="span9">
-                <div class="row">
-                    {% include '_profile_talks_attending_partial.html' %}
-
-                    <div class="span9" style="margin-top: 40px;">
-                        {% if talks %}
-                            {% include '_profile_my_talks_partial.html' %}
-                        {% else %}
-                            <h2>This speaker hasn't added any talks.</h2>
-                        {% endif %}
-                    </div>
-                </div>
+                {% include '_profile_my_talks_partial.html' %}
+                {% include '_profile_talks_attending_partial.html' %}
             </div>
         </div>
     </div>

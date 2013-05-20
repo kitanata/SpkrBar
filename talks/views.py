@@ -120,6 +120,10 @@ def talk_edit(request, talk_id):
 
 def talk_delete(request, talk_id):
     talk = get_object_or_404(Talk, pk=talk_id)
+
+    for event in talk.event_set.all():
+        event.delete()
+
     talk.delete()
 
     return redirect('/speaker/' + request.user.username)

@@ -10,24 +10,8 @@
             </div>
 
             <div class="span9">
-                <div class="row">
-                    {% include '_profile_talks_attending_partial.html' %}
-
-                    {% if not talks %}
-                        <div class="span9">
-                            <h4>
-                                You don't have any talks. Would you like to 
-                                <a class="btn btn-warning" href="/talk/new">add one now?</a>
-                            </h4>
-                        </div>
-                    {% endif %}
-
-                    <div class="span9" style="margin-top: 40px;">
-                        {% if talks %}
-                            {% include '_profile_my_talks_partial.html' %}
-                        {% endif %}
-                    </div>
-                </div>
+                {% include '_profile_my_talks_partial.html' %}
+                {% include '_profile_talks_attending_partial.html' %}
             </div>
         </div>
     </div>

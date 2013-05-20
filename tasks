@@ -1,24 +1,23 @@
 Bugs
 ------
-a. The events attending list on the user profile page's display is bad.
+No Bugs
 
-1. Event Improvements
-- Ability to Edit an Event
-- Ability to Delete an Event
-- Extend deleting a talk to deleting all events tied to that talk.
+Features
+------
 
-2. Polish
+1. Polish
+- Secure Every call with decorators server side (login_required, user_restricted)
 - Polish the site.
 - Test in Firefox.
 - Test in IE8 and IE9. (do a browser update page for IE8 and below).
 
-3. Mobile App
+2. Mobile App
 - As an attendee I should be able to endorse talks on my mobile phone.
 - As an attendee I should be able to search for talks by name on my mobile phone.
 - As an attendee I should be able to comment on a talk on my mobile phone.
 - As an attendee I should be able to search for speakers by name on my mobile phone.
 
-4. Advanced Ratings (Survey)
+3. Advanced Ratings (Survey)
 - As an attendee I should be able to rate a speaker on 5 qualities.
    - Engagement - Did the speaker keep attendees at the talk engaged and interested in the topic being presented?
    - Knowledge - Did the speaker seem extremely knowledgable on the subject?
@@ -28,7 +27,7 @@ a. The events attending list on the user profile page's display is bad.
 - As a speaker I should be able to enable or disable this on my talks.
 - Put the rate button next to the endorse button. Put the rating form/ajax inside a colorbox.
 
-5. Notifications
+4. Notifications
 - As a speaker when someone follows me.
 - As a speaker when someone comments on one of my talks.
 - As a speaker when someone tags one of my talks.
@@ -36,7 +35,7 @@ a. The events attending list on the user profile page's display is bad.
 - As a speaker when someone I am following publishes a new talk.
 - As a speaker when someone confirmed themselves as attending one of my talks.
 
-6. Social Integrations
+5. Social Integrations
 - As an attendee I should be able to use the app by just logging in with my facebook account.
 - As a speaker I should be able to import my data and networks from linked in.
 
@@ -44,3 +43,4 @@ a. The events attending list on the user profile page's display is bad.
 - If I click on a tag it should have me tag it too. Maybe with a plus sign.
 - A blog on the front page.
 - Guest Speakers
+- Comment Threads. Users can respond to comments on their talks.

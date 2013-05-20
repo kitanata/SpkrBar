@@ -13,6 +13,9 @@ class Location(models.Model):
     def get_absolute_url(self):
         return "/location/" + str(self.pk)
 
+    def form_str(self):
+        return self.name + " - " + self.city + ", " + self.state
+
     def geocode_querystring(self):
         strings = (
             self.address.replace(' ', '%20'),
