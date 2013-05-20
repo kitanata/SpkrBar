@@ -6,7 +6,6 @@ Features
 ------
 
 1. Polish
-- Secure Every call with decorators server side (login_required, user_restricted)
 - Polish the site.
 - Test in Firefox.
 - Test in IE8 and IE9. (do a browser update page for IE8 and below).
@@ -44,3 +43,5 @@ Features
 - A blog on the front page.
 - Guest Speakers
 - Comment Threads. Users can respond to comments on their talks.
+- Better Location Support (Only show 100mi radius stuff)
+- Search (for talks, for events, by name, by location, by speaker)

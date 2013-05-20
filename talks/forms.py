@@ -1,6 +1,4 @@
 from django import forms
-from datetimewidget.widgets import DateTimeWidget
-
 from .models import Talk
 from config import settings
 
@@ -39,8 +37,6 @@ class CustomClearableFileInput(ClearableFileInput):
                 </div>
             """
 
-            print self.template_with_clear
-
             clear_template = """
                 Clear: 
                 %(clear)s
@@ -64,7 +60,6 @@ class TalkForm(forms.ModelForm):
         model = Talk
         widgets = {
             'abstract': forms.Textarea(attrs={'cols': 80, 'rows': 5}),
-            'date': DateTimeWidget(),
             'photo': CustomClearableFileInput()
         }
         exclude = ('speaker', 'media', 'published', 'tags', 'attendees', 'endorsements')

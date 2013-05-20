@@ -27,6 +27,14 @@ DATABASES = {
 ALLOWED_HOSTS = []
 
 AUTH_PROFILE_MODULE = 'core.UserProfile'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend', # this is default
+    'guardian.backends.ObjectPermissionBackend',
+)
+
+ANONYMOUS_USER_ID = -1
+
 LOGIN_URL = '/login'
 
 # Local time zone for this installation. Choices can be found here:
@@ -141,13 +149,11 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Uncomment the next line to enable the admin:
-    'datetimewidget',
+
+    'guardian',
     'grappelli',
     'compressor',
     'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
     'core',
     'locations',
     'talks',

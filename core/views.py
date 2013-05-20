@@ -14,6 +14,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from django.db.models import Q
 
+from guardian.shortcuts import assign
+
 from .models import Location, UserProfile, UserLink, UserTag
 from talks.models import Talk
 
@@ -21,6 +23,8 @@ from events.models import Event
 from events.helpers import group_events_by_date
 
 from .forms import EditProfileForm, ProfilePhotoForm, ProfileLinkForm, ProfileTagForm
+
+from security import speaker_restricted
 
 random.seed(datetime.now())
 
@@ -129,12 +133,17 @@ def load_fixtures(request):
         talk.speaker = speaker
         talk.save()
 
+        assign('change_talk', speaker.user, talk)
+        assign('delete_talk', speaker.user, talk)
+
         event = Event()
         event.talk = talk
         event.date = datetime(year, month, day, hour, minute)
         event.location = location
         event.save()
 
+        assign('change_event', speaker.user, event)
+        assign('delete_event', speaker.user, event)
 
     return render_to_response('load_fixtures.html', 
             context_instance=RequestContext(request))
@@ -273,6 +282,81 @@ def profile_form_view(request):
         context_instance=RequestContext(request))
 
 
+@login_required
+def speaker_follow(request, username):
+    speaker = get_object_or_404(User, username=username).get_profile()
+    user_profile = request.user.get_profile()
+
+    speaker.followers.add(user_profile)
+    speaker.save()
+
+    user_profile.following.add(speaker)
+    user_profile.save()
+
+    if request.GET['last']:
+        return redirect(request.GET['last'])
+    else:
+        return redirect('/')
+
+
+def login_user(request):
+    if request.method == "GET":
+        return render_to_response('login.html', 
+                context_instance=RequestContext(request))
+    else:
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return redirect('/speaker/' + request.user.username)
+            else:
+                error = "This account has been disabled."
+        else:
+            error = "Username or password is incorrect."
+
+        return render_to_response('login.html', {'error': error},
+                context_instance=RequestContext(request))
+
+        
+def logout_user(request):
+    logout(request)
+    return redirect('/')
+
+
+def register_user(request):
+    if request.method == "GET":
+        return render_to_response('register.html',
+                context_instance=RequestContext(request))
+    else:
+        username = request.POST['username']
+        password = request.POST['password']
+        confirm = request.POST['confirm']
+        email = request.POST['email']
+
+        error = None
+
+        if password != confirm:
+            error = "Password does not match confirmation."
+
+        if not error:
+            try:
+                user = User.objects.create_user(username, email, password)
+                user.save()
+            except IntegrityError as e:
+                error = "That username is taken. Try another."
+
+        if not error:
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            return redirect('/speaker/' + request.user.username)
+
+        return render_to_response('register.html', {'error': error},
+                context_instance=RequestContext(request))
+
+        
 def speakers(request):
     if request.user.is_anonymous():
         speakers = UserProfile.objects.filter(Q(published=True))[:20]
@@ -334,81 +418,3 @@ def speaker_detail(request, username):
         'followers': followers,
         'last': '/speaker/' + username
         }, context_instance=RequestContext(request))
-
-
-def speaker_follow(request, username):
-    speaker = get_object_or_404(User, username=username).get_profile()
-    user_profile = request.user.get_profile()
-
-    speaker.followers.add(user_profile)
-    speaker.save()
-
-    user_profile.following.add(speaker)
-    user_profile.save()
-
-    if request.GET['last']:
-        return redirect(request.GET['last'])
-    else:
-        return redirect('/')
-
-
-def login_user(request):
-
-    if request.method == "GET":
-        return render_to_response('login.html', 
-                context_instance=RequestContext(request))
-    else:
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
-
-        if user is not None:
-            if user.is_active:
-                login(request, user)
-                return redirect('/speaker/' + request.user.username)
-            else:
-                error = "This account has been disabled."
-        else:
-            error = "Username or password is incorrect."
-
-        return render_to_response('login.html', {'error': error},
-                context_instance=RequestContext(request))
-
-        
-def logout_user(request):
-    logout(request)
-    return redirect('/')
-
-
-def register_user(request):
-
-    if request.method == "GET":
-        return render_to_response('register.html',
-                context_instance=RequestContext(request))
-    else:
-        username = request.POST['username']
-        password = request.POST['password']
-        confirm = request.POST['confirm']
-        email = request.POST['email']
-
-        error = None
-
-        if password != confirm:
-            error = "Password does not match confirmation."
-
-        if not error:
-            try:
-                user = User.objects.create_user(username, email, password)
-                user.save()
-            except IntegrityError as e:
-                error = "That username is taken. Try another."
-
-        if not error:
-            user = authenticate(username=username, password=password)
-            login(request, user)
-            return redirect('/speaker/' + request.user.username)
-
-        return render_to_response('register.html', {'error': error},
-                context_instance=RequestContext(request))
-
-        

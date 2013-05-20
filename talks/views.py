@@ -5,21 +5,24 @@ from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.views.generic import ListView
 from django.template import RequestContext
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
 
 from django.db.models import Q
+
+from guardian.shortcuts import assign
 
 from events.models import Event
 from locations.models import Location
 from locations.forms import LocationForm
 from core.models import UserProfile
 
-
 from .models import Talk, TalkTag, TalkComment
 from .forms import TalkForm
 from .helpers import group_talk_events_by_date
 
+@login_required
 def talk_new(request):
-
     if request.method == 'POST': # If the form has been submitted...
         talk_form = TalkForm(request.POST, request.FILES)
         location_form = None
@@ -40,6 +43,8 @@ def talk_new(request):
                 talk.photo = photo.name
 
             talk.save()
+            assign('change_talk', request.user, talk)
+            assign('delete_talk', request.user, talk)
 
             return redirect('/talk/' + str(talk.id))
     else:
@@ -52,41 +57,12 @@ def talk_new(request):
         }, context_instance=RequestContext(request))
 
    
-def talk_detail(request, talk_id):
-    talk = get_object_or_404(Talk, pk=talk_id)
-
-    events = Event.objects.filter(talk__id=talk_id)
-    attendees = UserProfile.objects.filter(events_attending__in=events)
-
-    user_attending = False
-    user_endorsed = False
-    will_have_links = False
-
-    if request.user.is_anonymous():
-        attendees = attendees.filter(Q(published=True))
-    else:
-        user_attending = (request.user.get_profile() in attendees)
-        user_endorsed = (request.user.get_profile() in talk.endorsements.all())
-        attendees = attendees.filter(Q(published=True) | Q(user=request.user))
-
-        will_have_links = (request.user.get_profile() == talk.speaker)
-
-    if not user_attending or not user_endorsed:
-        will_have_links = True
-
-    return render_to_response('talk_detail.html', {
-        'last': talk.get_absolute_url(),
-        'talk': talk,
-        'events': events.filter(date__gt=datetime.now()),
-        'attendees': attendees,
-        'user_attending': user_attending,
-        'user_endorsed': user_endorsed,
-        'will_have_links': will_have_links,
-        }, context_instance=RequestContext(request))
-
-
+@login_required
 def talk_edit(request, talk_id):
     talk = get_object_or_404(Talk, pk=talk_id)
+
+    if not request.user.has_perm('change_talk', talk):
+        return HttpResponseForbidden()
 
     if request.method == 'POST': # If the form has been submitted...
         talk_form = TalkForm(request.POST, request.FILES, instance=talk)
@@ -118,8 +94,12 @@ def talk_edit(request, talk_id):
         }, context_instance=RequestContext(request))
 
 
+@login_required
 def talk_delete(request, talk_id):
     talk = get_object_or_404(Talk, pk=talk_id)
+
+    if not request.user.has_perm('delete_talk', talk):
+        return HttpResponseForbidden()
 
     for event in talk.event_set.all():
         event.delete()
@@ -129,6 +109,7 @@ def talk_delete(request, talk_id):
     return redirect('/speaker/' + request.user.username)
 
 
+@login_required
 def talk_tag_new(request, talk_id):
     talk = get_object_or_404(Talk, pk=talk_id)
 
@@ -144,6 +125,71 @@ def talk_tag_new(request, talk_id):
         talk.tags.add(tag_obj)
 
     return redirect('/talk/' + talk_id)
+
+
+@login_required
+def talk_archive(request, talk_id):
+    talk = get_object_or_404(Talk, pk=talk_id)
+
+    if not request.user.has_perm('change_talk', talk):
+        return HttpResponseForbidden()
+
+    talk.published = False
+    talk.save()
+
+    if 'last' in request.GET and request.GET['last'] != '':
+        return redirect(request.GET['last'])
+    else:
+        return redirect('/talk/' + talk_id)
+
+
+@login_required
+def talk_publish(request, talk_id):
+    talk = get_object_or_404(Talk, pk=talk_id)
+
+    if not request.user.has_perm('change_talk', talk):
+        return HttpResponseForbidden()
+
+    talk.published = True
+    talk.save()
+
+    if 'last' in request.GET and request.GET['last'] != '':
+        return redirect(request.GET['last'])
+    else:
+        return redirect('/talk/' + talk_id)
+
+
+def talk_detail(request, talk_id):
+    talk = get_object_or_404(Talk, pk=talk_id)
+
+    events = Event.objects.filter(talk__id=talk_id)
+    attendees = UserProfile.objects.filter(events_attending__in=events)
+
+    user_attending = False
+    user_endorsed = False
+    will_have_links = False
+
+    if request.user.is_anonymous():
+        attendees = attendees.filter(Q(published=True))
+    else:
+        user_attending = (request.user.get_profile() in attendees)
+        user_endorsed = (request.user.get_profile() in talk.endorsements.all())
+        attendees = attendees.filter(Q(published=True) | Q(user=request.user))
+
+        will_have_links = (request.user.get_profile() == talk.speaker)
+
+    if not user_attending or not user_endorsed:
+        will_have_links = True
+
+    return render_to_response('talk_detail.html', {
+        'last': talk.get_absolute_url(),
+        'talk': talk,
+        'events': events.filter(date__gt=datetime.now()),
+        'attendees': attendees,
+        'user_attending': user_attending,
+        'user_endorsed': user_endorsed,
+        'will_have_links': will_have_links,
+        }, context_instance=RequestContext(request))
 
 
 def talk_comment_new(request, talk_id):
@@ -184,23 +230,3 @@ def talk_endorsement_new(request, talk_id):
         return redirect('/talk/' + talk_id)
 
 
-def talk_archive(request, talk_id):
-    talk = get_object_or_404(Talk, pk=talk_id)
-    talk.published = False
-    talk.save()
-
-    if 'last' in request.GET and request.GET['last'] != '':
-        return redirect(request.GET['last'])
-    else:
-        return redirect('/talk/' + talk_id)
-
-
-def talk_publish(request, talk_id):
-    talk = get_object_or_404(Talk, pk=talk_id)
-    talk.published = True
-    talk.save()
-
-    if 'last' in request.GET and request.GET['last'] != '':
-        return redirect(request.GET['last'])
-    else:
-        return redirect('/talk/' + talk_id)
