@@ -11,19 +11,7 @@
 
             <div class="span9">
                 <div class="row">
-                    <div class="span9">
-                        {% if attending %}
-                            <h2>Attending</h2>
-                            <hr />
-
-                            <div class="row">
-                                {% for talk in attending %}
-                                    {% include '_event_slate_detail_partial.html' %}
-                                {% endfor %}
-                            </div>
-
-                        {% endif %}
-                    </div>
+                    {% include '_profile_talks_attending_partial.html' %}
 
                     <div class="span9" style="margin-top: 40px;">
                         {% if talks %}

@@ -1,0 +1,27 @@
+<div class="span3">
+    <div class="event-thumb">
+        <div class="title">
+            <a href="/event/{{event.pk}}">{{ event.talk.name|truncatechars:30 }}</a><br />
+        </div>
+
+        <div class="photo">
+            {% if event.talk.photo %}
+            <img src="{{STATIC_URL}}img/photo/{{event.talk.photo}}">
+            {% else %}
+            <i class="icon-camera profile-placeholder"></i>
+            {% endif %}
+        </div>
+
+        <div class="location">
+            <a href="{{ event.location.get_absolute_url }}">at {{ event.location.name }}</a><br />
+            in {{ event.location.city }}, {{ event.location.state }}
+        </div>
+
+        <div>
+            <div class="time">
+                {{ event.date.date }}<br />
+                {{ event.date.time }}
+            </div>
+        </div>
+    </div>
+</div>
