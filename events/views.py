@@ -104,7 +104,7 @@ def event_list(request):
     else:
         events = Event.published_events(user_profile=request.user.get_profile())
 
-    events = events.filter(date__gt=datetime.now()).order_by('date')[:20]
+    events = events.filter(date__gt=datetime.today()).order_by('date')[:20]
 
     event_groups = group_events_by_date(events)
 

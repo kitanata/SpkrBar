@@ -158,6 +158,7 @@ INSTALLED_APPS = (
     'locations',
     'talks',
     'events',
+    'mobile'
 )
 
 # A sample logging configuration. The only tangible logging

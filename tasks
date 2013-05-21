@@ -11,10 +11,11 @@ Features
 - Test in IE8 and IE9. (do a browser update page for IE8 and below).
 
 2. Mobile App
-- As an attendee I should be able to endorse talks on my mobile phone.
+- As an attendee I should be able to see upcoming talks on the first page.
 - As an attendee I should be able to search for talks by name on my mobile phone.
-- As an attendee I should be able to comment on a talk on my mobile phone.
 - As an attendee I should be able to search for speakers by name on my mobile phone.
+- As an attendee I should be able to endorse talks on my mobile phone.
+- As an attendee I should be able to comment on a talk on my mobile phone.
 
 3. Advanced Ratings (Survey)
 - As an attendee I should be able to rate a speaker on 5 qualities.

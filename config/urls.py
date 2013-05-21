@@ -1,5 +1,4 @@
 from django.conf.urls import patterns, include, url
-from django.views.generic import TemplateView
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -8,6 +7,8 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'events.views.event_list'),
+    url(r'^mobile/', include('mobile.urls')),
+
     url(r'^event/(?P<event_id>\d+)/$', 'events.views.event_detail'),
     url(r'^event/(?P<event_id>\d+)/edit/$', 'events.views.event_edit'),
     url(r'^event/(?P<event_id>\d+)/delete/$', 'events.views.event_delete'),
