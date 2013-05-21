@@ -1,17 +1,29 @@
 {% extends 'mobile/base.html' %}
 
 {% block 'content' %}
-    <p>Your theme was successfully downloaded. You can use this page as a reference for how to link it up!</p>
-    <pre>
-    </pre>
-    <p>This is content color swatch "A" and a preview of a <a href="#" class="ui-link">link</a>.</p>
-    <label for="slider1">Input slider:</label>
-    <input type="range" name="slider1" id="slider1" value="50" min="0" max="100" data-theme="a" />
-    <fieldset data-role="controlgroup"  data-type="horizontal" data-role="fieldcontain">
-    <legend>Cache settings:</legend>
-    <input type="radio" name="radio-choice-a1" id="radio-choice-a1" value="on" checked="checked" />
-    <label for="radio-choice-a1">On</label>
-    <input type="radio" name="radio-choice-a1" id="radio-choice-b1" value="off"  />
-    <label for="radio-choice-b1">Off</label>
-    </fieldset>
+    {% if error %}
+        <div class="alert alert-error">
+            {{error}}
+        </div>
+    {% endif %}
+
+    <h2>Signup for a new account.</h2>
+
+    <div class="row">
+        <div class="span4">
+            <form action="/mobile/register/" method="POST">
+                {% csrf_token %}
+                <label for="username">Username:</label>
+                <input id="username", name="username", type="text">
+                <label for="email">Email:</label>
+                <input id="email", name="email", type="email">
+                <label for="password">Password:</label>
+                <input id="password", name="password", type="password">
+                <label for="confirm">Confirm Password:</label>
+                <input id="confirm", name="confirm", type="password">
+                <br />
+                <input class="btn btn-warning" type="submit" value="Register" />
+            </form>
+        </div>
+    </div>
 {% endblock %}

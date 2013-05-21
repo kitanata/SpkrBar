@@ -1,7 +1,7 @@
 {% extends 'mobile/base.html' %}
 
 {% block 'content' %}
-    <ul data-role="listview" data-inset="true">
+    <ul data-role="listview" data-inset="true" data-filter="true">
         {% for group in event_groups %}
             <li data-role="list-divider" data-theme="a">{{ group.date }}</li>
 

@@ -1,17 +1,28 @@
 {% extends 'mobile/base.html' %}
 
 {% block 'content' %}
-    <p>Your theme was successfully downloaded. You can use this page as a reference for how to link it up!</p>
-    <pre>
-    </pre>
-    <p>This is content color swatch "A" and a preview of a <a href="#" class="ui-link">link</a>.</p>
-    <label for="slider1">Input slider:</label>
-    <input type="range" name="slider1" id="slider1" value="50" min="0" max="100" data-theme="a" />
-    <fieldset data-role="controlgroup"  data-type="horizontal" data-role="fieldcontain">
-    <legend>Cache settings:</legend>
-    <input type="radio" name="radio-choice-a1" id="radio-choice-a1" value="on" checked="checked" />
-    <label for="radio-choice-a1">On</label>
-    <input type="radio" name="radio-choice-a1" id="radio-choice-b1" value="off"  />
-    <label for="radio-choice-b1">Off</label>
-    </fieldset>
+    <ul data-role="listview" data-filter="true" data-filter-placeholder="Search fruits..." data-inset="true">
+        {% for speaker in speakers %}
+            <li>
+                <a href="/mobile/speaker/{{speaker.user.username}}">
+                    {% if speaker.photo %}
+                        <img src="{{STATIC_URL}}img/photo/{{ speaker.photo}}"></img>
+                    {% else %}
+                        <img src="{{STATIC_URL}}mobile/images/user.png"></img>
+                    {% endif %}
+
+                    <h4>{{ speaker.user.get_full_name }}</h4>
+
+                    {% if speaker.tags.all %}
+                        Expert In:
+                        {% for tag in speaker.tags.all|slice:":5" %}
+                            <div class="label label-info">{{tag|title}}</div>
+                        {% endfor %}
+                    {% endif %}
+
+                    {{ speaker.talk_set.count }} Talks
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}

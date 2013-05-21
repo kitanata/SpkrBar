@@ -85,10 +85,9 @@ def load_fixtures(request):
     speaker.about_me = "I'm a little teapot, short and stout!"
     speaker.save()
 
-    user = User.objects.create_user('anonymous', "anonymouse@spkrbar.com", "Golden Unicorns are Furry.")
-    user.first_name = "John/Jane"
-    user.last_name = "Doe"
-    user.save()
+    anon_profile = UserProfile.objects.get(user__username="AnonymousUser")
+    anon_profile.published = False
+    anon_profile.save()
 
     for i in range(0, 200):
 
