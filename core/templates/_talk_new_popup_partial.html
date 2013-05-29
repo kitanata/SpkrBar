@@ -1,0 +1,17 @@
+<div style="display:none">
+    <div id="add-talk-popup" style="background-color: white; padding: 40px;">
+        <h2>Add New Talk</h2>
+        <form action="/talk/new/" method="POST">
+            {% csrf_token %}
+            <label for="talk-name">Name:</label>
+            <input id="talk-name" name="name" type="text" />
+            <label for="talk-abstract">Abstract:</label>
+            <textarea id="talk-abstract" name="abstract"></textarea>
+            <button class="btn btn-warning" type="submit">Create</button>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('.add-talk').colorbox({inline: true, width:"300px"});
+</script>

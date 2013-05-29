@@ -1,138 +1,79 @@
-{% extends 'event_base.html' %}
+{% extends 'base.html' %}
 
 {% block 'content' %}
-<div id="event-detail">
-    {% include '_event_header_partial.html' %}
-
-    <div class="row">
-        <div class="span3">
-            <div class="row">
-                <div class="span3">
-                    <h3>Location</h3>
-                    {% with event.location as location %}
-                        {% include "_event_location_map.html" %}
-                    {% endwith %}
-                </div>
-            </div>
-
-
-            <div class="row">
-                <div class="span3">
-                    <h3>Speaker</h3>
-                    <ul class="speakers">
-                        {% if event.talk.speaker.published %}
-                            <li>
-                                <div class="speaker well">
-                                    {% if event.talk.speaker.photo %}
-                                        <img src="{{STATIC_URL}}img/photo/{{ event.talk.speaker.photo}}"></img>
-                                    {% else %}
-                                        <i class="icon-user profile-placeholder"></i>
-                                    {% endif %}
-
-                                    <div class="about">
-                                        <h4>
-                                            <a href="/speaker/{{event.talk.speaker.user.username}}">
-                                            {{ event.talk.speaker.user.get_full_name }}
-                                            </a>
-                                        </h4>
-                                    </div>
-                                </div>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="span3">
-                    <div class="tags">
-                        <h3>Tags</h3>
-                        <ul>
-                            {% for tag in event.talk.tags.all %}
-                            <li>{{ tag.name }}</li>
-                            {% endfor %}
-                        </ul>
-
-                        <form action="/talk/{{event.talk.id}}/tag/new/" method="POST">
-                            {% csrf_token %}
-                            <input name="tag" type="text" placeholder="My Tag"/>
-                            <input class="btn btn-warning" type="submit" value="Tag this talk" />
-                        </form>
-                    </div>
-                </div>
-            </div>
+    <div id="event-detail" class="row">
+        <div class="span4">
+            <h3>{{ event.name }}</h3>
+            <p>{{ event.description }}</p>
+            <p>
+                {% with event.location as location %}
+                    {{ location.name }}<br />
+                    {{ location.address }}<br />
+                    {{ location.city }}, {{location.state}}, {{location.zip_code}}
+                {% endwith %}
+            </p>
         </div>
 
-        <div class="span9">
-            <div class="talk-detail">
-                <h3>Abstract</h3>
-                <p>{{ event.talk.abstract }}</p>
-
-                {% if event.talk.talkvideo_set.all %}
-                    <h3>Videos</h2>
-                    {% for video in event.talk.talkvideo_set.all %}
-                        {% if video.video_type == "YOUTUBE" %}
-                            <iframe width="300" height="225" src="{{ video.url_target }}" frameborder="0" allowfullscreen></iframe>
-                        {% elif video.video_type == "VIMEO" %}
-                            <iframe src="{{ video.url_target }}" width="300" height="225" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-
-                {% if attendees %}
-                    <h3>Attendees</h3>
-                    {% for profile in attendees %}
-                        <a href="/speaker/{{profile.user.username}}">{{profile.user.get_full_name}}</a>
-                    {% endfor %}
-                {% endif %}
-
-                {% if event.talk.talkcomment_set.all or event.talk.speaker != user.get_profile %}
-                    <div class="comments">
-                        <h3>Comments</h3>
-
-                        {% if event.talk.speaker != user.get_profile %}
-                            <form class="add-comment-form" action="/talk/{{event.talk.id}}/comment/new/" method="POST">
-                                {% csrf_token %}
-                                <textarea name='comment' placeholder="Add your comment..."></textarea><br />
-                                <input class="btn btn-warning" type="submit" value="Submit Comment" />
-                            </form>
-                        {% endif %}
-
-                        {% if event.talk.talkcomment_set.all %}
-                            <ul>
-                                {% for comment in event.talk.talkcomment_set.all %}
-                                    <li>
-                                        <h4>{{comment.reviewer.user.get_full_name}} said...</h4>
-                                        <p>
-                                            {{comment.comment}}
-                                        </p>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                    </div>
-                {% endif %}
-            </div>
+        <div class="span8">
+            <p>
+                <div id="map"></div>
+            </p>
         </div>
+
+        {% if upcoming %}
+            <div class="span12">
+                <h2>Upcoming Events</h2>
+                <hr />
+            </div>
+
+            <ul class="events">
+                {% for item in upcoming %}
+                    {% include '_talk_event_slate_detail_partial.html' %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if past %}
+            <div class="span12">
+                <h2>Past Events</h2>
+                <hr />
+            </div>
+
+            <ul class="events">
+                {% for item in past %}
+                    {% include '_talk_event_slate_detail_partial.html' %}
+                {% endfor %}
+            </ul>
+        {% endif %}
     </div>
-</div>
-
 {% endblock %}
 
 {% block 'scripts' %}
     <script type="text/javascript">
-        $('.talk-links a').tooltip()
+        L.Icon.Default.imagePath = '{{STATIC_URL}}img/';
 
-        $('.delete-event').colorbox({inline: true, width:"400px"});
+        // create a map in the "map" div, set the view to a given place and zoom
+        var map = L.map('map').setView([39.95, -82.95], 6);
 
-        $('.delete-event').click(function(el){
-            var sel = $(el.currentTarget)
+        // add an OpenStreetMap tile layer
+        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
 
-            $('.delete-event-name').text(sel.data('name'))
-            $('.delete-event-date').text(sel.data('date'))
-            $('.delete-event-time').text(sel.data('time'))
-            $('.delete-event-location').text(sel.data('location'))
-            $('.delete-confirm-link').attr('href', "/event/" + sel.data('id') + "/delete/")
+        var url = "http://nominatim.openstreetmap.org/search/{{city_querystring}}?format=json"
+        $.get(url, function(data) {
+            if(data.length != 0) {
+                map.setView([data[0].lat, data[0].lon], 12);
+
+                var url = "http://nominatim.openstreetmap.org/search/{{querystring}}?format=json"
+                $.get(url, function(data) {
+                    if(data.length != 0) {
+                        L.marker([data[0].lat, data[0].lon]).addTo(map).bindPopup(
+                        '<h4>{{event.location.name}}</h4><br />{{event.location.address}}<br />{{event.location.city}}, {{event.location.state}} {{event.location.zip_code}}').openPopup();
+                    }
+                });
+            }
         });
+
     </script>
 {% endblock %}

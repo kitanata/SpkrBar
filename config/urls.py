@@ -6,14 +6,15 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^$', 'events.views.event_list'),
+    url(r'^$', 'core.views.index'),
     url(r'^mobile/', include('mobile.urls')),
 
+    url(r'^events/$', 'events.views.event_list'),
+    url(r'^event/new/$', 'events.views.event_new'),
     url(r'^event/(?P<event_id>\d+)/$', 'events.views.event_detail'),
     url(r'^event/(?P<event_id>\d+)/edit/$', 'events.views.event_edit'),
     url(r'^event/(?P<event_id>\d+)/delete/$', 'events.views.event_delete'),
     url(r'^event/(?P<event_id>\d+)/attend/$', 'events.views.event_attendee_new'),
-    url(r'^talk/(?P<talk_id>\d+)/event/new/$', 'events.views.event_new'),
 
     url(r'^talk/new/$', 'talks.views.talk_new'),
     url(r'^talk/(?P<talk_id>\d+)/$', 'talks.views.talk_detail'),
@@ -37,9 +38,7 @@ urlpatterns = patterns('',
     url(r'^profile/publish/$', 'core.views.profile_publish'),
     url(r'^profile/archive/$', 'core.views.profile_archive'),
 
-    url(r'^locations/$', 'locations.views.locations'),
     url(r'^location/new/$', 'locations.views.location_new'),
-    url(r'^location/(?P<location_id>\d+)/$', 'locations.views.location'),
 
     url(r'^load_fixtures/$', 'core.views.load_fixtures'),
 

@@ -20,7 +20,6 @@
             <link href="{{STATIC_URL}}less/profile.less" rel="stylesheet" type="text/less">
             <link href="{{STATIC_URL}}less/speakers.less" rel="stylesheet" type="text/less">
             <link href="{{STATIC_URL}}less/talks.less" rel="stylesheet" type="text/less" />
-            <link href="{{STATIC_URL}}less/locations.less" rel="stylesheet" type="text/less" />
             <link href="{{STATIC_URL}}less/events.less" rel="stylesheet" type="text/less" />
 
             {% block 'css' %}
@@ -57,11 +56,11 @@
                 <ul class="nav nav-pills pull-right">
                     <li><a href="/">Talks</a></li>
                     <li><a href="/speakers">Speakers</a></li>
-                    <li><a href="/locations">Locations</a></li>
+                    <li><a href="/events">Events</a></li>
 
                     {% if not user.is_anonymous %}
                         <li><a href="/speaker/{{ user.username }}">My Profile</a></li>
-                        <li><a href="/talk/new">Add Talk</a></li>
+                        <li><a class="add-talk" href="#add-talk-popup">Add Talk</a></li>
                     {% endif %}
 
                     {% if user.is_superuser %}
@@ -109,5 +108,7 @@
 
         {% block 'scripts' %}
         {% endblock %}
+
+        {% include '_talk_new_popup_partial.html' %}
     </body>
 </html>

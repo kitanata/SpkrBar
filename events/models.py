@@ -3,25 +3,25 @@ from datetime import datetime
 from django.db import models
 from django.db.models import Q
 
-from talks.models import Talk
-from locations.models import Location
-from core.models import UserProfile
-
 class Event(models.Model):
-    talk = models.ForeignKey(Talk)
-    location = models.ForeignKey(Location)
-    date = models.DateTimeField(default=datetime.now())
+    owner = models.ForeignKey('core.UserProfile')
+    name = models.CharField(max_length=140)
+    description = models.CharField(max_length=800)
+    published = models.BooleanField(default=True)
 
-    attendees = models.ManyToManyField(UserProfile, related_name='events_attending')
+    location = models.ForeignKey('locations.Location')
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+
+    attendees = models.ManyToManyField('core.UserProfile', related_name='events_attending')
+
+    def get_absolute_url(self):
+        return "/event/" + str(self.pk)
 
     @classmethod
     def published_events(klass, user_profile=None):
         if user_profile:
             return klass.objects.filter(
-                    Q(talk__speaker__published=True, talk__published=True) | Q(talk__speaker=user_profile))
+                    Q(owner__published=True, published=True) | Q(owner=user_profile))
         else:
-            return klass.objects.filter(talk__speaker__published=True, talk__published=True)
-
-    def get_absolute_url(self):
-        return "/event/" + str(self.pk)
-
+            return klass.objects.filter(owner__published=True, published=True)

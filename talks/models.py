@@ -2,23 +2,21 @@ from django.db import models
 from django.db.models import Q
 from datetime import datetime
 
-from core.models import UserProfile, Location
-
 class TalkTag(models.Model):
     name = models.CharField(max_length=140)
 
 
-
 class Talk(models.Model):
-    speaker = models.ForeignKey(UserProfile)
+    speaker = models.ForeignKey('core.UserProfile')
+
     name = models.CharField(max_length=140)
     abstract = models.CharField(max_length=800)
+
     published = models.BooleanField(default=True)
 
-    photo = models.ImageField(upload_to="photo", blank=True)
     tags = models.ManyToManyField(TalkTag)
 
-    endorsements = models.ManyToManyField(UserProfile, related_name='talks_endorsed')
+    endorsements = models.ManyToManyField('core.UserProfile', related_name='talks_endorsed')
 
     def __str__(self):
         return self.name
@@ -37,7 +35,7 @@ class Talk(models.Model):
 
 class TalkComment(models.Model):
     talk = models.ForeignKey(Talk)
-    reviewer = models.ForeignKey(UserProfile, null=True)
+    reviewer = models.ForeignKey('core.UserProfile', null=True)
     comment = models.CharField(max_length=140)
     datetime = models.DateTimeField(default=datetime.now())
 

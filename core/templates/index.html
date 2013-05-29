@@ -1,0 +1,50 @@
+{% extends 'talk_base.html' %}
+
+{% block 'callout' %}
+    {% if user.is_anonymous %}
+        <div class="jumbotron callout">
+            <h2 class="btn-warning">Finally, a place for speakers.</h2>
+            <a class="btn btn-large btn-warning" href="/register/">Register Now.</a>
+        </div>
+    {% else %}
+        <div class="jumbotron callout">
+            <h2 class="btn-warning">Finally, a place for speakers.</h2>
+            <a class="add-talk btn btn-large btn-warning" href="#add-talk-popup">Add your talk.</a>
+        </div>
+    {% endif %}
+{% endblock %}
+
+
+{% block 'content' %}
+    {% if current %}
+        <div class="row">
+            <div class="span12">
+                <h2>Happening Now</h2>
+            </div>
+        </div>
+
+        <div class="row">
+            <ul class="events">
+                {% for item in current %}
+                    {% include '_talk_event_slate_detail_partial.html' %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    {% if upcoming %}
+        <div class="row">
+            <div class="span12">
+                <h2>Upcoming Talks</h2>
+            </div>
+        </div>
+
+        <div class="row">
+            <ul class="events">
+                {% for item in upcoming %}
+                    {% include '_talk_event_slate_detail_partial.html' %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+{% endblock %}

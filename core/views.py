@@ -1,6 +1,7 @@
 # Create your views here.
-from datetime import datetime
+from datetime import datetime, timedelta
 from itertools import groupby
+from collections import namedtuple
 import random
 
 from django.shortcuts import render_to_response, redirect, get_object_or_404
@@ -16,7 +17,7 @@ from django.db.models import Q
 
 from guardian.shortcuts import assign
 
-from .models import Location, UserProfile, UserLink, UserTag
+from .models import Location, UserProfile, UserLink, UserTag, TalkEvent
 from talks.models import Talk
 
 from events.models import Event
@@ -27,6 +28,14 @@ from .forms import EditProfileForm, ProfilePhotoForm, ProfileLinkForm, ProfileTa
 from security import speaker_restricted
 
 random.seed(datetime.now())
+
+def generate_datetime():
+    year = random.choice([2013, 2014, 2015])
+    month = random.choice(range(1, 13))
+    day = random.choice(range(1,28))
+    hour = random.choice(range(0,24))
+    minute = random.choice([0, 15, 30, 45])
+    return datetime(year, month, day, hour, minute)
 
 def load_fixtures(request):
     verbs = ['Hacking', 'Saving', 'Hunting', 'Exploiting', 
@@ -53,6 +62,10 @@ def load_fixtures(request):
             "15 Smiling Kids", "Central Community Center", "InTech Central Office",
             "Baboon Fun Park", "The Wilde Syde: Animal Safari", "Anonymous",
             "The Clap Trap", "Game Design Group", "Board Gamers R' US"]
+
+    event_names = ["Rubycon", "PyOhio", "PyCon", "GenCon", "CodeMash", "BingCon", 
+            "MarCon", "MegaCon", "CloudDevelop", "Origins Game Fair", "Essen",
+            "Columbus Code Camp", "Girl Develop It", "Iron Ruby", "Emerald Fair"]
 
     location_addrs = [
             ("1275 Kinnear Road", "Columbus", "Ohio", "43204"),
@@ -92,7 +105,7 @@ def load_fixtures(request):
     for i in range(0, 200):
 
         #Every 10 make a new location and user/speaker
-        if i % 10 == 0:
+        if i % 11 == 0 or i == 0:
             location = Location()
             location.name = random.choice(location_names)
             addr = random.choice(location_addrs)
@@ -114,38 +127,62 @@ def load_fixtures(request):
             speaker.about_me = user_description
             speaker.save()
 
+        if i % 17 == 0 or i == 0:
+            event = Event()
+            event.name = random.choice(event_names)
+            event.description = user_description
+            event.owner = speaker
+            event.location = location
+
+            event.start_date = generate_datetime()
+            event.end_date = event.start_date + timedelta(days=3)
+            event.save()
+
         talk = Talk()
-
-        year = random.choice([2013, 2014, 2015])
-        month = random.choice(range(1, 13))
-        day = random.choice(range(1,28))
-        hour = random.choice(range(0,24))
-        minute = random.choice([0, 15, 30, 45])
-
         talk.name = random.choice(verbs) + " " + random.choice(things) + ": " + random.choice(long_actions)
         talk.abstract = talk_description
-        talk.photo = str(random.choice(range(1, 21))) + ".jpeg"
 
-        if i % 3 == 0:
+        if i % 7 == 0:
             talk.published = False
        
         talk.speaker = speaker
         talk.save()
 
+        talk_event = TalkEvent()
+        talk_event.talk = talk
+        talk_event.event = event
+        delta = timedelta(days=random.choice([1,2]), hours=random.choice(range(1, 10)))
+        talk_event.date = event.start_date + delta
+        talk_event.save()
+
         assign('change_talk', speaker.user, talk)
         assign('delete_talk', speaker.user, talk)
 
-        event = Event()
-        event.talk = talk
-        event.date = datetime(year, month, day, hour, minute)
-        event.location = location
-        event.save()
-
-        assign('change_event', speaker.user, event)
-        assign('delete_event', speaker.user, event)
-
     return render_to_response('load_fixtures.html', 
             context_instance=RequestContext(request))
+
+
+def index(request):
+    talk_events = TalkEvent.objects.filter(
+            event__published=True, event__owner__published=True,
+            talk__published=True, talk__speaker__published=True)
+
+    current = talk_events.filter(
+            event__start_date__lt=datetime.today(),
+            event__end_date__gt=datetime.today())
+
+    upcoming = talk_events.filter(event__start_date__gt=datetime.today())
+
+    if len(current) > 8:
+        current = random.sample(current, 8)
+
+    if len(upcoming) > 12:
+        upcoming = random.sample(upcoming, 12)
+
+    return render_to_response("index.html", {
+        'current': current,
+        'upcoming': upcoming,
+        }, context_instance=RequestContext(request))
 
 
 @login_required()
@@ -371,35 +408,33 @@ def speaker_detail(request, username):
     speaker = get_object_or_404(User, username=username).get_profile()
 
     if request.user.is_anonymous():
-        events = Event.published_events()
         talks = Talk.published_talks()
     else:
-        events = Event.published_events(user_profile=request.user.get_profile())
         talks = Talk.published_talks(user_profile=request.user.get_profile())
 
-    events = events.filter(talk__speaker=speaker)
     talks = talks.filter(speaker=speaker)
 
-    upcoming = events.filter(date__gt=datetime.now()).order_by('date')[:5]
-    upcoming = group_events_by_date(upcoming)
+    #TalkEvent = namedtuple('TalkEvent', ['talk', 'event'], verbose=True)
 
-    past = events.filter(date__lt=datetime.now()).order_by('-date')[:20]
-    past = group_events_by_date(past, reverse=True)
+    talk_events = TalkEvent.objects.filter(talk__speaker=speaker,
+            event__published=True, talk__published=True,
+            event__owner__published=True, talk__speaker__published=True)
+
+    current = talk_events.filter(
+            event__start_date__lt=datetime.today(),
+            event__end_date__gt=datetime.today())
+
+    upcoming = talk_events.filter(event__start_date__gt=datetime.today())
+    past = talk_events.filter(event__end_date__lt=datetime.today())
+
+    unscheduled = [talk for talk in talks if talk not in [item.talk for item in talk_events]]
 
     if request.user.is_anonymous():
         following = speaker.following.filter(published=True)
         followers = speaker.followers.filter(published=True)
-
-        attending = speaker.published_upcoming_events_attending()
-        attended = speaker.published_past_events_attended()
-        attended = group_events_by_date(attended, reverse=True)
     else:
         following = speaker.following.filter(Q(published=True) | Q(user=request.user))
         followers = speaker.followers.filter(Q(published=True) | Q(user=request.user))
-
-        attending = speaker.published_upcoming_events_attending()
-        attended = speaker.published_past_events_attended()
-        attended = group_events_by_date(attended, reverse=True)
 
     template = 'speaker_profile.html'
 
@@ -408,11 +443,10 @@ def speaker_detail(request, username):
 
     return render_to_response(template, {
         'speaker': speaker,
-        'talks': talks,
+        'current': current,
         'upcoming': upcoming,
         'past': past,
-        'attending': attending,
-        'attended': attended,
+        'unscheduled': unscheduled,
         'following': following,
         'followers': followers,
         'last': '/speaker/' + username

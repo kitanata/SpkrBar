@@ -1,15 +1,19 @@
 <div class="talk-header">
     <div class="row">
         <div class="span3">
-            <div class="row">
-                <div class="span3">
-                    <div class="well talk-photo">
-                        {% if talk.photo %}
-                            <img src="{{STATIC_URL}}img/photo/{{ talk.photo}}"></img>
-                        {% else %}
-                            <i class="icon-camera profile-placeholder"></i>
-                        {% endif %}
-                    </div>
+            <div class="picture well">
+                {% if talk.speaker.photo %}
+                    <img src="{{STATIC_URL}}img/photo/{{ talk.speaker.photo}}"></img>
+                {% else %}
+                    <i class="icon-user photo-placeholder-large"></i>
+                {% endif %}
+
+                <div class="about">
+                    <h4>
+                        <a href="/speaker/{{talk.speaker.user.username}}">
+                        {{ talk.speaker.user.get_full_name }}
+                        </a>
+                    </h4>
                 </div>
             </div>
         </div>
@@ -33,6 +37,11 @@
                     {% endif %}
                 </h2>
             {% endif %}
+
+            <div class="talk-detail">
+                <h3>Abstract</h3>
+                <p>{{ talk.abstract }}</p>
+            </div>
         </div>
     </div>
 </div>

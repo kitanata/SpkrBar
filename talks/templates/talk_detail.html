@@ -7,33 +7,6 @@
         <div class="span3">
             <div class="row">
                 <div class="span3">
-                    <h3>Speaker</h3>
-                    <ul class="speakers">
-                        {% if talk.speaker.published %}
-                            <li>
-                                <div class="speaker well">
-                                    {% if talk.speaker.photo %}
-                                        <img src="{{STATIC_URL}}img/photo/{{ talk.speaker.photo}}"></img>
-                                    {% else %}
-                                        <i class="icon-user profile-placeholder"></i>
-                                    {% endif %}
-
-                                    <div class="about">
-                                        <h4>
-                                            <a href="/speaker/{{talk.speaker.user.username}}">
-                                            {{ talk.speaker.user.get_full_name }}
-                                            </a>
-                                        </h4>
-                                    </div>
-                                </div>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="span3">
                     <div class="tags">
                         <h3>Tags</h3>
                         <ul>
@@ -54,9 +27,6 @@
 
         <div class="span9">
             <div class="talk-detail">
-                <h3>Abstract</h3>
-                <p>{{ talk.abstract }}</p>
-
                 {% if talk.talkvideo_set.all %}
                     <h3>Videos</h2>
                     {% for video in talk.talkvideo_set.all %}
@@ -153,7 +123,7 @@
         {% with event.location as location %}
         (function() {
             // create a map in the "map" div, set the view to a given place and zoom
-            var map = L.map('map{{location.id}}').setView([39.95, -82.95], 6);
+            var map = L.map('map{{location.id}}', {'zoomControl': false}).setView([39.95, -82.95], 6);
 
             // add an OpenStreetMap tile layer
             L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {

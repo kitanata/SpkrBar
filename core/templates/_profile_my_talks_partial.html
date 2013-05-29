@@ -1,29 +1,27 @@
-<div class="row">
-    <div class="span9">
-        <h2>My Talks</h2>
-        <hr />
+{% if current %}
+    <div class="row">
+        <div class="span9">
+            <h2>Talks Happening Now</h2>
 
-        <div class="row">
-            {% if talks %}
-                <div class="talks">
-                    <ul>
-                        {% for talk in talks %}
-                            {% include '_talk_thumb_detail_partial.html' %}
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% elif user == speaker.user %}
-                <div class="span9">
-                    <h4>
-                        You don't have any talks. Would you like to 
-                        <a class="btn btn-warning" href="/talk/new">add one now?</a>
-                    </h4>
-                </div>
-            {% else %}
-                <div class="span9">
-                    <h2>This speaker hasn't added any talks.</h2>
-                </div>
-            {% endif %}
+            <div class="row">
+                {% for talk_event in current %}
+                    {% include '_talk_event_thumb_detail_partial.html' %}
+                {% endfor %}
+            </div>
         </div>
     </div>
-</div>
+{% endif %}
+
+{% if upcoming %}
+    <div class="row">
+        <div class="span9">
+            <h2>Upcoming Speaking Engagements</h2>
+
+            <div class="row">
+                {% for talk_event in upcoming %}
+                    {% include '_talk_event_thumb_detail_partial.html' %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endif %}

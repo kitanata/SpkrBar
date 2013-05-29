@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from datetime import datetime
 
 from locations.models import Location
+from talks.models import Talk
+from events.models import Event
 
 class UserTag(models.Model):
     name = models.CharField(max_length=140)
@@ -25,6 +27,9 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    def get_absolute_url(self):
+        return "/speaker/" + self.user.username
 
     def published_upcoming_events_attending(self, user_profile=None):
         if user_profile:
@@ -72,6 +77,14 @@ class UserLink(models.Model):
 
     def __str__(self):
         return self.link_name
+
+
+class TalkEvent(models.Model):
+    talk = models.ForeignKey(Talk)
+    event = models.ForeignKey(Event)
+
+    date = models.DateTimeField()
+    attendees = models.ManyToManyField(UserProfile)
 
 
 def create_profile(sender, **kw):

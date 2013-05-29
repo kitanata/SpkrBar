@@ -50,6 +50,10 @@
         width: 220px;
         height: 220px;
     }
+
+    #map {
+        height: 300px;
+    }
 }
 
 ul.events {
@@ -119,6 +123,7 @@ ul.events {
 }
 
 .event-thumb {
+    margin-bottom: 20px;
     border: 1px solid #eee;
     padding: 10px;
 
@@ -147,5 +152,30 @@ ul.events {
             bottom: 0;
             right: 0;
         }
+    }
+}
+
+#event-list .event {
+    border: 1px solid #eee;
+    padding: 10px;
+    margin: 0px 0px 20px 0px;
+
+    .map {
+        display: inline-block;
+        width: 140px;
+        height: 140px;
+    }
+
+    .details {
+        display: inline-block;
+        vertical-align: top;
+        width: 240px;
+        margin-left: 20px;
+    }
+}
+
+#event-list-detail {
+    #map {
+        height: 260px;
     }
 }

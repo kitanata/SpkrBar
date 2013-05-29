@@ -1,3 +1,4 @@
+import random
 from datetime import datetime
 from itertools import groupby
 
@@ -15,7 +16,7 @@ from guardian.shortcuts import assign
 from events.models import Event
 from locations.models import Location
 from locations.forms import LocationForm
-from core.models import UserProfile
+from core.models import UserProfile, TalkEvent
 
 from .models import Talk, TalkTag, TalkComment
 from .forms import TalkForm
@@ -47,14 +48,6 @@ def talk_new(request):
             assign('delete_talk', request.user, talk)
 
             return redirect('/talk/' + str(talk.id))
-    else:
-        talk_form = TalkForm()
-        location_form = LocationForm()
-
-    return render_to_response('talk_new.html', {
-        'talk_form' : talk_form,
-        'location_form' : location_form
-        }, context_instance=RequestContext(request))
 
    
 @login_required
@@ -162,8 +155,12 @@ def talk_publish(request, talk_id):
 def talk_detail(request, talk_id):
     talk = get_object_or_404(Talk, pk=talk_id)
 
-    events = Event.objects.filter(talk__id=talk_id)
+    talk_events = TalkEvent.objects.filter(talk=talk)
+    events = [ev.event for ev in talk_events]
     attendees = UserProfile.objects.filter(events_attending__in=events)
+
+    upcoming = talk_events.filter(event__start_date__gt=datetime.today())
+    past = talk_events.filter(event__end_date__gt=datetime.today())
 
     user_attending = False
     user_endorsed = False
@@ -184,7 +181,8 @@ def talk_detail(request, talk_id):
     return render_to_response('talk_detail.html', {
         'last': talk.get_absolute_url(),
         'talk': talk,
-        'events': events.filter(date__gt=datetime.now()),
+        'upcoming': upcoming,
+        'past': past,
         'attendees': attendees,
         'user_attending': user_attending,
         'user_endorsed': user_endorsed,
