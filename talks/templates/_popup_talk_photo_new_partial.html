@@ -1,0 +1,17 @@
+<div style="display:none">
+    <div id="upload-photo-popup" style="background-color: white; padding: 40px;">
+        <h2>Upload Photo</h2>
+        <form action="/talk/{{ talk.id}}/photo/new/" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label for="talk-photo">Filename:</label>
+            <input id="talk-photo" name="photo" type="file" />
+
+            <button class="btn btn-warning" type="submit">Upload</button>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('.upload-photo').colorbox({inline: true, width:"300px"});
+</script>

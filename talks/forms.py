@@ -1,5 +1,5 @@
 from django import forms
-from .models import Talk
+from .models import *
 from config import settings
 
 # 'Field', 'CharField', 'IntegerField',
@@ -55,6 +55,7 @@ class CustomClearableFileInput(ClearableFileInput):
 
         return mark_safe(template % substitutions)
 
+
 class TalkForm(forms.ModelForm):
     class Meta:
         model = Talk
@@ -63,3 +64,22 @@ class TalkForm(forms.ModelForm):
             'photo': CustomClearableFileInput()
         }
         exclude = ('speaker', 'media', 'published', 'tags', 'attendees', 'endorsements')
+
+
+class TalkLinkForm(forms.Form):
+    name = forms.CharField()
+    url = forms.URLField()
+
+
+class TalkSlideDeckForm(forms.Form):
+    source = forms.ChoiceField(choices=SLIDE_TYPE_CHOICES)
+    embed = forms.CharField()
+
+
+class TalkVideoForm(forms.Form):
+    source = forms.ChoiceField(choices=VIDEO_TYPE_CHOICES)
+    embed = forms.CharField()
+
+
+class TalkPhotoForm(forms.Form):
+    photo = forms.FileField(required=False)

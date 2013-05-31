@@ -1,0 +1,23 @@
+<div style="display:none">
+    <div id="link-video-popup" style="background-color: white; padding: 40px;">
+        <h2>Add Video Link</h2>
+        <form action="/talk/{{talk.id}}/video/new/" method="POST">
+            {% csrf_token %}
+
+            <label for="video-source">Source:</label>
+            <select id="video-source" name="source">
+                <option value="YOUTUBE">YouTube</option>
+                <option value="VIMEO">Vimeo</option>
+            </select>
+
+            <label for="video-embed-data">Embed Code:</label>
+            <input id="video-embed-data" name="embed" type="text" />
+
+            <button class="btn btn-warning" type="submit">Save</button>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('.link-video').colorbox({inline: true, width:"300px"});
+</script>

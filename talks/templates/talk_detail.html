@@ -7,6 +7,40 @@
         <div class="span3">
             <div class="row">
                 <div class="span3">
+                    <h3>Attendees</h3>
+
+                    Show all the avatars for everyone who has come to this talk
+                </div>
+
+                <div class="span3">
+                    <h3>Links</h3>
+
+                    {% if talk.talklink_set.all %}
+                        <ul>
+                            {% for link in talk.talklink_set.all %}
+                                <li><a href="{{link.url}}">{{link.name}}</a></li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        No links available.
+                    {% endif %}
+
+                    {% if talk.speaker == user.get_profile %}
+                        <form action="/talk/{{talk.id}}/link/new/" method="POST">
+                            {% csrf_token %}
+
+                            <label for="link-name">Name:</label>
+                            <input id="link-name" name="name" type="text" placeholder="Blog Post"/>
+
+                            <label for="link-url">Url:</label>
+                            <input id="link-url" name="url" type="url" placeholder="http://" />
+
+                            <button class="btn btn-warning" type="submit">Add New Link</button>
+                        </form>
+                    {% endif %}
+                </div>
+
+                <div class="span3">
                     <div class="tags">
                         <h3>Tags</h3>
                         <ul>
@@ -26,18 +60,101 @@
         </div>
 
         <div class="span9">
-            <div class="talk-detail">
-                {% if talk.talkvideo_set.all %}
-                    <h3>Videos</h2>
-                    {% for video in talk.talkvideo_set.all %}
-                        {% if video.video_type == "YOUTUBE" %}
-                            <iframe width="300" height="225" src="{{ video.url_target }}" frameborder="0" allowfullscreen></iframe>
-                        {% elif video.video_type == "VIMEO" %}
-                            <iframe src="{{ video.url_target }}" width="300" height="225" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+            <div class="row">
+                <div class="span4">
+                    <div class="row">
+                        <div class="span2">
+                            <h3>Slides</h3>
+                        </div>
+                        {% if talk.speaker == user.get_profile %}
+                            <div class="span2">
+                                <a class="btn btn-warning link-slides pull-right" href="#link-slides-popup">Add Slides</a>
+                            </div>
                         {% endif %}
-                    {% endfor %}
-                {% endif %}
+                    </div>
+                    <div class="row"><div class="span4"><hr /></div></div>
+                    <div class="row">
+                        {% if talk.talkslidedeck_set.all %}
+                            {% for deck in talk.talkslidedeck_set.all %}
+                                <div class="span4">
+                                    {% if deck.source == "SLIDESHARE" %}
+                                        <iframe src="{{deck.data}}" width="300" height="{% widthratio 300 1 deck.aspect %}" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen webkitallowfullscreen mozallowfullscreen> </iframe>
+                                    {% elif deck.source == "SPEAKERDECK" %}
+                                        <script async class="speakerdeck-embed" data-id="{{deck.data}}" data-ratio="{{deck.aspect}}" src="//speakerdeck.com/assets/embed.js"></script>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="span4">
+                                No slides available.
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
 
+                <div class="span4 offset1">
+                    <div class="row">
+                        <div class="span2">
+                            <h3>Videos</h3>
+                        </div>
+                        {% if talk.speaker == user.get_profile %}
+                            <div class="span2">
+                                <a class="btn btn-warning link-video pull-right" href="#link-video-popup">Add Video</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="row"><div class="span4"><hr /></div></div>
+                    <div class="row">
+                        {% if talk.talkvideo_set.all %}
+                            {% for video in talk.talkvideo_set.all %}
+                                <div class="span4">
+                                    {% if video.source == "YOUTUBE" or video.source == "VIMEO" %}
+                                        <iframe width="300" height="{% widthratio 300 1 video.aspect %}" src="{{ video.data }}" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowfullscreen></iframe>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="span4">
+                                No videos available.
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top:40px;">
+                <div class="span9">
+                    <div class="row">
+                        <div class="span2">
+                            <h3>Photos</h3>
+                        </div>
+                        {% if talk.speaker == user.get_profile %}
+                            <div class="span7">
+                                <a class="btn btn-warning upload-photo pull-right" href="#upload-photo-popup">Upload Photo</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="row"><div class="span9"><hr /></div></div>
+                    <div class="row">
+                        {% if photos %}
+                            <div class="span9">
+                                <div class="photos">
+                                    {% for photo in photos %}
+                                        <img src="{{STATIC_URL}}/{{photo.0}}" width="{{photo.1}}" height="{{photo.2}}"></img>
+                                    {% endfor %}
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        {% else %}
+                            <div class="span9">
+                                No photos available.
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="talk-detail">
                 {% if attendees %}
                     <h3>Attendees</h3>
                     {% for profile in attendees %}
@@ -74,8 +191,9 @@
                 {% endif %}
 
                 {% if talk.talkcomment_set.all or talk.speaker != user.get_profile %}
-                    <div class="comments">
+                    <div class="comments" style="margin-top:40px;">
                         <h3>Comments</h3>
+                        <hr />
 
                         {% if talk.speaker != user.get_profile %}
                             <form class="add-comment-form" action="/talk/{{talk.id}}/comment/new/" method="POST">
@@ -106,17 +224,8 @@
 
 {% endblock %}
 
-{% block 'scripts' %}
+{% block 'talk_scripts' %}
 <script type="text/javascript">
-    $('.delete-talk').colorbox({inline: true, width:"400px"});
-
-    $('.delete-talk').click(function(el){
-        var sel = $(el.currentTarget)
-
-        $('.delete-talk-name').text(sel.data('name'))
-        $('.delete-confirm-link').attr('href', "/talk/" + sel.data('id') + "/delete/")
-    });
-
     L.Icon.Default.imagePath = '{{STATIC_URL}}img/';
 
     {% for event in events %}

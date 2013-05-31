@@ -27,6 +27,11 @@ urlpatterns = patterns('',
     url(r'^talk/(?P<talk_id>\d+)/publish/$', 'talks.views.talk_publish'),
     url(r'^talk/(?P<talk_id>\d+)/archive/$', 'talks.views.talk_archive'),
 
+    url(r'^talk/(?P<talk_id>\d+)/slides/new/$', 'talks.views.talk_slides_new'),
+    url(r'^talk/(?P<talk_id>\d+)/video/new/$', 'talks.views.talk_video_new'),
+    url(r'^talk/(?P<talk_id>\d+)/photo/new/$', 'talks.views.talk_photo_new'),
+    url(r'^talk/(?P<talk_id>\d+)/link/new/$', 'talks.views.talk_link_new'),
+
     url(r'^speakers/$', 'core.views.speakers'),
     url(r'^speaker/(?P<username>\w+)/$', 'core.views.speaker_detail'),
     url(r'^speaker/(?P<username>\w+)/follow/$', 'core.views.speaker_follow'),

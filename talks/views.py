@@ -1,4 +1,5 @@
 import random
+import uuid
 from datetime import datetime
 from itertools import groupby
 
@@ -7,7 +8,7 @@ from django.views.generic import ListView
 from django.template import RequestContext
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponseNotFound
 
 from django.db.models import Q
 
@@ -18,8 +19,8 @@ from locations.models import Location
 from locations.forms import LocationForm
 from core.models import UserProfile, TalkEvent
 
-from .models import Talk, TalkTag, TalkComment
-from .forms import TalkForm
+from .models import *
+from .forms import *
 from .helpers import group_talk_events_by_date
 
 @login_required
@@ -33,15 +34,6 @@ def talk_new(request):
             talk.name = talk_form.cleaned_data['name']
             talk.abstract = talk_form.cleaned_data['abstract']
             talk.speaker = request.user.get_profile()
-
-            if 'photo' in request.FILES:
-                photo = request.FILES['photo']
-
-                with open('talks/static/img/photo/' + photo.name, 'wb+') as destination:
-                    for chunk in photo.chunks():
-                        destination.write(chunk)
-
-                talk.photo = photo.name
 
             talk.save()
             assign('change_talk', request.user, talk)
@@ -58,33 +50,137 @@ def talk_edit(request, talk_id):
         return HttpResponseForbidden()
 
     if request.method == 'POST': # If the form has been submitted...
-        talk_form = TalkForm(request.POST, request.FILES, instance=talk)
+        form = TalkForm(request.POST, instance=talk)
 
-        if talk_form.is_valid():
-            talk = talk_form.save()
+        if form.is_valid():
+            form.save()
 
+            return redirect(talk)
+    else:
+        return HttpResponseNotFound()
+
+
+@login_required
+def talk_link_new(request, talk_id):
+    talk = get_object_or_404(Talk, pk=talk_id)
+
+    if not request.user.has_perm('change_talk', talk):
+        return HttpResponseForbidden()
+
+    if request.method == 'POST':
+        form = TalkLinkForm(request.POST)
+
+        if form.is_valid():
+            link = TalkLink()
+            link.name = form.cleaned_data['name']
+            link.url = form.cleaned_data['url']
+            link.talk = talk
+            link.save()
+
+            return redirect(talk)
+    else:
+        return HttpResponseNotFound()
+
+
+@login_required
+def talk_slides_new(request, talk_id):
+    talk = get_object_or_404(Talk, pk=talk_id)
+
+    if not request.user.has_perm('change_talk', talk):
+        return HttpResponseForbidden()
+
+    if request.method == 'POST':
+        form = TalkSlideDeckForm(request.POST)
+
+        if form.is_valid():
+            deck = TalkSlideDeck()
+            deck.talk = talk
+
+            embed = form.cleaned_data['embed']
+            embed = embed.split(' ')
+            embed = [x.split('=') for x in embed]
+            embed = [x for x in embed if len(x) == 2]
+            embed = {x[0]: x[1].strip(""" "'""") for x in embed}
+
+            deck.source = form.cleaned_data['source']
+
+            if deck.source == SLIDESHARE:
+                deck.data = embed['src']
+                w = embed['width']
+                h = embed['height']
+                deck.aspect = int(w) / float(h) if float(h) != 0 else 0
+            elif deck.source == SPEAKERDECK:
+                deck.data = embed['data-id']
+                deck.aspect = float(embed['data-ratio'])
+            else:
+                return HttpResponseNotFound()
+
+            deck.save()
+
+            return redirect(talk)
+
+    return HttpResponseNotFound()
+
+
+@login_required
+def talk_video_new(request, talk_id):
+    talk = get_object_or_404(Talk, pk=talk_id)
+
+    if not request.user.has_perm('change_talk', talk):
+        return HttpResponseForbidden()
+
+    if request.method == 'POST':
+        form = TalkVideoForm(request.POST)
+
+        if form.is_valid():
+            video = TalkVideo()
+            video.talk = talk
+
+            embed = form.cleaned_data['embed']
+            embed = embed.split(' ')
+            embed = [x.split('=') for x in embed]
+            embed = [x for x in embed if len(x) == 2]
+            embed = {x[0]: x[1].strip(""" "'""") for x in embed}
+
+            video.source = form.cleaned_data['source']
+
+            if video.source == YOUTUBE or video.source == VIMEO:
+                video.data = embed['src']
+                w = embed['width']
+                h = embed['height']
+                video.aspect = int(w) / float(h) if float(h) != 0 else 0
+            else:
+                return HttpResponseNotFound()
+
+            video.save()
+
+            return redirect(talk)
+
+    return HttpResponseNotFound()
+
+
+@login_required
+def talk_photo_new(request, talk_id):
+    talk = get_object_or_404(Talk, pk=talk_id)
+
+    if not request.user.has_perm('change_talk', talk):
+        return HttpResponseForbidden()
+
+    if request.method == 'POST':
+        form = TalkPhotoForm(request.FILES)
+
+        if form.is_valid():
             if 'photo' in request.FILES:
                 photo = request.FILES['photo']
 
-                with open('talks/static/img/photo/' + photo.name, 'wb+') as destination:
-                    for chunk in photo.chunks():
-                        destination.write(chunk)
+                talk_photo = TalkPhoto()
+                talk_photo.photo = save_photo_with_uuid(photo)
+                talk_photo.talk = talk
+                talk_photo.save()
 
-                talk.photo = photo.name
+            return redirect(talk)
 
-            talk.save()
-
-            return redirect('/talk/' + str(talk.id))
-    else:
-        talk_form = TalkForm(instance=talk)
-
-    location_form = LocationForm()
-
-    return render_to_response('talk_edit.html', {
-        'talk': talk,
-        'talk_form': talk_form,
-        'location_form': location_form
-        }, context_instance=RequestContext(request))
+    return HttpResponseNotFound()
 
 
 @login_required
@@ -94,12 +190,9 @@ def talk_delete(request, talk_id):
     if not request.user.has_perm('delete_talk', talk):
         return HttpResponseForbidden()
 
-    for event in talk.event_set.all():
-        event.delete()
-
     talk.delete()
 
-    return redirect('/speaker/' + request.user.username)
+    return redirect(request.user.get_profile())
 
 
 @login_required
@@ -178,9 +271,20 @@ def talk_detail(request, talk_id):
     if not user_attending or not user_endorsed:
         will_have_links = True
 
+    photos = talk.talkphoto_set.all()
+
+    photo_col = []
+    for photo in photos:
+        width = photo.width
+        height = photo.height
+        aspect = width / height if height != 0 else 0
+        width = min(width, 200)
+        photo_col.append((photo.photo, width, width * aspect))
+
     return render_to_response('talk_detail.html', {
         'last': talk.get_absolute_url(),
         'talk': talk,
+        'photos': photo_col,
         'upcoming': upcoming,
         'past': past,
         'attendees': attendees,
@@ -228,3 +332,11 @@ def talk_endorsement_new(request, talk_id):
         return redirect('/talk/' + talk_id)
 
 
+def save_photo_with_uuid(photo):
+    photo_name = 'photo/' + str(uuid.uuid4())
+
+    with open(photo_name, 'wb+') as destination:
+        for chunk in photo.chunks():
+            destination.write(chunk)
+
+    return photo_name

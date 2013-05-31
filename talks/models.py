@@ -2,6 +2,21 @@ from django.db import models
 from django.db.models import Q
 from datetime import datetime
 
+SPEAKERDECK = 'SPEAKERDECK'
+SLIDESHARE = 'SLIDESHARE'
+YOUTUBE = 'YOUTUBE'
+VIMEO = 'VIMEO'
+
+SLIDE_TYPE_CHOICES = (
+    (SPEAKERDECK, 'SpeakerDeck'),
+    (SLIDESHARE, 'SlideShare'),
+)
+
+VIDEO_TYPE_CHOICES = (
+    (YOUTUBE, 'Youtube'),
+    (VIMEO, 'Vimeo'),
+)
+
 class TalkTag(models.Model):
     name = models.CharField(max_length=140)
 
@@ -40,18 +55,34 @@ class TalkComment(models.Model):
     datetime = models.DateTimeField(default=datetime.now())
 
 
-class TalkVideo(models.Model):
-    YOUTUBE = 'YOUTUBE'
-    VIMEO = 'VIMEO'
-
-    LINK_TYPE_CHOICES = (
-        (YOUTUBE, 'Youtube'),
-        (VIMEO, 'Vimeo'),
-    )
-
+class TalkLink(models.Model):
     talk = models.ForeignKey(Talk)
-    video_type = models.CharField(max_length=40, choices=LINK_TYPE_CHOICES, default=YOUTUBE)
-    url_target = models.URLField(max_length=140)
+    name = models.CharField(max_length=140)
+    url = models.URLField()
+
+
+class TalkSlideDeck(models.Model):
+    talk = models.ForeignKey(Talk)
+    source = models.CharField(max_length=40, choices=SLIDE_TYPE_CHOICES, default=SLIDESHARE)
+    data = models.CharField(max_length=140)
+    aspect = models.FloatField()
 
     def talk_name(self):
         return self.talk.name
+
+    
+class TalkVideo(models.Model):
+    talk = models.ForeignKey(Talk)
+    source = models.CharField(max_length=40, choices=VIDEO_TYPE_CHOICES, default=YOUTUBE)
+    data = models.CharField(max_length=140)
+    aspect = models.FloatField()
+
+    def talk_name(self):
+        return self.talk.name
+
+
+class TalkPhoto(models.Model):
+    talk = models.ForeignKey(Talk)
+    width = models.PositiveIntegerField()
+    height = models.PositiveIntegerField()
+    photo = models.ImageField(upload_to="photo", width_field="width", height_field="height")
