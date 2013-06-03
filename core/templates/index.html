@@ -24,11 +24,9 @@
         </div>
 
         <div class="row">
-            <ul class="events">
-                {% for item in current %}
-                    {% include '_talk_event_slate_detail_partial.html' %}
-                {% endfor %}
-            </ul>
+            {% for item in current %}
+                {% include '_talk_event_span6_detail_partial.html' %}
+            {% endfor %}
         </div>
     {% endif %}
 
@@ -40,11 +38,9 @@
         </div>
 
         <div class="row">
-            <ul class="events">
-                {% for item in upcoming %}
-                    {% include '_talk_event_slate_detail_partial.html' %}
-                {% endfor %}
-            </ul>
+            {% for item in upcoming %}
+                {% include '_talk_event_span6_detail_partial.html' %}
+            {% endfor %}
         </div>
     {% endif %}
 {% endblock %}

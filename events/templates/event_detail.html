@@ -26,11 +26,9 @@
                 <hr />
             </div>
 
-            <ul class="events">
-                {% for item in upcoming %}
-                    {% include '_talk_event_slate_detail_partial.html' %}
-                {% endfor %}
-            </ul>
+            {% for item in upcoming %}
+                {% include '_talk_event_span6_detail_partial.html' %}
+            {% endfor %}
         {% endif %}
 
         {% if past %}
@@ -39,11 +37,9 @@
                 <hr />
             </div>
 
-            <ul class="events">
-                {% for item in past %}
-                    {% include '_talk_event_slate_detail_partial.html' %}
-                {% endfor %}
-            </ul>
+            {% for item in past %}
+                {% include '_talk_event_span6_detail_partial.html' %}
+            {% endfor %}
         {% endif %}
     </div>
 {% endblock %}

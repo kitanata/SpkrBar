@@ -23,7 +23,7 @@
                 {% include '_talk_edit_links_partial.html' %}
 
                 <h2 class="short pull-left">
-                    {{ talk.name }}
+                    {{ talk.name|truncatechars:68 }}
                     {% if talk.endorsements.count %}
                         ({{ talk.endorsements.count }} <i class="icon-thumbs-up"></i>)
                     {% endif %}
@@ -31,7 +31,7 @@
                 <div class="clearfix"></div>
             {% else %}
                 <h2>
-                    {{ talk.name }}
+                    {{ talk.name|truncatechars:90 }}
                     {% if talk.endorsements.count %}
                         ({{ talk.endorsements.count }} <i class="icon-thumbs-up"></i>)
                     {% endif %}

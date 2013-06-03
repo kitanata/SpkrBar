@@ -1,0 +1,50 @@
+<div class="span6">
+    <div class="talk_event">
+        <div class="header-s6">
+            <div class="title">
+                {% if not user.is_anonymous and item.talk.speaker != user.get_profile %}
+                    <div class="grid1">
+                        <a href="{{item.talk.get_absolute_url}}">{{ item.talk.name|truncatechars:48 }}</a><br />
+                        by {{ item.talk.speaker.user.get_full_name }}
+                    </div>
+                    <div class="grid2">
+                        {% if user.get_profile in item.attendees %}
+                            <div class="label label-warning">
+                                <i class="icon-calendar"></i> Attending
+                            </div>
+                        {% else %}
+                            <a class="btn btn-warning" href="/talk_event/{{item.id}}/attend?last={{last}}">
+                                <i class="icon-calendar"></i> Attend
+                            </a>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div>
+                        <a href="{{item.talk.get_absolute_url}}">{{ item.talk.name|truncatechars:38 }}</a><br />
+                        by {{ item.talk.speaker.user.get_full_name }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="location">
+                <div class="grid1">
+                    <a href="{{ item.event.get_absolute_url }}">at {{ item.event.name }}</a><br />
+                    in {{ item.event.location.city }}, {{ item.event.location.state }}
+                </div>
+                <div class="grid2">
+                    {{ item.date.date }}<br />
+                    {{ item.date.time }}
+                </div>
+            </div>
+        </div>
+
+        <div class="description">
+            {% if item.talk.speaker.photo %}
+                <img class="pull-left" src="{{STATIC_URL}}img/photo/{{talk.speaker.photo}}">
+            {% else %}
+                <i class="icon-user photo-placeholder pull-left"></i>
+            {% endif %}
+            <span>{{ item.talk.abstract|truncatechars:140 }}</span>
+        </div>
+    </div>
+</div>

@@ -255,20 +255,24 @@ def talk_detail(request, talk_id):
     upcoming = talk_events.filter(event__start_date__gt=datetime.today())
     past = talk_events.filter(event__end_date__gt=datetime.today())
 
-    user_attending = False
+    user_attendance = False
     user_endorsed = False
     will_have_links = False
 
     if request.user.is_anonymous():
         attendees = attendees.filter(Q(published=True))
     else:
-        user_attending = (request.user.get_profile() in attendees)
+        try:
+            user_attendance = talk_events.get(attendees__in=[request.user.get_profile()])
+        except ObjectDoesNotExist:
+            pass
+
         user_endorsed = (request.user.get_profile() in talk.endorsements.all())
         attendees = attendees.filter(Q(published=True) | Q(user=request.user))
 
         will_have_links = (request.user.get_profile() == talk.speaker)
 
-    if not user_attending or not user_endorsed:
+    if user_attendance and not user_endorsed:
         will_have_links = True
 
     photos = talk.talkphoto_set.all()
@@ -288,7 +292,7 @@ def talk_detail(request, talk_id):
         'upcoming': upcoming,
         'past': past,
         'attendees': attendees,
-        'user_attending': user_attending,
+        'user_attendance': user_attendance,
         'user_endorsed': user_endorsed,
         'will_have_links': will_have_links,
         }, context_instance=RequestContext(request))
