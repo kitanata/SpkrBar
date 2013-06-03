@@ -108,8 +108,35 @@ def event_list(request):
         events = Event.objects.filter(
                 published | Q(owner=request.user.get_profile()))
 
+    group_defs = [ 
+            ('-', 30, "Recent Events"), 
+            ('+', 14, "Upcoming Events"), 
+            ('+', 90, "In the next 3 months"),
+            ('+', 270, "In the next year")]
+
+    groups = []
+    end_date = datetime.today()
+    for group in group_defs:
+        if group[0] == '-':
+            start_date = datetime.today() - timedelta(days=group[1])
+            end_date = datetime.today()
+        else:
+            start_date = end_date
+            end_date = start_date + timedelta(days=group[1])
+
+        result = events.filter(start_date__gt=start_date,
+                start_date__lt=end_date)
+
+        if len(result) > 9:
+            result = random.sample(result, 8)
+
+        result = list(result)
+        result.sort(key=lambda x: x.start_date)
+
+        groups.append((group[2], result))
+
     return render_to_response('event_list.html', {
-        'events': events
+        'event_groups': groups
         }, context_instance=RequestContext(request))
 
 
@@ -138,9 +165,11 @@ def event_detail(request, event_id):
 
     yesterday = datetime.today() - timedelta(days=1)
     tomorrow = datetime.today() + timedelta(days=1)
-    current = talk_events.filter(date__gt=yesterday, date__lt=tomorrow)
-    upcoming = talk_events.filter(date__gt=tomorrow)
-    past = talk_events.filter(date__lt=yesterday)
+    current = talk_events.filter(date__gt=yesterday, date__lt=tomorrow).order_by('date')
+    upcoming = talk_events.filter(date__gt=tomorrow).order_by('date')
+    recent = talk_events.filter(
+            date__gt=(yesterday - timedelta(days=14)), date__lt=yesterday
+                ).order_by('-date')
 
     return render_to_response('event_detail.html', {
         'event': event,
@@ -151,5 +180,5 @@ def event_detail(request, event_id):
         'city_querystring': event.location.geocode_city_querystring(),
         'current': current,
         'upcoming': upcoming,
-        'past': past,
+        'recent': recent,
         }, context_instance=RequestContext(request))

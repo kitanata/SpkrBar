@@ -4,8 +4,8 @@
             <h2>Talks Happening Now</h2>
 
             <div class="row">
-                {% for talk_event in current %}
-                    {% include '_talk_event_thumb_detail_partial.html' %}
+                {% for item in current %}
+                    {% include '_talk_event_span9_detail_partial.html' %}
                 {% endfor %}
             </div>
         </div>
@@ -18,8 +18,8 @@
             <h2>Upcoming Speaking Engagements</h2>
 
             <div class="row">
-                {% for talk_event in upcoming %}
-                    {% include '_talk_event_thumb_detail_partial.html' %}
+                {% for item in upcoming %}
+                    {% include '_talk_event_span9_detail_partial.html' %}
                 {% endfor %}
             </div>
         </div>

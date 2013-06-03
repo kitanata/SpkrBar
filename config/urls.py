@@ -14,7 +14,6 @@ urlpatterns = patterns('',
     url(r'^event/(?P<event_id>\d+)/$', 'events.views.event_detail'),
     url(r'^event/(?P<event_id>\d+)/edit/$', 'events.views.event_edit'),
     url(r'^event/(?P<event_id>\d+)/delete/$', 'events.views.event_delete'),
-    url(r'^event/(?P<event_id>\d+)/attend/$', 'events.views.event_attendee_new'),
 
     url(r'^talk/new/$', 'talks.views.talk_new'),
     url(r'^talk/(?P<talk_id>\d+)/$', 'talks.views.talk_detail'),
@@ -31,6 +30,8 @@ urlpatterns = patterns('',
     url(r'^talk/(?P<talk_id>\d+)/video/new/$', 'talks.views.talk_video_new'),
     url(r'^talk/(?P<talk_id>\d+)/photo/new/$', 'talks.views.talk_photo_new'),
     url(r'^talk/(?P<talk_id>\d+)/link/new/$', 'talks.views.talk_link_new'),
+
+    url(r'^talk_event/(?P<talk_event_id>\d+)/attend/$', 'core.views.talk_event_attendee_new'),
 
     url(r'^speakers/$', 'core.views.speakers'),
     url(r'^speaker/(?P<username>\w+)/$', 'core.views.speaker_detail'),

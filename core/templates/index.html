@@ -3,12 +3,12 @@
 {% block 'callout' %}
     {% if user.is_anonymous %}
         <div class="jumbotron callout">
-            <h2 class="btn-warning">Finally, a place for speakers.</h2>
+            <h2 class="btn-warning">Conferences are social again</h2>
             <a class="btn btn-large btn-warning" href="/register/">Register Now.</a>
         </div>
     {% else %}
         <div class="jumbotron callout">
-            <h2 class="btn-warning">Finally, a place for speakers.</h2>
+            <h2 class="btn-warning">Conferences are social again</h2>
             <a class="add-talk btn btn-large btn-warning" href="#add-talk-popup">Add your talk.</a>
         </div>
     {% endif %}
@@ -16,31 +16,19 @@
 
 
 {% block 'content' %}
-    {% if current %}
-        <div class="row">
-            <div class="span12">
-                <h2>Happening Now</h2>
+    {% for group in talk_groups %}
+        {% if group.1 %}
+            <div class="row">
+                <div class="span12">
+                    <h2>{{group.0}}</h2>
+                </div>
             </div>
-        </div>
 
-        <div class="row">
-            {% for item in current %}
-                {% include '_talk_event_span6_detail_partial.html' %}
-            {% endfor %}
-        </div>
-    {% endif %}
-
-    {% if upcoming %}
-        <div class="row">
-            <div class="span12">
-                <h2>Upcoming Talks</h2>
+            <div class="row" style="margin-bottom:40px">
+                {% for item in group.1 %}
+                    {% include '_talk_event_span6_detail_partial.html' %}
+                {% endfor %}
             </div>
-        </div>
-
-        <div class="row">
-            {% for item in upcoming %}
-                {% include '_talk_event_span6_detail_partial.html' %}
-            {% endfor %}
-        </div>
-    {% endif %}
+        {% endif %}
+    {% endfor %}
 {% endblock %}

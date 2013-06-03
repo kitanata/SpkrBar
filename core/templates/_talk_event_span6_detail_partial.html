@@ -8,8 +8,8 @@
                         by {{ item.talk.speaker.user.get_full_name }}
                     </div>
                     <div class="grid2">
-                        {% if user.get_profile in item.attendees %}
-                            <div class="label label-warning">
+                        {% if user.get_profile in item.attendees.all %}
+                            <div class="label label-warning" style="padding: 10px">
                                 <i class="icon-calendar"></i> Attending
                             </div>
                         {% else %}

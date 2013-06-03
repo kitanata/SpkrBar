@@ -248,9 +248,8 @@ def talk_publish(request, talk_id):
 def talk_detail(request, talk_id):
     talk = get_object_or_404(Talk, pk=talk_id)
 
-    talk_events = TalkEvent.objects.filter(talk=talk)
-    events = [ev.event for ev in talk_events]
-    attendees = UserProfile.objects.filter(events_attending__in=events)
+    talk_events = talk.talkevent_set.all()
+    attendees = UserProfile.objects.filter(talkevent__in=talk_events).distinct()
 
     upcoming = talk_events.filter(event__start_date__gt=datetime.today())
     past = talk_events.filter(event__end_date__gt=datetime.today())

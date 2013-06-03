@@ -1,45 +1,21 @@
 {% extends 'base.html' %}
 
 {% block 'content' %}
-    <div id="event-list" class="row">
-        {% for event in events %}
-        <div class="span6">
-            <div class="event">
-                <div class="row">
-                    <div class="span6">
-                        <h3 class="pull-left"><a href="{{event.get_absolute_url}}">{{event.name}}</a></h3>
-                    </div>
-
-                    <div class="span6">
-                        <div class="map" id="map{{event.id}}"></div>
-                        <div class="details">
-                            {{event.description|truncatechars:240}}
+    {% for group in event_groups %}
+        {% if group.1 %}
+                    <div class="row">
+                        <div class="span12">
+                            <h2>{{group.0}}</h2>
                         </div>
                     </div>
 
-                    <div class="span6" style="margin-top:20px">
-                        <div class="row">
-                            <div class="span3">
-                                {% with event.location as location %}
-                                    {{ location.name }}<br />
-                                    {{ location.address }}<br />
-                                    {{ location.city }}, {{location.state}}, {{location.zip_code}}
-                                {% endwith %}
-                            </div>
-
-                            <div class="span3">
-                                {{event.start_date.date}}
-                                {{event.start_date.time}}<br />
-                                {{event.end_date.date}}
-                                {{event.end_date.time}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div id="event-list" class="row" style="margin-bottom:40px">
+                {% for event in group.1 %}
+                    {% include '_event_span6_detail_partial.html' %}
+                {% endfor %}
             </div>
-        </div>
-        {% endfor %}
-    </div>
+        {% endif %}
+    {% endfor %}
 {% endblock %}
 
 {% block 'scripts' %}
@@ -47,26 +23,28 @@
     console.log(L);
     L.Icon.Default.imagePath = '{{STATIC_URL}}img/';
 
-    {% for event in events %}
-        {% with event.location as location %}
-            (function() {
-                // create a map in the "map" div, set the view to a given place and zoom
-                var map = L.map('map{{event.id}}', {'zoomControl': false}).setView([39.95, -82.95], 6);
+    {% for group in event_groups %}
+        {% for event in group.1 %}
+            {% with event.location as location %}
+                (function() {
+                    // create a map in the "map" div, set the view to a given place and zoom
+                    var map = L.map('map{{event.id}}', {'zoomControl': false}).setView([39.95, -82.95], 6);
 
-                // add an OpenStreetMap tile layer
-                L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                    attribution: ''
-                    }).addTo(map);
+                    // add an OpenStreetMap tile layer
+                    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                        attribution: ''
+                        }).addTo(map);
 
-                var url = "http://nominatim.openstreetmap.org/search/{{location.geocode_querystring}}?format=json"
-                $.get(url, function(data) {
-                    if(data.length != 0) {
-                        L.marker([data[0].lat, data[0].lon]).addTo(map);
-                        map.setView([data[0].lat, data[0].lon], 14);
-                    }
-                });
-            }).call(this);
-        {% endwith %}
+                    var url = "http://nominatim.openstreetmap.org/search/{{location.geocode_querystring}}?format=json"
+                    $.get(url, function(data) {
+                        if(data.length != 0) {
+                            L.marker([data[0].lat, data[0].lon]).addTo(map);
+                            map.setView([data[0].lat, data[0].lon], 14);
+                        }
+                    });
+                }).call(this);
+            {% endwith %}
+        {% endfor %}
     {% endfor %}
 </script>
 {% endblock %}
