@@ -1,47 +1,34 @@
-<div class="talk-header">
-    <div class="row">
-        <div class="span3">
-            <div class="picture well">
-                {% if talk.speaker.photo %}
-                    <img src="{{STATIC_URL}}img/photo/{{ talk.speaker.photo}}"></img>
-                {% else %}
-                    <i class="icon-user photo-placeholder-large"></i>
-                {% endif %}
+.talk-header
+  .row
+    .span3
+      .picture.well
+        - if talk.speaker.photo
+          %img{src:"{{STATIC_URL}}img/photo/{{ talk.speaker.photo}}"}
+        - else
+          %i.icon-user.photo-placeholder-large
 
-                <div class="about">
-                    <h4>
-                        <a href="/speaker/{{talk.speaker.user.username}}">
-                        {{ talk.speaker.user.get_full_name }}
-                        </a>
-                    </h4>
-                </div>
-            </div>
-        </div>
+        .about
+          %h4
+            %a{href:"/speaker/{{talk.speaker.user.username}}"}
+              {{ talk.speaker.user.get_full_name }}
 
-        <div class="span9">
-            {% if will_have_links %}
-                {% include '_talk_edit_links_partial.html' %}
+    .span9
+      - if will_have_links
+          {% include '_talk_edit_links_partial.html' %}
 
-                <h2 class="short pull-left">
-                    {{ talk.name|truncatechars:68 }}
-                    {% if talk.endorsements.count %}
-                        ({{ talk.endorsements.count }} <i class="icon-thumbs-up"></i>)
-                    {% endif %}
-                </h2>
-                <div class="clearfix"></div>
-            {% else %}
-                <h2>
-                    {{ talk.name|truncatechars:90 }}
-                    {% if talk.endorsements.count %}
-                        ({{ talk.endorsements.count }} <i class="icon-thumbs-up"></i>)
-                    {% endif %}
-                </h2>
+          %h2.short.pull-left
+            {{ talk.name|truncatechars:68 }}
+            {% if talk.endorsements.count %}
+                ({{ talk.endorsements.count }} <i class="icon-thumbs-up"></i>)
             {% endif %}
 
-            <div class="talk-detail">
-                <h3>Abstract</h3>
-                <p>{{ talk.abstract }}</p>
-            </div>
-        </div>
-    </div>
-</div>
+          .clearfix
+      - else
+          %h2
+            {{ talk.name|truncatechars:90 }}
+            - if talk.endorsements.count
+              ({{ talk.endorsements.count }} <i class="icon-thumbs-up"></i>)
+
+      .talk-detail
+        %h3 Abstract
+        %p {{ talk.abstract }}

@@ -1,11 +1,9 @@
-{% extends 'base.html' %}
+- extends 'base.haml'
 
-{% block 'scripts' %}
-    {% include '_popup_talk_edit_partial.html' %}
-    {% include '_popup_talk_delete_partial.html' %}
-    {% include '_popup_talk_photo_new_partial.html' %}
-    {% include '_popup_talk_slides_new_partial.html' %}
-    {% include '_popup_talk_video_new_partial.html' %}
-    {% block 'talk_scripts' %}
-    {% endblock %}
-{% endblock %}
+- block 'scripts'
+  - include '_popup_talk_edit_partial.haml'
+  - include '_popup_talk_delete_partial.haml'
+  - include '_popup_talk_photo_new_partial.haml'
+  - include '_popup_talk_slides_new_partial.haml'
+  - include '_popup_talk_video_new_partial.haml'
+  - block 'talk_scripts'

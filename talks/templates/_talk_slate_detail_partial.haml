@@ -1,17 +1,13 @@
-<div class="span6">
-    <li>
-        <div class="title">
-            <a href="{{talk.get_absolute_url}}">{{ talk.name|truncatechars:40 }}</a><br />
-            by {{ talk.speaker.user.get_full_name }}
-        </div>
+.span6
+  %li
+    .title
+      %a{href:"{{talk.get_absolute_url}}"}
+        {{ talk.name|truncatechars:40 }}
+      %br by {{ talk.speaker.user.get_full_name }}
+    .description
+      - if talk.speaker.photo
+        %img.pull-left{src:"{{STATIC_URL}}img/photo/{{talk.speaker.photo}}"}
+      - else
+        %i.icon-user.photo-placeholder.pull-left
 
-        <div class="description">
-            {% if talk.speaker.photo %}
-                <img class="pull-left" src="{{STATIC_URL}}img/photo/{{talk.speaker.photo}}">
-            {% else %}
-                <i class="icon-user photo-placeholder pull-left"></i>
-            {% endif %}
-            <span>{{ talk.abstract|truncatechars:140 }}</span>
-        </div>
-    </li>
-</div>
+      %span {{ talk.abstract|truncatechars:140 }}

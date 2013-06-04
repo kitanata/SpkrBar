@@ -1,23 +1,18 @@
-<div style="display:none">
-    <div id="link-slides-popup" style="background-color: white; padding: 40px;">
-        <h2>Add Slides Link</h2>
-        <form action="/talk/{{talk.id}}/slides/new/" method="POST">
-            {% csrf_token %}
+%div{style:"display:none"}
+  #link-slides-popup{style:"background-color: white; padding: 40px;"}
+    %h2 Add Slides Link
+    %form{action:"/talk/{{talk.id}}/slides/new/", method:"POST"}
+      - csrf_token
 
-            <label for="slide-source">Source:</label>
-            <select id="slide-source" name="source">
-                <option value="SPEAKERDECK">SpeakerDeck</option>
-                <option value="SLIDESHARE">SlideShare</option>
-            </select>
+      %label{for:"slide-source"} Source:
+      %select#slide-source{name:"source"}
+        %option{value:"SPEAKERDECK"} SpeakerDeck
+        %option{value:"SLIDESHARE"} SlideShare
 
-            <label for="embed-data">Embed Code:</label>
-            <input id="embed-data" name="embed" type="text" />
+      %label{for:"embed-data"} Embed Code:
+      %input#embed-data{name:"embed", type:"text"}
 
-            <button class="btn btn-warning" type="submit">Save</button>
-        </form>
-    </div>
-</div>
+      %button.btn.btn-warning{type:"submit"} Save
 
-<script type="text/javascript">
-    $('.link-slides').colorbox({inline: true, width:"300px"});
-</script>
+%script{type:"text/javascript"}
+  $('.link-slides').colorbox({inline: true, width:"300px"});

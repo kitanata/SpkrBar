@@ -1,37 +1,26 @@
-<div class="navbar pull-right" style="margin-top:10px">
-    <div class="btn-group talk-links">
-        {% if user.get_profile == talk.speaker %}
-            {% if talk.published %}
-                <a class="btn btn-warning" href="/talk/{{talk.id}}/archive?last={{last}}" data-toggle="tooltip" data-original-title="Archive Talk">
-                    <i class="icon-ban-circle"></i>
-                </a>
-            {% else %}
-                <a class="btn btn-warning" href="/talk/{{talk.id}}/publish?last={{last}}" data-toggle="tooltip" data-original-title="Publish Talk">
-                    <i class="icon-ok"></i>
-                </a>
-            {% endif %}
-            <a class="btn btn-warning edit-talk" href="#edit-talk-popup" data-toggle="tooltip" data-original-title="Edit Talk">
-                <i class="icon-pencil"></i>
-            </a>
-            {% if not talk.talkevent_set.all %}
-                <a class="btn btn-warning delete-talk" data-name="{{talk.name}}" data-id="{{talk.id}}" href="#delete-talk-popup" data-toggle="tooltip" data-original-title="Delete Talk">
-                    <i class="icon-trash"></i>
-                </a>
-            {% endif %}
-        {% elif not user.is_anonymous %}
-            {% if user_attending and not user_endorsed %}
-                <a class="btn btn-warning" href="/talk/{{talk.id}}/endorse?last={{last}}">
-                    <i class="icon-thumbs-up"></i> Endorse
-                </a>
-            {% elif event and not user_attending %}
-                <a class="btn btn-warning" href="/event/{{event.id}}/attend?last={{last}}">
-                    <i class="icon-calendar"></i> Attend
-                </a>
-            {% endif %}
-        {% endif %}
-    </div>
-</div>
+.navbar.pull-right{style:"margin-top:10px"}
+  .btn-group.talk-links
+    - if user.get_profile == talk.speaker
+        - if talk.published
+          %a.btn.btn-warning{href:"/talk/{{talk.id}}/archive?last={{last}}", data-toggle:"tooltip", data-original-title:"Archive Talk"}
+            %i.icon-ban-circle
+        - else
+          %a.btn.btn-warning{href:"/talk/{{talk.id}}/publish?last={{last}}", data-toggle:"tooltip", data-original-title:"Publish Talk"}
+            %i.icon-ok
 
-<script type="text/javascript">
-    $('.talk-links a').tooltip()
-</script>
+        %a.btn.btn-warning.edit-talk{href:"#edit-talk-popup", data-toggle:"tooltip", data-original-title:"Edit Talk"}
+          %i.icon-pencil
+
+        - if not talk.talkevent_set.all
+          %a.btn.btn-warning.delete-talk{data-name:"{{talk.name}}", data-id:"{{talk.id}}", href:"#delete-talk-popup", data-toggle:"tooltip", data-original-title:"Delete Talk"}
+            %i.icon-trash
+    - elif not user.is_anonymous
+      - if user_attending and not user_endorsed
+        %a.btn.btn-warning{href:"/talk/{{talk.id}}/endorse?last={{last}}"}
+          %i.icon-thumbs-up Endorse
+      - elif event and not user_attending
+        %a.btn.btn-warning{href:"/event/{{event.id}}/attend?last={{last}}"}
+          %i.icon-calendar Attend
+
+%script{type:"text/javascript"}
+  $('.talk-links a').tooltip()
