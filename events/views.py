@@ -39,7 +39,7 @@ def event_new(request):
 
         locations = Location.objects.all()
 
-        return render_to_response('event_new.html', {
+        return render_to_response('event_new.haml', {
             'location_form': location_form,
             'locations': locations,
             }, context_instance=RequestContext(request))
@@ -65,7 +65,7 @@ def event_edit(request, event_id):
 
         date = event.date.strftime("%Y-%m-%d %H:%M")
 
-        return render_to_response('event_edit.html', {
+        return render_to_response('event_edit.haml', {
             'event': event,
             'date': date,
             'location_form': location_form,
@@ -135,7 +135,7 @@ def event_list(request):
 
         groups.append((group[2], result))
 
-    return render_to_response('event_list.html', {
+    return render_to_response('event_list.haml', {
         'event_groups': groups
         }, context_instance=RequestContext(request))
 
@@ -171,7 +171,7 @@ def event_detail(request, event_id):
             date__gt=(yesterday - timedelta(days=14)), date__lt=yesterday
                 ).order_by('-date')
 
-    return render_to_response('event_detail.html', {
+    return render_to_response('event_detail.haml', {
         'event': event,
         'attendees': attendees,
         'user_attending': user_attending,

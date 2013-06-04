@@ -1,31 +1,29 @@
-<div id="event-map"></div>
+#event-map
 
-<script type="text/javascript">
-    L.Icon.Default.imagePath = '{{STATIC_URL}}img/';
+%script{type:"text/javascript"}
+  L.Icon.Default.imagePath = '{{STATIC_URL}}img/';
 
-    // create a map in the "map" div, set the view to a given place and zoom
-    var map = L.map('event-map').setView([39.95, -82.95], 6);
+  // create a map in the "map" div, set the view to a given place and zoom
+  var map = L.map('event-map').setView([39.95, -82.95], 6);
 
-    // add an OpenStreetMap tile layer
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+  // add an OpenStreetMap tile layer
+  L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
 
-    var url = "http://nominatim.openstreetmap.org/search/{{location.geocode_city_querystring}}?format=json"
+  var url = "http://nominatim.openstreetmap.org/search/{{location.geocode_city_querystring}}?format=json"
 
-    $.get(url, function(data) {
-        if(data.length != 0) {
-            map.setView([data[0].lat, data[0].lon], 12);
+  $.get(url, function(data) {
+      if(data.length != 0) {
+          map.setView([data[0].lat, data[0].lon], 12);
 
-            var url = "http://nominatim.openstreetmap.org/search/{{location.geocode_querystring}}?format=json"
+          var url = "http://nominatim.openstreetmap.org/search/{{location.geocode_querystring}}?format=json"
 
-            $.get(url, function(data) {
-                if(data.length != 0) {
-                    L.marker([data[0].lat, data[0].lon]).addTo(map).bindPopup(
-                        '<h4><a href="{{location.get_absolute_url}}">{{location.name}}</a></h4><br />{{location.address}}<br />{{location.city}}, {{location.state}} {{location.zip_code}}').openPopup();
-                }
-            });
-        }
-    });
-
-</script>
+          $.get(url, function(data) {
+              if(data.length != 0) {
+                  L.marker([data[0].lat, data[0].lon]).addTo(map).bindPopup(
+                      '<h4><a href="{{location.get_absolute_url}}">{{location.name}}</a></h4><br />{{location.address}}<br />{{location.city}}, {{location.state}} {{location.zip_code}}').openPopup();
+              }
+          });
+      }
+  });

@@ -1,97 +1,66 @@
-{% extends 'event_base.html' %}
+- extends 'base.haml'
 
-{% block 'head' %}
-    {{ form.media }}
-{% endblock %}
+- block 'head'
+  {{ form.media }}
 
-{% block 'content' %}
-<div id="event-new">
-    <div class="row">
-        <div class="span3">
-            <div class="well talk-photo">
-                {% if event.talk.photo %}
-                    <img src="{{STATIC_URL}}img/photo/{{ event.talk.photo}}"></img>
-                {% else %}
-                    <i class="icon-camera profile-placeholder"></i>
-                {% endif %}
-            </div>
-        </div>
+- block 'content'
+  .event-new
+    .row
+      .span3
+        .well.talk-photo
+          - if event.talk.photo
+            %img{src:"{{STATIC_URL}}img/photo/{{ event.talk.photo}}"}
+          - else
+            %i.icon-camera.profile-placeholder
+      .span9
+        .talk-detail
+          %h2
+              {{ event.talk.name }}
+              - if event.talk.endorsements.count
+                ({{ event.talk.endorsements.count }} <i class="icon-thumbs-up"></i>)
 
-        <div class="span9">
-            <div class="talk-detail">
-                <h2>
-                    {{ event.talk.name }}
-                    {% if event.talk.endorsements.count %}
-                        ({{ event.talk.endorsements.count }} <i class="icon-thumbs-up"></i>)
-                    {% endif %}
-                </h2>
-                <div class="clearfix"></div>
+          %h3 Abstract
+          %p {{ event.talk.abstract }}
 
-                <h3>Abstract</h3>
-                <p>{{ event.talk.abstract }}</p>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="span6">
-            <h2>Edit Event</h2>
-            <div class="row">
-                <div class="span1">
-                    <div style="margin-top:5px;">
-                        Location:
-                    </div>
-                </div>
-                <div class="span5">
-                    <input id="id_location" placeholder="Enter the location name or city or state" value="{{event.location.form_str}}" type="text" autocomplete="off"></input>
-                    <span class="search addon">
-                        <i class="icon-search"></i>
-                    </span>
+    .row
+      .span6
+        %h2 Edit Event
 
-                    <button id="add-location" href="#add-location-popup" class="btn btn-warning">
-                        <i class="icon-plus"></i>
-                    </button>
-                </div>
-            </div>
+        .row
+          .span1
+            %div{style="margin-top:5px;"} Location:
+          .span5
+            %input#id_location{placeholder:"Enter the location name or city or state", value:"{{event.location.form_str}}", type:"text", autocomplete:"off"}
+            %span.search.addon
+              %i.icon-search
 
-            <div class="row">
-                <div class="span1">
-                    <div style="margin-top: 5px;">
-                        Date:
-                    </div>
-                </div>
-                <div class="span5">
-                    <input id="id_date" type="text" value="{{date}}"></input>
-                </div>
-            </div>
+            %button#add-location.btn.btn-warning{href:"#add-location-popup"}
+              %i.icon-plus
 
-            <div class="row">
-                <div class="span6">
-                    <button id="create-event" class="btn btn-warning" type="submit">Save Event</button>
-                </div>
-            </div>
-        </div>
+        .row
+          .span1
+            %div{style:"margin-top: 5px;"} Date:
+          .span5
+            %input#id_date{type:"text", value:"{{date}}"}
 
-        <div class="span6">
-            <div id="map"></div>
-        </div>
-    </div>
-</div>
+        .row
+          .span6
+            %button#create-event.btn.btn-warning{type:"submit"} Save Event
 
-<div style="display:none">
-    <div id="add-location-popup" style="background-color:white; padding: 40px;">
-        <h2>Add New Location</h2>
-        <form action="/location/new/?next=/talk/{{talk.pk}}/event/new" method="POST">
-            {% csrf_token %}
-            {{ location_form.as_p }}
+      .span6
+        #map
 
-            <button class="btn btn-warning" type="submit">Add Location</button>
-        </form>
-    </div>
-</div>
-{% endblock %}
+  %div{style:"display:none"}
+    #add-location-popup{style:"background-color:white; padding: 40px;"}
+      %h2 Add New Location
+      %form{action:"/location/new/?next=/talk/{{talk.pk}}/event/new", method:"POST"}
+        - csrf_token
+        {{ location_form.as_p }}
 
-{% block 'scripts' %}
-<script type="text/javascript">
+        %button.btn.btn-warning{type:"submit"} Add Location
+
+- block 'scripts'
+  %script{type:"text/javascript"}
     $('#add-location').colorbox({inline: true, width:"300px"});
 
     L.Icon.Default.imagePath = '{{STATIC_URL}}img/';
@@ -160,5 +129,3 @@
             window.location = "{{event.get_absolute_url}}"
         });
     });
-</script>
-{% endblock %}

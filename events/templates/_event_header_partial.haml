@@ -1,35 +1,21 @@
-<div class="talk-header">
-    <div class="row">
-        <div class="span3">
-            <div class="row">
-                <div class="span3">
-                    <div class="well talk-photo">
-                        {% if event.talk.photo %}
-                            <img src="{{STATIC_URL}}img/photo/{{ event.talk.photo}}"></img>
-                        {% else %}
-                            <i class="icon-camera profile-placeholder"></i>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
+.talk-header
+  .row
+    .span3
+      .well.talk-photo
+        - if event.talk.photo
+          %img{src:"{{STATIC_URL}}img/photo/{{ event.talk.photo}}"}
+        - else
+          %i.icon-camera.profile-placeholder
+    .span9
+      - if will_have_links
+        - include '_event_edit_links_partial.haml'
 
-        <div class="span9">
-            {% if will_have_links %}
-                {% include '_event_edit_links_partial.html' %}
+        %h2.short.date.pull-left {{event.date}}
+        .clearfix
+      - else
+        %h2 {{event.date}}
 
-                <h2 class="short date pull-left">{{event.date}}</h2>
-                <div class="clearfix"></div>
-            {% else %}
-                <h2>{{event.date}}</h2>
-            {% endif %}
-
-            <h2 class="talk-name">
-                <a href="{{event.talk.get_absolute_url}}">{{ event.talk.name }}</a>
-                {% if event.talk.endorsements.count %}
-                    ({{ event.talk.endorsements.count }} <i class="icon-thumbs-up"></i>)
-                {% endif %}
-            </h2>
-        </div>
-    </div>
-</div>
+      %h2.talk-name
+        %a{href:"{{event.talk.get_absolute_url}}"} {{ event.talk.name }}
+        - if event.talk.endorsements.count %}
+          ({{ event.talk.endorsements.count }} <i class="icon-thumbs-up"></i>)

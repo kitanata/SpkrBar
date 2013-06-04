@@ -1,4 +1,4 @@
-- extends 'talk_base.html'
+- extends 'talk_base.haml'
 
 - block 'content'
   #talk
@@ -58,7 +58,7 @@
 
           - if upcoming
             - for item in upcoming
-              - include '_talk_event_span9_detail_partial.html'
+              - include '_talk_event_span9_detail_partial.haml'
           - else
             .span9
               No upcoming events

@@ -1,75 +1,60 @@
-{% extends 'base.html' %}
+- extends 'base.haml'
 
-{% block 'content' %}
-    <div id="event-detail" class="row">
-        <div class="span4">
-            <h3>{{ event.name }}</h3>
-            <p>{{ event.description }}</p>
-            <p>
-                {% with event.location as location %}
-                    {{ location.name }}<br />
-                    {{ location.address }}<br />
-                    {{ location.city }}, {{location.state}}, {{location.zip_code}}
-                {% endwith %}
-            </p>
-        </div>
+- block 'content'
+  #event-detail.row
+    .span4
+      %h3 {{ event.name }}
+      %p {{ event.description }}
+      %p
+        - with event.location as location
+          {{ location.name }}<br />
+          {{ location.address }}<br />
+          {{ location.city }}, {{location.state}}, {{location.zip_code}}
 
-        <div class="span8">
-            <p>
-                <div id="map"></div>
-            </p>
-        </div>
+    .span8
+      %p
+        #map
 
-        {% if upcoming %}
-            <div class="span12">
-                <h2>Upcoming Talks</h2>
-                <hr />
-            </div>
+    - if upcoming
+      .span12
+        %h2 Upcoming Talks
+        %hr
 
-            {% for item in upcoming %}
-                {% include '_talk_event_span6_detail_partial.html' %}
-            {% endfor %}
-        {% endif %}
+      - for item in upcoming
+        - include '_talk_event_span6_detail_partial.haml'
 
-        {% if Recent %}
-            <div class="span12">
-                <h2>Recent Talks</h2>
-                <hr />
-            </div>
+    - if Recent
+      .span12
+        %h2 Recent Talks
+        %hr
 
-            {% for item in past %}
-                {% include '_talk_event_span6_detail_partial.html' %}
-            {% endfor %}
-        {% endif %}
-    </div>
-{% endblock %}
+      - for item in past
+        - include '_talk_event_span6_detail_partial.haml'
 
-{% block 'scripts' %}
-    <script type="text/javascript">
-        L.Icon.Default.imagePath = '{{STATIC_URL}}img/';
+- block 'scripts'
+  %script{type:"text/javascript"}
+    (function() {
+      L.Icon.Default.imagePath = '{{STATIC_URL}}img/';
 
-        // create a map in the "map" div, set the view to a given place and zoom
-        var map = L.map('map').setView([39.95, -82.95], 6);
+      var map = L.map('map').setView([39.95, -82.95], 6);
 
-        // add an OpenStreetMap tile layer
-        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
+      L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          }).addTo(map);
 
-        var url = "http://nominatim.openstreetmap.org/search/{{city_querystring}}?format=json"
-        $.get(url, function(data) {
-            if(data.length != 0) {
-                map.setView([data[0].lat, data[0].lon], 12);
 
-                var url = "http://nominatim.openstreetmap.org/search/{{querystring}}?format=json"
-                $.get(url, function(data) {
-                    if(data.length != 0) {
-                        L.marker([data[0].lat, data[0].lon]).addTo(map).bindPopup(
-                        '<h4>{{event.location.name}}</h4><br />{{event.location.address}}<br />{{event.location.city}}, {{event.location.state}} {{event.location.zip_code}}').openPopup();
-                    }
-                });
-            }
-        });
+      var url = "http://nominatim.openstreetmap.org/search/{{city_querystring}}?format=json";
+      $.get(url, function(data) {
+          if(data.length != 0) {
+              map.setView([data[0].lat, data[0].lon], 12);
 
-    </script>
-{% endblock %}
+              var url = "http://nominatim.openstreetmap.org/search/{{querystring}}?format=json";
+              $.get(url, function(data) {
+                  if(data.length != 0) {
+                      L.marker([data[0].lat, data[0].lon]).addTo(map).bindPopup(
+                      '<h4>{{event.location.name}}</h4><br />{{event.location.address}}<br />{{event.location.city}}, {{event.location.state}} {{event.location.zip_code}}').openPopup();
+                  }
+              });
+          }
+      });
+    }).call(this);

@@ -284,7 +284,7 @@ def talk_detail(request, talk_id):
         width = min(width, 200)
         photo_col.append((photo.photo, width, width * aspect))
 
-    return render_to_response('talk_detail.html', {
+    return render_to_response('talk_detail.haml', {
         'last': talk.get_absolute_url(),
         'talk': talk,
         'photos': photo_col,
