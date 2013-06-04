@@ -21,10 +21,10 @@ from .helpers import group_events_by_date
 @login_required
 def event_new(request):
     if request.method == "POST":
-        import pdb; pdb.set_trace()
         event = Event()
         event.name = request.POST['name']
         event.description = request.POST['description']
+        event.owner = request.user.get_profile()
         event.start_date = datetime.strptime(request.POST['start-date'], "%Y-%m-%d %H:%M")
         event.end_date = datetime.strptime(request.POST['end-date'], "%Y-%m-%d %H:%M")
         event.location = get_object_or_404(Location, pk=request.POST['location'])
