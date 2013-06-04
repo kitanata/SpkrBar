@@ -1,0 +1,21 @@
+- extends 'base.haml'
+
+- block 'callout'
+  .jumbotron.callout
+    - if user.is_anonymous
+      %h2.btn-warning Conferences are social again
+      %a.btn.btn-large.btn-warning{href:"/register/"} Register Now.
+    - else
+      %h2.btn-warning Conferences are social again
+      %a.add-talk.btn.btn-large.btn-warning{href:"#add-talk-popup"} Add your talk.
+
+- block 'content'
+  - for group in talk_groups
+    - if group.1
+      .row
+        .span12
+          %h2 {{group.0}}
+
+      .row{style:"margin-bottom:40px"}
+        - for item in group.1
+          - include '_talk_event_span6_detail_partial.haml'

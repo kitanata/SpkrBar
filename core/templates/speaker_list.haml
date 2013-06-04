@@ -1,0 +1,31 @@
+- extends 'base.haml'
+
+- block 'content'
+  #speakers.row
+    - for speaker in speakers
+      .span6
+        .speaker
+          .picture
+            - if speaker.photo
+              %img.pull-left{src:"{{STATIC_URL}}img/photo/{{ speaker.photo}}"}
+            - else
+              %i.pull-left.icon-user.photo-placeholder
+
+          .description
+            %h4
+              %a{href:"/speaker/{{speaker.user.username}}"}
+                {{ speaker.user.get_full_name }}
+
+            - if speaker.tags.all
+              Expert In:
+              - for tag in speaker.tags.all|slice:":5"
+                .label.label-info {{tag|title}}
+
+            .about {{ speaker.about_me|truncatechars:140 }}
+
+          - if not user.is_anonymous and user.get_profile != speaker
+            .follow
+              - if speaker not in user.get_profile.following.all
+                %a.btn.btn-warning{href:"/speaker/{{speaker.user.username}}/follow?last=/speakers"} Follow
+              - else
+                .label.label-warning Following

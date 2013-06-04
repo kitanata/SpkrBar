@@ -1,0 +1,43 @@
+.span9
+  .talk_event
+    .header
+      .title
+        - if not user.is_anonymous and item.talk.speaker != user.get_profile
+          .grid1
+            %a{href:"{{item.talk.get_absolute_url}}"}
+              {{ item.talk.name|truncatechars:48 }}
+            %br by {{ item.talk.speaker.user.get_full_name }}
+
+          .grid2
+            - if user.get_profile in item.attendees.all
+              .label.label-warning{style:"padding: 10px"}
+                %i.icon-calendar
+                Attending
+            - else
+              %a.btn.btn-warning{href:"/talk_event/{{item.id}}/attend?last={{last}}"}
+                %i.icon-calendar
+                Attend
+        - else
+          %div
+            %a{href:"{{item.talk.get_absolute_url}}"}
+              {{ item.talk.name|truncatechars:68 }}
+            %br by {{ item.talk.speaker.user.get_full_name }}
+
+      .location
+        .grid1
+          %a{href:"{{ item.event.get_absolute_url }}"}
+            at {{ item.event.name }}
+          %br in {{ item.event.location.city }}, {{ item.event.location.state }}
+        .grid2
+          {{ item.date.date }}
+          %br {{ item.date.time }}
+
+    .description
+      - if item.talk.speaker.photo
+        %img.pull-left{src:"{{STATIC_URL}}img/photo/{{talk.speaker.photo}}"}
+      - else
+        %i.icon-user.photo-placeholder.pull-left
+
+      %span {{ item.talk.abstract|truncatechars:240 }}
+
+    .clearfix

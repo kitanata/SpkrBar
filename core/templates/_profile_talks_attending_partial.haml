@@ -1,0 +1,9 @@
+.row
+  .span9
+    - if attending
+      %h2 Attending
+      %hr
+
+      .row
+        - for item in attending
+          - include '_talk_event_span9_detail_partial.haml'

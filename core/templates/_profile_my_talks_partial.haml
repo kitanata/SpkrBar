@@ -1,0 +1,17 @@
+- if current
+  .row
+    .span9
+      %h2 Talks Happening Now
+
+      .row
+        - for item in current
+          - include '_talk_event_span9_detail_partial.haml'
+
+- if upcoming
+  .row
+    .span9
+      %h2 Upcoming Speaking Engagements
+
+      .row
+        - for item in upcoming
+          - include '_talk_event_span9_detail_partial.haml'
