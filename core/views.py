@@ -18,6 +18,8 @@ from django.db.models import Q
 
 from guardian.shortcuts import assign
 
+from .helpers import save_photo_with_uuid
+
 from .models import Location, UserProfile, UserLink, UserTag, TalkEvent
 from talks.models import Talk
 
@@ -272,12 +274,7 @@ def profile_edit_photo(request):
 
             if 'photo' in request.FILES:
                 photo = request.FILES['photo']
-
-                with open('core/static/img/photo/' + photo.name, 'wb+') as destination:
-                    for chunk in photo.chunks():
-                        destination.write(chunk)
-
-                profile.photo = photo.name
+                profile.photo = save_photo_with_uuid(photo)
 
             profile.save()
 

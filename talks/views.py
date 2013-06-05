@@ -1,5 +1,4 @@
 import random
-import uuid
 from datetime import datetime
 from itertools import groupby
 
@@ -18,6 +17,7 @@ from events.models import Event
 from locations.models import Location
 from locations.forms import LocationForm
 from core.models import UserProfile, TalkEvent
+from core.helpers import save_photo_with_uuid
 
 from .models import *
 from .forms import *
@@ -332,13 +332,3 @@ def talk_endorsement_new(request, talk_id):
         return redirect(request.GET['last'])
     else:
         return redirect('/talk/' + talk_id)
-
-
-def save_photo_with_uuid(photo):
-    photo_name = 'photo/' + str(uuid.uuid4())
-
-    with open(photo_name, 'wb+') as destination:
-        for chunk in photo.chunks():
-            destination.write(chunk)
-
-    return photo_name
