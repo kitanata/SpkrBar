@@ -2,7 +2,7 @@
   .span3
     .well.picture
       - if speaker.photo
-        %img{src:"{{STATIC_URL}}{{ speaker.photo}}"}
+        %img{src:"{{MEDIA_URL}}{{ speaker.photo}}"}
       - else
         %i.icon-user
 

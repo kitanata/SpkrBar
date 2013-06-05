@@ -3,7 +3,7 @@
     .span3
       .picture.well
         - if talk.speaker.photo
-          %img{src:"{{STATIC_URL}}img/photo/{{ talk.speaker.photo}}"}
+          %img{src:"{{MEDIA_URL}}{{ talk.speaker.photo}}"}
         - else
           %i.icon-user.photo-placeholder-large
 
