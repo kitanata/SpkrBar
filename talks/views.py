@@ -21,7 +21,6 @@ from core.models import UserProfile, TalkEvent
 
 from .models import *
 from .forms import *
-from .helpers import group_talk_events_by_date
 
 @login_required
 def talk_new(request):
