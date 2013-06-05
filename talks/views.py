@@ -173,7 +173,7 @@ def talk_photo_new(request, talk_id):
                 photo = request.FILES['photo']
 
                 talk_photo = TalkPhoto()
-                talk_photo.photo = save_photo_with_uuid(photo)
+                talk_photo.photo = 'static/' + save_photo_with_uuid(photo)
                 talk_photo.talk = talk
                 talk_photo.save()
 

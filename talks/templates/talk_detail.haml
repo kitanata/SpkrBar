@@ -131,7 +131,7 @@
                 .span9
                   .photos
                     - for photo in photos
-                      %img{src:"{{STATIC_URL}}/{{photo.0}}", width:"{{photo.1}}", height:"{{photo.2}}"}
+                      %img{src:"/{{photo.0}}", width:"{{photo.1}}", height:"{{photo.2}}"}
                   .clearfix
                 - else
                   .span9
