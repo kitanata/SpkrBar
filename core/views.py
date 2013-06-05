@@ -39,7 +39,7 @@ def generate_datetime():
     return datetime(year, month, day, hour, minute)
 
 def load_fixtures(request):
-    if not request.user.is_superuser():
+    if not request.user.is_superuser:
         return HttpResponseForbidden()
 
     verbs = ['Hacking', 'Saving', 'Hunting', 'Exploiting', 
@@ -380,7 +380,7 @@ def login_user(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                return redirect('/speaker/' + request.user.username)
+                return redirect(request.user.get_profile())
             else:
                 error = "This account has been disabled."
         else:
