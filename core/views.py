@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponseForbidden
 
 from django.db import IntegrityError
 from django.db.models import Q
@@ -38,6 +39,9 @@ def generate_datetime():
     return datetime(year, month, day, hour, minute)
 
 def load_fixtures(request):
+    if not request.user.is_superuser():
+        return HttpResponseForbidden()
+
     verbs = ['Hacking', 'Saving', 'Hunting', 'Exploiting', 
             'Looking Past', 'Lessons Learned from', 'Staring Down']
     things = ['Robots', 'Money', 'Communication', 'The Hiring Process', 
