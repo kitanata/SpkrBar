@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     url(r'^event/(?P<event_id>\d+)/edit/$', 'events.views.event_edit'),
     url(r'^event/(?P<event_id>\d+)/delete/$', 'events.views.event_delete'),
 
+    url(r'^talks/$', 'core.views.talk_list'),
     url(r'^talk/new/$', 'talks.views.talk_new'),
     url(r'^talk/(?P<talk_id>\d+)/$', 'talks.views.talk_detail'),
     url(r'^talk/(?P<talk_id>\d+)/edit/$', 'talks.views.talk_edit'),
@@ -54,12 +55,16 @@ urlpatterns = patterns('',
     url(r'^logout/$', 'core.views.logout_user'),
     url(r'^register/$', 'core.views.register_user'),
 
+    url(r'^blog/$', 'blog.views.blog_list'),
+    url(r'^blog/(?P<post_id>\d+)$', 'blog.views.blog_details'),
+
     # Uncomment the admin/doc line below to enable admin documentation:
     #url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     url(r'^grappelli/', include('grappelli.urls')),
+    url(r'^tinymce/', include('tinymce.urls')),
 )
 
 

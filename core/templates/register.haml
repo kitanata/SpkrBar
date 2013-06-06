@@ -1,14 +1,16 @@
 - extends 'base.haml'
 
 - block 'content'
-  - if error
-    .alert.alert-error {{error}}
-
-  %h2 Signup for a new account
+  .row
+    .span12
+      %hr
 
   .row
-    .span4
-      %form{action:"/register/", method:"POST"}
+    .span6
+      - if error
+        .alert.alert-error {{error}}
+
+      %form{action:"/register/speaker", method:"POST"}
         - csrf_token
         %label{for:"username"} Username:
         %input#username{name:"username", type:"text"}
@@ -25,5 +27,24 @@
         %br
         %input.btn.btn-warning{type:"submit", value:"Register"}
 
-    .span8
-      %img.login-picture{src:"{{STATIC_URL}}img/podium.jpg"}
+    .span6
+      - if error
+        .alert.alert-error {{error}}
+
+      %form{action:"/register/event", method:"POST"}
+        - csrf_token
+        %label{for:"username"} Event Name:
+        %input#username{name:"username", type:"text"}
+
+        %label{for:"email"} Email:
+        %input#email{name:"email", type:"email"}
+
+        %label{for:"password"} Password:
+        %input#password{name:"password", type:"password"}
+
+        %label{for:"confirm"} Confirm Password:
+        %input#confirm{name:"confirm", type:"password"}
+
+        %br
+        %input.btn.btn-warning{type:"submit", value:"Register"}
+

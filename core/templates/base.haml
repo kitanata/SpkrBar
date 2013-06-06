@@ -43,13 +43,15 @@
   %body
     .container-narrow
       .masthead
-        %ul.nav.nav-pills.pull-right
+        %ul.nav.nav-pills.pull-right{style:"margin-top:40px"}
           %li
-            %a{href:"/"} Talks
+            %a{href:"/talks"} Talks
           %li
             %a{href:"/speakers"} Speakers
           %li
             %a{href:"/events"} Events
+          %li
+            %a{href:"/blog"} Blog
 
           - if not user.is_anonymous
             %li

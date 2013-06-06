@@ -169,6 +169,24 @@ def load_fixtures(request):
 
 
 def index(request):
+    talk_events = TalkEvent.objects.filter(
+            event__published=True, event__owner__published=True,
+            talk__published=True, talk__speaker__published=True)
+
+    start_date = datetime.today() - timedelta(days=1)
+    end_date = start_date + timedelta(days=30)
+
+    upcoming = talk_events.filter(event__start_date__gt=start_date,
+            event__start_date__lt=end_date)
+
+    if len(upcoming) > 4:
+        upcoming = random.sample(upcoming, 4)
+
+    return render_to_response("index.haml", {
+        'upcoming': upcoming
+        }, context_instance=RequestContext(request))
+
+def talk_list(request):
     group_defs = [ 
             ('-', 14, "In the past couple weeks"), 
             ('+', 7, "Upcoming this week"), 
@@ -202,7 +220,7 @@ def index(request):
 
         groups.append((group[2], result))
 
-    return render_to_response("index.haml", {
+    return render_to_response("talk_list.haml", {
         'talk_groups': groups
         }, context_instance=RequestContext(request))
 

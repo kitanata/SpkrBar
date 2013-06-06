@@ -1,0 +1,12 @@
+- extends 'base.haml'
+
+- block 'content'
+  - for group in talk_groups
+    - if group.1
+      .row
+        .span12
+          %h2 {{group.0}}
+
+      .row{style:"margin-bottom:40px"}
+        - for item in group.1
+          - include '_talk_event_span6_detail_partial.haml'

@@ -144,6 +144,20 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
+TINYMCE_PLUGINS = """advhr,fullpage,preview,advimage,fullscreen,
+advlink,iespell,advlist,inlinepopups,searchreplace,autolink,
+insertdatetime,spellchecker,autoresize,layer,legacyoutput,
+tabfocus,bbcode,lists,table,contextmenu,media,nonbreaking,visualblocks,
+emotions,noneditable,visualchars,pagebreak,wordcount,paste,xhtmlxtras"""
+
+TINYMCE_DEFAULT_CONFIG = {
+    'plugins': TINYMCE_PLUGINS,
+    'theme': "advanced",
+    'cleanup_on_startup': True,
+    'custom_undo_redo_levels': 10,
+}
+
+
 INSTALLED_APPS = (
     'gunicorn',
     'django.contrib.auth',
@@ -154,6 +168,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'guardian',
+    'tinymce',
     'grappelli',
     'compressor',
     'django.contrib.admin',
@@ -161,6 +176,7 @@ INSTALLED_APPS = (
     'locations',
     'talks',
     'events',
+    'blog',
     'mobile'
 )
 

@@ -5,6 +5,14 @@ No Bugs
 Features
 ------
 
+Speaker Ranking Algorithm
+
+Considerations
+- Number of events I spoke at
+- Number of endorsements across all talks I've given
+- Number of talks I've given at events
+- Number of followers
+
 1. Polish
 - Polish the site.
 - Test in Firefox.

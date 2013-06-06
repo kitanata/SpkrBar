@@ -7,7 +7,7 @@
         .speaker
           .picture
             - if speaker.photo
-              %img.pull-left{src:"{{STATIC_URL}}img/photo/{{ speaker.photo}}"}
+              %img.pull-left{src:"{{MEDIA_URL}}{{ speaker.photo}}"}
             - else
               %i.pull-left.icon-user.photo-placeholder
 
