@@ -168,10 +168,11 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'guardian',
-    'tinymce',
+    'django_markdown',
     'grappelli',
     'compressor',
     'django.contrib.admin',
+    'django.contrib.markup',
     'core',
     'locations',
     'talks',

@@ -21,6 +21,7 @@
       %link{href:"{{STATIC_URL}}less/speakers.less", rel:"stylesheet", type:"text/less"}
       %link{href:"{{STATIC_URL}}less/talks.less", rel:"stylesheet", type:"text/less"}
       %link{href:"{{STATIC_URL}}less/events.less", rel:"stylesheet", type:"text/less"}
+      %link{href:"{{STATIC_URL}}less/blog.less", rel:"stylesheet", type:"text/less"}
 
       - block 'css'
     {% endcompress %}
@@ -50,14 +51,15 @@
             %a{href:"/speakers"} Speakers
           %li
             %a{href:"/events"} Events
-          %li
-            %a{href:"/blog"} Blog
 
           - if not user.is_anonymous
             %li
               %a{href:"/speaker/{{ user.username }}"} My Profile
             %li
               %a.add-talk{href:"#add-talk-popup"} Add Talk
+
+          %li
+            %a{href:"/blog"} Blog
 
           - if user.is_superuser
             %li

@@ -26,6 +26,8 @@ from talks.models import Talk
 from events.models import Event
 from events.helpers import group_events_by_date
 
+from blog.models import BlogPost
+
 from .forms import EditProfileForm, ProfilePhotoForm, ProfileLinkForm, ProfileTagForm
 
 from security import speaker_restricted
@@ -109,6 +111,13 @@ def load_fixtures(request):
     anon_profile.save()
 
     for i in range(0, 200):
+        #every 20 make a new blog POST
+        if i % 19 == 0 or i == 0:
+            post = BlogPost()
+            post.name = random.choice(long_actions)
+            post.content = user_description
+            post.date = generate_datetime()
+            post.save()
 
         #Every 10 make a new location and user/speaker
         if i % 11 == 0 or i == 0:
@@ -174,10 +183,8 @@ def index(request):
             talk__published=True, talk__speaker__published=True)
 
     start_date = datetime.today() - timedelta(days=1)
-    end_date = start_date + timedelta(days=30)
-
-    upcoming = talk_events.filter(event__start_date__gt=start_date,
-            event__start_date__lt=end_date)
+    upcoming = talk_events.filter(event__start_date__gt=start_date
+            ).order_by('date')[:20]
 
     if len(upcoming) > 4:
         upcoming = random.sample(upcoming, 4)
