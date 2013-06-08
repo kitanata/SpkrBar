@@ -1,7 +1,8 @@
+from datetime import datetime
+
 from django.db import models
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
-from datetime import datetime
 
 from locations.models import Location
 from talks.models import Talk
@@ -18,7 +19,6 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
     photo = models.ImageField(upload_to="photo")
     about_me = models.CharField(max_length=500)
-    location = models.ForeignKey(Location, null=True)
     published = models.BooleanField(default=True)
 
     following = models.ManyToManyField('self', related_name="followers", symmetrical=False)

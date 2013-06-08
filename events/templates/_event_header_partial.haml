@@ -1,21 +1,49 @@
-.talk-header
+#event-header
   .row
-    .span3
-      .well.talk-photo
-        - if event.talk.photo
-          %img{src:"{{STATIC_URL}}img/photo/{{ event.talk.photo}}"}
-        - else
-          %i.icon-camera.profile-placeholder
-    .span9
-      - if will_have_links
-        - include '_event_edit_links_partial.haml'
+    .span4
+      %h3 {{ event.name }}
+    .span8
+      .btn-group.pull-right
+        - if user.get_profile == event.owner
+            - if event.published
+              %a.btn.btn-warning{href:"/event/{{event.id}}/archive?last={{last}}", data-toggle:"tooltip", data-original-title:"Archive Event"}
+                %i.icon-ban-circle
+            - else
+              %a.btn.btn-warning{href:"/event/{{event.id}}/publish?last={{last}}", data-toggle:"tooltip", data-original-title:"Publish Event"}
+                %i.icon-ok
 
-        %h2.short.date.pull-left {{event.date}}
-        .clearfix
-      - else
-        %h2 {{event.date}}
+            %a.btn.btn-warning.edit-talk{href:"/event/{{event.id}}/edit", data-toggle:"tooltip", data-original-title:"Edit Event"}
+              %i.icon-pencil
 
-      %h2.talk-name
-        %a{href:"{{event.talk.get_absolute_url}}"} {{ event.talk.name }}
-        - if event.talk.endorsements.count %}
-          ({{ event.talk.endorsements.count }} <i class="icon-thumbs-up"></i>)
+            - if not event.talkevent_set.all
+              %a.btn.btn-warning.delete-event{data-name:"{{event.name}}", data-id:"{{event.id}}", href:"#delete-event-popup", data-toggle:"tooltip", data-original-title:"Delete Event"}
+                %i.icon-trash
+
+        - elif not user.is_anonymous
+          - if user_attending and not user_endorsed
+            %a.btn.btn-warning{href:"/event/{{event.id}}/endorse?last={{last}}"}
+              %i.icon-thumbs-up
+              Endorse
+            %a.btn.btn-warning{href:"/event/{{event.id}}/attend?last={{last}}"}
+              %i.icon-ban-circle
+              Cancel
+          - elif event and not user_attending
+            %a.btn.btn-warning{href:"/event/{{event.id}}/attend?last={{last}}"}
+              %i.icon-calendar
+              Attend
+
+  .row
+    .span4
+      %h5
+        {{ event.start_date.date }} at {{ event.start_date.time }} to
+        %br {{ event.end_date.date }} at {{ event.end_date.time }}
+      %p {{ event.description }}
+      %p
+        - with event.location as location
+          {{ location.name }}<br />
+          {{ location.address }}<br />
+          {{ location.city }}, {{location.state}}, {{location.zip_code}}
+
+    .span8
+      %p
+        #map

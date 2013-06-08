@@ -96,6 +96,8 @@
     %script{src:"{{STATIC_URL}}js/bootstrap-datetimepicker.min.js"}
     %script{src:"{{STATIC_URL}}js/jquery.colorbox-min.js"}
     %script{src:"{{STATIC_URL}}js/django-csrf.js"}
+    %script{type:"text/javascript"}
+      $('a.btn').tooltip()
   {% endcompress %}
 
   - block 'scripts'

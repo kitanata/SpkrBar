@@ -12,8 +12,8 @@
   $('.delete-talk').colorbox({inline: true, width:"400px"});
 
   $('.delete-talk').click(function(el){
-      var sel = $(el.currentTarget)
+      var sel = $(el.currentTarget);
 
-      $('.delete-talk-name').text(sel.data('name'))
-      $('.delete-confirm-link').attr('href', "/talk/" + sel.data('id') + "/delete/")
+      $('.delete-talk-name').text(sel.data('name'));
+      $('.delete-confirm-link').attr('href', "/talk/" + sel.data('id') + "/delete/");
   });

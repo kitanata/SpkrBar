@@ -90,13 +90,19 @@ def event_delete(request, event_id):
 def event_attendee_new(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
 
-    event.attendees.add(request.user.get_profile())
-    event.save()
+    profile = request.user.get_profile()
+
+    if profile in event.attendees.all():
+        event.attendees.remove(profile)
+        event.save()
+    else:
+        event.attendees.add(profile)
+        event.save()
 
     if 'last' in request.GET and request.GET['last'] != '':
         return redirect(request.GET['last'])
     else:
-        return redirect('/event/' + event_id)
+        return redirect(event)
 
 
 def event_list(request):
@@ -181,4 +187,5 @@ def event_detail(request, event_id):
         'current': current,
         'upcoming': upcoming,
         'recent': recent,
+        'last': event.get_absolute_url(),
         }, context_instance=RequestContext(request))

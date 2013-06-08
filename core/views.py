@@ -236,7 +236,10 @@ def talk_list(request):
 def talk_event_attendee_new(request, talk_event_id):
     talk_event = get_object_or_404(TalkEvent, pk=talk_event_id)
 
-    if request.user.get_profile() not in talk_event.attendees.all():
+    if request.user.get_profile() in talk_event.attendees.all():
+        talk_event.attendees.remove(request.user.get_profile())
+        talk_event.save()
+    else:
         talk_event.attendees.add(request.user.get_profile())
         talk_event.save()
 
@@ -462,12 +465,12 @@ def speakers(request):
 def speaker_detail(request, username):
     speaker = get_object_or_404(User, username=username).get_profile()
 
-    if request.user.is_anonymous():
-        talks = Talk.published_talks()
-    else:
-        talks = Talk.published_talks(user_profile=request.user.get_profile())
+    talks = Talk.objects.filter(speaker=speaker)
+    events = Event.objects.filter(owner=speaker)
 
-    talks = talks.filter(speaker=speaker)
+    if speaker.user != request.user:
+        talks = talks.filter(published=True, speaker__published=True)
+        events = events.filter(published=True, owner__published=True)
 
     talk_events = TalkEvent.objects.filter(talk__speaker=speaker,
             event__published=True, talk__published=True,
@@ -479,8 +482,6 @@ def speaker_detail(request, username):
 
     upcoming = talk_events.filter(event__start_date__gt=datetime.today())
     past = talk_events.filter(event__end_date__lt=datetime.today())
-
-    unscheduled = [talk for talk in talks if talk not in [item.talk for item in talk_events]]
 
     if request.user.is_anonymous():
         following = speaker.following.filter(published=True)
@@ -505,7 +506,8 @@ def speaker_detail(request, username):
         'current': current,
         'upcoming': upcoming,
         'past': past,
-        'unscheduled': unscheduled,
+        'talks': talks,
+        'events': events,
         'attending': attending,
         'attended': attended,
         'following': following,

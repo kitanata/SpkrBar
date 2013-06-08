@@ -1,0 +1,19 @@
+%div{style:'display:none'}
+  #delete-event-popup{style:"background-color:white; padding: 40px;"}
+    %h2.delete-event-name
+    %div{style:"font-size: 18px;"}
+      %p Are you sure you want to delete this event?
+      %p 
+        %b This operation cannot be undone.
+
+    %a.delete-confirm-link.btn.btn-danger{href:"#", style:"margin-top: 20px;"} Yes. Delete this event.
+
+%script{type:"text/javascript"}
+  $('.delete-event').colorbox({inline: true, width:"400px"});
+
+  $('.delete-event').click(function(el){
+      var sel = $(el.currentTarget);
+
+      $('.delete-event-name').text(sel.data('name'));
+      $('.delete-confirm-link').attr('href', "/event/" + sel.data('id') + "/delete/");
+  });

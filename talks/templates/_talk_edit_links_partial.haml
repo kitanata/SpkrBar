@@ -19,8 +19,5 @@
         %a.btn.btn-warning{href:"/talk/{{talk.id}}/endorse?last={{last}}"}
           %i.icon-thumbs-up Endorse
       - elif event and not user_attending
-        %a.btn.btn-warning{href:"/event/{{event.id}}/attend?last={{last}}"}
+        %a.btn.btn-warning{href:"/talk_event/{{event.id}}/attend?last={{last}}"}
           %i.icon-calendar Attend
-
-%script{type:"text/javascript"}
-  $('.talk-links a').tooltip()

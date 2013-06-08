@@ -16,6 +16,7 @@ urlpatterns = patterns('',
     url(r'^event/(?P<event_id>\d+)/$', 'events.views.event_detail'),
     url(r'^event/(?P<event_id>\d+)/edit/$', 'events.views.event_edit'),
     url(r'^event/(?P<event_id>\d+)/delete/$', 'events.views.event_delete'),
+    url(r'^event/(?P<event_id>\d+)/attend/$', 'events.views.event_attendee_new'),
 
     url(r'^talks/$', 'core.views.talk_list'),
     url(r'^talk/new/$', 'talks.views.talk_new'),
