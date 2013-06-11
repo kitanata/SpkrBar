@@ -189,8 +189,10 @@ def index(request):
     if len(upcoming) > 4:
         upcoming = random.sample(upcoming, 4)
 
-    return render_to(request, "index.haml", {
-        'upcoming': upcoming })
+    context = {'upcoming': upcoming }
+
+    return render_to(request, "index.haml", context=context)
+
 
 def talk_list(request):
     group_defs = [ 
@@ -226,8 +228,9 @@ def talk_list(request):
 
         groups.append((group[2], result))
 
-    return render_to(request, "talk_list.haml", {
-        'talk_groups': groups })
+    context = {'talk_groups': groups }
+
+    return render_to(request, "talk_list.haml", context=context)
 
 
 @login_required()
@@ -365,12 +368,15 @@ def profile_form_view(request):
     link_form = ProfileLinkForm()
     tag_form = ProfileTagForm()
 
-    return render_to(request, 'profile_edit.haml', {
+    context = {
         'speaker': request.user.get_profile(),
         'profile_form': profile_form,
         'photo_form': photo_form,
         'tag_form': tag_form,
-        'link_form': link_form})
+        'link_form': link_form
+        }
+
+    return render_to(request, 'profile_edit.haml', context=context)
 
 
 @login_required
@@ -407,7 +413,7 @@ def login_user(request):
         else:
             error = "Username or password is incorrect."
 
-        return render_to(request, 'login.haml', {'error': error})
+        return render_to(request, 'login.haml', context={'error': error})
 
         
 def logout_user(request):
@@ -441,7 +447,7 @@ def register_user(request):
             login(request, user)
             return redirect('/speaker/' + request.user.username)
 
-        return render_to(request, 'register.haml', {'error': error})
+        return render_to(request, 'register.haml', context={'error': error})
 
         
 def speakers(request):
@@ -450,8 +456,7 @@ def speakers(request):
     else:
         speakers = UserProfile.objects.filter(Q(published=True) | Q(user=request.user))[:20]
 
-    return render_to(request, 'speaker_list.haml', {
-        'speakers': speakers })
+    return render_to(request, 'speaker_list.haml', context={'speakers': speakers })
 
 
 def speaker_detail(request, username):
@@ -493,7 +498,7 @@ def speaker_detail(request, username):
     if request.user == speaker.user:
         template = 'user_profile.haml'
 
-    return render_to(request, template, {
+    context = {
         'speaker': speaker,
         'current': current,
         'upcoming': upcoming,
@@ -504,4 +509,7 @@ def speaker_detail(request, username):
         'attended': attended,
         'following': following,
         'followers': followers,
-        'last': '/speaker/' + username })
+        'last': '/speaker/' + username
+        }
+
+    return render_to(request, template, context=context)

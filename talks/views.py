@@ -284,7 +284,7 @@ def talk_detail(request, talk_id):
 
     events_accepting_talks = Event.objects.filter(accept_submissions=True)
 
-    return render_to(request, 'talk_detail.haml', {
+    context = {
         'last': talk.get_absolute_url(),
         'talk': talk,
         'photos': photo_col,
@@ -294,7 +294,10 @@ def talk_detail(request, talk_id):
         'user_attendance': user_attendance,
         'user_endorsed': user_endorsed,
         'will_have_links': will_have_links,
-        'events_accepting_talks': events_accepting_talks })
+        'events_accepting_talks': events_accepting_talks
+        }
+
+    return render_to(request, 'talk_detail.haml', context=context)
 
 
 def talk_comment_new(request, talk_id):

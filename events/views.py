@@ -39,9 +39,12 @@ def event_new(request):
 
         locations = Location.objects.all()
 
-        return render_to(request, 'event_new.haml', {
+        context = {
             'location_form': location_form,
-            'locations': locations })
+            'locations': locations
+            }
+
+        return render_to(request, 'event_new.haml', context=context)
 
 
 @login_required
@@ -64,11 +67,14 @@ def event_edit(request, event_id):
 
         date = event.date.strftime("%Y-%m-%d %H:%M")
 
-        return render_to(request, 'event_edit.haml', {
+        context = {
             'event': event,
             'date': date,
             'location_form': location_form,
-            'locations': locations })
+            'locations': locations
+            }
+
+        return render_to(request, 'event_edit.haml', context=context)
 
 
 @login_required
@@ -139,8 +145,7 @@ def event_list(request):
 
         groups.append((group[2], result))
 
-    return render_to(request, 'event_list.haml', {
-        'event_groups': groups })
+    return render_to(request, 'event_list.haml', context={'event_groups': groups})
 
 
 def event_detail(request, event_id):
@@ -176,7 +181,7 @@ def event_detail(request, event_id):
 
     user_talks = request.user.get_profile().talk_set.all
 
-    return render_to(request, 'event_detail.haml', {
+    context = {
         'event': event,
         'attendees': attendees,
         'user_attending': user_attending,
@@ -187,4 +192,7 @@ def event_detail(request, event_id):
         'current': current,
         'upcoming': upcoming,
         'recent': recent,
-        'last': event.get_absolute_url() })
+        'last': event.get_absolute_url()
+        }
+
+    return render_to(request, 'event_detail.haml', context=context)
