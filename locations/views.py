@@ -1,8 +1,7 @@
 # Create your views here.
 from datetime import datetime
 
-from django.shortcuts import render_to_response, get_object_or_404, redirect
-from django.template import RequestContext
+from django.shortcuts import get_object_or_404, redirect
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 

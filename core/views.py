@@ -4,8 +4,7 @@ from itertools import groupby
 from collections import namedtuple
 import random
 
-from django.shortcuts import render_to_response, redirect, get_object_or_404
-from django.template import RequestContext
+from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import ListView
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -18,7 +17,7 @@ from django.db.models import Q
 
 from guardian.shortcuts import assign
 
-from .helpers import save_photo_with_uuid
+from .helpers import save_photo_with_uuid, render_to
 
 from .models import Location, UserProfile, UserLink, UserTag, TalkEvent
 from talks.models import Talk
@@ -148,6 +147,8 @@ def load_fixtures(request):
             event.description = user_description
             event.owner = speaker
             event.location = location
+            event.published = True
+            event.accept_submissions = (i % 2 == 0)
 
             event.start_date = generate_datetime()
             event.end_date = event.start_date + timedelta(days=3)
@@ -173,8 +174,7 @@ def load_fixtures(request):
         assign('change_talk', speaker.user, talk)
         assign('delete_talk', speaker.user, talk)
 
-    return render_to_response('load_fixtures.haml', 
-            context_instance=RequestContext(request))
+    return render_to(request, 'load_fixtures.haml')
 
 
 def index(request):
@@ -189,9 +189,8 @@ def index(request):
     if len(upcoming) > 4:
         upcoming = random.sample(upcoming, 4)
 
-    return render_to_response("index.haml", {
-        'upcoming': upcoming
-        }, context_instance=RequestContext(request))
+    return render_to(request, "index.haml", {
+        'upcoming': upcoming })
 
 def talk_list(request):
     group_defs = [ 
@@ -227,9 +226,8 @@ def talk_list(request):
 
         groups.append((group[2], result))
 
-    return render_to_response("talk_list.haml", {
-        'talk_groups': groups
-        }, context_instance=RequestContext(request))
+    return render_to(request, "talk_list.haml", {
+        'talk_groups': groups })
 
 
 @login_required()
@@ -367,13 +365,12 @@ def profile_form_view(request):
     link_form = ProfileLinkForm()
     tag_form = ProfileTagForm()
 
-    return render_to_response('profile_edit.haml', {
+    return render_to(request, 'profile_edit.haml', {
         'speaker': request.user.get_profile(),
         'profile_form': profile_form,
         'photo_form': photo_form,
         'tag_form': tag_form,
-        'link_form': link_form},
-        context_instance=RequestContext(request))
+        'link_form': link_form})
 
 
 @login_required
@@ -395,8 +392,7 @@ def speaker_follow(request, username):
 
 def login_user(request):
     if request.method == "GET":
-        return render_to_response('login.haml', 
-                context_instance=RequestContext(request))
+        return render_to(request, 'login.haml')
     else:
         username = request.POST['username']
         password = request.POST['password']
@@ -411,8 +407,7 @@ def login_user(request):
         else:
             error = "Username or password is incorrect."
 
-        return render_to_response('login.haml', {'error': error},
-                context_instance=RequestContext(request))
+        return render_to(request, 'login.haml', {'error': error})
 
         
 def logout_user(request):
@@ -422,8 +417,7 @@ def logout_user(request):
 
 def register_user(request):
     if request.method == "GET":
-        return render_to_response('register.haml',
-                context_instance=RequestContext(request))
+        return render_to(request, 'register.haml')
     else:
         username = request.POST['username']
         password = request.POST['password']
@@ -447,8 +441,7 @@ def register_user(request):
             login(request, user)
             return redirect('/speaker/' + request.user.username)
 
-        return render_to_response('register.haml', {'error': error},
-                context_instance=RequestContext(request))
+        return render_to(request, 'register.haml', {'error': error})
 
         
 def speakers(request):
@@ -457,9 +450,8 @@ def speakers(request):
     else:
         speakers = UserProfile.objects.filter(Q(published=True) | Q(user=request.user))[:20]
 
-    return render_to_response('speaker_list.haml', {
-        'speakers': speakers
-        }, context_instance=RequestContext(request))
+    return render_to(request, 'speaker_list.haml', {
+        'speakers': speakers })
 
 
 def speaker_detail(request, username):
@@ -501,7 +493,7 @@ def speaker_detail(request, username):
     if request.user == speaker.user:
         template = 'user_profile.haml'
 
-    return render_to_response(template, {
+    return render_to(request, template, {
         'speaker': speaker,
         'current': current,
         'upcoming': upcoming,
@@ -512,5 +504,4 @@ def speaker_detail(request, username):
         'attended': attended,
         'following': following,
         'followers': followers,
-        'last': '/speaker/' + username
-        }, context_instance=RequestContext(request))
+        'last': '/speaker/' + username })

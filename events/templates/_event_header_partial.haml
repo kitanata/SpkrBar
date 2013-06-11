@@ -20,6 +20,10 @@
                 %i.icon-trash
 
         - elif not user.is_anonymous
+          - if user_talks and event.accept_submissions
+            %a.btn.btn-warning.submit-talk{href:"#submit-talk-popup"}
+              %i.icon-share-alt
+              Submit Talk
           - if user_attending and not user_endorsed
             %a.btn.btn-warning{href:"/event/{{event.id}}/endorse?last={{last}}"}
               %i.icon-thumbs-up

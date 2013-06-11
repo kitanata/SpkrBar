@@ -2,6 +2,9 @@
   .btn-group.talk-links
     - if user.get_profile == talk.speaker
         - if talk.published
+          - if events_accepting_talks
+            %a.btn.btn-warning.submit-talk{href:"#submit-talk-popup", data-toggle:"tooltip", data-original-title:"Submit Talk"}
+              %i.icon-share-alt
           %a.btn.btn-warning{href:"/talk/{{talk.id}}/archive?last={{last}}", data-toggle:"tooltip", data-original-title:"Archive Talk"}
             %i.icon-ban-circle
         - else

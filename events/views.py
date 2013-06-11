@@ -2,8 +2,7 @@
 import json
 from datetime import datetime, timedelta
 
-from django.shortcuts import render_to_response, get_object_or_404, redirect
-from django.template import RequestContext
+from django.shortcuts import get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseForbidden
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
@@ -14,6 +13,7 @@ from talks.models import Talk
 from locations.models import Location
 from locations.forms import LocationForm
 from core.models import TalkEvent
+from core.helpers import render_to
 
 from models import Event
 from .helpers import group_events_by_date
@@ -39,10 +39,9 @@ def event_new(request):
 
         locations = Location.objects.all()
 
-        return render_to_response('event_new.haml', {
+        return render_to(request, 'event_new.haml', {
             'location_form': location_form,
-            'locations': locations,
-            }, context_instance=RequestContext(request))
+            'locations': locations })
 
 
 @login_required
@@ -65,12 +64,11 @@ def event_edit(request, event_id):
 
         date = event.date.strftime("%Y-%m-%d %H:%M")
 
-        return render_to_response('event_edit.haml', {
+        return render_to(request, 'event_edit.haml', {
             'event': event,
             'date': date,
             'location_form': location_form,
-            'locations': locations
-            }, context_instance=RequestContext(request))
+            'locations': locations })
 
 
 @login_required
@@ -141,9 +139,8 @@ def event_list(request):
 
         groups.append((group[2], result))
 
-    return render_to_response('event_list.haml', {
-        'event_groups': groups
-        }, context_instance=RequestContext(request))
+    return render_to(request, 'event_list.haml', {
+        'event_groups': groups })
 
 
 def event_detail(request, event_id):
@@ -177,15 +174,17 @@ def event_detail(request, event_id):
             date__gt=(yesterday - timedelta(days=14)), date__lt=yesterday
                 ).order_by('-date')
 
-    return render_to_response('event_detail.haml', {
+    user_talks = request.user.get_profile().talk_set.all
+
+    return render_to(request, 'event_detail.haml', {
         'event': event,
         'attendees': attendees,
         'user_attending': user_attending,
+        'user_talks': user_talks,
         'will_have_links': will_have_links,
         'querystring': event.location.geocode_querystring(),
         'city_querystring': event.location.geocode_city_querystring(),
         'current': current,
         'upcoming': upcoming,
         'recent': recent,
-        'last': event.get_absolute_url(),
-        }, context_instance=RequestContext(request))
+        'last': event.get_absolute_url() })

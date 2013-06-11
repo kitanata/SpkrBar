@@ -1,0 +1,15 @@
+%div{style:'display:none'}
+  #submit-talk-popup
+    %h2 Submit a talk to {{event.name}}
+    %form.submit-talk-event{action:"/event/{{event.id}}/submit_talk/", method:"POST"}
+      - csrf_token
+
+      %select
+        - for talk in user_talks
+          %option{val:"{{talk.id}}"}
+            {{ talk.name }}
+
+      %button.btn.btn-warning{type:"submit"} Submit
+
+%script{type:"text/javascript"}
+  $('.submit-talk').colorbox({inline: true, width:"400px"});

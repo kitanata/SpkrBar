@@ -2,6 +2,9 @@ import uuid
 import os
 from config.settings import MEDIA_ROOT
 
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+
 def save_photo_with_uuid(photo):
     photo_ext = photo.name.split('.')[-1]
     photo_root_name = str(uuid.uuid4()) + '.' + photo_ext
@@ -13,3 +16,14 @@ def save_photo_with_uuid(photo):
             destination.write(chunk)
 
     return photo_name
+
+
+def render_to(request, template, js=None, context=None):
+
+    if js and context:
+        context['js'] = js
+    elif js:
+        context = dict(js=js)
+
+    return render_to_response(template, context, 
+            context_instance=RequestContext(request))

@@ -7,13 +7,14 @@ class Event(models.Model):
     owner = models.ForeignKey('core.UserProfile')
     name = models.CharField(max_length=140)
     description = models.CharField(max_length=800)
-    published = models.BooleanField(default=True)
+    published = models.BooleanField(default=False)
+    accept_submissions = models.BooleanField(default=False)
 
     location = models.ForeignKey('locations.Location')
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
 
-    attendees = models.ManyToManyField('core.UserProfile', related_name='events_attending')
+    attendees = models.ManyToManyField('core.UserProfile', related_name='events_attending', blank=True)
 
     def get_absolute_url(self):
         return "/event/" + str(self.pk)

@@ -2,9 +2,8 @@ import random
 from datetime import datetime
 from itertools import groupby
 
-from django.shortcuts import render_to_response, redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import ListView
-from django.template import RequestContext
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden, HttpResponseNotFound
@@ -17,7 +16,7 @@ from events.models import Event
 from locations.models import Location
 from locations.forms import LocationForm
 from core.models import UserProfile, TalkEvent
-from core.helpers import save_photo_with_uuid
+from core.helpers import save_photo_with_uuid, render_to
 
 from .models import *
 from .forms import *
@@ -283,7 +282,9 @@ def talk_detail(request, talk_id):
         width = min(width, 200)
         photo_col.append((photo.photo, width, width * aspect))
 
-    return render_to_response('talk_detail.haml', {
+    events_accepting_talks = Event.objects.filter(accept_submissions=True)
+
+    return render_to(request, 'talk_detail.haml', {
         'last': talk.get_absolute_url(),
         'talk': talk,
         'photos': photo_col,
@@ -293,7 +294,7 @@ def talk_detail(request, talk_id):
         'user_attendance': user_attendance,
         'user_endorsed': user_endorsed,
         'will_have_links': will_have_links,
-        }, context_instance=RequestContext(request))
+        'events_accepting_talks': events_accepting_talks })
 
 
 def talk_comment_new(request, talk_id):
