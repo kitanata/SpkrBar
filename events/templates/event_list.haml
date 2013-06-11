@@ -1,13 +1,15 @@
 - extends 'base.haml'
 
+- block 'subnav-container'
+
 - block 'content'
   - for group in event_groups
     - if group.1
       .row
-        .span12
+        .section-title
           %h2 {{group.0}}
 
-      #event-list.row{style:"margin-bottom:40px"}
+      .event-list.row{style:"margin-bottom:40px"}
         - for event in group.1
           - include '_event_span6_detail_partial.haml'
 

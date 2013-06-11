@@ -9,6 +9,8 @@
       %h3.btn-warning Conferences are social again.
       %a.add-talk.btn.btn-large.btn-warning{href:"#add-talk-popup"} Add your talk.
 
+- block 'subnav-container'
+
 - block 'content'
   #register.row
     .span4
@@ -60,10 +62,11 @@
           One low monthly price.
 
 
-  .row{style:"margin-top:20px"}
-    .span12
+  .row
+    .section-title
       %h2 Upcoming Talks
 
   .row
-    - for item in upcoming
-      - include '_talk_event_span6_detail_partial.haml'
+    .talk-list
+      - for item in upcoming
+        - include '_talk_event_span6_detail_partial.haml'

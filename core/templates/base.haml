@@ -44,42 +44,60 @@
   %body
     .container-narrow
       .masthead
-        %ul.nav.nav-pills.pull-right{style:"margin-top:40px"}
-          %li
-            %a{href:"/talks"} Talks
-          %li
-            %a{href:"/speakers"} Speakers
-          %li
-            %a{href:"/events"} Events
+        .row
+          .span4
+            %a{href:"/"}
+              %img{src:"{{STATIC_URL}}img/logo.png"}
+          .span8
+            %ul.nav.nav-pills.pull-right
+              %li
+                %a{href:"/talks"} Talks
+              %li
+                %a{href:"/speakers"} Speakers
+              %li
+                %a{href:"/events"} Events
 
-          - if not user.is_anonymous
-            %li
-              %a{href:"/speaker/{{ user.username }}"} My Profile
-            %li
-              %a.add-talk{href:"#add-talk-popup"} Add Talk
+              - if not user.is_anonymous
+                %li
+                  %a{href:"/speaker/{{ user.username }}"} My Profile
+                %li
+                  %a.add-talk{href:"#add-talk-popup"} Add Talk
 
-          %li
-            %a{href:"/blog"} Blog
+              %li
+                %a{href:"/blog"} Blog
 
-          - if user.is_superuser
-            %li
-              %a{href:"/admin"} Admin
+              - if user.is_superuser
+                %li
+                  %a{href:"/admin"} Admin
 
-          - if user.is_anonymous
-            %li
-              %a{href:"/login"}
-                %i.icon-signin
-                Login
-            %li
-              %a{href:"/register"} Register
-          - else
-            %li
-              %a{href:"/logout"}
-                %i.icon-signout
-                Logout
-
-        %a{href:"/"}
-          %img{src:"{{STATIC_URL}}img/logo.png"}
+              - if user.is_anonymous
+                %li
+                  %a{href:"/login"}
+                    %i.icon-signin
+                    Login
+                %li
+                  %a{href:"/register"} Register
+              - else
+                %li
+                  %a{href:"/logout"}
+                    %i.icon-signout
+                    Logout
+      - block 'subnav-container' 
+        .subnav
+          .row
+            .span6
+              %h2
+                - block 'title'
+                  Title Of Page
+            .span6
+              .nav.btn-group.pull-right
+                - block 'subnav'
+                  %a.btn.btn-warning{href:"#"}
+                    Example
+                  %a.btn.btn-warning{href:"#"}
+                    Example
+                  %a.btn.btn-warning{href:"#"}
+                    Example
 
       - block 'callout'
 

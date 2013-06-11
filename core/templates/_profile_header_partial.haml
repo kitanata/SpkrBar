@@ -7,38 +7,7 @@
         %i.icon-user
 
   .span9
-    .row
-      .span6
-        %h2 {{ speaker.user.get_full_name }}
-
-      - if not user.is_anonymous and speaker == user.get_profile
-        .span3
-          .edit-buttons.btn-group
-            - if speaker.published
-              .btn.btn-warning{href:"/profile/archive"}
-                %i.icon-ban-circle
-                Hide
-            - else
-              %a.btn.btn-warning{href:"/profile/publish"}
-                %i.icon-ok
-                Publish
-
-            %a.btn.btn-warning{href:"/profile/edit"}
-              %i.icon-pencil
-              Edit
-
-            %a.add-talk.btn.btn-warning{href:"#add-talk-popup"}
-              %i.icon-plus
-              Talk
-
-            %a.add-event.btn.btn-warning{href:"/event/new"}
-              %i.icon-plus
-              Event
-
-    %hr
-
-    .row
-      .span9 {{ speaker.about_me }}
+    {{ speaker.about_me }}
 
 .features
   .row

@@ -1,5 +1,10 @@
 - extends 'base.haml'
 
+- block 'title'
+  Featured Speakers
+
+- block 'subnav'
+
 - block 'content'
   #speakers.row
     - for speaker in speakers

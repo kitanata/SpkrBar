@@ -1,31 +1,33 @@
 - extends 'base.haml'
 
+- block 'title'
+  Recent SpkrBar News
+
+- block 'subnav'
+
 - block 'content'
-  .row
-    .span12
-      %h2 SpkrBar Blog
+  #blog
+    .row
+      .span9
+        -block 'blog_content'
 
-  .row
-    .span9
-      -block 'blog_content'
+      .span3.blog-history
+        %h3 Blog History
 
-    .span3.blog-history
-      %h3 Blog History
+        {% regroup history|dictsortreversed:"post.date.year" by year as years %}
 
-      {% regroup history|dictsortreversed:"post.date.year" by year as years %}
+        %ul.years
+          - for year in years
+            %li.title {{year.grouper}}
 
-      %ul.years
-        - for year in years
-          %li.title {{year.grouper}}
+            {% regroup year.list|dictsortreversed:"post.date.month" by month as months %}
 
-          {% regroup year.list|dictsortreversed:"post.date.month" by month as months %}
+            %ul.months
+              - for month in months
+                %li.title {{month.grouper}}
 
-          %ul.months
-            - for month in months
-              %li.title {{month.grouper}}
-
-              %ul.items
-                - for item in month.list
-                  %li
-                    %a{href:"{{item.post.get_absolute_url}}"}
-                      {{ item.post.name }}
+                %ul.items
+                  - for item in month.list
+                    %li
+                      %a{href:"{{item.post.get_absolute_url}}"}
+                        {{ item.post.name }}

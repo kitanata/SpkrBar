@@ -1,5 +1,11 @@
 - extends 'base.haml'
 
+- block 'title'
+  {{ speaker.user.get_full_name }}
+
+- block 'subnav'
+  - include '_profile_links_partial.haml'
+
 - block 'content'
   #profile
     - include '_profile_header_partial.haml'
