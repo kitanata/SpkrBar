@@ -3,61 +3,56 @@
 - block 'head'
   {{ form.media }}
 
+- block 'title'
+  %h2 Edit your event
+
+- block 'subnav'
+
 - block 'content'
-  .event-new
-    .row
-      .span3
-        .well.talk-photo
-          - if event.talk.photo
-            %img{src:"{{STATIC_URL}}img/photo/{{ event.talk.photo}}"}
-          - else
-            %i.icon-camera.profile-placeholder
-      .span9
-        .talk-detail
-          %h2
-              {{ event.talk.name }}
-              - if event.talk.endorsements.count
-                ({{ event.talk.endorsements.count }} <i class="icon-thumbs-up"></i>)
-
-          %h3 Abstract
-          %p {{ event.talk.abstract }}
-
-    .row
+  #event-new
+    .row.buffer
       .span6
-        %h2 Edit Event
-
         .row
-          .span1
-            %div{style="margin-top:5px;"} Location:
-          .span5
-            %input#id_location{placeholder:"Enter the location name or city or state", value:"{{event.location.form_str}}", type:"text", autocomplete:"off"}
+          .span6
+            %label{for:"name"} Event Name:
+            %input#name{name:"name", type:"text", value:"{{event.name}}"}
+
+          .span6
+            %label{for:"description"} Description:
+            <textarea id="description" name="description">{{event.description}}</textarea>
+
+          .span6
+            %label{for:"id_location"} Location:
+            %input#id_location{placeholder:"Enter the location name or city or state", type:"text", autocomplete:"off", value:"{{event.location.form_str}}"}
             %span.search.addon
               %i.icon-search
 
-            %button#add-location.btn.btn-warning{href:"#add-location-popup"}
+            %button.btn.btn-warning#add-location{href:"#add-location-popup"}
               %i.icon-plus
 
-        .row
-          .span1
-            %div{style:"margin-top: 5px;"} Date:
-          .span5
-            %input#id_date{type:"text", value:"{{date}}"}
-
-        .row
           .span6
-            %button#create-event.btn.btn-warning{type:"submit"} Save Event
+            %label{for:"start-date"} Start Date:
+            %input#start-date{name:"start-date", type:"text", value:"{{start_date}}"}
+
+          .span6
+            %label{for:"end-date"} End Date:
+            %input#end-date{name:"end-date", type:"text", value:"{{end_date}}"}
+
+          .span6
+            %button#submit-event.btn.btn-warning{type:"submit"}
+              Update Event
 
       .span6
         #map
 
-  %div{style:"display:none"}
-    #add-location-popup{style:"background-color:white; padding: 40px;"}
-      %h2 Add New Location
-      %form{action:"/location/new/?next=/talk/{{talk.pk}}/event/new", method:"POST"}
-        - csrf_token
-        {{ location_form.as_p }}
+%div{style:"display:none"}
+  #add-location-popup{style:"background-color:white; padding: 40px;"}
+    %h2 Add New Location
+    %form{action:"/location/new/?next=/talk/{{talk.pk}}/event/new", method:"POST"}
+      - csrf_token
+      {{ location_form.as_p }}
 
-        %button.btn.btn-warning{type:"submit"} Add Location
+      %button.btn.btn-warning{type:"submit"} Add Location
 
 - block 'scripts'
   %script{type:"text/javascript"}
@@ -76,56 +71,70 @@
     var locationModels = {}
     var locations = []
 
-    {% for location in locations %}
-        var name = "{{location.form_str}}"
-        locations.push(name);
-        locationModels[name] = {
-            id: "{{location.pk}}",
-            querystring: "{{location.geocode_querystring}}"
-        };
+    var currentLocation = null;
 
-        var url = "http://nominatim.openstreetmap.org/search/{{location.geocode_querystring}}?format=json"
+    - for location in locations
+      var name = "{{location.form_str}}"
+      locations.push(name);
+      locationModels[name] = {
+          id: "{{location.pk}}",
+          querystring: "{{location.geocode_querystring}}"
+      };
 
-        $.get(url, function(data) {
-            if(data.length != 0) {
-                L.marker([data[0].lat, data[0].lon]).addTo(map).bindPopup(
-                    '<h4><a href="{{location.get_absolute_url}}">{{location.name}}</a></h4><br />{{location.address}}<br />{{location.city}}, {{location.state}} {{location.zip_code}}');
-            }
-        });
-    {% endfor %}
+      if({{event.location.id}} == {{location.id}}) {
+        currentLocation = locationModels[name]
+      }
 
-    currentLocation = locationModels["{{event.location.form_str}}"];
+      var url = "http://nominatim.openstreetmap.org/search/{{location.geocode_querystring}}?format=json";
 
-    var selectLocation = function(location){
-        var url = "http://nominatim.openstreetmap.org/search/" + location.querystring + "?format=json"
+      $.get(url, function(data) {
+          if(data.length != 0) {
+              L.marker([data[0].lat, data[0].lon]).addTo(map).bindPopup(
+                  '<h4><a href="{{location.get_absolute_url}}">{{location.name}}</a></h4><br />{{location.address}}<br />{{location.city}}, {{location.state}} {{location.zip_code}}');
+          }
+      });
+
+
+    updateLocation = function(location) {
+        var url = "http://nominatim.openstreetmap.org/search/" + location.querystring + "?format=json";
 
         $.get(url, function(data) {
             if(data.length != 0) {
                 map.setView([data[0].lat, data[0].lon], 12);
             }
         });
-    };
+    }
 
     $('#id_location').typeahead({
         source: locations, 
         updater: function(selection){
             currentLocation = locationModels[selection];
-            selectLocation(currentLocation);
+            updateLocation(currentLocation);
+
             return selection;
         }
     });
 
-    selectLocation(currentLocation);
+    if(currentLocation) {
+        updateLocation(currentLocation);
+    }
 
-    $('#id_date').datetimepicker({
+    $('#start-date').datetimepicker({
         format: 'yyyy-mm-dd hh:ii'
     });
 
-    $('#create-event').on('click', function(){
-        $.post("/event/{{event.pk}}/edit/", {
+    $('#end-date').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii'
+    });
+
+    $('#submit-event').on('click', function(){
+        $.post("/event/{{event.id}}/edit/", {
+            'name': $('#name').val(),
+            'description': $('#description').val(),
             'location': currentLocation.id,
-            'date': $("#id_date").val()
+            'start-date': $("#start-date").val(),
+            'end-date': $("#end-date").val()
         }, function(){
-            window.location = "{{event.get_absolute_url}}"
+            window.location = "{{event.get_absolute_url}}";
         });
     });

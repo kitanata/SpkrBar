@@ -3,14 +3,16 @@
 - block 'head'
   {{ form.media }}
 
+- block 'title'
+  %h2 Create a new Event
+
+- block 'subnav'
+
 - block 'content'
   #event-new
-    .row
+    .row.buffer
       .span6
         .row
-          .span6
-            %h2 Create a new Event
-
           .span6
             %label{for:"name"} Event Name:
             %input#name{name:"name", type:"text"}

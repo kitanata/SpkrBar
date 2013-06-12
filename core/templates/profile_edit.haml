@@ -1,5 +1,10 @@
 - extends 'base.haml'
 
+- block 'title'
+  %h2 Edit your profile
+
+- block 'subnav'
+
 - block 'content'
   - if profile_form.errors
     .alert.alert-error {{profile_form.errors}}

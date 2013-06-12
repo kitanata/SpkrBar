@@ -55,7 +55,11 @@ def event_edit(request, event_id):
         return HttpResponseForbidden()
 
     if request.method == "POST":
-        event.date = datetime.strptime(request.POST['date'], "%Y-%m-%d %H:%M")
+        event.name = request.POST['name']
+        event.description = request.POST['description']
+        event.owner = request.user.get_profile()
+        event.start_date = datetime.strptime(request.POST['start-date'], "%Y-%m-%d %H:%M")
+        event.end_date = datetime.strptime(request.POST['end-date'], "%Y-%m-%d %H:%M")
         event.location = get_object_or_404(Location, pk=request.POST['location'])
         event.save()
 
@@ -65,11 +69,13 @@ def event_edit(request, event_id):
 
         locations = Location.objects.all()
 
-        date = event.date.strftime("%Y-%m-%d %H:%M")
+        start_date = event.start_date.strftime("%Y-%m-%d %H:%M")
+        end_date = event.end_date.strftime("%Y-%m-%d %H:%M")
 
         context = {
             'event': event,
-            'date': date,
+            'start_date': start_date,
+            'end_date': end_date,
             'location_form': location_form,
             'locations': locations
             }

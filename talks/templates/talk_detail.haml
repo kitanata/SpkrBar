@@ -1,5 +1,39 @@
 - extends 'talk_base.haml'
 
+- block 'title'
+  %h2
+    {{ talk.name|truncatechars:90 }}
+    - if talk.endorsements.count
+      ({{ talk.endorsements.count }} <i class="icon-thumbs-up"></i>)
+
+- block 'subnav'
+  - if will_have_links
+    - if user.get_profile == talk.speaker
+        - if talk.published
+          - if events_accepting_talks
+            %a.btn.btn-warning.submit-talk{href:"#submit-talk-popup", data-toggle:"tooltip", data-original-title:"Submit Talk"}
+              %i.icon-share-alt
+          %a.btn.btn-warning{href:"/talk/{{talk.id}}/archive?last={{last}}", data-toggle:"tooltip", data-original-title:"Archive Talk"}
+            %i.icon-ban-circle
+        - else
+          %a.btn.btn-warning{href:"/talk/{{talk.id}}/publish?last={{last}}", data-toggle:"tooltip", data-original-title:"Publish Talk"}
+            %i.icon-ok
+
+        %a.btn.btn-warning.edit-talk{href:"#edit-talk-popup", data-toggle:"tooltip", data-original-title:"Edit Talk"}
+          %i.icon-pencil
+
+        - if not talk.talkevent_set.all
+          %a.btn.btn-warning.delete-talk{data-name:"{{talk.name}}", data-id:"{{talk.id}}", href:"#delete-talk-popup", data-toggle:"tooltip", data-original-title:"Delete Talk"}
+            %i.icon-trash
+    - elif not user.is_anonymous
+      - if user_attending and not user_endorsed
+        %a.btn.btn-warning{href:"/talk/{{talk.id}}/endorse?last={{last}}"}
+          %i.icon-thumbs-up Endorse
+      - elif event and not user_attending
+        %a.btn.btn-warning{href:"/talk_event/{{event.id}}/attend?last={{last}}"}
+          %i.icon-calendar Attend
+
+
 - block 'content'
   #talk
     - include '_talk_header_partial.haml'
