@@ -1,14 +1,20 @@
 - extends 'base.haml'
 
-- block 'content'
-  - if error
-    .alert.alert-error {{error}}
+- block 'title'
+  Login
 
-  %form{action:"/login/", method:"POST"}
-    - csrf_token
-    %label{for:"username"} Username:
-    %input{id:"username", name:"username", type:"text"}
-    %label{for:"password"} Password:
-    %input{id:"password", name:"password", type:"password"}
-    %br
-    %input.btn.btn-warning{type:"submit", value:"Login"}
+- block 'subnav'
+
+- block 'content'
+  #login
+    - if error
+      .alert.alert-error {{error}}
+
+    %form{action:"/login/", method:"POST"}
+      - csrf_token
+      %label{for:"username"} Username:
+      %input{id:"username", name:"username", type:"text"}
+      %label{for:"password"} Password:
+      %input{id:"password", name:"password", type:"password"}
+      %br
+      %input.btn.btn-warning{type:"submit", value:"Login"}

@@ -6,18 +6,32 @@
 - block 'subnav'
   - if user.get_profile == event.owner
       - if event.published
-        %a.btn.btn-warning{href:"/event/{{event.id}}/archive?last={{last}}", data-toggle:"tooltip", data-original-title:"Archive Event"}
-          %i.icon-ban-circle
+        - if event.accept_submissions
+          %a.btn.btn-warning{href:"/event/{{event.id}}/close?last={{last}}", data-toggle:"tooltip", data-original-title:"Decline Talk Submissions"}
+            %i.icon-flag-alt
+            Close Proposals
+        - else
+          %a.btn.btn-warning{href:"/event/{{event.id}}/open?last={{last}}", data-toggle:"tooltip", data-original-title:"Accept Talk Submissions"}
+            %i.icon-flag
+            Open Proposals
       - else
         %a.btn.btn-warning{href:"/event/{{event.id}}/publish?last={{last}}", data-toggle:"tooltip", data-original-title:"Publish Event"}
           %i.icon-ok
+          Publish
 
       %a.btn.btn-warning.edit-talk{href:"/event/{{event.id}}/edit", data-toggle:"tooltip", data-original-title:"Edit Event"}
         %i.icon-pencil
+        Edit
+
+      - if event.published
+        %a.btn.btn-warning{href:"/event/{{event.id}}/archive?last={{last}}", data-toggle:"tooltip", data-original-title:"Archive Event"}
+          %i.icon-ban-circle
+          Archive
 
       - if not event.talkevent_set.all
         %a.btn.btn-warning.delete-event{data-name:"{{event.name}}", data-id:"{{event.id}}", href:"#delete-event-popup", data-toggle:"tooltip", data-original-title:"Delete Event"}
           %i.icon-trash
+          Delete
 
   - elif not user.is_anonymous
     - if user_talks and event.accept_submissions

@@ -28,8 +28,14 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
+
     def get_absolute_url(self):
         return "/speaker/" + self.user.username
+
+
+    def get_published_events(self):
+        return self.event_set.filter(published=True, owner__published=True).all()
+
 
     def published_upcoming_events_attending(self, user_profile=None):
         if user_profile:
@@ -94,13 +100,21 @@ class Notification(models.Model):
         return note
 
 
-
 class TalkEvent(models.Model):
     talk = models.ForeignKey(Talk)
     event = models.ForeignKey(Event)
 
     date = models.DateTimeField()
     attendees = models.ManyToManyField(UserProfile)
+
+
+class TalkEventSubmission(models.Model):
+    talk = models.ForeignKey(Talk)
+    event = models.ForeignKey(Event)
+    date = models.DateTimeField(default=datetime.now())
+
+    event_accepts = models.BooleanField(default=False)
+    speaker_accepts = models.BooleanField(default=False)
 
 
 def create_profile(sender, **kw):

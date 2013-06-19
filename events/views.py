@@ -202,3 +202,67 @@ def event_detail(request, event_id):
         }
 
     return render_to(request, 'event_detail.haml', context=context)
+
+
+@login_required
+def event_publish(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+
+    if event.owner != request.user.get_profile():
+        return HttpResponseForbidden()
+
+    event.published = True
+    event.save()
+
+    if 'last' in request.GET and request.GET['last'] != '':
+        return redirect(request.GET['last'])
+    else:
+        return redirect(event)
+
+
+@login_required
+def event_archive(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+
+    if event.owner != request.user.get_profile():
+        return HttpResponseForbidden()
+
+    event.published = False
+    event.save()
+
+    if 'last' in request.GET and request.GET['last'] != '':
+        return redirect(request.GET['last'])
+    else:
+        return redirect(event)
+
+
+@login_required
+def event_open(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+
+    if event.owner != request.user.get_profile():
+        return HttpResponseForbidden()
+
+    event.accept_submissions = True
+    event.save()
+
+    if 'last' in request.GET and request.GET['last'] != '':
+        return redirect(request.GET['last'])
+    else:
+        return redirect(event)
+
+
+@login_required
+def event_close(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+
+    if event.owner != request.user.get_profile():
+        return HttpResponseForbidden()
+
+    event.accept_submissions = False
+    event.save()
+
+    if 'last' in request.GET and request.GET['last'] != '':
+        return redirect(request.GET['last'])
+    else:
+        return redirect(event)

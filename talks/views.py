@@ -264,12 +264,13 @@ def talk_detail(request, talk_id):
         except ObjectDoesNotExist:
             pass
 
+        user_events = request.user.get_profile().get_published_events()
         user_endorsed = (request.user.get_profile() in talk.endorsements.all())
         attendees = attendees.filter(Q(published=True) | Q(user=request.user))
 
         will_have_links = (request.user.get_profile() == talk.speaker)
 
-    if user_attendance and not user_endorsed:
+    if (user_attendance and not user_endorsed) or user_events:
         will_have_links = True
 
     photos = talk.talkphoto_set.all()
@@ -291,6 +292,7 @@ def talk_detail(request, talk_id):
         'upcoming': upcoming,
         'past': past,
         'attendees': attendees,
+        'user_events': user_events,
         'user_attendance': user_attendance,
         'user_endorsed': user_endorsed,
         'will_have_links': will_have_links,
@@ -331,6 +333,47 @@ def talk_endorsement_new(request, talk_id):
     
     talk.endorsements.add(request.user.get_profile())
     talk.save()
+
+    if 'last' in request.GET and request.GET['last'] != '':
+        return redirect(request.GET['last'])
+    else:
+        return redirect('/talk/' + talk_id)
+
+
+@login_required
+def talk_recruit(request, talk_id):
+    if request.method == "POST":
+        if request.POST['event']:
+            talk = get_object_or_404(Talk, pk=talk_id)
+            event = get_object_or_404(Event, pk=request.POST['event'])
+
+            submission = TalkEventSubmission()
+            submission.talk = talk
+            submission.event = event
+            submission.event_accepts = True
+            submission.save()
+
+            Notification.create(talk.speaker, "<h2>An event invited you to speak.</h2>")
+
+    if 'last' in request.GET and request.GET['last'] != '':
+        return redirect(request.GET['last'])
+    else:
+        return redirect('/talk/' + talk_id)
+
+@login_required
+def talk_submit(request, talk_id):
+    if request.method == "POST":
+        if request.POST['event']:
+            talk = get_object_or_404(Talk, pk=talk_id)
+            event = get_object_or_404(Event, pk=request.POST['event'])
+
+            submission = TalkEventSubmission()
+            submission.talk = talk
+            submission.event = event
+            submission.speaker_accepts = True
+            submission.save()
+
+            Notification.create(event.owner, "<h2>A speaker would like to speak at your event.</h2>")
 
     if 'last' in request.GET and request.GET['last'] != '':
         return redirect(request.GET['last'])

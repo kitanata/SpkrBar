@@ -1,50 +1,65 @@
 - extends 'base.haml'
 
+- block 'title'
+  Welcome to the club.
+
+- block 'subnav'
+
 - block 'content'
   .row
-    .span12
-      %hr
-
-  .row
     .span6
-      - if error
-        .alert.alert-error {{error}}
+      .row
+        .span6
+          %h3 Join us as a speaker
+          %hr
 
-      %form{action:"/register/speaker", method:"POST"}
-        - csrf_token
-        %label{for:"username"} Username:
-        %input#username{name:"username", type:"text"}
+      .row
+        .span6
+          - if error
+            .alert.alert-error {{error}}
 
-        %label{for:"email"} Email:
-        %input#email{name:"email", type:"email"}
+          %form{action:"/register/speaker", method:"POST"}
+            - csrf_token
+            %label{for:"username"} Username:
+            %input#username{name:"username", type:"text"}
 
-        %label{for:"password"} Password:
-        %input#password{name:"password", type:"password"}
+            %label{for:"email"} Email:
+            %input#email{name:"email", type:"email"}
 
-        %label{for:"confirm"} Confirm Password:
-        %input#confirm{name:"confirm", type:"password"}
+            %label{for:"password"} Password:
+            %input#password{name:"password", type:"password"}
 
-        %br
-        %input.btn.btn-warning{type:"submit", value:"Register"}
+            %label{for:"confirm"} Confirm Password:
+            %input#confirm{name:"confirm", type:"password"}
+
+            %br
+            %input.btn.btn-warning{type:"submit", value:"Register"}
 
     .span6
-      - if error
-        .alert.alert-error {{error}}
+      .row
+        .span6
+          %h3 Join us as an event planner
+          %hr
 
-      %form{action:"/register/event", method:"POST"}
-        - csrf_token
-        %label{for:"username"} Event Name:
-        %input#username{name:"username", type:"text"}
+      .row
+        .span6
+          - if error
+            .alert.alert-error {{error}}
 
-        %label{for:"email"} Email:
-        %input#email{name:"email", type:"email"}
+          %form{action:"/register/event", method:"POST"}
+            - csrf_token
+            %label{for:"username"} Event Name:
+            %input#username{name:"username", type:"text"}
 
-        %label{for:"password"} Password:
-        %input#password{name:"password", type:"password"}
+            %label{for:"email"} Email:
+            %input#email{name:"email", type:"email"}
 
-        %label{for:"confirm"} Confirm Password:
-        %input#confirm{name:"confirm", type:"password"}
+            %label{for:"password"} Password:
+            %input#password{name:"password", type:"password"}
 
-        %br
-        %input.btn.btn-warning{type:"submit", value:"Register"}
+            %label{for:"confirm"} Confirm Password:
+            %input#confirm{name:"confirm", type:"password"}
+
+            %br
+            %input.btn.btn-warning{type:"submit", value:"Register"}
 

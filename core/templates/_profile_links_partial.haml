@@ -1,20 +1,16 @@
 - if not user.is_anonymous and speaker == user.get_profile
   - if speaker.published
-    .btn.btn-warning{href:"/profile/archive"}
-      %i.icon-ban-circle
+    %a.btn.btn-warning{href:"/profile/archive"}
+      %i.icon-eye-close
       Hide
   - else
     %a.btn.btn-warning{href:"/profile/publish"}
-      %i.icon-ok
+      %i.icon-eye-open
       Publish
 
   %a.btn.btn-warning{href:"/profile/edit"}
     %i.icon-pencil
     Edit
-
-  %a.add-talk.btn.btn-warning{href:"#add-talk-popup"}
-    %i.icon-plus
-    Talk
 
   %a.add-event.btn.btn-warning{href:"/event/new"}
     %i.icon-plus

@@ -4,7 +4,7 @@
 %html{lang:"en"}
   %head
     %meta{charset:"utf-8"}
-    %title Speaker Bar - A site for speakers
+    %title SpkrBar.com - A site for speakers, conferences, and the people who attend them.
     %meta{name:"viewport", content:"width=device-width, initial-scale=1.0"}
     %meta{name:"description", content:""}
     %meta{name:"author", content:""}
@@ -51,24 +51,28 @@
           .span8
             %ul.nav.nav-pills.pull-right
               %li
-                %a{href:"/talks"} Talks
+                %a{href:"/talks"}
+                  %i.icon-comments-alt
+                  Talks
               %li
-                %a{href:"/speakers"} Speakers
+                %a{href:"/speakers"}
+                  %i.icon-group
+                  Speakers
               %li
-                %a{href:"/events"} Events
+                %a{href:"/events"}
+                  %i.icon-calendar
+                  Events
 
               - if not user.is_anonymous
                 %li
-                  %a{href:"/speaker/{{ user.username }}"} My Profile
-                %li
-                  %a.add-talk{href:"#add-talk-popup"} Add Talk
+                  %a.add-talk{href:"#add-talk-popup"}
+                    %i.icon-plus
+                    Add Talk
 
               %li
-                %a{href:"/blog"} Blog
-
-              - if user.is_superuser
-                %li
-                  %a{href:"/admin"} Admin
+                %a{href:"/blog"}
+                  %i.icon-file-text
+                  Blog
 
               - if user.is_anonymous
                 %li
@@ -78,10 +82,25 @@
                 %li
                   %a{href:"/register"} Register
               - else
-                %li
-                  %a{href:"/logout"}
-                    %i.icon-signout
-                    Logout
+                %li.dropdown
+                  %a.dropdown-toggle{data-toggle:"dropdown", href:"#"}
+                    %i.icon-gear
+                    My Account
+                    %b.caret
+                  %ul.dropdown-menu
+                    %li
+                      %a{href:"/speaker/{{ user.username }}"}
+                        %i.icon-user
+                        My Profile
+                    - if user.is_superuser
+                      %li
+                        %a{href:"/admin"}
+                          %i.icon-gears
+                          Administration
+                    %li
+                      %a{href:"/logout"}
+                        %i.icon-signout
+                        Logout
       - block 'subnav-container' 
         .subnav
           .row
