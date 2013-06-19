@@ -1,8 +1,4 @@
-# Create your views here.
-from datetime import datetime
-
-from django.shortcuts import get_object_or_404, redirect
-from django.db.models import Q
+from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 
 from models import Location
