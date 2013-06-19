@@ -1,5 +1,7 @@
 import uuid
 import os
+from functools import wraps
+
 from config.settings import MEDIA_ROOT
 
 from django.shortcuts import render_to_response
@@ -27,3 +29,16 @@ def render_to(request, template, js=None, context=None):
 
     return render_to_response(template, context, 
             context_instance=RequestContext(request))
+
+
+def template(template_name):
+    def view_wrapper(view_func):
+        @wraps(view_func)
+        def wrapper(request, *args, **kwargs):
+            context = view_func(request, *args, **kwargs)
+
+            return render_to_response(template_name, context,
+                    context_instance=RequestContext(request))
+        return wrapper
+    return view_wrapper
+    

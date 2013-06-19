@@ -17,19 +17,19 @@ from django.db.models import Q
 
 from guardian.shortcuts import assign
 
-from .helpers import save_photo_with_uuid, render_to
+from .helpers import save_photo_with_uuid, render_to, template
 
-from .models import Location, UserProfile, UserLink, UserTag, TalkEvent
+from .models import Location, UserProfile, UserLink, UserTag
 from talks.models import Talk
 
 from events.models import Event
 from events.helpers import group_events_by_date
 
+from talkevents.models import TalkEvent
+
 from blog.models import BlogPost
 
 from .forms import EditProfileForm, ProfilePhotoForm, ProfileLinkForm, ProfileTagForm
-
-from security import speaker_restricted
 
 random.seed(datetime.now())
 
@@ -41,6 +41,8 @@ def generate_datetime():
     minute = random.choice([0, 15, 30, 45])
     return datetime(year, month, day, hour, minute)
 
+
+@template('load_fixtures.haml')
 def load_fixtures(request):
     if not request.user.is_superuser:
         return HttpResponseForbidden()
@@ -147,7 +149,6 @@ def load_fixtures(request):
             event.description = user_description
             event.owner = speaker
             event.location = location
-            event.published = True
             event.accept_submissions = (i % 2 == 0)
 
             event.start_date = generate_datetime()
@@ -174,13 +175,15 @@ def load_fixtures(request):
         assign('change_talk', speaker.user, talk)
         assign('delete_talk', speaker.user, talk)
 
-    return render_to(request, 'load_fixtures.haml')
+    return {}
 
 
+@template('index.haml')
 def index(request):
     talk_events = TalkEvent.objects.filter(
-            event__published=True, event__owner__published=True,
-            talk__published=True, talk__speaker__published=True)
+            event__owner__published=True,
+            talk__published=True, 
+            talk__speaker__published=True)
 
     start_date = datetime.today() - timedelta(days=1)
     upcoming = talk_events.filter(event__start_date__gt=start_date
@@ -189,65 +192,15 @@ def index(request):
     if len(upcoming) > 4:
         upcoming = random.sample(upcoming, 4)
 
-    context = {'upcoming': upcoming }
+    user_events = None
+    if not request.user.is_anonymous():
+        user_events = request.user.get_profile().event_set.all()
 
-    return render_to(request, "index.haml", context=context)
-
-
-def talk_list(request):
-    group_defs = [ 
-            ('-', 14, "In the past couple weeks"), 
-            ('+', 7, "Upcoming this week"), 
-            ('+', 30, "In the next 30 days"),
-            ('+', 90, "In the next 3 months"), 
-            ('+', 90, "In the next 6 months"), 
-            ('+', 180, "In the next year") ]
-
-    talk_events = TalkEvent.objects.filter(
-            event__published=True, event__owner__published=True,
-            talk__published=True, talk__speaker__published=True)
-
-    groups = []
-    end_date = datetime.today()
-    for group in group_defs:
-        if group[0] == '-':
-            start_date = datetime.today() - timedelta(days=group[1])
-            end_date = datetime.today()
-        else:
-            start_date = end_date
-            end_date = start_date + timedelta(days=group[1])
-
-        result = talk_events.filter(event__start_date__gt=start_date,
-                event__start_date__lt=end_date)
-
-        if len(result) > 9:
-            result = random.sample(result, 8)
-
-        result = list(result)
-        result.sort(key=lambda x: x.date)
-
-        groups.append((group[2], result))
-
-    context = {'talk_groups': groups }
-
-    return render_to(request, "talk_list.haml", context=context)
+    return {
+        'user_events': user_events,
+        'upcoming': upcoming }
 
 
-@login_required()
-def talk_event_attendee_new(request, talk_event_id):
-    talk_event = get_object_or_404(TalkEvent, pk=talk_event_id)
-
-    if request.user.get_profile() in talk_event.attendees.all():
-        talk_event.attendees.remove(request.user.get_profile())
-        talk_event.save()
-    else:
-        talk_event.attendees.add(request.user.get_profile())
-        talk_event.save()
-
-    if request.GET['last']:
-        return redirect(request.GET['last'])
-    else:
-        return redirect(request.user.get_profile())
 
 @login_required()
 def profile_edit(request):
@@ -469,9 +422,11 @@ def speaker_detail(request, username):
         talks = talks.filter(published=True, speaker__published=True)
         events = events.filter(published=True, owner__published=True)
 
-    talk_events = TalkEvent.objects.filter(talk__speaker=speaker,
-            event__published=True, talk__published=True,
-            event__owner__published=True, talk__speaker__published=True)
+    talk_events = TalkEvent.objects.filter(
+            talk__speaker=speaker,
+            talk__published=True,
+            event__owner__published=True,
+            talk__speaker__published=True)
 
     current = talk_events.filter(
             event__start_date__lt=datetime.today(),

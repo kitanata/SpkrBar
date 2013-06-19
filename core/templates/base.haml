@@ -87,6 +87,10 @@
                     %i.icon-gear
                     My Account
                     %b.caret
+
+                  - if user.get_profile.notification_set.all
+                    Notifications
+
                   %ul.dropdown-menu
                     %li
                       %a{href:"/speaker/{{ user.username }}"}

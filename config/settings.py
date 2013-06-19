@@ -177,6 +177,7 @@ INSTALLED_APPS = (
     'locations',
     'talks',
     'events',
+    'talkevents',
     'blog',
     'mobile'
 )

@@ -12,7 +12,7 @@ from guardian.shortcuts import assign
 from talks.models import Talk
 from locations.models import Location
 from locations.forms import LocationForm
-from core.models import TalkEvent
+from talkevents.models import TalkEvent
 from core.helpers import render_to
 
 from models import Event
@@ -116,13 +116,11 @@ def event_attendee_new(request, event_id):
 
 
 def event_list(request):
-    published = Q(published=True, owner__published=True)
-
     if request.user.is_anonymous():
-        events = Event.objects.filter(published)
+        events = Event.objects.filter(owner__published=True)
     else:
         events = Event.objects.filter(
-                published | Q(owner=request.user.get_profile()))
+                Q(owner__published=True) | Q(owner=request.user.get_profile()))
 
     group_defs = [ 
             ('-', 30, "Recent Events"), 
@@ -202,38 +200,6 @@ def event_detail(request, event_id):
         }
 
     return render_to(request, 'event_detail.haml', context=context)
-
-
-@login_required
-def event_publish(request, event_id):
-    event = get_object_or_404(Event, pk=event_id)
-
-    if event.owner != request.user.get_profile():
-        return HttpResponseForbidden()
-
-    event.published = True
-    event.save()
-
-    if 'last' in request.GET and request.GET['last'] != '':
-        return redirect(request.GET['last'])
-    else:
-        return redirect(event)
-
-
-@login_required
-def event_archive(request, event_id):
-    event = get_object_or_404(Event, pk=event_id)
-
-    if event.owner != request.user.get_profile():
-        return HttpResponseForbidden()
-
-    event.published = False
-    event.save()
-
-    if 'last' in request.GET and request.GET['last'] != '':
-        return redirect(request.GET['last'])
-    else:
-        return redirect(event)
 
 
 @login_required

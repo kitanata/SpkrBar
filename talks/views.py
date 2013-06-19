@@ -15,8 +15,9 @@ from guardian.shortcuts import assign
 from events.models import Event
 from locations.models import Location
 from locations.forms import LocationForm
-from core.models import UserProfile, TalkEvent
+from core.models import UserProfile
 from core.helpers import save_photo_with_uuid, render_to
+from talkevents.models import TalkEvent
 
 from .models import *
 from .forms import *
@@ -264,14 +265,13 @@ def talk_detail(request, talk_id):
         except ObjectDoesNotExist:
             pass
 
-        user_events = request.user.get_profile().get_published_events()
+        user_events = request.user.get_profile().event_set.all()
         user_endorsed = (request.user.get_profile() in talk.endorsements.all())
         attendees = attendees.filter(Q(published=True) | Q(user=request.user))
 
         will_have_links = (request.user.get_profile() == talk.speaker)
 
-    if (user_attendance and not user_endorsed) or user_events:
-        will_have_links = True
+    will_have_links = not user_attendance or not user_endorsed or user_events
 
     photos = talk.talkphoto_set.all()
 

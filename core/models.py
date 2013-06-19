@@ -33,10 +33,6 @@ class UserProfile(models.Model):
         return "/speaker/" + self.user.username
 
 
-    def get_published_events(self):
-        return self.event_set.filter(published=True, owner__published=True).all()
-
-
     def published_upcoming_events_attending(self, user_profile=None):
         if user_profile:
             events = self.events_attending.filter(
@@ -98,23 +94,6 @@ class Notification(models.Model):
         note.save()
 
         return note
-
-
-class TalkEvent(models.Model):
-    talk = models.ForeignKey(Talk)
-    event = models.ForeignKey(Event)
-
-    date = models.DateTimeField()
-    attendees = models.ManyToManyField(UserProfile)
-
-
-class TalkEventSubmission(models.Model):
-    talk = models.ForeignKey(Talk)
-    event = models.ForeignKey(Event)
-    date = models.DateTimeField(default=datetime.now())
-
-    event_accepts = models.BooleanField(default=False)
-    speaker_accepts = models.BooleanField(default=False)
 
 
 def create_profile(sender, **kw):

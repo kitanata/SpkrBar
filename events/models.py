@@ -7,7 +7,6 @@ class Event(models.Model):
     owner = models.ForeignKey('core.UserProfile')
     name = models.CharField(max_length=140)
     description = models.CharField(max_length=800)
-    published = models.BooleanField(default=False)
     accept_submissions = models.BooleanField(default=False)
 
     location = models.ForeignKey('locations.Location')

@@ -1,0 +1,50 @@
+.span6
+  .talk_event
+    .header-s6
+      .title
+        - if not user.is_anonymous and item.talk.speaker != user.get_profile
+          .grid1
+            %a{href:"{{item.talk.get_absolute_url}}"}
+              {{ item.talk.name|truncatechars:48 }}
+            %br by {{ item.talk.speaker.user.get_full_name }}
+
+          .grid2
+            .btn-group
+              - if user.get_profile in item.attendees.all
+                - if user.get_profile not in item.talk.endorsements.all
+                  %a.btn.btn-warning{href:"/talk/{{item.talk.id}}/endorse?last={{last}}", data-original-title:"Endorse Talk", data-toggle:"tooltip"}
+                    %i.icon-thumbs-up
+                - else
+                  %a.btn.disabled.btn-warning
+                    %i.icon-thumbs-up
+                %a.btn.btn-warning{href:"/talk_event/{{item.id}}/attend?last={{last}}", data-original-title:"Cancel", data-toggle:"tooltip"}
+                  %i.icon-ban-circle
+              - else
+                %a.btn.btn-warning{href:"/talk_event/{{item.id}}/attend?last={{last}}", data-original-title:"Attend Talk", data-toggle:"tooltip"}
+                  %i.icon-calendar
+              - if user_events
+                %a.btn.btn-warning.recruit-talk{href:"#recruit-talk-popup", data-toggle:"tooltip", data-original-title:"Recruit this talk."}
+                  %i.icon-hand-right
+
+        - else
+          %div
+            %a{href:"{{item.talk.get_absolute_url}}"}
+              {{ item.talk.name|truncatechars:38 }}
+            %br by {{ item.talk.speaker.user.get_full_name }}
+
+      .location
+        .grid1
+          %a{href:"{{ item.event.get_absolute_url }}"}
+            at {{ item.event.name }}
+          %br in {{ item.event.location.city }}, {{ item.event.location.state }}
+        .grid2
+          {{ item.date.date }}
+          %br {{ item.date.time }}
+
+    .description
+      - if item.talk.speaker.photo
+        %img.pull-left{src:"{{STATIC_URL}}img/photo/{{talk.speaker.photo}}"}
+      - else
+        %i.icon-user.photo-placeholder.pull-left
+
+      %span {{ item.talk.abstract|truncatechars:140 }}
