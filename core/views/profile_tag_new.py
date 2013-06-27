@@ -12,7 +12,7 @@ def profile_tag_new(request):
         form = ProfileTagForm(request.POST)
 
         if form.is_valid():
-            profile = request.user.get_profile()
+            profile = request.user
 
             tag_name = form.cleaned_data['name']
 

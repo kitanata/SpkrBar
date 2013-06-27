@@ -7,7 +7,7 @@ from core.forms import EditProfileForm, ProfilePhotoForm, ProfileLinkForm, Profi
 @login_required
 @template('profile_edit.haml')
 def profile_form_view(request):
-    profile = request.user.get_profile()
+    profile = request.user
     profile_form = EditProfileForm({
         'name':request.user.get_full_name(),
         'about_me':profile.about_me
@@ -17,7 +17,7 @@ def profile_form_view(request):
     tag_form = ProfileTagForm()
 
     return {
-        'speaker': request.user.get_profile(),
+        'speaker': request.user,
         'profile_form': profile_form,
         'photo_form': photo_form,
         'tag_form': tag_form,

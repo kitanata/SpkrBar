@@ -7,14 +7,14 @@ from talkevents.models import TalkEvent
 def talk_event_attendee_new(request, talk_event_id):
     talk_event = get_object_or_404(TalkEvent, pk=talk_event_id)
 
-    if request.user.get_profile() in talk_event.attendees.all():
-        talk_event.attendees.remove(request.user.get_profile())
+    if request.user in talk_event.attendees.all():
+        talk_event.attendees.remove(request.user)
         talk_event.save()
     else:
-        talk_event.attendees.add(request.user.get_profile())
+        talk_event.attendees.add(request.user)
         talk_event.save()
 
     if request.GET['last']:
         return redirect(request.GET['last'])
     else:
-        return redirect(request.user.get_profile())
+        return redirect(request.user)

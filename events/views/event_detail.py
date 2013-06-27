@@ -19,7 +19,7 @@ def event_detail(request, event_id):
     else:
         talk_events = talk_events.filter(
                 Q(talk__published=True, talk__speaker__published=True) | 
-                Q(talk__speaker=request.user.get_profile()))
+                Q(talk__speaker=request.user))
 
     user_attending = False
 
@@ -27,7 +27,7 @@ def event_detail(request, event_id):
         attendees = event.attendees.filter(Q(published=True))
     else:
         attendees = event.attendees.filter(Q(published=True) | Q(user=request.user))
-        user_attending = (request.user.get_profile() in attendees)
+        user_attending = (request.user in attendees)
 
     will_have_links = not user_attending
 
@@ -39,7 +39,7 @@ def event_detail(request, event_id):
             date__gt=(yesterday - timedelta(days=14)), date__lt=yesterday
                 ).order_by('-date')
 
-    user_talks = request.user.get_profile().talk_set.all
+    user_talks = request.user.talk_set.all
 
     context = {
         'event': event,

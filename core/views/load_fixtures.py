@@ -10,7 +10,7 @@ from guardian.shortcuts import assign
 from core.helpers import generate_datetime, template
 
 from locations.models import Location
-from core.models import UserProfile
+from core.models import NormalUser
 from events.models import Event
 from talks.models import Talk
 from talkevents.models import TalkEvent
@@ -73,17 +73,17 @@ def load_fixtures(request):
     user_description = "Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro. De carne lumbering animata corpora quaeritis. Summus brains sit morbo vel maleficia? De apocalypsi gorger omero undead survivor dictum mauris. Hi mindless mortuis soulless creaturas, imo evil stalking monstra adventus resi dentevil vultus comedat cerebella viventium. Qui animated corpse, cricket bat max brucks terribilem incessu zomby. The voodoo sacerdos flesh eater, suscitat mortuos comedere carnem virus."
     talk_description = user_description
 
-    user = User.objects.get(username='raymond')
+    user = NormalUser.objects.get(username='raymond')
     user.first_name = "Raymond"
     user.last_name = "Chandler III"
     user.email = "raymondchandleriii@gmail.com"
     user.save()
 
-    speaker = user.get_profile()
+    speaker = user
     speaker.about_me = "I'm a little teapot, short and stout!"
     speaker.save()
 
-    anon_profile = UserProfile.objects.get(user__username="AnonymousUser")
+    anon_profile = NormalUser.objects.get(user__username="AnonymousUser")
     anon_profile.published = False
     anon_profile.save()
 
@@ -110,12 +110,12 @@ def load_fixtures(request):
             first_name = random.choice(user_first_names)
             last_name = random.choice(user_last_names)
             un = "test" + str(i / 10)
-            new_user = User.objects.create_user(un, 'test@spkrbar.com', 'abcd1234')
+            new_user = NormalUser.objects.create_user(un, 'test@spkrbar.com', 'abcd1234')
             new_user.first_name = first_name
             new_user.last_name = last_name
             new_user.save()
 
-            speaker = new_user.get_profile()
+            speaker = new_user
             speaker.about_me = user_description
             speaker.save()
 

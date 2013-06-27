@@ -26,7 +26,7 @@ DATABASES = {
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = []
 
-AUTH_PROFILE_MODULE = 'core.UserProfile'
+AUTH_USER_MODEL = 'core.SpkrbarBaseUser'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend', # this is default

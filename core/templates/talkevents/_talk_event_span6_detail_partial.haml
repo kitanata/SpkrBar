@@ -2,7 +2,7 @@
   .talk_event
     .header-s6
       .title
-        - if not user.is_anonymous and item.talk.speaker != user.get_profile
+        - if not user.is_anonymous and item.talk.speaker != user
           .grid1
             %a{href:"{{item.talk.get_absolute_url}}"}
               {{ item.talk.name|truncatechars:48 }}
@@ -10,8 +10,8 @@
 
           .grid2
             .btn-group
-              - if user.get_profile in item.attendees.all
-                - if user.get_profile not in item.talk.endorsements.all
+              - if user in item.attendees.all
+                - if user not in item.talk.endorsements.all
                   %a.btn.btn-warning{href:"/talk/{{item.talk.id}}/endorse?last={{last}}", data-original-title:"Endorse Talk", data-toggle:"tooltip"}
                     %i.icon-thumbs-up
                 - else

@@ -11,7 +11,7 @@ def profile_link_new(request):
         form = ProfileLinkForm(request.POST)
 
         if form.is_valid():
-            profile = request.user.get_profile()
+            profile = request.user
 
             link_model = UserLink()
 

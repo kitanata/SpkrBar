@@ -11,7 +11,7 @@ def event_list(request):
         events = Event.objects.filter(owner__published=True)
     else:
         events = Event.objects.filter(
-                Q(owner__published=True) | Q(owner=request.user.get_profile()))
+                Q(owner__published=True) | Q(owner=request.user))
 
     group_defs = [ 
             ('-', 30, "Recent Events"), 

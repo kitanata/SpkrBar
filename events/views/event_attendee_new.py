@@ -7,7 +7,7 @@ from events.models import Event
 def event_attendee_new(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
 
-    profile = request.user.get_profile()
+    profile = request.user
 
     if profile in event.attendees.all():
         event.attendees.remove(profile)

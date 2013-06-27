@@ -2,16 +2,14 @@ from django.db import models
 from django.db.models import Q
 
 class Event(models.Model):
-    owner = models.ForeignKey('core.UserProfile')
-    name = models.CharField(max_length=140)
-    description = models.CharField(max_length=800)
-    accept_submissions = models.BooleanField(default=False)
+    owner = models.ForeignKey('core.EventUser')
 
     location = models.ForeignKey('locations.Location')
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
 
-    attendees = models.ManyToManyField('core.UserProfile', related_name='events_attending', blank=True)
+    accept_submissions = models.BooleanField(default=False)
+    attendees = models.ManyToManyField('core.NormalUser', related_name='events_attending', blank=True)
 
     class Meta:
         app_label = 'events'

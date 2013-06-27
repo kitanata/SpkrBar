@@ -3,7 +3,7 @@ from datetime import datetime
 from django.db import models
 
 class Notification(models.Model):
-    profile = models.ForeignKey('UserProfile')
+    profile = models.ForeignKey('core.SpkrbarBaseUser')
     message = models.CharField(max_length=300)
     date = models.DateTimeField(default=datetime.now())
 

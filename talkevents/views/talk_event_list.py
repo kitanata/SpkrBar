@@ -22,7 +22,7 @@ def talk_event_list(request):
 
     user_events = None
     if not request.user.is_anonymous():
-        user_events = request.user.get_profile().event_set.all()
+        user_events = request.user.event_set.all()
 
     groups = []
     end_date = datetime.today()

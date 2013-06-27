@@ -6,7 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 
 from events.models import Event
-from core.models import UserProfile
+from core.models import NormalUser
 from core.helpers import render_to
 
 from talks.models import Talk
@@ -15,7 +15,7 @@ def talk_detail(request, talk_id):
     talk = get_object_or_404(Talk, pk=talk_id)
 
     talk_events = talk.talkevent_set.all()
-    attendees = UserProfile.objects.filter(talkevent__in=talk_events).distinct()
+    attendees = NormalUser.objects.filter(talkevent__in=talk_events).distinct()
 
     upcoming = talk_events.filter(event__start_date__gt=datetime.today())
     past = talk_events.filter(event__end_date__gt=datetime.today())
@@ -28,15 +28,15 @@ def talk_detail(request, talk_id):
         attendees = attendees.filter(Q(published=True))
     else:
         try:
-            user_attendance = talk_events.get(attendees__in=[request.user.get_profile()])
+            user_attendance = talk_events.get(attendees__in=[request.user])
         except ObjectDoesNotExist:
             pass
 
-        user_events = request.user.get_profile().event_set.all()
-        user_endorsed = (request.user.get_profile() in talk.endorsements.all())
+        user_events = request.user.event_set.all()
+        user_endorsed = (request.user in talk.endorsements.all())
         attendees = attendees.filter(Q(published=True) | Q(user=request.user))
 
-        will_have_links = (request.user.get_profile() == talk.speaker)
+        will_have_links = (request.user == talk.speaker)
 
     will_have_links = not user_attendance or not user_endorsed or user_events
 

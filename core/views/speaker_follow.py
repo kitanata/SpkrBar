@@ -5,8 +5,8 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def speaker_follow(request, username):
-    speaker = get_object_or_404(User, username=username).get_profile()
-    user_profile = request.user.get_profile()
+    speaker = get_object_or_404(User, username=username)
+    user_profile = request.user
 
     speaker.followers.add(user_profile)
     speaker.save()

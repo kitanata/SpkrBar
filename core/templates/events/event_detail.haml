@@ -4,7 +4,7 @@
   {{ event.name }}
 
 - block 'subnav'
-  - if user.get_profile == event.owner
+  - if user == event.owner
       - if event.accept_submissions
         %a.btn.btn-warning{href:"/event/{{event.id}}/close?last={{last}}", data-toggle:"tooltip", data-original-title:"Decline Talk Submissions"}
           %i.icon-flag-alt

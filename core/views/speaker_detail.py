@@ -14,7 +14,7 @@ from events.models import Event
 from talkevents.models import TalkEvent
 
 def speaker_detail(request, username):
-    speaker = get_object_or_404(User, username=username).get_profile()
+    speaker = get_object_or_404(User, username=username)
 
     talks = Talk.objects.filter(speaker=speaker)
     events = Event.objects.filter(owner=speaker)

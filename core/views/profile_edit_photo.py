@@ -11,7 +11,7 @@ def profile_edit_photo(request):
         form = ProfilePhotoForm(request.FILES)
 
         if form.is_valid():
-            profile = request.user.get_profile()
+            profile = request.user
 
             if 'photo' in request.FILES:
                 photo = request.FILES['photo']

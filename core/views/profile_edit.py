@@ -19,11 +19,8 @@ def profile_edit(request):
 
             user.first_name = first_name
             user.last_name = last_name
+            user.about_me = form.cleaned_data['about_me']
             user.save()
-
-            profile = user.get_profile()
-            profile.about_me = form.cleaned_data['about_me']
-            profile.save()
 
             return redirect('/profile/edit/')
 

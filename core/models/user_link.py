@@ -20,7 +20,7 @@ class UserLink(models.Model):
     type_name = models.CharField(max_length=40, choices=LINK_TYPE_CHOICES, default=TWITTER)
     url_target = models.URLField(max_length=140)
 
-    profile = models.ForeignKey('UserProfile')
+    profile = models.ForeignKey('core.NormalUser')
 
     class Meta:
         app_label = 'core'

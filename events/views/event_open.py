@@ -8,7 +8,7 @@ from events.models import Event
 def event_open(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
 
-    if event.owner != request.user.get_profile():
+    if event.owner != request.user:
         return HttpResponseForbidden()
 
     event.accept_submissions = True

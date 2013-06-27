@@ -1,6 +1,6 @@
 .navbar.pull-right{style="margin-top:10px"}
   .btn-group.talk-links
-    - if user.get_profile == event.talk.speaker
+    - if user == event.talk.speaker
         - if event.talk.published
           %a.btn.btn-warning{href:"/talk/{{event.talk.id}}/event/new", data-toggle:"tooltip", data-original-title:"Add New Event"}
             %i.icon-plus

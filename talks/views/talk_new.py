@@ -17,7 +17,7 @@ def talk_new(request):
             talk = Talk()
             talk.name = talk_form.cleaned_data['name']
             talk.abstract = talk_form.cleaned_data['abstract']
-            talk.speaker = request.user.get_profile()
+            talk.speaker = request.user
 
             talk.save()
             assign('change_talk', request.user, talk)

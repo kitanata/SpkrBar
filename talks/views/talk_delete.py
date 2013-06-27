@@ -11,4 +11,4 @@ def talk_delete(request, talk_id):
 
     talk.delete()
 
-    return redirect(request.user.get_profile())
+    return redirect(request.user)

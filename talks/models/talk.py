@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models import Q
 
 class Talk(models.Model):
-    speaker = models.ForeignKey('core.UserProfile')
+    speaker = models.ForeignKey('core.NormalUser')
 
     name = models.CharField(max_length=140)
     abstract = models.CharField(max_length=800)
@@ -11,7 +11,7 @@ class Talk(models.Model):
 
     tags = models.ManyToManyField('TalkTag')
 
-    endorsements = models.ManyToManyField('core.UserProfile', related_name='talks_endorsed')
+    endorsements = models.ManyToManyField('core.NormalUser', related_name='talks_endorsed')
 
     class Meta:
         app_label = 'talks'
