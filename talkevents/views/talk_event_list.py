@@ -3,9 +3,9 @@ from datetime import datetime, timedelta
 
 from core.helpers import template
 
-from models import TalkEvent
+from talkevents.models import TalkEvent
 
-@template("talkevent_list.haml")
+@template("talkevents/talkevent_list.haml")
 def talk_event_list(request):
     group_defs = [ 
             ('-', 14, "In the past couple weeks"), 

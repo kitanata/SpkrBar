@@ -9,6 +9,8 @@ from events.models import Event
 from core.models import UserProfile
 from core.helpers import render_to
 
+from talks.models import Talk
+
 def talk_detail(request, talk_id):
     talk = get_object_or_404(Talk, pk=talk_id)
 
@@ -64,4 +66,4 @@ def talk_detail(request, talk_id):
         'events_accepting_talks': events_accepting_talks
         }
 
-    return render_to(request, 'talk_detail.haml', context=context)
+    return render_to(request, 'talks/talk_detail.haml', context=context)

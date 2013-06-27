@@ -1,9 +1,9 @@
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 
-from .helpers import save_photo_with_uuid
+from core.helpers import save_photo_with_uuid
 
-from .forms import ProfilePhotoForm
+from core.forms import ProfilePhotoForm
 
 @login_required()
 def profile_edit_photo(request):

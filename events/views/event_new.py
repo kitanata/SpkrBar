@@ -11,7 +11,7 @@ from locations.models import Location
 from locations.forms import LocationForm
 from core.helpers import render_to
 
-from models import Event
+from events.models import Event
 
 @login_required
 def event_new(request):
@@ -39,4 +39,4 @@ def event_new(request):
             'locations': locations
             }
 
-        return render_to(request, 'event_new.haml', context=context)
+        return render_to(request, 'events/event_new.haml', context=context)

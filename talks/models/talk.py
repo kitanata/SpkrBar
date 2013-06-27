@@ -9,9 +9,12 @@ class Talk(models.Model):
 
     published = models.BooleanField(default=True)
 
-    tags = models.ManyToManyField(TalkTag)
+    tags = models.ManyToManyField('TalkTag')
 
     endorsements = models.ManyToManyField('core.UserProfile', related_name='talks_endorsed')
+
+    class Meta:
+        app_label = 'talks'
 
     def __str__(self):
         return self.name

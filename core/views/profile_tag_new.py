@@ -2,9 +2,9 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 
-from .models import UserTag
+from core.models import UserTag
 
-from forms import ProfileTagForm
+from core.forms import ProfileTagForm
 
 @login_required
 def profile_tag_new(request):

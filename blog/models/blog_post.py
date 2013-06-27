@@ -7,6 +7,9 @@ class BlogPost(models.Model):
     published = models.BooleanField(default=True)
     date = models.DateTimeField()
 
+    class Meta:
+        app_label = 'blog'
+
     def __str__(self):
         return self.name
 

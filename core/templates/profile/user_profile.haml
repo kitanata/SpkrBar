@@ -4,18 +4,18 @@
   {{ speaker.user.get_full_name }}
 
 - block 'subnav'
-  - include '_profile_links_partial.haml'
+  - include 'profile/_profile_links_partial.haml'
 
 - block 'content'
   #profile
-    - include '_profile_header_partial.haml'
+    - include 'profile/_profile_header_partial.haml'
 
     .row
       .span3
-        - include '_profile_sidebar_partial.haml'
+        - include 'profile/_profile_sidebar_partial.haml'
       .span9{style:"margin-top:40px"}
-        - include '_profile_my_talks_partial.haml'
-        - include '_profile_talks_attending_partial.haml'
+        - include 'profile/_profile_my_talks_partial.haml'
+        - include 'profile/_profile_talks_attending_partial.haml'
 
   %div{style:'display:none'}
     #delete-talk-popup{style:"background-color:white; padding: 40px;"}

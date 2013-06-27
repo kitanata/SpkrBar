@@ -1,7 +1,7 @@
 import random
 from datetime import datetime, timedelta
 
-from .helpers import template
+from core.helpers import template
 
 from talkevents.models import TalkEvent
 

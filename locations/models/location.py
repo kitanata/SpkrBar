@@ -7,6 +7,9 @@ class Location(models.Model):
     state = models.CharField(max_length=140)
     zip_code = models.CharField(max_length=9)
 
+    class Meta:
+        app_label = 'locations'
+
     def __str__(self):
         return self.name
 

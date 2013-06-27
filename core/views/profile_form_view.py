@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
 
-from .helpers import template
+from core.helpers import template
 
-from .forms import EditProfileForm, ProfilePhotoForm, ProfileLinkForm, ProfileTagForm
+from core.forms import EditProfileForm, ProfilePhotoForm, ProfileLinkForm, ProfileTagForm
 
 @login_required
 @template('profile_edit.haml')

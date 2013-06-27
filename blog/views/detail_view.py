@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 
-from models import BlogPost
+from blog.models import BlogPost
 from core.helpers import template
 
 @template('blog/blog_details.haml')

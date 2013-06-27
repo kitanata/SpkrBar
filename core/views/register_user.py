@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login
 
 from django.db import IntegrityError
 
-from .helpers import render_to
+from core.helpers import render_to
 
 def register_user(request):
     if request.method == "GET":
@@ -32,4 +32,4 @@ def register_user(request):
             login(request, user)
             return redirect('/speaker/' + request.user.username)
 
-        return render_to(request, 'register.haml', context={'error': error})
+        return render_to(request, 'auth/register.haml', context={'error': error})

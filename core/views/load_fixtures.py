@@ -1,5 +1,6 @@
-from datetime import datetime, timedelta
 import random
+
+from datetime import datetime, timedelta
 
 from django.contrib.auth.models import User
 from django.http import HttpResponseForbidden
@@ -8,8 +9,10 @@ from guardian.shortcuts import assign
 
 from core.helpers import generate_datetime, template
 
-from core.models import Location, UserProfile
+from locations.models import Location
+from core.models import UserProfile
 from events.models import Event
+from talks.models import Talk
 from talkevents.models import TalkEvent
 from blog.models import BlogPost
 

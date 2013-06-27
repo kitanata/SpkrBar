@@ -1,4 +1,4 @@
-- extends 'talk_base.haml'
+- extends 'talks/talk_base.haml'
 
 - block 'subnav-container' 
   .subnav
@@ -49,7 +49,7 @@
 
 - block 'content'
   #talk
-    - include '_talk_header_partial.haml'
+    - include 'talks/_talk_header_partial.haml'
 
     .row
       .span3
@@ -92,10 +92,11 @@
                 - for tag in talk.tags.all
                   %li {{ tag.name }}
 
-              %form{action:"/talk/{{talk.id}}/tag/new/", method:"POST"}
-                - csrf_token
-                %input{name:"tag", type:"text", placeholder:"My Tag"}
-                %input.btn.btn-warning{type:"submit", value:"Tag this talk"}
+              - if not user.is_anonymous
+                %form{action:"/talk/{{talk.id}}/tag/new/", method:"POST"}
+                  - csrf_token
+                  %input{name:"tag", type:"text", placeholder:"My Tag"}
+                  %input.btn.btn-warning{type:"submit", value:"Tag this talk"}
 
       .span9
         .row
@@ -105,7 +106,7 @@
 
           - if upcoming
             - for item in upcoming
-              - include '_talk_event_span9_detail_partial.haml'
+              - include 'talkevents/_talk_event_span9_detail_partial.haml'
           - else
             .span9
               No upcoming events
@@ -210,7 +211,7 @@
               %h3 Comments
               %hr
 
-              - if talk.speaker != user.get_profile
+              - if not user.is_anonymous and talk.speaker != user.get_profile
                 %form.add-comment-form{action:"/talk/{{talk.id}}/comment/new/", method:"POST"}
                   - csrf_token
                   %textarea{name:'comment', placeholder:"Add your comment..."}

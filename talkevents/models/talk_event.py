@@ -10,3 +10,6 @@ class TalkEvent(models.Model):
 
     date = models.DateTimeField()
     attendees = models.ManyToManyField(UserProfile)
+
+    class Meta:
+        app_label = 'talkevents'

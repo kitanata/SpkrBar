@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 
 from talks.models import Talk
 
-from models import Event
+from events.models import Event
 
 @login_required
 def event_delete(request, event_id):

@@ -1,9 +1,9 @@
 # Create your views here.
 from django.db.models import Q
 
-from helpers import template
+from core.helpers import template
 
-from models import UserProfile
+from core.models import UserProfile
 
 @template('speaker_list.haml')
 def speaker_list(request):

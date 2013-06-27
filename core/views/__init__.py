@@ -14,7 +14,7 @@ from profile_edit_photo import profile_edit_photo
 from profile_link_new import profile_link_new
 from profile_tag_new import profile_tag_new
 
-from speaker_list impor speaker_list
+from speaker_list import speaker_list
 from speaker_detail import speaker_detail
 from speaker_follow import speaker_follow
 

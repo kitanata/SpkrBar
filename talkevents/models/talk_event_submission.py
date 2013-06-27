@@ -11,3 +11,6 @@ class TalkEventSubmission(models.Model):
 
     event_accepts = models.BooleanField(default=False)
     speaker_accepts = models.BooleanField(default=False)
+
+    class Meta:
+        app_label = 'talkevents'

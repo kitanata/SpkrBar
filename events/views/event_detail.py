@@ -6,7 +6,7 @@ from django.db.models import Q
 from talkevents.models import TalkEvent
 from core.helpers import render_to
 
-from models import Event
+from events.models import Event
 
 def event_detail(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
@@ -55,4 +55,4 @@ def event_detail(request, event_id):
         'last': event.get_absolute_url()
         }
 
-    return render_to(request, 'event_detail.haml', context=context)
+    return render_to(request, 'events/event_detail.haml', context=context)

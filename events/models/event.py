@@ -13,6 +13,9 @@ class Event(models.Model):
 
     attendees = models.ManyToManyField('core.UserProfile', related_name='events_attending', blank=True)
 
+    class Meta:
+        app_label = 'events'
+
     def get_absolute_url(self):
         return "/event/" + str(self.pk)
 

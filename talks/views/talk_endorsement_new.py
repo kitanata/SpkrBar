@@ -1,6 +1,8 @@
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
+from talks.models import Talk
+
 @login_required
 def talk_endorsement_new(request, talk_id):
     talk = get_object_or_404(Talk, pk=talk_id)

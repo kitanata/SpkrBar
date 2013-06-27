@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 from django.db.models import Q
 
-from .helpers import render_to
+from core.helpers import render_to
 
 from talks.models import Talk
 
@@ -21,7 +21,6 @@ def speaker_detail(request, username):
 
     if speaker.user != request.user:
         talks = talks.filter(published=True, speaker__published=True)
-        events = events.filter(published=True, owner__published=True)
 
     talk_events = TalkEvent.objects.filter(
             talk__speaker=speaker,
@@ -49,10 +48,10 @@ def speaker_detail(request, username):
         attending = attendance.filter(date__gt=datetime.today()).order_by('date')
         attended = attendance.filter(date__lt=datetime.today()).order_by('-date')
 
-    template = 'speaker_profile.haml'
+    template = 'profile/speaker_profile.haml'
 
     if request.user == speaker.user:
-        template = 'user_profile.haml'
+        template = 'profile/user_profile.haml'
 
     context = {
         'speaker': speaker,

@@ -1,9 +1,9 @@
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 
-from .models import UserLink
+from core.models import UserLink
 
-from .forms import ProfileLinkForm
+from core.forms import ProfileLinkForm
 
 @login_required
 def profile_link_new(request):

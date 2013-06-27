@@ -15,6 +15,8 @@ from django.utils.html import escape, conditional_escape
 from django.utils.encoding import force_unicode
 from django.forms.widgets import ClearableFileInput, Input, CheckboxInput
 
+from models.choices import *
+
 class CustomClearableFileInput(ClearableFileInput):
 
     def render(self, name, value, attrs=None):

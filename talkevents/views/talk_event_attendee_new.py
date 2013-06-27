@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, get_object_or_404
 
-from models import TalkEvent
+from talkevents.models import TalkEvent
 
 @login_required()
 def talk_event_attendee_new(request, talk_event_id):

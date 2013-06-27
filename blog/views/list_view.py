@@ -1,4 +1,4 @@
-from models import BlogPost
+from blog.models import BlogPost
 from core.helpers import template
 
 @template('blog/blog_list.haml')

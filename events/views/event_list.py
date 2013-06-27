@@ -4,7 +4,7 @@ from django.db.models import Q
 
 from core.helpers import render_to
 
-from models import Event
+from events.models import Event
 
 def event_list(request):
     if request.user.is_anonymous():
@@ -40,4 +40,4 @@ def event_list(request):
 
         groups.append((group[2], result))
 
-    return render_to(request, 'event_list.haml', context={'event_groups': groups})
+    return render_to(request, 'events/event_list.haml', context={'event_groups': groups})

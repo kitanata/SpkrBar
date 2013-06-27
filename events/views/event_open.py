@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 
-from models import Event
+from events.models import Event
 
 @login_required
 def event_open(request, event_id):

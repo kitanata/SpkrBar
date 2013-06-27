@@ -42,7 +42,7 @@ urlpatterns = patterns('',
     url(r'^talks/$', 'talkevents.views.talk_event_list'),
     url(r'^talk_event/(?P<talk_event_id>\d+)/attend/$', 'talkevents.views.talk_event_attendee_new'),
 
-    url(r'^speakers/$', 'core.views.speakers'),
+    url(r'^speakers/$', 'core.views.speaker_list'),
     url(r'^speaker/(?P<username>\w+)/$', 'core.views.speaker_detail'),
     url(r'^speaker/(?P<username>\w+)/follow/$', 'core.views.speaker_follow'),
 

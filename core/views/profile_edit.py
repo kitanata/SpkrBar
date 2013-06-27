@@ -1,7 +1,9 @@
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 
-from forms import EditProfileForm
+from core.forms import EditProfileForm
+
+from core.views.profile_form_view import profile_form_view
 
 @login_required()
 def profile_edit(request):

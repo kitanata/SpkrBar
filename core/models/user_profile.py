@@ -12,7 +12,10 @@ class UserProfile(models.Model):
 
     following = models.ManyToManyField('self', related_name="followers", symmetrical=False)
 
-    tags = models.ManyToManyField(UserTag)
+    tags = models.ManyToManyField('UserTag')
+
+    class Meta:
+        app_label = 'core'
 
     def __str__(self):
         return self.user.username

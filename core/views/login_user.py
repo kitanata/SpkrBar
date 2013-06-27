@@ -1,11 +1,11 @@
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login
 
-from .helpers import render_to
+from core.helpers import render_to
 
 def login_user(request):
     if request.method == "GET":
-        return render_to(request, 'login.haml')
+        return render_to(request, 'auth/login.haml')
     else:
         username = request.POST['username']
         password = request.POST['password']
@@ -20,4 +20,4 @@ def login_user(request):
         else:
             error = "Username or password is incorrect."
 
-        return render_to(request, 'login.haml', context={'error': error})
+        return render_to(request, 'auth/login.haml', context={'error': error})
