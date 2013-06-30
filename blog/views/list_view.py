@@ -10,7 +10,7 @@ def blog_list(request):
         'year': item.date.strftime("%Y"),
         'post': item } for item in posts]
 
-    context = {
+    return {
         'recent_posts': posts[:5],
         'history': history,
         }

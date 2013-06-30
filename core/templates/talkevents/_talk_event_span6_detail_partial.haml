@@ -6,7 +6,7 @@
           .grid1
             %a{href:"{{item.talk.get_absolute_url}}"}
               {{ item.talk.name|truncatechars:48 }}
-            %br by {{ item.talk.speaker.user.get_full_name }}
+            %br by {{ item.talk.speaker.get_full_name }}
 
           .grid2
             .btn-group
@@ -30,12 +30,12 @@
           %div
             %a{href:"{{item.talk.get_absolute_url}}"}
               {{ item.talk.name|truncatechars:38 }}
-            %br by {{ item.talk.speaker.user.get_full_name }}
+            %br by {{ item.talk.speaker.get_full_name }}
 
       .location
         .grid1
           %a{href:"{{ item.event.get_absolute_url }}"}
-            at {{ item.event.name }}
+            at {{ item.event.owner.name }}
           %br in {{ item.event.location.city }}, {{ item.event.location.state }}
         .grid2
           {{ item.date.date }}

@@ -43,8 +43,9 @@ urlpatterns = patterns('',
     url(r'^talk_event/(?P<talk_event_id>\d+)/attend/$', 'talkevents.views.talk_event_attendee_new'),
 
     url(r'^speakers/$', 'core.views.speaker_list'),
-    url(r'^speaker/(?P<username>\w+)/$', 'core.views.speaker_detail'),
-    url(r'^speaker/(?P<username>\w+)/follow/$', 'core.views.speaker_follow'),
+
+    url(r'^user/(?P<username>\w+)/$', 'core.views.speaker_detail'),
+    url(r'^user/(?P<username>\w+)/follow/$', 'core.views.speaker_follow'),
 
     url(r'^profile/edit/$', 'core.views.profile_edit'),
     url(r'^profile/edit/photo/$', 'core.views.profile_edit_photo'),
@@ -52,8 +53,6 @@ urlpatterns = patterns('',
     url(r'^profile/edit/tag/new/$', 'core.views.profile_tag_new'),
 
     url(r'^location/new/$', 'locations.views.location_new'),
-
-    url(r'^load_fixtures/$', 'core.views.load_fixtures'),
 
     url(r'^login/$', 'core.views.login_user'),
     url(r'^logout/$', 'core.views.logout_user'),

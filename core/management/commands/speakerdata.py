@@ -1,0 +1,212 @@
+import random
+from datetime import datetime, timedelta
+
+from django.core.management.base import BaseCommand, CommandError
+from django.contrib.auth.models import User
+from django.http import HttpResponseForbidden
+
+from guardian.shortcuts import assign
+
+from core.models import SpkrbarBaseUser, NormalUser, EventUser
+
+from locations.models import Location
+from events.models import Event
+from talks.models import Talk
+from talkevents.models import TalkEvent
+from blog.models import BlogPost
+
+random.seed(datetime.now())
+
+
+verbs = ['Hacking', 'Saving', 'Hunting', 'Exploiting', 
+        'Looking Past', 'Lessons Learned from', 'Staring Down']
+
+things = ['Robots', 'Money', 'Communication', 'The Hiring Process', 
+        'The Homeless', 'Bad Bosses', 'Startups', 'Social Policies',
+        'Smart Grids', 'Local Government', 'The Court System',
+        'Board Games', 'The MAFIAA', 'Hackers']
+
+long_actions = [
+        "What's Next?",
+        "or... How divination is for suckers...",
+        "A small bag of tricks.",
+        "After the digital age.",
+        "What I learned on Cherry Blossom Ave.",
+        "Cities of the future.",
+        "Perpetual machines CAN work. I swear!",
+        "or... What I learned from Battlestar Galactica",
+        "Why you suck.",
+        "Why you don't suck.",
+        "The sky is falling, or so they say."]
+
+location_names = ["Tech Columbus", "Linux User Group", "Java User Group",
+        "Anime Kids United", "Soccer Club", "Bar 451", "Chains on 10th",
+        "15 Smiling Kids", "Central Community Center", "InTech Central Office",
+        "Baboon Fun Park", "The Wilde Syde: Animal Safari", "Anonymous",
+        "The Clap Trap", "Game Design Group", "Board Gamers R' US"]
+
+event_names = ["Rubycon", "PyOhio", "PyCon", "GenCon", "CodeMash", "BingCon", 
+        "MarCon", "MegaCon", "CloudDevelop", "Origins Game Fair", "Essen",
+        "Columbus Code Camp", "Girl Develop It", "Iron Ruby", "Emerald Fair"]
+
+location_addrs = [
+        ("1275 Kinnear Road", "Columbus", "Ohio", "43204"),
+        ("7003 Post Road", "Dublin", "Ohio", "43016"),
+        ("200 Georgesville Road", "Columbus", "Ohio", "43228"),
+        ("1100 Rock and Roll Boulevard", "Cleveland", "Ohio", "44114"),
+        ("1268 Missouri Street", "San Francisco", "California", "94107"),
+        ("326 N Main Street", "Crestview", "Florida", "32536"),
+        ("3900 Chagrin Drive", "Columbus", "Ohio", "43219"),
+        ("1400 E Angela Blvd", "South Bend", "Indiana", "46617")]
+
+user_first_names = ['Kenneth', 'Bill', 'John', 'Mike', 'Susan', 'Junell',
+        'Dharma', 'Shaniquha', 'Damien', 'Dominic', 'Tyler', 'Edward',
+        'Jameson', 'Jim', 'Ron', 'Dharani', 'Priya', 'Venkat']
+
+user_last_names = ["O'Neil", 'Brown', 'Smith', 'Jackson', 'Ramachandra',
+        'Rajeshwer', 'Howard', 'Wooten', 'Berry', 'Frauenfelder',
+        'Bender', 'Fry', 'Hogue']
+
+user_description = "Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro. De carne lumbering animata corpora quaeritis. Summus brains sit morbo vel maleficia? De apocalypsi gorger omero undead survivor dictum mauris. Hi mindless mortuis soulless creaturas, imo evil stalking monstra adventus resi dentevil vultus comedat cerebella viventium. Qui animated corpse, cricket bat max brucks terribilem incessu zomby. The voodoo sacerdos flesh eater, suscitat mortuos comedere carnem virus."
+talk_description = user_description
+
+
+def generate_datetime():
+    year = random.choice([2013, 2014, 2015])
+    month = random.choice(range(1, 13))
+    day = random.choice(range(1,28))
+    hour = random.choice(range(0,24))
+    minute = random.choice([0, 15, 30, 45])
+    return datetime(year, month, day, hour, minute)
+
+
+def generate_speaker(username):
+    first_name = random.choice(user_first_names)
+    last_name = random.choice(user_last_names)
+    speaker = NormalUser.objects.create_user(username, 'test@spkrbar.com', 'abcd1234')
+    speaker.first_name = first_name
+    speaker.last_name = last_name
+    speaker.about_me = user_description
+    speaker.save()
+
+    return speaker
+
+
+def generate_talk(speaker):
+    talk = Talk()
+    talk.name = random.choice(verbs) + " " + random.choice(things) + ": " + random.choice(long_actions)
+    talk.abstract = talk_description
+
+    if random.choice(range(0,10)) % 2 == 0:
+        talk.published = False
+
+    talk.speaker = speaker
+    talk.save()
+
+    assign('change_talk', speaker, talk)
+    assign('delete_talk', speaker, talk)
+
+    return talk
+
+
+def generate_event(username, location):
+    event_user = EventUser.objects.create_user(
+            username, 'testevent@example.com', 'abcd1234')
+    event_user.name = random.choice(event_names)
+    event_user.description = user_description
+    event_user.save()
+
+    event = Event()
+    event.owner = event_user
+    event.location = location
+    event.accept_submissions = (random.choice(range(0, 10)) % 2 == 0)
+    event.start_date = generate_datetime()
+    event.end_date = event.start_date + timedelta(days=3)
+    event.save()
+
+    return event
+
+
+def generate_talk_event(talk, event):
+    talk_event = TalkEvent()
+    talk_event.talk = talk
+    talk_event.event = event
+    delta = timedelta(days=random.choice([1,2]), hours=random.choice(range(1, 10)))
+    talk_event.date = event.start_date + delta
+    talk_event.save()
+
+    return talk_event
+
+
+def generate_admin_user():
+    speaker = NormalUser.objects.create_superuser(
+            'raymond', 'raymondchandleriii@gmail.com', 'abcd1234')
+    speaker.first_name = "Raymond"
+    speaker.last_name = "Chandler III"
+    speaker.email = "raymondchandleriii@gmail.com"
+    speaker.about_me = "I'm a little teapot, short and stout!"
+    speaker.save()
+
+    return speaker
+
+
+def generate_blog_post():
+    post = BlogPost()
+    post.name = random.choice(long_actions)
+    post.content = user_description
+    post.date = generate_datetime()
+    post.published = True
+    post.save()
+
+
+def generate_location():
+    location = Location()
+    location.name = random.choice(location_names)
+    addr = random.choice(location_addrs)
+    location.address = addr[0]
+    location.city = addr[1]
+    location.state = addr[2]
+    location.zip_code = addr[3]
+    location.save()
+
+    return location
+
+
+class Command(BaseCommand):
+    args = ''
+    help = 'Generates the test data for the application.'
+
+    def handle(self, *args, **options):
+        speaker = generate_admin_user()
+
+        anon_profile = SpkrbarBaseUser.objects.get(username="AnonymousUser")
+        anon_profile.published = False
+        anon_profile.save()
+
+        for i in range(0, 200):
+            #every 20 make a new blog POST
+            if i % 19 == 0 or i == 0:
+                print "Generating Blog Post"
+                generate_blog_post()
+
+            #Every 10 make a new location and user/speaker
+            if i % 11 == 0 or i == 0:
+                un = "test" + str(i / 10)
+                print "Generating Location"
+                location = generate_location()
+
+                print "Generating Speaker " + un
+                speaker = generate_speaker(un)
+
+            if i % 17 == 0 or i == 0:
+                un = "tevent" + str(i / 10)
+                print "Generating Event " + un
+                event = generate_event(un, location)
+
+            print "Generating Talk"
+            talk = generate_talk(speaker)
+
+            print "Generating Talk Event"
+            talk_event = generate_talk_event(talk, event)
+
+        self.stdout.write('Successfully loaded test data.')

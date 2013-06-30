@@ -4,11 +4,12 @@ from django.contrib.auth import authenticate, login
 
 from django.db import IntegrityError
 
-from core.helpers import render_to
+from core.helpers import template
 
+@template('auth/register.haml')
 def register_user(request):
     if request.method == "GET":
-        return render_to(request, 'register.haml')
+        return {}
     else:
         username = request.POST['username']
         password = request.POST['password']
@@ -32,4 +33,4 @@ def register_user(request):
             login(request, user)
             return redirect('/speaker/' + request.user.username)
 
-        return render_to(request, 'auth/register.haml', context={'error': error})
+        return {'error': error}

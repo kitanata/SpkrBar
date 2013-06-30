@@ -7,10 +7,7 @@ from talkevents.models import TalkEvent
 
 @template('index.haml')
 def index(request):
-    talk_events = TalkEvent.objects.filter(
-            event__owner__published=True,
-            talk__published=True, 
-            talk__speaker__published=True)
+    talk_events = TalkEvent.objects.filter(talk__published=True)
 
     start_date = datetime.today() - timedelta(days=1)
     upcoming = talk_events.filter(event__start_date__gt=start_date

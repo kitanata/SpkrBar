@@ -15,10 +15,7 @@ def talk_event_list(request):
             ('+', 90, "In the next 6 months"), 
             ('+', 180, "In the next year") ]
 
-    talk_events = TalkEvent.objects.filter(
-            event__owner__published=True,
-            talk__published=True,
-            talk__speaker__published=True)
+    talk_events = TalkEvent.objects.filter(talk__published=True)
 
     user_events = None
     if not request.user.is_anonymous():

@@ -206,23 +206,24 @@
                               {{ location.address }}<br />
                               {{ location.city }}, {{location.state}}, {{location.zip_code}}
 
-          - if talk.talkcomment_set.all or talk.speaker != user
-            .comments{style:"margin-top:40px;"}
-              %h3 Comments
-              %hr
+          .comments{style:"margin-top:40px;"}
+            %h3 Comments
+            %hr
 
-              - if not user.is_anonymous and talk.speaker != user
-                %form.add-comment-form{action:"/talk/{{talk.id}}/comment/new/", method:"POST"}
-                  - csrf_token
-                  %textarea{name:'comment', placeholder:"Add your comment..."}
-                  %input.btn.btn-warning{type:"submit", value:"Submit Comment"}
+            - if not user.is_anonymous and talk.speaker != user
+              %form.add-comment-form{action:"/talk/{{talk.id}}/comment/new/", method:"POST"}
+                - csrf_token
+                %textarea{name:'comment', placeholder:"Add your comment..."}
+                %input.btn.btn-warning{type:"submit", value:"Submit Comment"}
 
-              - if talk.talkcomment_set.all
-                %ul
-                  - for comment in talk.talkcomment_set.all
-                    %li
-                      %h4 {{comment.reviewer.user.get_full_name}} said...
-                      %p {{comment.comment}}
+            - if talk.talkcomment_set.all
+              %ul
+                - for comment in talk.talkcomment_set.all
+                  %li
+                    %h4 {{comment.reviewer.user.get_full_name}} said...
+                    %p {{comment.comment}}
+            - else
+              No comments yet.
 
 
 - block 'talk_scripts'

@@ -18,8 +18,8 @@
 
           .description
             %h4
-              %a{href:"/speaker/{{speaker.user.username}}"}
-                {{ speaker.user.get_full_name }}
+              %a{href:"{{ speaker.get_absolute_url }}"}
+                {{ speaker.get_full_name }}
 
             - if speaker.tags.all
               Expert In:
@@ -31,6 +31,6 @@
           - if not user.is_anonymous and user != speaker
             .follow
               - if speaker not in user.following.all
-                %a.btn.btn-warning{href:"/speaker/{{speaker.user.username}}/follow?last=/speakers"} Follow
+                %a.btn.btn-warning{href:"/user/{{speaker.username}}/follow?last=/speakers"} Follow
               - else
                 .label.label-warning Following

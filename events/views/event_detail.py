@@ -14,20 +14,16 @@ def event_detail(request, event_id):
     talk_events = TalkEvent.objects.filter(event=event)
 
     if request.user.is_anonymous():
-        talk_events = talk_events.filter(
-                talk__published=True, talk__speaker__published=True)
+        talk_events = talk_events.filter(talk__published=True)
     else:
         talk_events = talk_events.filter(
-                Q(talk__published=True, talk__speaker__published=True) | 
+                Q(talk__published=True) | 
                 Q(talk__speaker=request.user))
 
     user_attending = False
 
-    if request.user.is_anonymous():
-        attendees = event.attendees.filter(Q(published=True))
-    else:
-        attendees = event.attendees.filter(Q(published=True) | Q(user=request.user))
-        user_attending = (request.user in attendees)
+    attendees = event.attendees.filter()
+    user_attending = (request.user in attendees)
 
     will_have_links = not user_attending
 
@@ -39,7 +35,10 @@ def event_detail(request, event_id):
             date__gt=(yesterday - timedelta(days=14)), date__lt=yesterday
                 ).order_by('-date')
 
-    user_talks = request.user.talk_set.all
+    if not request.user.is_anonymous():
+        user_talks = request.user.talk_set.all
+    else:
+        user_talks = None
 
     context = {
         'event': event,

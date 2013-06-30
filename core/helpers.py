@@ -43,12 +43,3 @@ def template(template_name):
                     context_instance=RequestContext(request))
         return wrapper
     return view_wrapper
-    
-
-def generate_datetime():
-    year = random.choice([2013, 2014, 2015])
-    month = random.choice(range(1, 13))
-    day = random.choice(range(1,28))
-    hour = random.choice(range(0,24))
-    minute = random.choice([0, 15, 30, 45])
-    return datetime(year, month, day, hour, minute)

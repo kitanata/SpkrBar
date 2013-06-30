@@ -7,10 +7,11 @@ from django.db.models import Q
 
 from events.models import Event
 from core.models import NormalUser
-from core.helpers import render_to
+from core.helpers import template
 
 from talks.models import Talk
 
+@template('talks/talk_detail.haml')
 def talk_detail(request, talk_id):
     talk = get_object_or_404(Talk, pk=talk_id)
 
@@ -23,10 +24,11 @@ def talk_detail(request, talk_id):
     user_attendance = False
     user_endorsed = False
     will_have_links = False
+    user_events = None
 
-    if request.user.is_anonymous():
-        attendees = attendees.filter(Q(published=True))
-    else:
+    attendees = attendees.filter()
+
+    if not request.user.is_anonymous():
         try:
             user_attendance = talk_events.get(attendees__in=[request.user])
         except ObjectDoesNotExist:
@@ -34,7 +36,6 @@ def talk_detail(request, talk_id):
 
         user_events = request.user.event_set.all()
         user_endorsed = (request.user in talk.endorsements.all())
-        attendees = attendees.filter(Q(published=True) | Q(user=request.user))
 
         will_have_links = (request.user == talk.speaker)
 
@@ -52,7 +53,7 @@ def talk_detail(request, talk_id):
 
     events_accepting_talks = Event.objects.filter(accept_submissions=True)
 
-    context = {
+    return {
         'last': talk.get_absolute_url(),
         'talk': talk,
         'photos': photo_col,
@@ -65,5 +66,3 @@ def talk_detail(request, talk_id):
         'will_have_links': will_have_links,
         'events_accepting_talks': events_accepting_talks
         }
-
-    return render_to(request, 'talks/talk_detail.haml', context=context)

@@ -1,5 +1,7 @@
-from core.models import SpkrbarBaseUser
+from django.contrib.auth.models import UserManager
 from django.db import models
+
+from core.models import SpkrbarBaseUser
 
 class NormalUser(SpkrbarBaseUser):
     first_name = models.CharField(max_length=300)
@@ -12,8 +14,10 @@ class NormalUser(SpkrbarBaseUser):
     following = models.ManyToManyField('self', related_name="followers", symmetrical=False)
     tags = models.ManyToManyField('UserTag')
 
+    objects = UserManager()
+
     def get_full_name(self):
-        return ' '.join(str(self.first_name), str(self.last_name))
+        return ' '.join([str(self.first_name), str(self.last_name)])
 
     def get_short_name(self):
         return str(self.first_name)

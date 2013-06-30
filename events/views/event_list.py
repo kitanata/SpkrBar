@@ -7,11 +7,7 @@ from core.helpers import render_to
 from events.models import Event
 
 def event_list(request):
-    if request.user.is_anonymous():
-        events = Event.objects.filter(owner__published=True)
-    else:
-        events = Event.objects.filter(
-                Q(owner__published=True) | Q(owner=request.user))
+    events = Event.objects.all()
 
     group_defs = [ 
             ('-', 30, "Recent Events"), 

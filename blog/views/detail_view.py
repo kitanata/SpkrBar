@@ -14,7 +14,7 @@ def blog_details(request, post_id):
         'year': item.date.strftime("%Y"),
         'post': item } for item in posts]
 
-    context = {
+    return {
         'post': post,
         'history': history,
         }
