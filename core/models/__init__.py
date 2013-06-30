@@ -1,14 +1,14 @@
-from core.models.spkrbar_base_user import SpkrbarBaseUser
-from core.models.normal_user import NormalUser
-from core.models.event_user import EventUser
+from core.models.spkrbar_user import SpkrbarUser
+from core.models.speaker_profile import SpeakerProfile
+from core.models.event_profile import EventProfile
 from core.models.notification import Notification
-from core.models.user_link import UserLink
-from core.models.user_tag import UserTag
+from core.models.speaker_link import SpeakerLink
+from core.models.speaker_tag import SpeakerTag
 
 __all__ = [
-    'SpkrbarBaseUser',
-    'NormalUser',
-    'EventUser',
+    'SpkrbarUser',
+    'SpeakerProfile',
+    'EventProfile',
     'Notification',
-    'UserLink',
-    'UserTag']
+    'SpeakerLink',
+    'SpeakerTag']

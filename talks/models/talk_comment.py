@@ -3,7 +3,7 @@ from datetime import datetime
 
 class TalkComment(models.Model):
     talk = models.ForeignKey('Talk')
-    reviewer = models.ForeignKey('core.NormalUser', null=True)
+    commenter = models.ForeignKey('core.SpkrbarUser', null=True)
     comment = models.CharField(max_length=140)
     datetime = models.DateTimeField(default=datetime.now())
 

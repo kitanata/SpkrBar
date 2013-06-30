@@ -19,7 +19,7 @@
           .description
             %h4
               %a{href:"{{ speaker.get_absolute_url }}"}
-                {{ speaker.get_full_name }}
+                {{ speaker.user.get_full_name }}
 
             - if speaker.tags.all
               Expert In:

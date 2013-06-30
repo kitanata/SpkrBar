@@ -9,7 +9,7 @@
 
         .about
           %h4
-            %a{href:"/speaker/{{talk.speaker.user.username}}"}
+            %a{href:"{{talk.speaker.get_absolute_url}}"}
               {{ talk.speaker.user.get_full_name }}
 
     .span9

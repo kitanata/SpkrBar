@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 
 from django.db.models import Q
 
-from core.models import NormalUser
+from core.models import SpeakerProfile
 from core.helpers import render_to
 
 from talks.models import Talk
@@ -14,7 +14,7 @@ from events.models import Event
 from talkevents.models import TalkEvent
 
 def speaker_detail(request, username):
-    speaker = get_object_or_404(NormalUser, username=username)
+    speaker = get_object_or_404(SpeakerProfile, user__username=username)
 
     talks = Talk.objects.filter(speaker=speaker)
     events = Event.objects.filter(owner=speaker)

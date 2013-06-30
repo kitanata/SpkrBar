@@ -1,6 +1,6 @@
 from django import forms
 
-from models import UserLink
+from models import SpeakerLink
 
 # 'Field', 'CharField', 'IntegerField',
 # 'DateField', 'TimeField', 'DateTimeField', 'TimeField',
@@ -18,7 +18,7 @@ class ProfilePhotoForm(forms.Form):
     photo = forms.FileField(required=False)
 
 class ProfileLinkForm(forms.Form):
-    type = forms.ChoiceField(UserLink.LINK_TYPE_CHOICES)
+    type = forms.ChoiceField(SpeakerLink.LINK_TYPE_CHOICES)
     url = forms.URLField(max_length=140, 
             widget=forms.TextInput(attrs={'placeholder': 'http://'}))
     

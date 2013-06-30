@@ -7,7 +7,7 @@ from django.http import HttpResponseForbidden
 
 from guardian.shortcuts import assign
 
-from core.models import SpkrbarBaseUser, NormalUser, EventUser
+from core.models import SpkrbarUser, SpeakerProfile, EventProfile
 
 from locations.models import Location
 from events.models import Event
@@ -81,9 +81,18 @@ def generate_datetime():
 
 
 def generate_speaker(username):
+    user = SpkrbarUser.objects.create_superuser(
+            username,
+            'test@spkrbar.com',
+            'abcd1234')
+    user.user_type = SpkrbarUser.USER_TYPE_SPEAKER
+    user.save()
+
     first_name = random.choice(user_first_names)
     last_name = random.choice(user_last_names)
-    speaker = NormalUser.objects.create_user(username, 'test@spkrbar.com', 'abcd1234')
+
+    speaker = SpeakerProfile()
+    speaker.user = user
     speaker.first_name = first_name
     speaker.last_name = last_name
     speaker.about_me = user_description
@@ -103,21 +112,28 @@ def generate_talk(speaker):
     talk.speaker = speaker
     talk.save()
 
-    assign('change_talk', speaker, talk)
-    assign('delete_talk', speaker, talk)
+    assign('change_talk', speaker.user, talk)
+    assign('delete_talk', speaker.user, talk)
 
     return talk
 
 
 def generate_event(username, location):
-    event_user = EventUser.objects.create_user(
-            username, 'testevent@example.com', 'abcd1234')
-    event_user.name = random.choice(event_names)
-    event_user.description = user_description
-    event_user.save()
+    user = SpkrbarUser.objects.create_superuser(
+            username,
+            'testevent@spkrbar.com',
+            'abcd1234')
+    user.user_type = SpkrbarUser.USER_TYPE_SPEAKER
+    user.save()
+
+    event_profile = EventProfile()
+    event_profile.user = user
+    event_profile.name = random.choice(event_names)
+    event_profile.description = user_description
+    event_profile.save()
 
     event = Event()
-    event.owner = event_user
+    event.owner = event_profile
     event.location = location
     event.accept_submissions = (random.choice(range(0, 10)) % 2 == 0)
     event.start_date = generate_datetime()
@@ -139,11 +155,17 @@ def generate_talk_event(talk, event):
 
 
 def generate_admin_user():
-    speaker = NormalUser.objects.create_superuser(
-            'raymond', 'raymondchandleriii@gmail.com', 'abcd1234')
+    user = SpkrbarUser.objects.create_superuser(
+            'raymond',
+            'raymondchandleriii@gmail.com',
+            'abcd1234')
+    user.user_type = SpkrbarUser.USER_TYPE_SPEAKER
+    user.save()
+
+    speaker = SpeakerProfile()
+    speaker.user = user
     speaker.first_name = "Raymond"
     speaker.last_name = "Chandler III"
-    speaker.email = "raymondchandleriii@gmail.com"
     speaker.about_me = "I'm a little teapot, short and stout!"
     speaker.save()
 
@@ -179,7 +201,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         speaker = generate_admin_user()
 
-        anon_profile = SpkrbarBaseUser.objects.get(username="AnonymousUser")
+        anon_profile = SpkrbarUser.objects.get(username="AnonymousUser")
         anon_profile.published = False
         anon_profile.save()
 

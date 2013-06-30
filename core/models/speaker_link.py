@@ -1,6 +1,8 @@
 from django.db import models
 
-class UserLink(models.Model):
+class SpeakerLink(models.Model):
+    speaker = models.ForeignKey('core.SpeakerProfile')
+
     FACEBOOK = 'FACEBOOK'
     TWITTER = 'TWITTER'
     LINKEDIN = 'LINKEDIN'
@@ -20,10 +22,9 @@ class UserLink(models.Model):
     type_name = models.CharField(max_length=40, choices=LINK_TYPE_CHOICES, default=TWITTER)
     url_target = models.URLField(max_length=140)
 
-    profile = models.ForeignKey('core.NormalUser')
+    def __str__(self):
+        return self.link_name
+
 
     class Meta:
         app_label = 'core'
-
-    def __str__(self):
-        return self.link_name

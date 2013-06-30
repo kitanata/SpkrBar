@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 
-from core.models import UserLink
+from core.models import SpeakerLink
 
 from core.forms import ProfileLinkForm
 

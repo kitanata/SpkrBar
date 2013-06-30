@@ -1,6 +1,5 @@
 from django.shortcuts import redirect, get_object_or_404
 
-from core.models import NormalUser
 from talks.models import Talk, TalkComment
 
 def talk_comment_new(request, talk_id):

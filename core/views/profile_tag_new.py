@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 
-from core.models import UserTag
+from core.models import SpeakerTag
 
 from core.forms import ProfileTagForm
 

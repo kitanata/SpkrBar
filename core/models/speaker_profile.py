@@ -1,9 +1,8 @@
 from django.contrib.auth.models import UserManager
 from django.db import models
 
-from core.models import SpkrbarBaseUser
-
-class NormalUser(SpkrbarBaseUser):
+class SpeakerProfile(models.Model):
+    user = models.OneToOneField('SpkrbarUser')
     first_name = models.CharField(max_length=300)
     last_name = models.CharField(max_length=300)
 
@@ -12,18 +11,12 @@ class NormalUser(SpkrbarBaseUser):
     photo = models.ImageField(upload_to="photo")
 
     following = models.ManyToManyField('self', related_name="followers", symmetrical=False)
-    tags = models.ManyToManyField('UserTag')
+    tags = models.ManyToManyField('core.SpeakerTag')
 
     objects = UserManager()
 
-    def get_full_name(self):
-        return ' '.join([str(self.first_name), str(self.last_name)])
-
-    def get_short_name(self):
-        return str(self.first_name)
-
     def get_absolute_url(self):
-        return "/user/" + self.username
+        return "/user/" + self.user.username
 
     def published_upcoming_events_attending(self, user_profile=None):
         if user_profile:

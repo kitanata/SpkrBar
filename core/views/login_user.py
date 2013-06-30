@@ -1,7 +1,9 @@
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login
+from django.http import HttpResponseForbidden
 
 from core.helpers import render_to
+
 
 def login_user(request):
     if request.method == "GET":
