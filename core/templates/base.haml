@@ -93,7 +93,7 @@
 
                   %ul.dropdown-menu
                     %li
-                      %a{href:"/speaker/{{ user.username }}"}
+                      %a{href:"{{user.get_absolute_url}}"}
                         %i.icon-user
                         My Profile
                     - if user.is_superuser

@@ -10,8 +10,8 @@
 
           .grid2
             .btn-group
-              - if user in item.attendees.all
-                - if user not in item.talk.endorsements.all
+              - if user.get_profile in item.attendees.all
+                - if user.get_profile not in item.talk.endorsements.all
                   %a.btn.btn-warning{href:"/talk/{{item.talk.id}}/endorse?last={{last}}"}
                     %i.icon-thumbs-up
                     Endorse

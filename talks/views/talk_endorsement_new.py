@@ -7,7 +7,7 @@ from talks.models import Talk
 def talk_endorsement_new(request, talk_id):
     talk = get_object_or_404(Talk, pk=talk_id)
     
-    talk.endorsements.add(request.user)
+    talk.endorsements.add(request.user.get_profile())
     talk.save()
 
     if 'last' in request.GET and request.GET['last'] != '':

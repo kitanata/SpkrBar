@@ -8,7 +8,7 @@ from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
-from core.models import NormalUser
+from core.models import SpeakerProfile
 
 from events.models import Event
 from events.helpers import group_events_by_date
@@ -98,9 +98,9 @@ def search(request):
 
 def speakers(request):
     if request.user.is_anonymous():
-        speakers = NormalUser.objects.filter(Q(published=True))[:20]
+        speakers = SpeakerProfile.objects.filter(Q(published=True))[:20]
     else:
-        speakers = NormalUser.objects.filter(Q(published=True) | Q(user=request.user))[:20]
+        speakers = SpeakerProfile.objects.filter(Q(published=True) | Q(user=request.user))[:20]
 
     return render_to_response('mobile/speakers.html', {
         'speakers': speakers

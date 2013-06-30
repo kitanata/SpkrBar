@@ -16,7 +16,7 @@ def login_user(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                return redirect(request.user)
+                return redirect(request.user.get_absolute_url())
             else:
                 error = "This account has been disabled."
         else:

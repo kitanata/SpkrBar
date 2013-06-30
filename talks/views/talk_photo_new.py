@@ -4,6 +4,9 @@ from django.http import HttpResponseForbidden, HttpResponseNotFound
 
 from core.helpers import save_photo_with_uuid
 
+from talks.models import Talk, TalkPhoto
+from talks.forms import TalkPhotoForm
+
 @login_required
 def talk_photo_new(request, talk_id):
     talk = get_object_or_404(Talk, pk=talk_id)

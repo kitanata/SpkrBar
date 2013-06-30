@@ -11,13 +11,13 @@ def profile_link_new(request):
         form = ProfileLinkForm(request.POST)
 
         if form.is_valid():
-            profile = request.user
+            profile = request.user.get_profile()
 
-            link_model = UserLink()
+            link_model = SpeakerLink()
 
             link_model.type_name = form.cleaned_data['type']
             link_model.url_target = form.cleaned_data['url']
-            link_model.profile = profile
+            link_model.speaker = profile
 
             link_model.save()
 

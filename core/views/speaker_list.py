@@ -9,4 +9,6 @@ from core.models import SpeakerProfile
 def speaker_list(request):
     speakers = SpeakerProfile.objects.all()[:20]
 
-    return {'speakers': speakers }
+    return {
+            'speakers': speakers,
+            'last': '/speakers' }

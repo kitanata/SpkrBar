@@ -12,14 +12,14 @@ def profile_tag_new(request):
         form = ProfileTagForm(request.POST)
 
         if form.is_valid():
-            profile = request.user
+            profile = request.user.get_profile()
 
             tag_name = form.cleaned_data['name']
 
             try:
-                tag_model = UserTag.objects.get(name=tag_name)
+                tag_model = SpeakerTag.objects.get(name=tag_name)
             except ObjectDoesNotExist as e:
-                tag_model = UserTag(name=tag_name)
+                tag_model = SpeakerTag(name=tag_name)
                 tag_model.save()
 
             profile.tags.add(tag_model)

@@ -16,10 +16,4 @@ def index(request):
     if len(upcoming) > 4:
         upcoming = random.sample(upcoming, 4)
 
-    user_events = None
-    if not request.user.is_anonymous():
-        user_events = request.user.event_set.all()
-
-    return {
-        'user_events': user_events,
-        'upcoming': upcoming }
+    return {'upcoming': upcoming }

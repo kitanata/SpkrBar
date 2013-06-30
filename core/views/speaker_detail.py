@@ -62,7 +62,7 @@ def speaker_detail(request, username):
         'attended': attended,
         'following': following,
         'followers': followers,
-        'last': '/speaker/' + username
+        'last': '/user/' + username
         }
 
     return render_to(request, template, context=context)

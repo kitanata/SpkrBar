@@ -24,7 +24,6 @@ def talk_detail(request, talk_id):
     user_attendance = False
     user_endorsed = False
     will_have_links = False
-    user_events = None
 
     attendees = attendees.filter()
 
@@ -34,12 +33,11 @@ def talk_detail(request, talk_id):
         except ObjectDoesNotExist:
             pass
 
-        user_events = request.user.event_set.all()
         user_endorsed = (request.user in talk.endorsements.all())
 
         will_have_links = (request.user == talk.speaker)
 
-    will_have_links = not user_attendance or not user_endorsed or user_events
+    will_have_links = not user_attendance or not user_endorsed
 
     photos = talk.talkphoto_set.all()
 
@@ -60,7 +58,6 @@ def talk_detail(request, talk_id):
         'upcoming': upcoming,
         'past': past,
         'attendees': attendees,
-        'user_events': user_events,
         'user_attendance': user_attendance,
         'user_endorsed': user_endorsed,
         'will_have_links': will_have_links,

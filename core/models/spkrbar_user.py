@@ -36,7 +36,7 @@ class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
 
 
     def get_full_name(self):
-        profile = self.get_user_profile()
+        profile = self.get_profile()
 
         if self.user_type == SpkrbarUser.USER_TYPE_SPEAKER:
             return ' '.join([str(profile.first_name), str(profile.last_name)])
@@ -47,7 +47,7 @@ class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
 
 
     def get_short_name(self):
-        profile = self.get_user_profile()
+        profile = self.get_profile()
 
         if self.user_type == SpkrbarUser.USER_TYPE_SPEAKER:
             return str(profile.name)
@@ -57,7 +57,7 @@ class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
             return 'NOT_A_USER'
 
 
-    def get_user_profile(self):
+    def get_profile(self):
         if self.user_type == SpkrbarUser.USER_TYPE_SPEAKER:
             return self.speakerprofile
         elif self.user_type == SpkrbarUser.USER_TYPE_EVENT:
@@ -65,6 +65,14 @@ class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
         else:
             return None
 
+    
+    def get_absolute_url(self):
+        if self.user_type == SpkrbarUser.USER_TYPE_SPEAKER:
+            return self.speakerprofile.get_absolute_url()
+        elif self.user_type == SpkrbarUser.USER_TYPE_EVENT:
+            return self.eventprofile.get_absolute_url()
+        else:
+            return "/"
 
     class Meta:
         app_label = 'core'

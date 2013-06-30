@@ -17,10 +17,6 @@ def talk_event_list(request):
 
     talk_events = TalkEvent.objects.filter(talk__published=True)
 
-    user_events = None
-    if not request.user.is_anonymous():
-        user_events = request.user.event_set.all()
-
     groups = []
     end_date = datetime.today()
     for group in group_defs:
@@ -43,5 +39,5 @@ def talk_event_list(request):
         groups.append((group[2], result))
 
     return {
-        'user_events': user_events,
-        'talk_groups': groups }
+            'talk_groups': groups,
+            'last': '/talks' }

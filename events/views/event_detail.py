@@ -23,7 +23,7 @@ def event_detail(request, event_id):
     user_attending = False
 
     attendees = event.attendees.filter()
-    user_attending = (request.user in attendees)
+    user_attending = (request.user.get_profile() in attendees)
 
     will_have_links = not user_attending
 
@@ -36,7 +36,7 @@ def event_detail(request, event_id):
                 ).order_by('-date')
 
     if not request.user.is_anonymous():
-        user_talks = request.user.talk_set.all
+        user_talks = request.user.get_profile().talk_set.all()
     else:
         user_talks = None
 

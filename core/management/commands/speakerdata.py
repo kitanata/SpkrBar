@@ -7,11 +7,11 @@ from django.http import HttpResponseForbidden
 
 from guardian.shortcuts import assign
 
-from core.models import SpkrbarUser, SpeakerProfile, EventProfile
+from core.models import SpkrbarUser, SpeakerProfile, EventProfile, SpeakerTag
 
 from locations.models import Location
 from events.models import Event
-from talks.models import Talk
+from talks.models import Talk, TalkTag
 from talkevents.models import TalkEvent
 from blog.models import BlogPost
 
@@ -67,6 +67,14 @@ user_last_names = ["O'Neil", 'Brown', 'Smith', 'Jackson', 'Ramachandra',
         'Rajeshwer', 'Howard', 'Wooten', 'Berry', 'Frauenfelder',
         'Bender', 'Fry', 'Hogue']
 
+speaker_tags = ["Game Design", "Python", "Ruby", "JavaScript", 
+        "Entreprenuership", "Education", "Business Strategy", "Marketing",
+        "Social Web", "Public Relations", "Human Resources", 
+        "Corporate Culture", "Graphic Design", "User Experience", 
+        "Interactive Design", "Industrial Design", "C++", ".NET", "C#",
+        "Java", "Delphi", "Oracle", "SQL", "MongoDB", "Django", "Rails",
+        "Foreign Languages"]
+
 user_description = "Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro. De carne lumbering animata corpora quaeritis. Summus brains sit morbo vel maleficia? De apocalypsi gorger omero undead survivor dictum mauris. Hi mindless mortuis soulless creaturas, imo evil stalking monstra adventus resi dentevil vultus comedat cerebella viventium. Qui animated corpse, cricket bat max brucks terribilem incessu zomby. The voodoo sacerdos flesh eater, suscitat mortuos comedere carnem virus."
 talk_description = user_description
 
@@ -78,6 +86,20 @@ def generate_datetime():
     hour = random.choice(range(0,24))
     minute = random.choice([0, 15, 30, 45])
     return datetime(year, month, day, hour, minute)
+
+
+def generate_speaker_tags():
+    for tag in speaker_tags:
+        new_tag = SpeakerTag()
+        new_tag.name = tag
+        new_tag.save()
+
+
+def generate_talk_tags():
+    for tag in speaker_tags:
+        new_tag = TalkTag()
+        new_tag.name = tag
+        new_tag.save()
 
 
 def generate_speaker(username):
@@ -98,6 +120,14 @@ def generate_speaker(username):
     speaker.about_me = user_description
     speaker.save()
 
+    for i in range(0, random.choice(range(2,7))):
+        tag = SpeakerTag.objects.get(name=random.choice(speaker_tags))
+
+        if tag not in speaker.tags.all():
+            speaker.tags.add(tag)
+
+    speaker.save()
+
     return speaker
 
 
@@ -111,6 +141,12 @@ def generate_talk(speaker):
 
     talk.speaker = speaker
     talk.save()
+
+    for i in range(0, random.choice(range(2,7))):
+        tag = TalkTag.objects.get(name=random.choice(speaker_tags))
+
+        if tag not in talk.tags.all():
+            talk.tags.add(tag)
 
     assign('change_talk', speaker.user, talk)
     assign('delete_talk', speaker.user, talk)
@@ -205,6 +241,10 @@ class Command(BaseCommand):
         anon_profile.published = False
         anon_profile.save()
 
+        print "Generating Speaker Tags"
+        generate_speaker_tags()
+        generate_talk_tags()
+
         for i in range(0, 200):
             #every 20 make a new blog POST
             if i % 19 == 0 or i == 0:
@@ -230,5 +270,26 @@ class Command(BaseCommand):
 
             print "Generating Talk Event"
             talk_event = generate_talk_event(talk, event)
+
+        print "Generating Followers"
+        speakers = SpeakerProfile.objects.all()
+
+        for speaker in speakers:
+            for i in range(0, random.choice(range(5,17))):
+                follower = random.choice(speakers)
+
+                if follower not in speaker.followers.all():
+                    speaker.followers.add(follower)
+
+        print "Generating Talk Event Attendees"
+        talkevents = TalkEvent.objects.all()
+
+        for t in talkevents:
+            for i in range(0, random.choice(range(5,17))):
+                attendee = random.choice(speakers)
+
+                if attendee not in t.attendees.all():
+                    t.attendees.add(attendee)
+
 
         self.stdout.write('Successfully loaded test data.')
