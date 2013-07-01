@@ -7,7 +7,7 @@ class EventProfile(models.Model):
     description = models.CharField(max_length=800)
 
     def get_absolute_url(self):
-        return "/event/" + self.username
+        return "/user/" + self.user.username
 
     class Meta:
         app_label = 'core'

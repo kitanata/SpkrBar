@@ -4,9 +4,11 @@ from django.utils import timezone
 from django.db import models
 
 class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
+    USER_TYPE_ATTENDEE = 'ATTENDEE'
     USER_TYPE_SPEAKER = 'SPEAKER'
     USER_TYPE_EVENT = 'EVENT'
     USER_TYPES = (
+            (USER_TYPE_ATTENDEE, 'Attendee'),
             (USER_TYPE_SPEAKER, 'Speaker'),
             (USER_TYPE_EVENT, 'Event'),
         )
@@ -61,7 +63,7 @@ class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
         if self.user_type == SpkrbarUser.USER_TYPE_SPEAKER:
             return self.speakerprofile
         elif self.user_type == SpkrbarUser.USER_TYPE_EVENT:
-            return self.event_profile
+            return self.eventprofile
         else:
             return None
 

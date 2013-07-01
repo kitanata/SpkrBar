@@ -8,6 +8,7 @@ from config.settings import MEDIA_ROOT
 
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.http import HttpResponseRedirect
 
 def save_photo_with_uuid(photo):
     photo_ext = photo.name.split('.')[-1]
@@ -38,6 +39,9 @@ def template(template_name):
         @wraps(view_func)
         def wrapper(request, *args, **kwargs):
             context = view_func(request, *args, **kwargs)
+
+            if isinstance(context, HttpResponseRedirect):
+                return context
 
             return render_to_response(template_name, context,
                     context_instance=RequestContext(request))

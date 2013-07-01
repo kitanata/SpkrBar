@@ -1,65 +1,28 @@
 - extends 'base.haml'
 
-- block 'title'
-  Welcome to the club.
-
-- block 'subnav'
+- block 'subnav-container' 
+  .subnav
+    .row
+      .span12
+        %h2
+          - block 'title'
+            Join the fastest growing conference club in the world.
 
 - block 'content'
-  .row
-    .span6
-      .row
-        .span6
-          %h3 Join us as a speaker
-          %hr
-
-      .row
-        .span6
-          - if error
-            .alert.alert-error {{error}}
-
-          %form{action:"/register/speaker", method:"POST"}
-            - csrf_token
-            %label{for:"username"} Username:
-            %input#username{name:"username", type:"text"}
-
-            %label{for:"email"} Email:
-            %input#email{name:"email", type:"email"}
-
-            %label{for:"password"} Password:
-            %input#password{name:"password", type:"password"}
-
-            %label{for:"confirm"} Confirm Password:
-            %input#confirm{name:"confirm", type:"password"}
-
-            %br
-            %input.btn.btn-warning{type:"submit", value:"Register"}
-
-    .span6
-      .row
-        .span6
-          %h3 Join us as an event planner
-          %hr
-
-      .row
-        .span6
-          - if error
-            .alert.alert-error {{error}}
-
-          %form{action:"/register/event", method:"POST"}
-            - csrf_token
-            %label{for:"username"} Event Name:
-            %input#username{name:"username", type:"text"}
-
-            %label{for:"email"} Email:
-            %input#email{name:"email", type:"email"}
-
-            %label{for:"password"} Password:
-            %input#password{name:"password", type:"password"}
-
-            %label{for:"confirm"} Confirm Password:
-            %input#confirm{name:"confirm", type:"password"}
-
-            %br
-            %input.btn.btn-warning{type:"submit", value:"Register"}
-
+  .row{style:"margin-top:40px"}
+    .span12
+      %h2 What kind of user are you?
+  .register-options
+    .row
+      .span4
+        %a{href:"/register/speaker"}
+          %i.icon-bullhorn
+          Speaker
+      .span4
+        %a{href:"/register/attendee"}
+          %i.icon-group
+          Attendee
+      .span4
+        %a{href:"/register/event"}
+          %i.icon-calendar
+          Event Planner
