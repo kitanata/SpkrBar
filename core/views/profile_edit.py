@@ -17,15 +17,13 @@ def profile_edit(request):
             first_name = names[0]
             last_name = ' '.join(names[1:])
 
-            user.first_name = first_name
-            user.last_name = last_name
-            user.save()
-
             profile = user.get_profile()
+            profile.first_name = first_name
+            profile.last_name = last_name
             profile.about_me = form.cleaned_data['about_me']
             profile.save()
 
-            return redirect('/profile/edit/')
+            return redirect(profile.get_absolute_url())
 
     else:
         return profile_form_view(request)

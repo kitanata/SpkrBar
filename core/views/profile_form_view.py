@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 
 from core.helpers import template
 
-from core.forms import EditProfileForm, ProfilePhotoForm, ProfileLinkForm, ProfileTagForm
+from core.forms import EditProfileForm, ProfilePhotoForm
 
 @login_required
 @template('profile/profile_edit.haml')
@@ -13,13 +13,9 @@ def profile_form_view(request):
         'about_me':profile.about_me
     })
     photo_form = ProfilePhotoForm()
-    link_form = ProfileLinkForm()
-    tag_form = ProfileTagForm()
 
     return {
         'speaker': request.user.get_profile(),
         'profile_form': profile_form,
         'photo_form': photo_form,
-        'tag_form': tag_form,
-        'link_form': link_form
         }

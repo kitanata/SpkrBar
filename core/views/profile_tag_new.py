@@ -17,13 +17,13 @@ def profile_tag_new(request):
             tag_name = form.cleaned_data['name']
 
             try:
-                tag_model = SpeakerTag.objects.get(name=tag_name)
+                tag_model = ProfileTag.objects.get(name=tag_name)
             except ObjectDoesNotExist as e:
-                tag_model = SpeakerTag(name=tag_name)
+                tag_model = ProfileTag(name=tag_name)
                 tag_model.save()
 
             profile.tags.add(tag_model)
             profile.save()
 
-            return redirect('/profile/edit/')
+            return redirect(request.user.get_absolute_url())
     return profile_form_view(request)

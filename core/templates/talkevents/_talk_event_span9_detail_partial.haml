@@ -43,11 +43,11 @@
           %br {{ item.date.time }}
 
     .description
-      - if item.talk.speaker.photo
-        %img.pull-left{src:"{{STATIC_URL}}img/photo/{{talk.speaker.photo}}"}
-      - else
-        %i.icon-user.photo-placeholder.pull-left
+      .tag-cloud.pull-left
+        - for tag in item.talk.tags.all
+          .label.label-info {{ tag.name }}
 
       %span {{ item.talk.abstract|truncatechars:240 }}
+      .clearfix
 
     .clearfix

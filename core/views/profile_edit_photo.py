@@ -19,5 +19,5 @@ def profile_edit_photo(request):
 
             profile.save()
 
-            return redirect('/profile/edit/')
+            return redirect(request.user)
     return profile_form_view(request)

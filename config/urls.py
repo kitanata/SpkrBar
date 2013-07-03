@@ -44,13 +44,12 @@ urlpatterns = patterns('',
 
     url(r'^speakers/$', 'core.views.speaker_list'),
 
-    url(r'^profile/(?P<username>\w+)/$', 'core.views.profile_detail'),
-    url(r'^user/(?P<username>\w+)/follow/$', 'core.views.speaker_follow'),
-
     url(r'^profile/edit/$', 'core.views.profile_edit'),
     url(r'^profile/edit/photo/$', 'core.views.profile_edit_photo'),
     url(r'^profile/edit/link/new/$', 'core.views.profile_link_new'),
     url(r'^profile/edit/tag/new/$', 'core.views.profile_tag_new'),
+    url(r'^profile/(?P<username>\w+)/$', 'core.views.profile_detail'),
+    url(r'^user/(?P<username>\w+)/follow/$', 'core.views.speaker_follow'),
 
     url(r'^location/new/$', 'locations.views.location_new'),
 

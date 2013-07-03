@@ -27,13 +27,30 @@
 
       %a.delete-confirm-link.btn.btn-danger{href:"#", style:"margin-top: 20px;"} Yes. Delete this talk
 
+
+  %div{style:'display:none'}
+    #edit-profile-popup{style:"background-color:white; padding: 40px;"}
+      %h2 Edit Your Profile
+
+      %form{action:"/profile/edit/", method:"POST"}
+        - csrf_token
+        %label{for:"name"} Name:
+        {{ edit_form.name }}
+        %label{for:"about"} About:
+        {{ edit_form.about_me }}
+
+        %button.btn.btn-warning{type:"submit"} Save
+
+
 - block 'scripts'
   %script{type:"text/javascript"}
     $('.delete-talk').colorbox({inline: true, width:"300px"});
 
     $('.delete-talk').click(function(el){
-        var sel = $(el.currentTarget)
+        var sel = $(el.currentTarget);
 
-        $('.delete-talk-name').text(sel.data('name'))
-        $('.delete-confirm-link').attr('href', "/talk/" + sel.data('id') + "/delete/")
+        $('.delete-talk-name').text(sel.data('name'));
+        $('.delete-confirm-link').attr('href', "/talk/" + sel.data('id') + "/delete/");
     });
+
+    $('.edit-profile').colorbox({inline: true, width:"300px"});

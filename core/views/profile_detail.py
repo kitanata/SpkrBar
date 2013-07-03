@@ -14,12 +14,22 @@ from events.models import Event
 
 from talkevents.models import TalkEvent
 
+from core.forms import ProfileLinkForm, ProfileTagForm, ProfilePhotoForm, EditProfileForm
+
 
 def speaker_profile(profile, user):
     talks = Talk.objects.filter(speaker=profile)
 
     if profile.user != user:
         talks = talks.filter(published=True)
+    else:
+        link_form = ProfileLinkForm()
+        tag_form = ProfileTagForm()
+        photo_form = ProfilePhotoForm()
+        edit_form = EditProfileForm({
+            'name':profile.user.get_full_name(),
+            'about_me':profile.about_me
+        })
 
     talk_events = TalkEvent.objects.filter(
             talk__speaker=profile,
@@ -58,6 +68,10 @@ def speaker_profile(profile, user):
         'attended': attended,
         'following': following,
         'followers': followers,
+        'link_form': link_form,
+        'tag_form': tag_form,
+        'photo_form': photo_form,
+        'edit_form': edit_form
         }
 
 
