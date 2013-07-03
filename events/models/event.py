@@ -13,6 +13,10 @@ class Event(models.Model):
             'core.SpeakerProfile', related_name='events_attending', blank=True)
 
 
+    def __str__(self):
+        return ' '.join([str(self.owner.name), str(self.start_date.year)])
+
+
     def get_absolute_url(self):
         return "/event/" + str(self.pk)
 

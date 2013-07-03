@@ -1,0 +1,65 @@
+.row
+  .span3
+    %h2 Known for
+    - if profile.tags.all
+      %ul.expert-area
+        - for tag in profile.tags.all
+          %li.label.label-info {{tag}}
+    - else
+      No User Tags
+
+  .span3{style:"margin-top: 40px"}
+    %h2 Links
+    - if profile.userlink_set.all
+      - for link in profile.userlink_set.all
+        %p
+          %a{href:"{{link.url_target}}", target:"_blank"}
+            My {{ link.type_name|title }} Account
+    - else
+      No Outside Links
+
+  {% include 'profile/_followers_list_partial.haml' %}
+
+  .span3{style:"margin-top: 40px"}
+    %h2 My Talks
+    - if talks
+      %ul.basic-item-list
+        - for item in talks
+          %li
+            %a{href:"{{item.get_absolute_url}}"}
+              {{ item.name|truncatechars:30 }}
+    - else
+      No talks.
+
+  .span3{style:"margin-top: 40px"}
+    %h2 Events
+    - if events
+      %ul.basic-item-list
+        - for item in events
+          %li
+            %a{href:"{{item.get_absolute_url}}"}
+              {{ item|truncatechars:30 }}
+    - else
+      No events.
+
+  .span3{style:"margin-top: 40px"}
+    %h2 Past Talks
+    - if past
+      %ul.basic-item-list
+        - for item in past
+          %li
+            %a{href:"{{item.talk.get_absolute_url}}"}
+              {{ item.talk.name|truncatechars:30 }}
+    - else
+      No previous talks.
+
+  .span3{style:"margin-top: 40px"}
+    %h2 Attended
+    - if attended
+      %ul.basic-item-list
+        - for item in attended
+          %li
+            %a{href:"{{item.talk.get_absolute_url}}"}
+              {{ item.talk.name|truncatechars:30 }}
+    - else
+      No talks attended.

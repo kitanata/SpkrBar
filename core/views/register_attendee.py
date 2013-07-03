@@ -7,7 +7,7 @@ from django.db import IntegrityError
 
 from core.helpers import template
 from core.forms import AttendeeRegisterForm
-from core.models import SpkrbarUser, SpeakerProfile, EventProfile
+from core.models import SpkrbarUser, AttendeeProfile, EventProfile
 
 @template('auth/register_attendee.haml')
 def register_attendee(request):
@@ -19,6 +19,7 @@ def register_attendee(request):
 
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
+            about_me = form.cleaned_data['about_me']
 
             password = form.cleaned_data['password']
             confirm = form.cleaned_data['confirm']
@@ -40,10 +41,11 @@ def register_attendee(request):
 
                 return {'form': form}
 
-            profile = SpeakerProfile()
+            profile = AttendeeProfile()
             profile.user = user
             profile.first_name = first_name
             profile.last_name = last_name
+            profile.about_me = about_me
             profile.save()
 
             user = authenticate(username=username, password=password)

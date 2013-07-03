@@ -7,6 +7,7 @@ from talkevents.models import TalkEvent
 from core.helpers import render_to
 
 from events.models import Event
+from talks.models import Talk
 
 def event_detail(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
@@ -23,7 +24,7 @@ def event_detail(request, event_id):
     user_attending = False
 
     attendees = event.attendees.filter()
-    user_attending = (request.user.get_profile() in attendees)
+    user_attending = (request.user in attendees)
 
     will_have_links = not user_attending
 
@@ -36,7 +37,7 @@ def event_detail(request, event_id):
                 ).order_by('-date')
 
     if not request.user.is_anonymous():
-        user_talks = request.user.get_profile().talk_set.all()
+        user_talks = Talk.objects.filter(speaker=request.user.get_profile())
     else:
         user_talks = None
 

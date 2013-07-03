@@ -6,8 +6,10 @@ class EventProfile(models.Model):
     name = models.CharField(max_length=140)
     description = models.CharField(max_length=800)
 
+    tags = models.ManyToManyField('core.ProfileTag')
+
     def get_absolute_url(self):
-        return "/user/" + self.user.username
+        return "/profile/" + self.user.username
 
     class Meta:
         app_label = 'core'

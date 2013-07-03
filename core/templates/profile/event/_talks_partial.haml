@@ -1,0 +1,30 @@
+- if current
+  .row
+    .span9
+      %h2 Talks Happening Now
+
+      .row
+        - for item in current
+          - include 'talkevents/_talk_event_span9_detail_partial.haml'
+
+- if upcoming
+  .row
+    .span9
+      %h2 Upcoming Speaking Engagements
+
+      .row
+        - for item in upcoming
+          - include 'talkevents/_talk_event_span9_detail_partial.haml'
+
+.row
+  .span9
+    %h2 My Events
+
+    - if events
+      %ul.basic-item-list
+        - for item in events
+          %li
+            %a{href:"{{item.get_absolute_url}}"}
+              {{ profile.name }} {{ item.start_date.year }}
+    - else
+      No events.

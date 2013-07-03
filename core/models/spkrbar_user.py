@@ -27,6 +27,9 @@ class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
     user_type = models.CharField(
             max_length=7, choices=USER_TYPES, default=USER_TYPE_SPEAKER)
 
+    following = models.ManyToManyField('self', 
+            related_name="followers", symmetrical=False)
+
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email', 'user_type']
 
@@ -37,10 +40,21 @@ class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
         return self.username
 
 
+    def is_speaker(self):
+        return self.user_type == SpkrbarUser.USER_TYPE_SPEAKER
+
+    def is_event_planner(self):
+        return self.user_type == SpkrbarUser.USER_TYPE_EVENT
+
+    def is_attendee(self):
+        return self.user_type == SpkrbarUser.USER_TYPE_ATTENDEE
+
     def get_full_name(self):
         profile = self.get_profile()
 
         if self.user_type == SpkrbarUser.USER_TYPE_SPEAKER:
+            return ' '.join([str(profile.first_name), str(profile.last_name)])
+        elif self.user_type == SpkrbarUser.USER_TYPE_ATTENDEE:
             return ' '.join([str(profile.first_name), str(profile.last_name)])
         elif self.user_type == SpkrbarUser.USER_TYPE_EVENT:
             return str(profile.name)
@@ -52,9 +66,11 @@ class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
         profile = self.get_profile()
 
         if self.user_type == SpkrbarUser.USER_TYPE_SPEAKER:
-            return str(profile.name)
-        elif self.user_type == SpkrbarUser.USER_TYPE_EVENT:
             return str(profile.first_name)
+        elif self.user_type == SpkrbarUser.USER_TYPE_ATTENDEE:
+            return str(profile.first_name)
+        elif self.user_type == SpkrbarUser.USER_TYPE_EVENT:
+            return str(profile.name)
         else:
             return 'NOT_A_USER'
 
@@ -62,6 +78,8 @@ class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
     def get_profile(self):
         if self.user_type == SpkrbarUser.USER_TYPE_SPEAKER:
             return self.speakerprofile
+        elif self.user_type == SpkrbarUser.USER_TYPE_ATTENDEE:
+            return self.attendeeprofile
         elif self.user_type == SpkrbarUser.USER_TYPE_EVENT:
             return self.eventprofile
         else:
@@ -71,6 +89,8 @@ class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
     def get_absolute_url(self):
         if self.user_type == SpkrbarUser.USER_TYPE_SPEAKER:
             return self.speakerprofile.get_absolute_url()
+        elif self.user_type == SpkrbarUser.USER_TYPE_ATTENDEE:
+            return self.attendeeprofile.get_absolute_url()
         elif self.user_type == SpkrbarUser.USER_TYPE_EVENT:
             return self.eventprofile.get_absolute_url()
         else:

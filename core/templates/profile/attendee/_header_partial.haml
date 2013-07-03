@@ -1,0 +1,10 @@
+.row
+  .span3
+    .well.picture
+      - if profile.photo
+        %img{src:"{{MEDIA_URL}}{{ profile.photo}}"}
+      - else
+        %i.icon-user
+
+  .span9
+    {{ profile.about_me }}

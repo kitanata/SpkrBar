@@ -1,9 +1,0 @@
-#!/Users/raymond/Projects/SpkrBar/SpkrBar/env/bin/python
-# EASY-INSTALL-ENTRY-SCRIPT: 'hamlpy==0.82.2','console_scripts','hamlpy'
-__requires__ = 'hamlpy==0.82.2'
-import sys
-from pkg_resources import load_entry_point
-
-sys.exit(
-   load_entry_point('hamlpy==0.82.2', 'console_scripts', 'hamlpy')()
-)

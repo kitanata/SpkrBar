@@ -1,0 +1,39 @@
+- extends 'base.haml'
+
+- block 'title'
+  {{ profile.user.get_full_name }}
+
+- block 'subnav'
+  - include 'profile/speaker/_links_partial.haml'
+
+- block 'content'
+  #profile
+    - include 'profile/speaker/_header_partial.haml'
+
+    .row
+      .span3
+        - include 'profile/speaker/_sidebar_partial.haml'
+      .span9
+        - include 'profile/speaker/_talks_partial.haml'
+        - include 'profile/speaker/_attending_partial.haml'
+
+  %div{style:'display:none'}
+    #delete-talk-popup{style:"background-color:white; padding: 40px;"}
+      %h2.delete-talk-name
+      %div{style:"font-size: 18px;"}
+        %p Are you sure you want to delete this talk?
+        %p
+          %b This operation cannot be undone.
+
+      %a.delete-confirm-link.btn.btn-danger{href:"#", style:"margin-top: 20px;"} Yes. Delete this talk
+
+- block 'scripts'
+  %script{type:"text/javascript"}
+    $('.delete-talk').colorbox({inline: true, width:"300px"});
+
+    $('.delete-talk').click(function(el){
+        var sel = $(el.currentTarget)
+
+        $('.delete-talk-name').text(sel.data('name'))
+        $('.delete-confirm-link').attr('href', "/talk/" + sel.data('id') + "/delete/")
+    });

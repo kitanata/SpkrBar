@@ -59,6 +59,7 @@ class AttendeeRegisterForm(forms.Form):
     first_name = forms.CharField()
     last_name = forms.CharField()
     email = forms.EmailField()
+    about_me = forms.CharField(max_length=1400, widget=forms.Textarea(attrs={'rows':6, 'cols':40}))
 
     password = forms.CharField(min_length=8, widget=forms.PasswordInput())
     confirm = forms.CharField(min_length=8, widget=forms.PasswordInput())

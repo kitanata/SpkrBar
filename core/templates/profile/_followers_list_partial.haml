@@ -1,0 +1,17 @@
+.span3{style:"margin-top: 40px"}
+  .follow_users
+    %h2 Followers
+    - if followers
+      - with followers as collection
+        - include '_user_list_partial.haml'
+    - else
+      No Followers
+
+.span3{style:"margin-top: 40px"}
+  .follow_users
+    %h2 Following
+    - if following
+      - with followers as collection
+        - include '_user_list_partial.haml'
+    - else
+      Not Following Anyone

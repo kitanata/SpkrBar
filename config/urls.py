@@ -44,7 +44,7 @@ urlpatterns = patterns('',
 
     url(r'^speakers/$', 'core.views.speaker_list'),
 
-    url(r'^user/(?P<username>\w+)/$', 'core.views.speaker_detail'),
+    url(r'^profile/(?P<username>\w+)/$', 'core.views.profile_detail'),
     url(r'^user/(?P<username>\w+)/follow/$', 'core.views.speaker_follow'),
 
     url(r'^profile/edit/$', 'core.views.profile_edit'),

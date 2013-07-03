@@ -45,10 +45,10 @@
     .container-narrow
       .masthead
         .row
-          .span4
+          .span3
             %a{href:"/"}
               %img{src:"{{STATIC_URL}}img/logo.png"}
-          .span8
+          .span9
             %ul.nav.nav-pills.pull-right
               %li
                 %a{href:"/talks"}
@@ -64,10 +64,16 @@
                   Events
 
               - if not user.is_anonymous
-                %li
-                  %a.add-talk{href:"#add-talk-popup"}
-                    %i.icon-plus
-                    Add Talk
+                - if user.is_speaker
+                  %li
+                    %a.add-talk{href:"#add-talk-popup"}
+                      %i.icon-plus
+                      Add Talk
+                - elif user.is_event_planner
+                  %li
+                    %a.add-event{href:"#add-event-popup"}
+                      %i.icon-plus
+                      Add Event
 
               %li
                 %a{href:"/blog"}

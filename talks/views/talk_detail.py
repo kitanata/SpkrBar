@@ -6,7 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 
 from events.models import Event
-from core.models import SpeakerProfile
+from core.models import SpeakerProfile, SpkrbarUser
 from core.helpers import template
 
 from talks.models import Talk
@@ -16,7 +16,7 @@ def talk_detail(request, talk_id):
     talk = get_object_or_404(Talk, pk=talk_id)
 
     talk_events = talk.talkevent_set.all()
-    attendees = SpeakerProfile.objects.filter(talkevent__in=talk_events).distinct()
+    attendees = SpkrbarUser.objects.filter(attending__in=talk_events).distinct()
 
     upcoming = talk_events.filter(event__start_date__gt=datetime.today())
     past = talk_events.filter(event__end_date__gt=datetime.today())

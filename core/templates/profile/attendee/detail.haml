@@ -1,0 +1,18 @@
+- extends 'base.haml'
+
+- block 'title'
+  {{ profile.user.get_full_name }}
+
+- block 'subnav'
+  - include 'profile/attendee/_links_partial.haml'
+
+- block 'content'
+  #profile
+    - include 'profile/attendee/_header_partial.haml'
+
+    .row
+      .span3
+        - include 'profile/attendee/_sidebar_partial.haml'
+      .span9
+        - include 'profile/attendee/_talks_partial.haml'
+        - include 'profile/attendee/_attending_partial.haml'
