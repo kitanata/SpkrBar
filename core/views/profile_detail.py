@@ -45,7 +45,7 @@ def speaker_profile(profile, user):
     upcoming = talk_events.filter(event__start_date__gt=datetime.today())
     past = talk_events.filter(event__end_date__lt=datetime.today())
 
-    if user.is_anonymous():
+    if profile.user.is_anonymous():
         following = profile.user.following.all()
         followers = profile.user.followers.all()
         attending = None
@@ -57,7 +57,7 @@ def speaker_profile(profile, user):
         attending = profile.user.attending.filter(date__gt=datetime.today()).order_by('date')
         attended = profile.user.attending.filter(date__lt=datetime.today()).order_by('-date')
 
-    return {
+    context = {
         'profile': profile,
         'current': current,
         'upcoming': upcoming,
@@ -68,15 +68,34 @@ def speaker_profile(profile, user):
         'attended': attended,
         'following': following,
         'followers': followers,
-        'link_form': link_form,
-        'tag_form': tag_form,
-        'photo_form': photo_form,
-        'edit_form': edit_form
         }
+
+    if profile.user == user:
+        user_context = {
+            'link_form': link_form,
+            'tag_form': tag_form,
+            'photo_form': photo_form,
+            'edit_form': edit_form
+            }
+
+        context = dict(context.items() + user_context.items())
+
+    return context
+
 
 
 def attendee_profile(profile, user):
-    if user.is_anonymous():
+    if profile.user == user:
+        tag_form = ProfileTagForm()
+        photo_form = ProfilePhotoForm()
+        edit_form = EditProfileForm({
+            'name':profile.user.get_full_name(),
+            'about_me':profile.about_me
+        })
+
+    endorsed = profile.user.talks_endorsed.all()
+
+    if profile.user.is_anonymous():
         following = profile.user.following.all()
         followers = profile.user.followers.all()
         attending = None
@@ -89,13 +108,25 @@ def attendee_profile(profile, user):
         attending = attendance.filter(date__gt=datetime.today()).order_by('date')
         attended = attendance.filter(date__lt=datetime.today()).order_by('-date')
 
-    return {
+    context = {
         'profile': profile,
+        'endorsed': endorsed,
         'attending': attending,
         'attended': attended,
         'following': following,
         'followers': followers,
         }
+
+    if profile.user == user:
+        user_context = {
+            'tag_form': tag_form,
+            'photo_form': photo_form,
+            'edit_form': edit_form
+            }
+
+        context = dict(context.items() + user_context.items())
+
+    return context
 
 
 def event_profile(profile, user):
@@ -112,7 +143,7 @@ def event_profile(profile, user):
     upcoming = talk_events.filter(event__start_date__gt=datetime.today())
     past = talk_events.filter(event__end_date__lt=datetime.today())
 
-    if user.is_anonymous():
+    if profile.user.is_anonymous():
         following = profile.user.following.all()
         followers = profile.user.followers.all()
         attending = None

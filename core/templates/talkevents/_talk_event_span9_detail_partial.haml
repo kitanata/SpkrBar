@@ -9,23 +9,7 @@
             %br by {{ item.talk.speaker.user.get_full_name }}
 
           .grid2
-            .btn-group
-              - if user.get_profile in item.attendees.all
-                - if user.get_profile not in item.talk.endorsements.all
-                  %a.btn.btn-warning{href:"/talk/{{item.talk.id}}/endorse?last={{last}}"}
-                    %i.icon-thumbs-up
-                    Endorse
-                - else
-                  %a.btn.disabled.btn-warning
-                    %i.icon-thumbs-up
-                    Endorsed
-                %a.btn.btn-warning{href:"/talk_event/{{item.id}}/attend?last={{last}}"}
-                  %i.icon-ban-circle
-                  Cancel
-              - else
-                %a.btn.btn-warning{href:"/talk_event/{{item.id}}/attend?last={{last}}"}
-                  %i.icon-calendar
-                  Attend
+            {% include 'talkevents/_button_group_partial.haml' %}
 
         - else
           %div

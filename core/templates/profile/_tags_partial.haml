@@ -1,0 +1,18 @@
+.row
+  .span3
+    %h2 Known for
+    - if profile.tags.all
+      %ul.expert-area
+        - for tag in profile.tags.all
+          %li.label.label-info {{tag}}
+    - else
+      No User Tags
+
+- if user == profile.user
+  .row
+    .edit-tags
+      .span3
+        %form.profile-tag-form{action:"/profile/edit/tag/new/", method:"POST"}
+          - csrf_token
+          {{ tag_form.name }}
+          %input.btn.btn-warning{type:"submit", value:"Add New Tag"}

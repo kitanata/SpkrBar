@@ -1,46 +1,8 @@
 .row
   .span3
-    .row
-      .span3
-        %h2 Known for
-        - if profile.tags.all
-          %ul.expert-area
-            - for tag in profile.tags.all
-              %li.label.label-info {{tag}}
-        - else
-          No User Tags
-
-    - if user == profile.user
-      .row
-        .edit-tags
-          .span3
-            %form.profile-tag-form{action:"/profile/edit/tag/new/", method:"POST"}
-              - csrf_token
-              {{ tag_form.name }}
-              %input.btn.btn-warning{type:"submit", value:"Add New Tag"}
-
+    {% include 'profile/_tags_partial.haml' %}
   .span3{style:"margin-top: 40px"}
-    .row
-      .span3
-        %h2 Links
-        - if profile.userlink_set.all
-          - for link in profile.userlink_set.all
-            %p
-              %a{href:"{{link.url_target}}", target:"_blank"}
-                My {{ link.type_name|title }} Account
-        - else
-          No Outside Links
-
-    - if user == profile.user
-      .row
-        .edit-links
-          .span3
-            %form.profile-link-form{action:"/profile/edit/link/new/", method:"POST", enctype:"multipart/form-data"}
-              - csrf_token
-              {{ link_form.type }}
-              {{ link_form.url }}
-
-              %input.btn.btn-warning{type:"submit", value:"Add New Link"}
+    {% include 'profile/_links_partial.haml' %}
 
   {% include 'profile/_followers_list_partial.haml' %}
 

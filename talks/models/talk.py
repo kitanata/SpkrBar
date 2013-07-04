@@ -12,7 +12,7 @@ class Talk(models.Model):
     tags = models.ManyToManyField('TalkTag')
 
     endorsements = models.ManyToManyField(
-            'core.SpeakerProfile', related_name='talks_endorsed')
+            'core.SpkrbarUser', related_name='talks_endorsed')
 
     class Meta:
         app_label = 'talks'

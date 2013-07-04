@@ -1,0 +1,16 @@
+.btn-group
+  - if user.get_profile in item.attendees.all
+    - if user.get_profile not in item.talk.endorsements.all
+      %a.btn.btn-warning{href:"/talk/{{item.talk.id}}/endorse?last={{last}}", data-original-title:"Endorse Talk", data-toggle:"tooltip"}
+        %i.icon-thumbs-up
+    - else
+      %a.btn.disabled.btn-warning
+        %i.icon-thumbs-up
+    %a.btn.btn-warning{href:"/talk_event/{{item.id}}/attend?last={{last}}", data-original-title:"Cancel", data-toggle:"tooltip"}
+      %i.icon-ban-circle
+  - elif not user.is_event_planner
+    %a.btn.btn-warning{href:"/talk_event/{{item.id}}/attend?last={{last}}", data-original-title:"Attend Talk", data-toggle:"tooltip"}
+      %i.icon-calendar
+  - if user.is_event_planner and user_events
+    %a.btn.btn-warning.recruit-talk{href:"#recruit-talk-popup", data-toggle:"tooltip", data-original-title:"Recruit this talk."}
+      %i.icon-hand-right

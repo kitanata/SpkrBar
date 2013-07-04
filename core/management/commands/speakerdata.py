@@ -317,11 +317,16 @@ class Command(BaseCommand):
         talkevents = TalkEvent.objects.all()
 
         for t in talkevents:
-            for i in range(0, random.choice(range(5,17))):
+            for i in range(0, random.choice(range(3,11))):
                 attendee = random.choice(users)
 
                 if attendee not in t.attendees.all():
                     t.attendees.add(attendee)
 
+        print "Generating Talk Endorsements"
+        for t in talkevents:
+            for attendee in t.attendees.all():
+                if random.choice([True, False]):
+                    t.talk.endorsements.add(attendee)
 
         self.stdout.write('Successfully loaded test data.')

@@ -1,6 +1,6 @@
 .span3{style:"margin-top: 40px"}
   .follow_users
-    %h2 Followers
+    %h2 Followers ({{followers|length}})
     - if followers
       - with followers as collection
         - include '_user_list_partial.haml'
@@ -9,9 +9,9 @@
 
 .span3{style:"margin-top: 40px"}
   .follow_users
-    %h2 Following
+    %h2 Following ({{following|length}})
     - if following
-      - with followers as collection
+      - with following as collection
         - include '_user_list_partial.haml'
     - else
       Not Following Anyone
