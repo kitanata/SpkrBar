@@ -18,13 +18,16 @@
 
 .row
   .span9
-    %h2 My Events
-
     - if events
-      %ul.basic-item-list
-        - for item in events
-          %li
-            %a{href:"{{item.get_absolute_url}}"}
-              {{ profile.name }} {{ item.start_date.year }}
+      - for event in events
+        .section-title
+          %h2
+            %a{href:"{{event.get_absolute_url}}"}
+              {{ profile.name }} {{ event.start_date.year }}
+
+        .buffer
+        .row
+          - for item in event.talkevent_set.all
+            - include 'talkevents/_talk_event_span3_detail_partial.haml'
     - else
       No events.

@@ -1,0 +1,6 @@
+- if not user.is_anonymous and user != other_user
+  .follow
+    - if other_user in user.following.all
+      %a.btn.btn-danger{href:"/user/{{other_user.username}}/follow?last={{last}}"} Abandon
+    - else
+      %a.btn.btn-warning{href:"/user/{{other_user.username}}/follow?last={{last}}"} Follow

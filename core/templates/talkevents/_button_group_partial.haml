@@ -1,6 +1,6 @@
 .btn-group
-  - if user.get_profile in item.attendees.all
-    - if user.get_profile not in item.talk.endorsements.all
+  - if user in item.attendees.all
+    - if user not in item.talk.endorsements.all
       %a.btn.btn-warning{href:"/talk/{{item.talk.id}}/endorse?last={{last}}", data-original-title:"Endorse Talk", data-toggle:"tooltip"}
         %i.icon-thumbs-up
     - else

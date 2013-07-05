@@ -14,12 +14,18 @@
         display: inline-block;
     }
 
-    .header, .header-s6 {
+    .header, .header-s6, .header-s3 {
         .title {
             font-weight: 600;
             font-size: 20px;
             line-height: 24px;
             min-height: 72px;
+
+            .subtitle {
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 20px;
+            }
         }
 
         .location, .time {
@@ -28,16 +34,18 @@
             line-height: 16px;
             font-weight: bold;
         }
+
+        .grid1, .grid2 {
+            display: inline-block;
+        }
     }
 
     .header {
         .grid1 {
-            display: inline-block;
             width: 468px;
         }
 
         .grid2 {
-            display: inline-block;
             margin-left: 20px;
             width: 182px;
             text-align: right;
@@ -47,12 +55,10 @@
 
     .header-s6 {
         .grid1 {
-            display: inline-block;
             width: 300px;
         }
 
         .grid2 {
-            display: inline-block;
             margin-left: 20px;
             width: 112px;
             text-align: right;
@@ -84,7 +90,43 @@
             overflow: scroll;
         }
     }
+
 }
+
+.talk-event-s3 {
+    .title {
+        height: auto;
+        min-height: 0px;
+        margin-top: 20px;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 24px;
+    }
+
+    .subtitle {
+        font-size: 14px;
+        font-weight: 600;
+        margin-top: 20px;
+        height: 60px;
+    }
+
+    .time {
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .date {
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .tag-cloud {
+        margin-top: 20px;
+        height: 60px;
+        overflow: scroll;
+    }
+}
+
 
 #talk {
 

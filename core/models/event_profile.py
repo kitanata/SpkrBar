@@ -5,6 +5,7 @@ class EventProfile(models.Model):
     user = models.OneToOneField('SpkrbarUser')
     name = models.CharField(max_length=140)
     description = models.CharField(max_length=800)
+    photo = models.ImageField(upload_to="photo")
 
     tags = models.ManyToManyField('core.ProfileTag')
 

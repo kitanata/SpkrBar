@@ -1,6 +1,7 @@
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponseNotFound
 
 from core.models import ProfileTag
 
@@ -26,4 +27,5 @@ def profile_tag_new(request):
             profile.save()
 
             return redirect(request.user.get_absolute_url())
-    return profile_form_view(request)
+    else:
+        return HttpResponseNotFound()

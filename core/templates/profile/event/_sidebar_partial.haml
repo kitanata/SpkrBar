@@ -1,21 +1,8 @@
 .row
   .span3
-    %h2 Topics
-    - if profile.tags.all
-      %ul.expert-area
-        - for tag in profile.tags.all
-          %li.label.label-info {{tag}}
-    - else
-      No User Tags
-
+    - with 'Topics' as topic_title
+      {% include 'profile/_tags_partial.haml' %}
   .span3{style:"margin-top: 40px"}
-    %h2 Links
-    - if profile.userlink_set.all
-      - for link in profile.userlink_set.all
-        %p
-          %a{href:"{{link.url_target}}", target:"_blank"}
-            My {{ link.type_name|title }} Account
-    - else
-      No Outside Links
+    {% include 'profile/_links_partial.haml' %}
 
   {% include 'profile/_followers_list_partial.haml' %}

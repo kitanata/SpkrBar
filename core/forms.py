@@ -15,17 +15,19 @@ class EditProfileForm(forms.Form):
     about_me = forms.CharField(max_length=1400, widget=forms.Textarea(attrs={'rows':6, 'cols':40}))
 
 
+class EventEditProfileForm(forms.Form):
+    name = forms.CharField(max_length=140)
+    description = forms.CharField(max_length=1400, widget=forms.Textarea(attrs={'rows':6, 'cols':40}))
+
 
 class ProfilePhotoForm(forms.Form):
     photo = forms.FileField(required=False)
-
 
 
 class ProfileLinkForm(forms.Form):
     type = forms.ChoiceField(SpeakerLink.LINK_TYPE_CHOICES)
     url = forms.URLField(max_length=140, 
             widget=forms.TextInput(attrs={'placeholder': 'http://'}))
-
 
 
 class ProfileTagForm(forms.Form):

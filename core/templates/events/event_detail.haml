@@ -24,6 +24,9 @@
           Delete
 
   - elif not user.is_anonymous
+    %a.btn.btn-warning{href:"/profile/{{event.owner.user.username}}"}
+      %i.icon-user
+      Profile
     - if user_talks and event.accept_submissions
       %a.btn.btn-warning.submit-talk{href:"#submit-talk-popup"}
         %i.icon-share-alt

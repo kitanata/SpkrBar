@@ -6,9 +6,9 @@
       - if will_have_links
         .span10
           %h2
-            {{ talk.name|truncatechars:90 }}
             - if talk.endorsements.count
-              ({{ talk.endorsements.count }} <i class="icon-thumbs-up"></i>)
+              {{ talk.endorsements.count }} <i class="icon-thumbs-up"></i>
+            {{ talk.name|truncatechars:90 }}
         .span2
           .nav.btn-group.pull-right
             - if not user.is_anonymous
@@ -43,9 +43,9 @@
       - else
         .span12
           %h2
-            {{ talk.name|truncatechars:90 }}
             - if talk.endorsements.count
-              ({{ talk.endorsements.count }} <i class="icon-thumbs-up"></i>)
+              {{ talk.endorsements.count }} <i class="icon-thumbs-up"></i>
+            {{ talk.name|truncatechars:90 }}
 
 - block 'content'
   #talk

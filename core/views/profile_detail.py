@@ -14,8 +14,8 @@ from events.models import Event
 
 from talkevents.models import TalkEvent
 
-from core.forms import ProfileLinkForm, ProfileTagForm, ProfilePhotoForm, EditProfileForm
-
+from core.forms import ProfileLinkForm, ProfileTagForm, ProfilePhotoForm
+from core.forms import EventEditProfileForm, EditProfileForm
 
 def speaker_profile(profile, user):
     talks = Talk.objects.filter(speaker=profile)
@@ -130,7 +130,7 @@ def attendee_profile(profile, user):
 
 
 def event_profile(profile, user):
-    events = Event.objects.filter(owner=profile)
+    events = profile.event_set.all()
 
     talk_events = TalkEvent.objects.filter(
             talk__speaker=profile,
@@ -156,7 +156,7 @@ def event_profile(profile, user):
         attending = attendance.filter(date__gt=datetime.today()).order_by('date')
         attended = attendance.filter(date__lt=datetime.today()).order_by('-date')
 
-    return {
+    context = {
         'profile': profile,
         'current': current,
         'upcoming': upcoming,
@@ -167,6 +167,26 @@ def event_profile(profile, user):
         'following': following,
         'followers': followers,
         }
+
+    if profile.user == user:
+        tag_form = ProfileTagForm()
+        photo_form = ProfilePhotoForm()
+        link_form = ProfileLinkForm()
+        edit_form = EventEditProfileForm({
+            'name':profile.user.get_full_name(),
+            'description':profile.description
+        })
+
+        user_context = {
+            'link_form': link_form,
+            'tag_form': tag_form,
+            'photo_form': photo_form,
+            'edit_form': edit_form
+            }
+
+        context = dict(context.items() + user_context.items())
+
+    return context
 
 
 def profile_detail(request, username):

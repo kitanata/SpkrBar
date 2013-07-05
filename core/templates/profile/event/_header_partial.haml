@@ -1,10 +1,5 @@
 .row
   .span3
-    .well.picture
-      - if profile.photo
-        %img{src:"{{MEDIA_URL}}{{ profile.photo}}"}
-      - else
-        %i.icon-user
-
+    {% include 'profile/_photo_partial.haml' %}
   .span9
     {{ profile.description }}

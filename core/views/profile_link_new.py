@@ -1,5 +1,6 @@
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseNotFound
 
 from core.models import SpeakerLink
 
@@ -22,4 +23,5 @@ def profile_link_new(request):
             link_model.save()
 
             return redirect('/profile/edit/')
-    return profile_form_view(request)
+    else:
+        return HttpResponseNotFound()

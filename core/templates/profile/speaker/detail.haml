@@ -4,6 +4,8 @@
   {{ profile.user.get_full_name }}
 
 - block 'subnav'
+  - with profile.user as other_user
+    - include '_follow_user_partial.haml'
 
 - block 'content'
   #profile

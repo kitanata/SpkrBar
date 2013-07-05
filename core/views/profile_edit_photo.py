@@ -1,5 +1,6 @@
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseNotFound
 
 from core.helpers import save_photo_with_uuid
 
@@ -20,4 +21,5 @@ def profile_edit_photo(request):
             profile.save()
 
             return redirect(request.user)
-    return profile_form_view(request)
+    else:
+        return HttpResponseNotFound()

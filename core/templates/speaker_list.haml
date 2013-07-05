@@ -28,9 +28,5 @@
 
             .about {{ speaker.about_me|truncatechars:140 }}
 
-          - if not user.is_anonymous and user != speaker.user
-            .follow
-              - if speaker in user.get_profile.following.all
-                .label.label-warning Following
-              - else
-                %a.btn.btn-warning{href:"/user/{{speaker.user.username}}/follow?last=/speakers"} Follow
+          - with speaker.user as other_user
+            - include '_follow_user_partial.haml'

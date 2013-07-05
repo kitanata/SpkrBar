@@ -1,6 +1,10 @@
 .row
   .span3
-    %h2 Known for
+    - if topic_title
+      %h2 {{topic_title}}
+    - else
+      %h2 Known for
+
     - if profile.tags.all
       %ul.expert-area
         - for tag in profile.tags.all
