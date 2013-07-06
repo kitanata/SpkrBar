@@ -102,6 +102,10 @@
                       %a{href:"{{user.get_absolute_url}}"}
                         %i.icon-user
                         My Profile
+                    %li
+                      %a{href:"/profile/invite"}
+                        %i.icon-gears
+                        Send Invites
                     - if user.is_superuser
                       %li
                         %a{href:"/admin"}

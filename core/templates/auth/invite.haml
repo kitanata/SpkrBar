@@ -1,0 +1,19 @@
+- extends 'base.haml'
+
+- block 'subnav'
+
+- block 'content'
+  .row
+    .span12
+      <a class="cs_import">Add from Address Book</a>
+      <textarea id="contact_list" style="width:450px;height:82px"></textarea>
+
+- block 'scripts'
+  <script type="text/javascript">
+  var csPageOptions = {
+    domain_key:"F582XR5DWPXKCDCXCDZW", 
+    textarea_id:"contact_list"
+  };
+  </script>
+
+  <script type="text/javascript" src="https://api.cloudsponge.com/address_books.js"></script>

@@ -45,6 +45,7 @@ urlpatterns = patterns('',
 
     url(r'^speakers/$', 'core.views.speaker_list'),
 
+    url(r'^profile/invite/$', 'core.views.profile_invite'),
     url(r'^profile/edit/$', 'core.views.profile_edit'),
     url(r'^profile/edit/photo/$', 'core.views.profile_edit_photo'),
     url(r'^profile/edit/link/new/$', 'core.views.profile_link_new'),
