@@ -34,9 +34,13 @@
                   %a.btn.btn-warning.recruit-talk{href:"#recruit-talk-popup", data-toggle:"tooltip", data-original-title:"Recruit this talk."}
                     %i.icon-hand-right
                     Recruit Talk
-                - if user_attending and not user_endorsed
-                  %a.btn.btn-warning{href:"/talk/{{talk.id}}/endorse?last={{last}}"}
-                    %i.icon-thumbs-up Endorse
+                - if user_attending 
+                  - if not user_endorsed
+                    %a.btn.btn-warning{href:"/talk/{{talk.id}}/endorse?last={{last}}"}
+                      %i.icon-thumbs-up Endorse
+                  - else
+                    %a.btn.disabled.btn-warning
+                      %i.icon-thumbs-up
                 - elif event and not user_attending
                   %a.btn.btn-warning{href:"/talk_event/{{event.id}}/attend?last={{last}}"}
                     %i.icon-calendar Attend

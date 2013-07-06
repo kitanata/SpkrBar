@@ -19,6 +19,7 @@ urlpatterns = patterns('',
     url(r'^event/(?P<event_id>\d+)/attend/$', 'events.views.event_attendee_new'),
     url(r'^event/(?P<event_id>\d+)/open/$', 'events.views.event_open'),
     url(r'^event/(?P<event_id>\d+)/close/$', 'events.views.event_close'),
+    url(r'^event/(?P<event_id>\d+)/endorse/$', 'events.views.event_endorsement_new'),
 
     url(r'^talk/new/$', 'talks.views.talk_new'),
     url(r'^talk/(?P<talk_id>\d+)/$', 'talks.views.talk_detail'),

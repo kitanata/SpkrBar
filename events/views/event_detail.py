@@ -23,10 +23,12 @@ def event_detail(request, event_id):
 
     user_attending = False
 
-    attendees = event.attendees.filter()
+    attendees = event.attendees.all()
+    endorsements = event.endorsements.all()
     user_attending = (request.user in attendees)
+    user_endorsed = (request.user in endorsements)
 
-    will_have_links = not user_attending
+    will_have_links = not user_attending or not user_endorsed
 
     yesterday = datetime.today() - timedelta(days=1)
     tomorrow = datetime.today() + timedelta(days=1)
@@ -44,7 +46,9 @@ def event_detail(request, event_id):
     context = {
         'event': event,
         'attendees': attendees,
+        'endorsements': endorsements,
         'user_attending': user_attending,
+        'user_endorsed': user_endorsed,
         'user_talks': user_talks,
         'will_have_links': will_have_links,
         'querystring': event.location.geocode_querystring(),

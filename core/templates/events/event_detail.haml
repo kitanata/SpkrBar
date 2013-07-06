@@ -1,7 +1,9 @@
 - extends 'base.haml'
 
 - block 'title'
-  {{ event.owner.name }}
+  - if endorsements
+    {{ endorsements|length }} <i class="icon-thumbs-up"></i>
+  {{ event.owner.name }} {{ event.start_date.year }}
 
 - block 'subnav'
   - if user == event.owner
@@ -24,24 +26,24 @@
           Delete
 
   - elif not user.is_anonymous
-    %a.btn.btn-warning{href:"/profile/{{event.owner.user.username}}"}
+    - if user_attending 
+      - if not user_endorsed
+        %a.btn.btn-warning{href:"/event/{{event.id}}/endorse?last={{last}}", data-toggle:"tooltip", data-original-title:"Endorse Event"}
+          %i.icon-thumbs-up
+      - else
+        %a.btn.disabled.btn-warning
+          %i.icon-thumbs-up
+      %a.btn.btn-warning{href:"/event/{{event.id}}/attend?last={{last}}", data-toggle:"tooltip", data-original-title:"Cancel Attendance"}
+        %i.icon-ban-circle
+    - elif event and not user_attending
+      %a.btn.btn-warning{href:"/event/{{event.id}}/attend?last={{last}}", data-toggle:"tooltip", data-original-title:"Attend Event"}
+        %i.icon-calendar
+    %a.btn.btn-warning{href:"/profile/{{event.owner.user.username}}", data-toggle:"tooltip", data-original-title:"Event Profile"}
       %i.icon-user
-      Profile
     - if user_talks and event.accept_submissions
       %a.btn.btn-warning.submit-talk{href:"#submit-talk-popup"}
         %i.icon-share-alt
         Submit Talk
-    - if user_attending and not user_endorsed
-      %a.btn.btn-warning{href:"/event/{{event.id}}/endorse?last={{last}}"}
-        %i.icon-thumbs-up
-        Endorse
-      %a.btn.btn-warning{href:"/event/{{event.id}}/attend?last={{last}}"}
-        %i.icon-ban-circle
-        Cancel
-    - elif event and not user_attending
-      %a.btn.btn-warning{href:"/event/{{event.id}}/attend?last={{last}}"}
-        %i.icon-calendar
-        Attend
 
 - block 'content'
   - include 'events/_event_header_partial.haml'

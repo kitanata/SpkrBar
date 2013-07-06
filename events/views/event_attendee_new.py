@@ -7,13 +7,11 @@ from events.models import Event
 def event_attendee_new(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
 
-    profile = request.user.get_profile()
-
-    if profile in event.attendees.all():
-        event.attendees.remove(profile)
+    if request.user in event.attendees.all():
+        event.attendees.remove(request.user)
         event.save()
     else:
-        event.attendees.add(profile)
+        event.attendees.add(request.user)
         event.save()
 
     if 'last' in request.GET and request.GET['last'] != '':

@@ -10,7 +10,9 @@ class Event(models.Model):
 
     accept_submissions = models.BooleanField(default=False)
     attendees = models.ManyToManyField(
-            'core.SpeakerProfile', related_name='events_attending', blank=True)
+            'core.SpkrbarUser', related_name='events_attending', blank=True)
+    endorsements = models.ManyToManyField(
+            'core.SpkrbarUser', related_name='events_endorsed')
 
 
     def __str__(self):
