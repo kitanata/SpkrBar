@@ -14,6 +14,7 @@ from profile_edit_photo import profile_edit_photo
 from profile_link_new import profile_link_new
 from profile_tag_new import profile_tag_new
 from profile_invite import profile_invite
+from profile_invite_thanks import profile_invite_thanks
 
 from speaker_list import speaker_list
 from user_follow import user_follow
@@ -23,6 +24,7 @@ __all__ = [
     "register_user", "login_user", "logout_user",
     'register_speaker', 'register_attendee', 'register_event',
     "profile_detail", "profile_edit", "profile_edit_photo",
-    "profile_link_new", "profile_tag_new", "profile_invite",
+    "profile_link_new", "profile_tag_new",
+    "profile_invite", "profile_invite_thanks",
     "speaker_list", "user_follow",
 ]

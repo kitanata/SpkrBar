@@ -1,0 +1,24 @@
+- extends 'base.haml'
+
+- block 'subnav-container' 
+  .subnav
+    .row
+      .span12
+        %h2
+          Thanks!
+
+- block 'content'
+  .row
+    .span12
+      %h3 Your invitations have been sent.
+
+
+- block 'scripts'
+  <script type="text/javascript">
+  var csPageOptions = {
+    domain_key:"F582XR5DWPXKCDCXCDZW", 
+    textarea_id:"contact_list"
+  };
+  </script>
+
+  <script type="text/javascript" src="https://api.cloudsponge.com/address_books.js"></script>

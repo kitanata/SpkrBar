@@ -1,12 +1,35 @@
 - extends 'base.haml'
 
-- block 'subnav'
+- block 'title'
+
+- block 'subnav-container' 
+  .subnav
+    .row
+      .span12
+        %h2
+          Invite your friends and colleagues to SpkrBar
 
 - block 'content'
   .row
     .span12
-      <a class="cs_import">Add from Address Book</a>
-      <textarea id="contact_list" style="width:450px;height:82px"></textarea>
+      %form#import-contacts{method:"POST", action:"/profile/invite/"}
+        - csrf_token
+        %label{for:"contact_list"} To:
+        %textarea#contact_list
+
+        %a.cs_import.btn.btn-warning
+          %i.icon-book
+          Import Address Book
+
+        .message
+          %label{for:"invite_message"} My Message:
+          %textarea#invite_message {{invite_message}}
+
+        %button.btn.btn-warning{type:"submit"}
+          %i.icon-mail-forward
+          Send Invitations
+
+
 
 - block 'scripts'
   <script type="text/javascript">

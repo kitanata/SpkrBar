@@ -12,7 +12,7 @@ body {
         margin: 0px 0px 40px 0px;
         padding: 40px 20px 150px 0px;
 
-        background-image: url('@{STATIC_URL}img/audi_callout.jpg');
+        background-image: url('@{STATIC_URL}img/audi_callout.png');
         color: white;
         text-align: left;
 
@@ -251,5 +251,25 @@ ul.basic-item-list {
         padding: 5px;
         margin: 5px 0px;
         font-size: 18px;
+    }
+}
+
+#import-contacts {
+    margin-top: 40px;
+
+    .cs_import {
+    }
+
+    .message {
+        margin-top: 40px;
+    }
+
+    textarea {
+        display: block;
+        width: 400px;
+
+        &#invite_message {
+            height: 360px;
+        }
     }
 }
