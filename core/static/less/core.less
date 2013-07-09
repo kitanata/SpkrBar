@@ -254,22 +254,52 @@ ul.basic-item-list {
     }
 }
 
-#import-contacts {
-    margin-top: 40px;
-
-    .cs_import {
-    }
-
-    .message {
+#invite-friends {
+    form {
         margin-top: 40px;
+
+        .cs_import {
+        }
+
+        .message {
+            margin-top: 40px;
+        }
+
+        textarea {
+            display: block;
+            width: 400px;
+
+            &#invite_message {
+                height: 360px;
+            }
+        }
     }
 
-    textarea {
-        display: block;
-        width: 400px;
+    .preview-container {
+        margin-top: 40px;
 
-        &#invite_message {
-            height: 360px;
+        .preview {
+            border: 1px solid #eee;
+
+            font-size: 14px;
+            line-height: 20px;
+
+            .header {
+                padding: 20px;
+                background-color: #F38E42;
+                color: #eee;
+
+                font-size: 18px;
+                font-weight: bold;
+            }
+
+            .message-body {
+                padding: 20px;
+            }
+
+            .btn {
+                margin-bottom: 10px;
+            }
         }
     }
 }

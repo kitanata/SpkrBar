@@ -10,25 +10,46 @@
           Invite your friends and colleagues to SpkrBar
 
 - block 'content'
-  .row
-    .span12
-      %form#import-contacts{method:"POST", action:"/profile/invite/"}
-        - csrf_token
-        %label{for:"contact_list"} To:
-        %textarea#contact_list
+  #invite-friends
+    .row
+      .span6
+        %form{method:"POST", action:"/profile/invite/"}
+          - csrf_token
+          %label{for:"contact_list"} To:
+          %textarea#contact_list{name:"contacts"}
 
-        %a.cs_import.btn.btn-warning
-          %i.icon-book
-          Import Address Book
+          %a.cs_import.btn.btn-warning
+            %i.icon-book
+            Import Address Book
 
-        .message
-          %label{for:"invite_message"} My Message:
-          %textarea#invite_message {{invite_message}}
+          .message
+            %label{for:"invite_message"} My Message:
+            %textarea#invite_message{name:"message"} 
+              = invite_message
 
-        %button.btn.btn-warning{type:"submit"}
-          %i.icon-mail-forward
-          Send Invitations
+          %button.btn.btn-warning{type:"submit"}
+            %i.icon-mail-forward
+              Send Invitations
+      .span6
+        .preview-container
+          Message Preview:
+          .preview
+            .header You've been invited to join SpkrBar.com!
+            %img.audi{src:"{{STATIC_URL}}/img/audi_callout.png"}
 
+            .message-body
+              Hi YourFriendsNameHere,
+
+              %p.message-preview
+                = invite_message
+              
+              %p It's free for speakers and attendees!
+
+              %a.btn.btn-warning{href:"http://www.spkrbar.com/register"} Signup Here
+
+              %p I hope to see you on there soon.
+
+              %blockquote {{user.get_full_name}}
 
 
 - block 'scripts'
@@ -37,6 +58,10 @@
     domain_key:"F582XR5DWPXKCDCXCDZW", 
     textarea_id:"contact_list"
   };
+
+  $('#invite_message').on('keydown', function() {
+    $('.message-preview').text($('#invite_message').val());
+  });
   </script>
 
   <script type="text/javascript" src="https://api.cloudsponge.com/address_books.js"></script>
