@@ -1,0 +1,31 @@
+- extends 'mobile/base.haml'
+
+- block 'content'
+  %ul{data-role:"listview", data-inset:"true", data-filter:"true"}
+    - for group in talk_groups
+      - if group.1
+        %li{data-role:"list-divider", data-theme:"a"}
+          = group.0
+          %span.ui-li-count
+            = group.1|length
+
+        - for item in group.1
+          %li
+            %a{href:"/mobile/talk/{{item.pk}}"}
+              - if item.talk.speaker.photo
+                %img{src:"{{STATIC_URL}}img/photo/{{item.talk.speaker.photo}}"}
+
+              %h2 
+                = item.talk.name|truncatechars:40
+
+              - if item.talk.tags.all
+                %ul.tags
+                  - for tag in item.talk.tags.all
+                    %li
+                      = tag.name
+
+              .clearfix
+              %p at <strong>{{ item.event.location.name }}</strong> in {{ item.event.location.city }}, {{ item.event.location.state }}
+              %p <strong>{{ item.date.date }} {{ item.date.time }}</strong>
+
+            %a{href:"/mobile/talk/{{item.talk.id}}/endorse", data-icon:"check", data-theme:"d"}

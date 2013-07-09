@@ -13,19 +13,12 @@ from core.models import SpeakerProfile
 
 from events.models import Event
 
-def group_events_by_date(talks, reverse=False):
-    talks = [{
-        'month_num': k,
-        'date': datetime(month=k[1], year=k[0], day=1).strftime("%B %Y"),
-        'events': list(g)} 
-        for k, g in groupby(talks, key=lambda x: (x.start_date.year, x.start_date.month))]
-
-    talks.sort(key=lambda x: x['month_num'], reverse=reverse)
-    return talks
+from core.helpers import template
+from talkevents.helpers import talk_event_groups
 
 def login_user(request):
     if request.method == "GET":
-        return render_to_response('mobile/login.html', 
+        return render_to_response('mobile/login.haml', 
                 context_instance=RequestContext(request))
     else:
         username = request.POST['username']
@@ -41,7 +34,7 @@ def login_user(request):
         else:
             error = "Username or password is incorrect."
 
-        return render_to_response('mobile/login.html', {'error': error},
+        return render_to_response('mobile/login.haml', {'error': error},
                 context_instance=RequestContext(request))
 
 
@@ -52,7 +45,7 @@ def logout_user(request):
 
 def register_user(request):
     if request.method == "GET":
-        return render_to_response('mobile/register.html',
+        return render_to_response('mobile/register.haml',
                 context_instance=RequestContext(request))
     else:
         username = request.POST['username']
@@ -77,30 +70,23 @@ def register_user(request):
             login(request, user)
             return redirect('/mobile/profile')
 
-        return render_to_response('mobile/register.html', {
+        return render_to_response('mobile/register.haml', {
             'error': error
             }, context_instance=RequestContext(request))
 
 
+@template('mobile/index.haml')
 def index(request):
-    events = Event.objects.all()
-
-    events = events.filter(start_date__gte=datetime.today()).order_by('start_date')[:20]
-
-    event_groups = group_events_by_date(events)
-
-    return render_to_response('mobile/index.html', {
-        'event_groups': event_groups
-        }, context_instance=RequestContext(request))
+    return {'talk_groups': talk_event_groups()}
 
 
 
 def event_detail(request):
-    return render_to_response('mobile/event-detail.html',
+    return render_to_response('mobile/event-detail.haml',
             context_instance=RequestContext(request))
 
 def search(request):
-    return render_to_response('mobile/search.html',
+    return render_to_response('mobile/search.haml',
             context_instance=RequestContext(request))
 
 def speakers(request):
@@ -109,10 +95,10 @@ def speakers(request):
     else:
         speakers = SpeakerProfile.objects.filter(Q(published=True) | Q(user=request.user))[:20]
 
-    return render_to_response('mobile/speakers.html', {
+    return render_to_response('mobile/speakers.haml', {
         'speakers': speakers
         }, context_instance=RequestContext(request))
 
 def profile(request):
-    return render_to_response('mobile/profile.html',
+    return render_to_response('mobile/profile.haml',
             context_instance=RequestContext(request))
