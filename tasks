@@ -5,9 +5,14 @@ No Bugs
 Features
 ------
 
-Speaker Ranking Algorithm
+Current Priorities
 
-Considerations
+1. Mobile App
+2. Advanced Ratings
+3. Gamification of Profile Completition
+4. Social Viral Posts
+
+Speaker Ranking Algorithm Considerations
 - Number of events I spoke at
 - Number of endorsements across all talks I've given
 - Number of talks I've given at events
@@ -51,35 +56,12 @@ Event Planner Priorities
 - As a speaker when someone I am following publishes a new talk.
 - As a speaker when someone confirmed themselves as attending one of my talks.
 
-5. Social Integrations
-- As an attendee I should be able to use the app by just logging in with my facebook account.
-- As a speaker I should be able to import my data and networks from linked in.
+5. Social Virtual Requirements
+- Post to facebook and linked in when a user registers
+- Post to facebook when a speaker creates a talk
 
 6. Other Stuff
 - If I click on a tag it should have me tag it too. Maybe with a plus sign.
-- A blog on the front page.
 - Guest Speakers
 - Comment Threads. Users can respond to comments on their talks.
 - Better Location Support (Only show 100mi radius stuff)
-- Search (for talks, for events, by name, by location, by speaker)
-
-
-Linked In OAuth
-
-Company:
-Spkrbar.com
-
-Application Name:
-SpkrBar
-
-API Key:
-u8hizh2olptn
-
-Secret Key:
-EX69nv2FmWI7yd1J
-
-OAuth User Token:
-da650c30-45b8-4a6b-bb1f-7be78244106c
-
-OAuth User Secret:
-6280e2b1-eb45-4d21-982c-2ddcd9053d0b

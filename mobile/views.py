@@ -1,5 +1,6 @@
 # Create your views here.
 from datetime import datetime
+from itertools import groupby
 
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
@@ -11,7 +12,16 @@ from django.contrib.auth.models import User
 from core.models import SpeakerProfile
 
 from events.models import Event
-from events.helpers import group_events_by_date
+
+def group_events_by_date(talks, reverse=False):
+    talks = [{
+        'month_num': k,
+        'date': datetime(month=k[1], year=k[0], day=1).strftime("%B %Y"),
+        'events': list(g)} 
+        for k, g in groupby(talks, key=lambda x: (x.start_date.year, x.start_date.month))]
+
+    talks.sort(key=lambda x: x['month_num'], reverse=reverse)
+    return talks
 
 def login_user(request):
     if request.method == "GET":
@@ -73,12 +83,9 @@ def register_user(request):
 
 
 def index(request):
-    if request.user.is_anonymous():
-        events = Event.published_events()
-    else:
-        events = Event.published_events(user_profile=request.user)
+    events = Event.objects.all()
 
-    events = events.filter(date__gt=datetime.today()).order_by('date')[:20]
+    events = events.filter(start_date__gte=datetime.today()).order_by('start_date')[:20]
 
     event_groups = group_events_by_date(events)
 
