@@ -9,6 +9,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'core.views.index'),
+    url(r'^search/$', 'core.views.search'),
     url(r'^mobile/', include('mobile.urls')),
 
     url(r'^events/$', 'events.views.event_list'),

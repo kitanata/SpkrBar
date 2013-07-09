@@ -1,44 +1,30 @@
-#speakers {
-    margin-top: 20px;
+.speaker {
+    border: 1px solid #eee;
+    padding: 10px;
+    position: relative;
+    height: 160px;
+    margin-bottom: 20px;
 
-    ul {
-        list-style-type: none;
-
-        margin: 0px;
+    .picture img {
+        max-width: 120px;
+        margin-right: 20px;
     }
 
-    h4 {
-        margin-top: 0px;
+    .description {
+        max-height: 140px;
     }
 
-    .speaker {
-        border: 1px solid #eee;
-        padding: 10px;
-        position: relative;
-        height: 160px;
-        margin-bottom: 40px;
+    .follow {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
 
-        .picture img {
-            max-width: 120px;
-            margin-right: 20px;
+        a {
+            margin-top: 20px;
         }
 
-        .description {
-            max-height: 140px;
-        }
-
-        .follow {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-
-            a {
-                margin-top: 20px;
-            }
-
-            .label {
-                padding: 10px;
-            }
+        .label {
+            padding: 10px;
         }
     }
 }

@@ -1,0 +1,77 @@
+- extends 'base.haml'
+
+- block 'subnav-container' 
+
+- block 'content'
+  - if not talks and not speakers and not events and not attendees
+    .row
+      .section-title
+        %h2 Search Returned 0 Results
+
+  - if talks
+    .row
+      .section-title
+        %h2 Talks
+    .row
+      .span12
+        .section
+          .row
+            - for item in talks
+              - include 'talkevents/_talk_event_span6_detail_partial.haml'
+
+  - if speakers
+    .row
+      .section-title
+        %h2 Speakers
+    .row
+      .span12
+        .section
+          .row
+            - for profile in speakers
+              {% include '_speaker_attendee_span6_partial.haml' %}
+
+  - if events
+    .row
+      .section-title
+        %h2 Events
+    .row
+      .span12
+        .section
+          .event-list.row{style:"margin-bottom:40px"}
+            - for event in events
+              - include 'events/_event_span6_detail_partial.haml'
+
+  - if attendees
+    .row
+      .section-title
+        %h2 Attendees
+    .row
+      .span12
+        .section
+          .row
+            - for profile in attendees
+              {% include '_speaker_attendee_span6_partial.haml' %}
+
+
+- block 'scripts'
+  - if events
+    %script{type:"text/javascript"}
+      L.Icon.Default.imagePath = '{{STATIC_URL}}img/';
+
+      - for event in events
+        - with event.location as location
+            (function() {
+              var map = L.map('map{{event.id}}', {'zoomControl': false}).setView([39.95, -82.95], 6);
+
+              L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                  attribution: ''
+                  }).addTo(map);
+
+              var url = "http://nominatim.openstreetmap.org/search/{{location.geocode_querystring}}?format=json"
+              $.get(url, function(data) {
+                  if(data.length != 0) {
+                      L.marker([data[0].lat, data[0].lon]).addTo(map);
+                      map.setView([data[0].lat, data[0].lon], 14);
+                  }
+              });
+            }).call(this);

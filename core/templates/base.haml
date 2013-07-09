@@ -49,72 +49,81 @@
             %a{href:"/"}
               %img{src:"{{STATIC_URL}}img/logo.png"}
           .span9
-            %ul.nav.nav-pills.pull-right
-              %li
-                %a{href:"/talks"}
-                  %i.icon-comments-alt
-                  Talks
-              %li
-                %a{href:"/speakers"}
-                  %i.icon-group
-                  Speakers
-              %li
-                %a{href:"/events"}
-                  %i.icon-calendar
-                  Events
-
-              - if not user.is_anonymous
-                - if user.is_speaker
+            .row
+              .span9
+                .search.pull-right
+                  %form{method:"GET", action:"/search"}
+                    %input.search-query{name:"query", type:"text", placeholder:"Search"}
+                    %button.btn.btn-warning
+                      %i.icon-search
+            .row
+              .span9
+                %ul.nav.nav-pills.pull-right
                   %li
-                    %a.add-talk{href:"#add-talk-popup"}
-                      %i.icon-plus
-                      Add Talk
-                - elif user.is_event_planner
+                    %a{href:"/talks"}
+                      %i.icon-comments-alt
+                      Talks
                   %li
-                    %a.add-event{href:"/event/new"}
-                      %i.icon-plus
-                      Add Event
+                    %a{href:"/speakers"}
+                      %i.icon-group
+                      Speakers
+                  %li
+                    %a{href:"/events"}
+                      %i.icon-calendar
+                      Events
 
-              %li
-                %a{href:"/blog"}
-                  %i.icon-file-text
-                  Blog
-
-              - if user.is_anonymous
-                %li
-                  %a{href:"/login"}
-                    %i.icon-signin
-                    Login
-                %li
-                  %a{href:"/register"} Register
-              - else
-                %li.dropdown
-                  %a.dropdown-toggle{data-toggle:"dropdown", href:"#"}
-                    %i.icon-gear
-                    My Account
-                    %b.caret
-
-                  - if user.notification_set.all
-                    Notifications
-
-                  %ul.dropdown-menu
-                    %li
-                      %a{href:"{{user.get_absolute_url}}"}
-                        %i.icon-user
-                        My Profile
-                    %li
-                      %a{href:"/profile/invite"}
-                        %i.icon-mail-forward
-                        Send Invites
-                    - if user.is_superuser
+                  - if not user.is_anonymous
+                    - if user.is_speaker
                       %li
-                        %a{href:"/admin"}
-                          %i.icon-gears
-                          Administration
+                        %a.add-talk{href:"#add-talk-popup"}
+                          %i.icon-plus
+                          Add Talk
+                    - elif user.is_event_planner
+                      %li
+                        %a.add-event{href:"/event/new"}
+                          %i.icon-plus
+                          Add Event
+
+                  %li
+                    %a{href:"/blog"}
+                      %i.icon-file-text
+                      Blog
+
+                  - if user.is_anonymous
                     %li
-                      %a{href:"/logout"}
-                        %i.icon-signout
-                        Logout
+                      %a{href:"/login"}
+                        %i.icon-signin
+                        Login
+                    %li
+                      %a{href:"/register"} Register
+                  - else
+                    %li.dropdown
+                      %a.dropdown-toggle{data-toggle:"dropdown", href:"#"}
+                        %i.icon-gear
+                        My Account
+                        %b.caret
+
+                      - if user.notification_set.all
+                        Notifications
+
+                      %ul.dropdown-menu
+                        %li
+                          %a{href:"{{user.get_absolute_url}}"}
+                            %i.icon-user
+                            My Profile
+                        %li
+                          %a{href:"/profile/invite"}
+                            %i.icon-mail-forward
+                            Send Invites
+                        - if user.is_superuser
+                          %li
+                            %a{href:"/admin"}
+                              %i.icon-gears
+                              Administration
+                        %li
+                          %a{href:"/logout"}
+                            %i.icon-signout
+                            Logout
 
       - block 'subnav-container' 
         .subnav

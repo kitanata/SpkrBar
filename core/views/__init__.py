@@ -1,4 +1,5 @@
 from index import index
+from search import search
 
 from register_user import register_user
 from register_speaker import register_speaker
@@ -20,7 +21,7 @@ from speaker_list import speaker_list
 from user_follow import user_follow
 
 __all__ = [
-    "index",
+    "index", "search",
     "register_user", "login_user", "logout_user",
     'register_speaker', 'register_attendee', 'register_event',
     "profile_detail", "profile_edit", "profile_edit_photo",

@@ -6,27 +6,6 @@
 - block 'subnav'
 
 - block 'content'
-  #speakers.row
-    - for speaker in speakers
-      .span6
-        .speaker
-          .picture
-            - if speaker.photo
-              %img.pull-left{src:"{{MEDIA_URL}}{{ speaker.photo}}"}
-            - else
-              %i.pull-left.icon-user.photo-placeholder
-
-          .description
-            %h4
-              %a{href:"{{ speaker.get_absolute_url }}"}
-                {{ speaker.user.get_full_name }}
-
-            - if speaker.tags.all
-              Expert In:
-              - for tag in speaker.tags.all|slice:":5"
-                .label.label-info {{tag|title}}
-
-            .about {{ speaker.about_me|truncatechars:140 }}
-
-          - with speaker.user as other_user
-            - include '_follow_user_partial.haml'
+  .row
+    - for profile in speakers
+      {% include '_speaker_attendee_span6_partial.haml' %}

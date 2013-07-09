@@ -31,17 +31,25 @@ body {
     }
 
     .masthead {
-        padding: 20px 20px 0px 20px;
+        padding: 6px 20px 0px 20px;
         border-bottom: 1px solid #eee;
 
         .nav {
-            margin: 40px 0px 0px 0px;
+            margin: 10px 0px 0px 0px;
 
             font-size: 16px;
+        }
+
+        .search {
+            margin-top: 6px;
+            form {
+                margin-bottom: 0px;
+            }
         }
     }
 
     .subnav {
+        margin-bottom: 20px;
         background-color: #F38E42;
         padding: 0px 20px;
         color: #eee;
@@ -224,6 +232,10 @@ ul.basic-item-list {
     }
 }
 
+.section {
+    margin: 20px 0px 20px 0px;
+}
+
 .buffer {
     margin-top: 20px;
 }
@@ -256,8 +268,6 @@ ul.basic-item-list {
 
 #invite-friends {
     form {
-        margin-top: 40px;
-
         .cs_import {
         }
 
@@ -270,36 +280,32 @@ ul.basic-item-list {
             width: 400px;
 
             &#invite_message {
-                height: 360px;
+                height: 200px;
             }
         }
     }
 
-    .preview-container {
-        margin-top: 40px;
+    .preview {
+        border: 1px solid #eee;
 
-        .preview {
-            border: 1px solid #eee;
+        font-size: 14px;
+        line-height: 20px;
 
-            font-size: 14px;
-            line-height: 20px;
+        .header {
+            padding: 20px;
+            background-color: #F38E42;
+            color: #eee;
 
-            .header {
-                padding: 20px;
-                background-color: #F38E42;
-                color: #eee;
+            font-size: 18px;
+            font-weight: bold;
+        }
 
-                font-size: 18px;
-                font-weight: bold;
-            }
+        .message-body {
+            padding: 20px;
+        }
 
-            .message-body {
-                padding: 20px;
-            }
-
-            .btn {
-                margin-bottom: 10px;
-            }
+        .btn {
+            margin-bottom: 10px;
         }
     }
 }
