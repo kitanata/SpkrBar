@@ -1,17 +1,59 @@
-{% extends 'mobile/base.html' %}
+- extends 'mobile/base.haml'
 
-{% block 'content' %}
-    <p>Your theme was successfully downloaded. You can use this page as a reference for how to link it up!</p>
-    <pre>
-    </pre>
-    <p>This is content color swatch "A" and a preview of a <a href="#" class="ui-link">link</a>.</p>
-    <label for="slider1">Input slider:</label>
-    <input type="range" name="slider1" id="slider1" value="50" min="0" max="100" data-theme="a" />
-    <fieldset data-role="controlgroup"  data-type="horizontal" data-role="fieldcontain">
-    <legend>Cache settings:</legend>
-    <input type="radio" name="radio-choice-a1" id="radio-choice-a1" value="on" checked="checked" />
-    <label for="radio-choice-a1">On</label>
-    <input type="radio" name="radio-choice-a1" id="radio-choice-b1" value="off"  />
-    <label for="radio-choice-b1">Off</label>
-    </fieldset>
-{% endblock %}
+- block 'content'
+  .speaker
+    .blurb
+      .photo
+        - if profile.photo
+          %img{src:"{{STATIC_URL}}img/photo/{{profile.photo}}"}
+        - else
+          %img{src:"{{STATIC_URL}}mobile/images/user.png"}
+      .description
+        .name
+          = profile.user.get_full_name
+
+        - if profile.tags.all
+          %ul.tags
+            - for tag in profile.tags.all
+              %li
+                = tag.name
+        .about
+          = profile.about_me
+
+    %div{data-role:"collapsible-set", data-theme:"a", data-content-theme:"a"}
+      - if profile.user.followers.all
+        %div{data-role:"collapsible", data-theme:"a", data-content-theme:"a", data-collapsed:"false"}
+          %h2 Followers
+          %ul{data-role:"listview"}
+            - for follower in profile.user.followers.all
+              %li
+                %a{href:"/mobile/profile/{{follower.user.username}}"}
+                  = follower.get_full_name
+
+      - if profile.user.following.all
+        %div{data-role:"collapsible", data-theme:"a", data-content-theme:"a"}
+          %h2 Following
+          %ul{data-role:"listview"}
+            - for following in profile.user.following.all
+              %li
+                %a{href:"/mobile/profile/{{following.user.username}}"}
+                  = following.get_full_name
+
+    %div{data-role:"collapsible-set", data-theme:"a", data-content-theme:"a"}
+      - if upcoming
+        %div{data-role:"collapsible", data-theme:"a", data-content-theme:"a", data-collapsed:"false"}
+          %h2 Upcoming Talks
+          %ul{data-role:"listview"}
+            - for talk in upcoming
+              %li
+                %a{href:"/mobile/talk/{{talk.talk.pk}}"}
+                  = talk.talk.name
+
+      - if attending
+        %div{data-role:"collapsible", data-theme:"a", data-content-theme:"a"}
+          %h2 Talks You Are Attending
+          %ul{data-role:"listview"}
+            - for talk in attending
+              %li
+                %a{href:"/mobile/talk/{{talk.talk.pk}}"}
+                  = talk.talk.name

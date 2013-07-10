@@ -15,6 +15,7 @@ from events.models import Event
 
 from core.helpers import template
 from talkevents.helpers import talk_event_groups
+from talkevents.models import TalkEvent
 
 def login_user(request):
     if request.method == "GET":
@@ -89,16 +90,24 @@ def search(request):
     return render_to_response('mobile/search.haml',
             context_instance=RequestContext(request))
 
+@template('mobile/speakers.haml')
 def speakers(request):
-    if request.user.is_anonymous():
-        speakers = SpeakerProfile.objects.filter(Q(published=True))[:20]
-    else:
-        speakers = SpeakerProfile.objects.filter(Q(published=True) | Q(user=request.user))[:20]
+    speakers = SpeakerProfile.objects.all()
+    return {'speakers': speakers}
 
-    return render_to_response('mobile/speakers.haml', {
-        'speakers': speakers
-        }, context_instance=RequestContext(request))
-
+@template('mobile/profile.haml')
 def profile(request):
-    return render_to_response('mobile/profile.haml',
-            context_instance=RequestContext(request))
+
+    profile = request.user.get_profile()
+
+    upcoming = TalkEvent.objects.filter(
+            Q(talk__published=True) | 
+            Q(talk__speaker__user=request.user),
+            Q(date__gte=datetime.today()))
+
+    attending = profile.user.attending.filter(
+            date__gte=datetime.today())
+
+    return {'profile': profile,
+            'upcoming': upcoming,
+            'attending': attending}

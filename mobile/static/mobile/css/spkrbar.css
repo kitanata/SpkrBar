@@ -513,4 +513,15 @@ a.ui-link-inherit {
 	outline-width: 1px;
 	outline-style: auto;
 }
-			
+
+.ui-collapsible-heading-toggle.ui-btn-up-a {
+    color: whitesmoke;
+    text-shadow: none;
+    background: #F89406;
+}
+
+.ui-collapsible-heading-toggle.ui-btn-hover-a {
+    color: whitesmoke;
+    text-shadow: none;
+    background: #FAA937;
+}

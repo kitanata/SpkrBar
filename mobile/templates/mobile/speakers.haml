@@ -1,28 +1,21 @@
-{% extends 'mobile/base.html' %}
+- extends 'mobile/base.html'
 
-{% block 'content' %}
-    <ul data-role="listview" data-filter="true" data-filter-placeholder="Search fruits..." data-inset="true">
-        {% for speaker in speakers %}
-            <li>
-                <a href="/mobile/speaker/{{speaker.user.username}}">
-                    {% if speaker.photo %}
-                        <img src="{{STATIC_URL}}img/photo/{{ speaker.photo}}"></img>
-                    {% else %}
-                        <img src="{{STATIC_URL}}mobile/images/user.png"></img>
-                    {% endif %}
+- block 'content'
+  %ul{data-role:"listview", data-filter:"true", data-filter-placeholder:"Search...", data-inset:"true"}
+    - for speaker in speakers
+        %li
+          %a{href:"/mobile/speaker/{{speaker.user.username}}"}
+            - if speaker.photo
+                <img src="{{STATIC_URL}}img/photo/{{ speaker.photo}}"></img>
+            - else
+                <img src="{{STATIC_URL}}mobile/images/user.png"></img>
 
-                    <h4>{{ speaker.user.get_full_name }}</h4>
+            <h4>{{ speaker.user.get_full_name }}</h4>
 
-                    {% if speaker.tags.all %}
-                        Expert In:
-                        {% for tag in speaker.tags.all|slice:":5" %}
-                            <div class="label label-info">{{tag|title}}</div>
-                        {% endfor %}
-                    {% endif %}
+            - if speaker.tags.all
+              %ul.tags
+                - for tag in speaker.tags.all
+                  %li
+                    = tag.name
 
-                    {{ speaker.talk_set.count }} Talks
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
-{% endblock %}
+            {{ speaker.talk_set.count }} Talks

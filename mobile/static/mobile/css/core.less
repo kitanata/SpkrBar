@@ -13,6 +13,7 @@
 
 @background: #F89406;
 @button: lighten(@background, 10%);
+@redcolor: #D46961;
 
 ul.tags {
     margin: 0px 0px 10px 0px;
@@ -36,6 +37,51 @@ ul.tags li {
     -moz-border-radius: 5px 5px 5px 5px;
 }
 
+.pull-right {
+    float: right;
+}
+
+.pull-left {
+    float: left;
+}
+
 .clearfix {
     clear: both;
+}
+
+.speaker {
+    .blurb {
+        border: 1px solid @redcolor;
+        border-radius: 5px;
+        -moz-border-radius: 5px;
+        background-color: #eee;
+        padding: 10px;
+        
+        .photo {
+            display: inline-block;
+            width: 19%;
+
+            img {
+                max-width: 60px;
+            }
+        }
+
+        .description {
+            display: inline-block;
+            vertical-align: top;
+            width: 79%;
+            height: 100%;
+
+            .name {
+                font-size: 16px;
+                line-height: 23px;
+                font-weight: 600;
+            }
+
+            .about {
+                font-size: 14px;
+                line-height: 20px;
+            }
+        }
+    }
 }
