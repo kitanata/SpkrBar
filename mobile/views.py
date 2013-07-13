@@ -2,14 +2,14 @@
 from datetime import datetime
 from itertools import groupby
 
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template import RequestContext
 from django.db import IntegrityError
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
-from core.models import SpeakerProfile
+from core.models import SpeakerProfile, SpkrbarUser
 
 from events.models import Event
 
@@ -81,14 +81,20 @@ def index(request):
     return {'talk_groups': talk_event_groups()}
 
 
+@template('mobile/talk_detail.haml')
+def talk_detail(request, talk_id):
+    return {'talk_event' : get_object_or_404(TalkEvent, pk=talk_id) }
 
+
+@template('mobile/event-detail.haml')
 def event_detail(request):
-    return render_to_response('mobile/event-detail.haml',
-            context_instance=RequestContext(request))
+    pass
 
+
+@template('mobile/search.haml')
 def search(request):
-    return render_to_response('mobile/search.haml',
-            context_instance=RequestContext(request))
+    pass
+
 
 @template('mobile/speakers.haml')
 def speakers(request):
@@ -99,10 +105,23 @@ def speakers(request):
 def profile(request):
 
     profile = request.user.get_profile()
+    return build_profile(profile)
 
+
+@template('mobile/speaker_detail.haml')
+def profile_detail(request, username):
+    profile = get_object_or_404(SpkrbarUser, username=username).get_profile()
+
+    if profile.user.is_speaker() or profile.user.is_attendee():
+        return build_profile(profile)
+    else:
+        return redirect("/mobile/profile")
+
+
+def build_profile(profile):
     upcoming = TalkEvent.objects.filter(
             Q(talk__published=True) | 
-            Q(talk__speaker__user=request.user),
+            Q(talk__speaker__user=profile.user),
             Q(date__gte=datetime.today()))
 
     attending = profile.user.attending.filter(
@@ -111,3 +130,4 @@ def profile(request):
     return {'profile': profile,
             'upcoming': upcoming,
             'attending': attending}
+

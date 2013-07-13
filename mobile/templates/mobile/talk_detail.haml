@@ -1,0 +1,37 @@
+- extends 'mobile/base.haml'
+
+- block 'content'
+  .speaker
+    .blurb
+      .photo
+        - if talk_event.speaker.photo
+          %img{src:"{{STATIC_URL}}img/photo/{{talk_event.speaker.photo}}"}
+        - else
+          %img{src:"{{STATIC_URL}}mobile/images/user.png"}
+        = talk_event.speaker.user.get_full_name
+
+      .description
+        .name
+          = talk_event.talk.name
+          %br
+          At <strong>{{ talk_event.event.location.name }}</strong> in {{ talk_event.event.location.city }}, {{ talk_event.event.location.state }}
+          %br
+          <strong>{{ talk_event.date.date }} {{ talk_event.date.time }}</strong>
+
+        - if talk_event.talk.tags.all
+          %ul.tags
+            - for tag in talk_event.talk.tags.all
+              %li
+                = tag.name
+        .about
+          = talk_event.talk.abstract
+
+    %div{data-role:"collapsible-set", data-theme:"a", data-content-theme:"a"}
+      - if talk_event.attendees.all
+        %div{data-role:"collapsible", data-theme:"a", data-content-theme:"a", data-collapsed:"false"}
+          %h2 Attendees
+          %ul{data-role:"listview"}
+            - for attendee in talk_event.attendees.all
+              %li
+                %a{href:"/mobile/profile/{{attendee.username}}"}
+                  = attendee.get_full_name

@@ -4,7 +4,7 @@
   %ul{data-role:"listview", data-filter:"true", data-filter-placeholder:"Search...", data-inset:"true"}
     - for speaker in speakers
         %li
-          %a{href:"/mobile/speaker/{{speaker.user.username}}"}
+          %a{href:"/mobile/profile/{{speaker.user.username}}"}
             - if speaker.photo
                 <img src="{{STATIC_URL}}img/photo/{{ speaker.photo}}"></img>
             - else
