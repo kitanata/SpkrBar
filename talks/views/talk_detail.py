@@ -10,6 +10,7 @@ from core.models import SpeakerProfile, SpkrbarUser
 from core.helpers import template
 
 from talks.models import Talk
+from talks.forms import TalkRatingForm
 
 @template('talks/talk_detail.haml')
 def talk_detail(request, talk_id):
@@ -23,6 +24,7 @@ def talk_detail(request, talk_id):
 
     user_attendance = False
     user_endorsed = False
+    user_rated = False
     will_have_links = False
 
     attendees = attendees.filter()
@@ -34,10 +36,9 @@ def talk_detail(request, talk_id):
             pass
 
         user_endorsed = (request.user in talk.endorsements.all())
+        user_rated = (request.user in [x.rater for x in talk.ratings.all()])
 
-        will_have_links = (request.user == talk.speaker)
-
-    will_have_links = not user_attendance or not user_endorsed
+        will_have_links = True
 
     photos = talk.talkphoto_set.all()
 
@@ -51,6 +52,8 @@ def talk_detail(request, talk_id):
 
     events_accepting_talks = Event.objects.filter(accept_submissions=True)
 
+    rating_form = TalkRatingForm()
+
     return {
         'last': talk.get_absolute_url(),
         'talk': talk,
@@ -60,6 +63,8 @@ def talk_detail(request, talk_id):
         'attendees': attendees,
         'user_attendance': user_attendance,
         'user_endorsed': user_endorsed,
+        'user_rated': user_rated,
         'will_have_links': will_have_links,
-        'events_accepting_talks': events_accepting_talks
+        'events_accepting_talks': events_accepting_talks,
+        'rating_form': rating_form,
         }

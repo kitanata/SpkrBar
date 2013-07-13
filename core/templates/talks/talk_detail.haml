@@ -34,16 +34,25 @@
                   %a.btn.btn-warning.recruit-talk{href:"#recruit-talk-popup", data-toggle:"tooltip", data-original-title:"Recruit this talk."}
                     %i.icon-hand-right
                     Recruit Talk
-                - if user_attending 
+                - if user_attendance
                   - if not user_endorsed
                     %a.btn.btn-warning{href:"/talk/{{talk.id}}/endorse?last={{last}}"}
-                      %i.icon-thumbs-up Endorse
+                      %i.icon-thumbs-up
+                      Endorse
                   - else
                     %a.btn.disabled.btn-warning
                       %i.icon-thumbs-up
-                - elif event and not user_attending
-                  %a.btn.btn-warning{href:"/talk_event/{{event.id}}/attend?last={{last}}"}
-                    %i.icon-calendar Attend
+                      Endorsed
+                  - if not user_rated
+                    %a.btn.btn-warning.rate-talk{href:"#rate-talk-popup", data-toggle:"tooltip", data-original-title:"Rate this talk."}
+                      %i.icon-legal
+                      Rate
+                  - else
+                    %a.btn.disabled.btn-warning
+                      %i.icon-legal
+                      Rated
+
+
       - else
         .span12
           %h2
@@ -222,7 +231,7 @@
               %ul
                 - for comment in talk.talkcomment_set.all
                   %li
-                    %h4 {{comment.reviewer.user.get_full_name}} said...
+                    %h4 {{comment.commenter.get_full_name}} said...
                     %p {{comment.comment}}
             - else
               No comments yet.

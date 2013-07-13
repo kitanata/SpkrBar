@@ -12,7 +12,7 @@ def talk_comment_new(request, talk_id):
         if not request.user.is_anonymous():
             comment = TalkComment(
                     talk=talk,
-                    reviewer=request.user,
+                    commenter=request.user,
                     comment= request.POST['comment'])
 
         comment.save()

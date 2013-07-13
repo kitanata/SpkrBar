@@ -7,20 +7,19 @@ Features
 
 Current Priorities
 
-1. Mobile App
-2. Advanced Ratings
-3. Gamification of Profile Completition
-4. Social Viral Posts
+1. Gamification of Profile Completition
+2. Social Viral Posts
 
 Speaker Ranking Algorithm Considerations
+- Average Rating among all talks
 - Number of events I spoke at
 - Number of endorsements across all talks I've given
 - Number of talks I've given at events
 - Number of followers
 
 Event Planner Priorities
-- Handle Registration and do kickstarter like pledge and ticket levels with different rewards
 - Data analytics and reports and visualizations (on attendance, talks, speakers, whats hot or trending etc)
+- Handle Registration and do kickstarter like pledge and ticket levels with different rewards
 - Everybody that Registered
 - Everybody that showed
 - Everybody that registered but didn't come
@@ -39,14 +38,7 @@ Event Planner Priorities
 - As an attendee I should be able to comment on a talk on my mobile phone.
 
 3. Advanced Ratings (Survey)
-- As an attendee I should be able to rate a speaker on 5 qualities.
-   - Engagement - Did the speaker keep attendees at the talk engaged and interested in the topic being presented?
-   - Knowledge - Did the speaker seem extremely knowledgable on the subject?
-   - Professionalism - Did the speaker remain professional throughout the talk?
-   - Resources - Did the speaker offer external resources for attendees such as websites or presentation slides?
-   - Discussion - Did the speaker encourage further discussion on the topic and answer questions appropriately?
 - As a speaker I should be able to enable or disable this on my talks.
-- Put the rate button next to the endorse button. Put the rating form/ajax inside a colorbox.
 
 4. Notifications
 - As a speaker when someone follows me.
