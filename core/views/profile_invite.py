@@ -31,6 +31,9 @@ def profile_invite(request):
 
             <blockquote>$username</blockquote>""")
 
+        request.user.num_invites += len(contacts)
+        request.user.save()
+
         messages = []
         for contact in contacts:
             if contact[0]:

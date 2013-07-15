@@ -43,7 +43,7 @@ class TalkRating(models.Model):
         (5, '5 - The speaker involved everyone in the talk and encouraged continuing discussions beyond the event.'))
 
     talk = models.ForeignKey('Talk', related_name="ratings")
-    rater = models.ForeignKey('core.SpkrbarUser', null=True)
+    rater = models.ForeignKey('core.SpkrbarUser', related_name="talk_ratings", null=True)
     datetime = models.DateTimeField(default=datetime.now())
 
     engagement = models.IntegerField(choices=ENGAGE_RATING_CHOICES, default=1)

@@ -14,6 +14,7 @@ class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
         )
 
     username = models.CharField(max_length=30, unique=True)
+    num_invites = models.IntegerField(default=0)
     email = models.EmailField()
 
     is_staff = models.BooleanField(_('staff status'), default=False,
@@ -29,6 +30,7 @@ class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
 
     following = models.ManyToManyField('self', 
             related_name="followers", symmetrical=False)
+
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email', 'user_type']
