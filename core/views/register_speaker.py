@@ -9,7 +9,7 @@ from core.helpers import template, send_html_mail
 from core.forms import SpeakerRegisterForm
 from core.models import SpkrbarUser, SpeakerProfile, EventProfile
 
-email_template = loader.get_template('mail/register_speaker.html')
+email_template = loader.get_template('mail/register.html')
 
 @template('auth/register_speaker.haml')
 def register_speaker(request):
