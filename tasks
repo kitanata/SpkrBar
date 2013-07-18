@@ -1,6 +1,7 @@
 Bugs
 ------
-No Bugs
+1. Add location on event creation page does not popup a location form.
+2. Create event submit button on event creation page does not submit the form.
 
 Features
 ------

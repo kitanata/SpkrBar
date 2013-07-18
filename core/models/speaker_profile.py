@@ -32,5 +32,8 @@ class SpeakerProfile(models.Model):
 
         return events.filter(date__lt=datetime.now()).order_by('-date')
 
+    def __str__(self):
+        return self.user.get_full_name()
+
     class Meta:
         app_label = 'core'

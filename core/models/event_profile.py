@@ -11,5 +11,8 @@ class EventProfile(models.Model):
     def get_absolute_url(self):
         return "/profile/" + self.user.username
 
+    def __str__(self):
+        return self.user.get_full_name()
+
     class Meta:
         app_label = 'core'
