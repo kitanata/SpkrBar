@@ -21,9 +21,6 @@
                 border-left: 2px solid rgb(175,150,130);
                 border-right: 2px solid rgb(175,150,130);
                 border-bottom: 2px solid rgb(175,150,130);
-
-                -webkit-box-shadow: 0px 3px 5px 2px rgb(175,150,130);
-                box-shadow: 0px 3px 5px 2px rgb(175,150,130);
             }
 
             .header {
@@ -106,21 +103,18 @@
                 color: #ffffff;
                 background-color: #f89406;
             }
-
-            img.audi {
-                position: relative;
-                width: 800px;
-            }
         </style>
     </head>
 
-    <body>
-        <div class="content">
-            <div class="header">You've been invited to join SpkrBar.com!</div>
-            <img class="audi" src="http://www.spkrbar.com/static/img/audi_callout.png">
+    <body style="background-color: rgb(230, 190, 160); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 22px;">
+        <div style="display: block; margin: 20px auto 20px auto; width: 800px; background-color: white; border-left: 2px solid rgb(175,150,130); border-right: 2px solid rgb(175,150,130); border-bottom: 2px solid rgb(175,150,130);">
+            <div style="padding: 20px; background-color: #F38E42; color: #eee; font-size: 32px; font-weight: bold;">
+                You've been invited to join SpkrBar.com!
+            </div>
+            <img style="position: relative; width:800px" src="http://www.spkrbar.com/static/img/audi_callout.png" />
 
             <div class="message-body">
-                {{ message }}
+                {{ message|safe }}
             </div>
         </div>
     </body>
