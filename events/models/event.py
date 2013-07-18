@@ -12,7 +12,7 @@ class Event(models.Model):
     attendees = models.ManyToManyField(
             'core.SpkrbarUser', related_name='events_attending', blank=True)
     endorsements = models.ManyToManyField(
-            'core.SpkrbarUser', related_name='events_endorsed')
+            'core.SpkrbarUser', related_name='events_endorsed', blank=True)
 
 
     def __str__(self):
