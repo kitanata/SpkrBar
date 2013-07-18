@@ -47,7 +47,7 @@ def profile_invite(request):
                 c = Context({"message": mes})
 
                 messages.append(("You've been invited to Spkrbar.com!",
-                    mes, email_template.render(c), user.email, [email]))
+                    mes, email_template.render(c), request.user.email, [email]))
 
         send_mass_html_mail(messages, fail_silently=False)
         return redirect('/profile/invite/thanks')
