@@ -207,6 +207,11 @@ LOGGING = {
             'datefmt' : "%d/%b/%Y %H:%M:%S"
         },
     },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
     'handlers': {
         'null': {
             'level':'DEBUG',
@@ -245,15 +250,15 @@ LOGGING = {
             'propagate': True,
             'level':'WARN',
         },
-        'django.request': {
-            'handlers': ['mail_admins', 'logfile'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
         'django.db.backends': {
             'handlers': ['console', 'db_logfile'],
             'level': 'DEBUG',
             'propagate': False,
+        },
+        'django.request': {
+            'handlers': ['mail_admins', 'logfile'],
+            'level': 'ERROR',
+            'propagate': True,
         },
         '': {
             'handlers': ['console', 'logfile'],
