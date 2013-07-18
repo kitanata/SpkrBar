@@ -2,12 +2,15 @@ from django.shortcuts import redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.forms.util import ErrorList
-
+from django.template import loader, Context
 from django.db import IntegrityError
+from django.core.mail import send_mail
 
 from core.helpers import template
 from core.forms import EventRegisterForm
 from core.models import SpkrbarUser, SpeakerProfile, EventProfile
+
+email_template = loader.get_template('mail/register_event.html')
 
 @template('auth/register_event.haml')
 def register_event(request):
@@ -17,7 +20,7 @@ def register_event(request):
         if form.is_valid():
             name = form.cleaned_data['name']
             description = form.cleaned_data['description']
-            username = form.cleaned_data['username']
+            username = form.cleaned_data['username'].lower()
             password = form.cleaned_data['password']
             confirm = form.cleaned_data['confirm']
             email = form.cleaned_data['email']
@@ -43,6 +46,10 @@ def register_event(request):
             profile.name = name
             profile.description = description
             profile.save()
+
+            mes = email_template.render(Context())
+            send_mail("Welcome to SpkrBar", mes, "no-reply@spkrbar.com",
+                    [user.email], fail_silently=False)
 
             user = authenticate(username=username, password=password)
             login(request, user)

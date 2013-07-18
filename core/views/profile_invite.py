@@ -2,13 +2,12 @@ from string import Template as StringTemplate
 from email.utils import parseaddr
 from django.shortcuts import redirect
 from django.core.mail import send_mass_mail
+from django.template import loader, Context
 
 from core.helpers import template
+from config.settings import DEFAULT_FROM_EMAIL
 
-email_template = ""
-
-with open('mail/invite.html') as email_file:
-    email_template = StringTemplate(''.join(email_file.readlines()))
+email_template = loader.get_template('mail/invite.html')
 
 @template('auth/invite.haml')
 def profile_invite(request):
@@ -33,18 +32,24 @@ def profile_invite(request):
 
         messages = []
         for contact in contacts:
-            if contact[0]:
-                mes = whole_message.substitute(
-                        name=contact[0], message=message,
-                        username=request.user.get_full_name())
-            else:
-                mes = whole_message.substitute(
-                        name="Friend", message=message,
-                        username=request.user.get_full_name())
+            email = contact[1]
+            try SpkrbarUser.objects.get(email=email):
+                pass
+            except:
+                if contact[0]:
+                    mes = whole_message.substitute(
+                            name=contact[0], message=message,
+                            username=request.user.get_full_name())
+                else:
+                    mes = whole_message.substitute(
+                            name="Friend", message=message,
+                            username=request.user.get_full_name())
 
-            messages.append(("You've been invited to Spkrbar.com!",
-                        email_template.substitute(message=mes),
-                        'invite@spkrbar.com', [contact[0]]))
+                c = Context({"message": mes})
+
+                messages.append(("You've been invited to Spkrbar.com!",
+                            email_template.render(c),
+                            DEFAULT_FROM_EMAIL, [email]))
 
         send_mass_mail(messages, fail_silently=False)
         return redirect('/profile/invite/thanks')

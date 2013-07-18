@@ -61,6 +61,17 @@ urlpatterns = patterns('',
     url(r'^login/$', 'core.views.login_user'),
     url(r'^logout/$', 'core.views.logout_user'),
     url(r'^register/$', 'core.views.register_user'),
+    url(r'^forgot/$', 'django.contrib.auth.views.password_reset', {
+        'template_name': "auth/password_reset.haml",
+        'email_template_name': "mail/password_reset.html",
+        'subject_template_name': "mail/password_reset_subject.txt",
+        'post_reset_redirect': '/' }),
+    url(r'^forgot-confirm/(?P<uidb36>\d+)/(?P<token>[\d\w-]+)/$', 
+            'django.contrib.auth.views.password_reset_confirm', {
+                'template_name': "auth/password_reset_confirm.haml",
+                'post_reset_redirect': '/login'
+                }),
+    
     url(r'^register/speaker/$', 'core.views.register_speaker'),
     url(r'^register/attendee/$', 'core.views.register_attendee'),
     url(r'^register/event/$', 'core.views.register_event'),

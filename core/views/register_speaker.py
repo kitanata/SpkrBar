@@ -2,12 +2,15 @@ from django.shortcuts import redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.forms.util import ErrorList
-
+from django.template import loader, Context
 from django.db import IntegrityError
+from django.core.mail import send_mail
 
 from core.helpers import template
 from core.forms import SpeakerRegisterForm
 from core.models import SpkrbarUser, SpeakerProfile, EventProfile
+
+email_template = loader.get_template('mail/register_speaker.html')
 
 @template('auth/register_speaker.haml')
 def register_speaker(request):
@@ -15,7 +18,7 @@ def register_speaker(request):
         form = SpeakerRegisterForm(request.POST)
 
         if form.is_valid():
-            username = form.cleaned_data['username']
+            username = form.cleaned_data['username'].lower()
 
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
@@ -36,6 +39,7 @@ def register_speaker(request):
                 user.user_type = SpkrbarUser.USER_TYPE_SPEAKER
                 user.save()
             except IntegrityError as e:
+                print e
                 errors = form._errors.setdefault("password", ErrorList())
                 errors.append("That username is taken. Try another.")
 
@@ -47,6 +51,10 @@ def register_speaker(request):
             profile.last_name = last_name
             profile.about_me = about_me
             profile.save()
+
+            mes = email_template.render(Context())
+            send_mail("Welcome to SpkrBar", mes, "no-reply@spkrbar.com",
+                    [user.email], fail_silently=False)
 
             user = authenticate(username=username, password=password)
             login(request, user)

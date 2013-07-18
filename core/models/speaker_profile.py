@@ -1,4 +1,3 @@
-from django.contrib.auth.models import UserManager
 from django.db import models
 
 class SpeakerProfile(models.Model):
@@ -11,8 +10,6 @@ class SpeakerProfile(models.Model):
     photo = models.ImageField(upload_to="photo")
 
     tags = models.ManyToManyField('core.ProfileTag')
-
-    objects = UserManager()
 
     def get_absolute_url(self):
         return "/profile/" + self.user.username
