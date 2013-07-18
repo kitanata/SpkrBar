@@ -5,7 +5,7 @@ class Talk(models.Model):
     speaker = models.ForeignKey('core.SpeakerProfile')
 
     name = models.CharField(max_length=140)
-    abstract = models.CharField(max_length=800)
+    abstract = models.CharField(max_length=4000)
 
     published = models.BooleanField(default=True)
 

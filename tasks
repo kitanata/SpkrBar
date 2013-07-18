@@ -2,6 +2,10 @@ Bugs
 ------
 1. Add location on event creation page does not popup a location form.
 2. Create event submit button on event creation page does not submit the form.
+4. Signing up as a speaker sometimes causes a 500 internal service error. (The about me is more than 500 characters. Need a better error to show the user, need to lengthen this to 2000 characters. Don't create the user if we cant create the profile.)
+5. Adding a talk from a talk detail page causes a 404 on submission.
+6. Make the talk abstract field higher.
+
 
 Features
 ------

@@ -3,10 +3,10 @@ from django.db import models
 class EventProfile(models.Model):
     user = models.OneToOneField('SpkrbarUser')
     name = models.CharField(max_length=140)
-    description = models.CharField(max_length=800)
-    photo = models.ImageField(upload_to="photo")
+    description = models.CharField(max_length=4000)
+    photo = models.ImageField(upload_to="photo", blank=True)
 
-    tags = models.ManyToManyField('core.ProfileTag')
+    tags = models.ManyToManyField('core.ProfileTag', blank=True)
 
     def get_absolute_url(self):
         return "/profile/" + self.user.username

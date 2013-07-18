@@ -5,11 +5,11 @@ class AttendeeProfile(models.Model):
     first_name = models.CharField(max_length=300)
     last_name = models.CharField(max_length=300)
 
-    about_me = models.CharField(max_length=500)
+    about_me = models.CharField(max_length=4000)
 
-    photo = models.ImageField(upload_to="photo")
+    photo = models.ImageField(upload_to="photo", blank=True)
 
-    tags = models.ManyToManyField('core.ProfileTag')
+    tags = models.ManyToManyField('core.ProfileTag', blank=True)
 
     def get_absolute_url(self):
         return "/profile/" + self.user.username

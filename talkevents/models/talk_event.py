@@ -5,7 +5,7 @@ class TalkEvent(models.Model):
     event = models.ForeignKey('events.Event')
 
     date = models.DateTimeField()
-    attendees = models.ManyToManyField('core.SpkrbarUser', related_name='attending')
+    attendees = models.ManyToManyField('core.SpkrbarUser', related_name='attending', blank=True)
 
     class Meta:
         app_label = 'talkevents'
