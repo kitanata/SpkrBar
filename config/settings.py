@@ -29,7 +29,7 @@ DEFAULT_FROM_EMAIL = 'no-reply@spkrbar.com'
 EMAIL_USE_TLS       = True
 EMAIL_HOST          = 'smtp.gmail.com'
 EMAIL_HOST_USER     = 'no-reply@spkrbar.com'
-EMAIL_HOST_PASSWORD = '&X9<LLg7'
+EMAIL_HOST_PASSWORD = 'PunchDrunkDolphin'
 EMAIL_PORT          = 587
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
