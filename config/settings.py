@@ -177,6 +177,7 @@ INSTALLED_APPS = (
     'compressor',
     'django.contrib.admin',
     'django.contrib.markup',
+    'south',
     'core',
     'locations',
     'talks',
