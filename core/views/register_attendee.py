@@ -4,13 +4,12 @@ from django.contrib.auth import authenticate, login
 from django.forms.util import ErrorList
 from django.template import loader, Context
 from django.db import IntegrityError
-from django.core.mail import send_mail
 
-from core.helpers import template
+from core.helpers import template, send_html_mail
 from core.forms import AttendeeRegisterForm
 from core.models import SpkrbarUser, AttendeeProfile, EventProfile
 
-email_template = loader.get_template('mail/register_attendee.html')
+email_template = loader.get_template('mail/register.html')
 
 @template('auth/register_attendee.haml')
 def register_attendee(request):
@@ -51,9 +50,20 @@ def register_attendee(request):
             profile.about_me = about_me
             profile.save()
 
-            mes = email_template.render(Context())
-            send_mail("Welcome to SpkrBar", mes, "no-reply@spkrbar.com",
-                    [user.email], fail_silently=False)
+            text = """
+                Thank you for joining SpkrBar as a conference attendee. With SpkrBar you can:
+
+                <ul>
+                    <li>Find and follow your favorite speakers</li>
+                    <li>Endorse your favorite talks</li>
+                    <li>Rate speakers and talks that you've personally attendes</li>
+                    <li>Find all the information about talks in one place</li>
+                    <li>Schedule talks that you'd like to attend</li>
+                </ul>
+                """
+
+            mes = email_template.render(Context({'message': text}))
+            send_html_mail("Welcome to SpkrBar", text, mes, [user.email])
 
             user = authenticate(username=username, password=password)
             login(request, user)

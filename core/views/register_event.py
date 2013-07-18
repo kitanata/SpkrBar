@@ -4,13 +4,12 @@ from django.contrib.auth import authenticate, login
 from django.forms.util import ErrorList
 from django.template import loader, Context
 from django.db import IntegrityError
-from django.core.mail import send_mail
 
-from core.helpers import template
+from core.helpers import template, send_html_mail
 from core.forms import EventRegisterForm
 from core.models import SpkrbarUser, SpeakerProfile, EventProfile
 
-email_template = loader.get_template('mail/register_event.html')
+email_template = loader.get_template('mail/register.html')
 
 @template('auth/register_event.haml')
 def register_event(request):
@@ -47,9 +46,19 @@ def register_event(request):
             profile.description = description
             profile.save()
 
-            mes = email_template.render(Context())
-            send_mail("Welcome to SpkrBar", mes, "no-reply@spkrbar.com",
-                    [user.email], fail_silently=False)
+            text = """
+                Thank you for joining SpkrBar as an event planner. With SpkrBar you can:
+
+                <ul>
+                    <li>Find and follow your favorite speakers</li>
+                    <li>Find great talks</li>
+                    <li>Recruit Speakers to speak at your events</li>
+                    <li>Get in depth and high quality reviews on speakers that speak at your events</li>
+                </ul>
+                """
+
+            mes = email_template.render(Context({'message': text}))
+            send_html_mail("Welcome to SpkrBar", text, mes, [user.email])
 
             user = authenticate(username=username, password=password)
             login(request, user)

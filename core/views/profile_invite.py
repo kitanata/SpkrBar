@@ -1,10 +1,9 @@
 from string import Template as StringTemplate
 from email.utils import parseaddr
 from django.shortcuts import redirect
-from django.core.mail import send_mass_mail
 from django.template import loader, Context
 
-from core.helpers import template
+from core.helpers import template, send_mass_html_mail
 from config.settings import DEFAULT_FROM_EMAIL
 
 email_template = loader.get_template('mail/invite.html')
@@ -48,10 +47,9 @@ def profile_invite(request):
                 c = Context({"message": mes})
 
                 messages.append(("You've been invited to Spkrbar.com!",
-                            email_template.render(c),
-                            DEFAULT_FROM_EMAIL, [email]))
+                    mes, email_template.render(c), user.email, [email]))
 
-        send_mass_mail(messages, fail_silently=False)
+        send_mass_html_mail(messages, fail_silently=False)
         return redirect('/profile/invite/thanks')
     else:
         template_string =  "I just joined spkrbar.com. Spkrbar is a cool new "\
