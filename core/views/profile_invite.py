@@ -33,8 +33,8 @@ def profile_invite(request):
         messages = []
         for contact in contacts:
             email = contact[1]
-            try SpkrbarUser.objects.get(email=email):
-                pass
+            try:
+                SpkrbarUser.objects.get(email=email)
             except:
                 if contact[0]:
                     mes = whole_message.substitute(
