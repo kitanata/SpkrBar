@@ -69,6 +69,7 @@ def register_attendee(request):
             login(request, user)
 
             return redirect(request.user.get_profile().get_absolute_url())
+    else:
+        form = AttendeeRegisterForm()
 
-    form = AttendeeRegisterForm()
     return {'form': form}

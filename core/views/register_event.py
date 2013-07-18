@@ -64,6 +64,7 @@ def register_event(request):
             login(request, user)
 
             return redirect(request.user.get_profile().get_absolute_url())
+    else:
+        form = EventRegisterForm()
 
-    form = EventRegisterForm()
     return {'form': form}

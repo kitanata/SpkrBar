@@ -69,6 +69,7 @@ def register_speaker(request):
             login(request, user)
 
             return redirect(request.user.get_profile().get_absolute_url())
+    else:
+        form = SpeakerRegisterForm()
 
-    form = SpeakerRegisterForm()
     return {'form': form}
