@@ -47,7 +47,9 @@ def register_event(request):
             profile.save()
 
             text = """
-                Thank you for joining SpkrBar as an event planner. With SpkrBar you can:
+                Hi there! 
+                
+                I'm SpkrBot. I want to thank you for joining SpkrBar as a conference organizer. Did you know that with SpkrBar you can:
 
                 <ul>
                     <li>Find and follow your favorite speakers</li>
@@ -55,6 +57,11 @@ def register_event(request):
                     <li>Recruit Speakers to speak at your events</li>
                     <li>Get in depth and high quality reviews on speakers that speak at your events</li>
                 </ul>
+
+                Oh, and before I forget, we are working on making the site better every day, so if you encounter any problems, have questions, or want to give us any feedback please send me an email and I'll automatically send it on to our developers. We read every email we get.
+
+                Thanks again,
+                SpkrBot @ Spkrbar.com
                 """
 
             mes = email_template.render(Context({'message': text}))

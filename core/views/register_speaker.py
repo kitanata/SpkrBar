@@ -52,7 +52,9 @@ def register_speaker(request):
             profile.save()
 
             text = """
-                Thank you for joining SpkrBar as a speaker. With SpkrBar you can:
+                Hi there! 
+                
+                I'm SpkrBot. I want to thank you for joining SpkrBar as a speaker. Did you know that with SpkrBar you can:
 
                 <ul>
                     <li>Host all the information about your talks in one place</li>
@@ -60,6 +62,11 @@ def register_speaker(request):
                     <li>Get great feedback on your talks by the people who attend them</li>
                     <li>Find other talks like yours and learn from them</li>
                 </ul>
+
+                Oh, and before I forget, we are working on making the site better every day, so if you encounter any problems, have questions, or want to give us any feedback please send me an email and I'll automatically send it on to our developers. We read every email we get.
+
+                Thanks again,
+                SpkrBot @ Spkrbar.com
                 """
 
             mes = email_template.render(Context({'message': text}))
