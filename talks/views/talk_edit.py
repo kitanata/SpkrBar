@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden, HttpResponseNotFound
 
 from talks.models import Talk
+from talks.forms import TalkForm
 
 @login_required
 def talk_edit(request, talk_id):

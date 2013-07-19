@@ -7,8 +7,7 @@
       %input#talk-name{name:"name", type:"text", value:"{{talk.name}}"}
 
       %label{for:"talk-abstract"} Abstract:
-      %textarea#talk-abstract{name:"abstract", style:"width:200px"}
-        {{talk.abstract}}
+      <textarea id="#talk-abstract" name="abstract" style="width:200px; height:200px">{{talk.abstract}}</textarea>
       %button.btn.btn-warning{type:"submit"} Save
 
 %script{type:"text/javascript"}
