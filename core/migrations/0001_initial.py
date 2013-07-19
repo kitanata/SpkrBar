@@ -19,7 +19,7 @@ class Migration(SchemaMigration):
             ('is_staff', self.gf('django.db.models.fields.BooleanField')(default=False)),
             ('is_active', self.gf('django.db.models.fields.BooleanField')(default=True)),
             ('date_joined', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now)),
-            ('user_type', self.gf('django.db.models.fields.CharField')(default='SPEAKER', max_length=7)),
+            ('user_type', self.gf('django.db.models.fields.CharField')(default='SPEAKER', max_length=10)),
         ))
         db.send_create_signal('core', ['SpkrbarUser'])
 

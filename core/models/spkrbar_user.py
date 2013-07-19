@@ -25,7 +25,7 @@ class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
 
     user_type = models.CharField(
-            max_length=7, choices=USER_TYPES, default=USER_TYPE_SPEAKER)
+            max_length=10, choices=USER_TYPES, default=USER_TYPE_SPEAKER)
 
     following = models.ManyToManyField('self', 
             related_name="followers", symmetrical=False)
