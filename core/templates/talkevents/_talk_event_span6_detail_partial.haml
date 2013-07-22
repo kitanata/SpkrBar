@@ -27,9 +27,9 @@
           %br {{ item.date.time }}
 
     .description
-      .tag-cloud.pull-left
-        - for tag in item.talk.tags.all
-          .label.label-info {{ tag.name }}
-
+      - if item.talk.tags.all
+        .tag-cloud.pull-left
+          - for tag in item.talk.tags.all
+            .label.label-info {{ tag.name }}
       %span {{ item.talk.abstract|truncatechars:140 }}
       .clearfix
