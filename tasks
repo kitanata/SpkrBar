@@ -8,6 +8,9 @@ Bugs
 and fully qualified domain names.
 9. If there are no tags on a talk don't indent the talk event views.
 
+Requests
+--------
+1. Add or link to source code on a talks page. Integrate with github and bitbucket?
 
 Features
 ------
