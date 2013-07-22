@@ -1,8 +1,8 @@
 .row
   .span3
     %h2 Links
-    - if profile.userlink_set.all
-      - for link in profile.userlink_set.all
+    - if profile.links.all
+      - for link in profile.links.all
         %p
           %a{href:"{{link.url_target}}", target:"_blank"}
             My {{ link.type_name|title }} Account

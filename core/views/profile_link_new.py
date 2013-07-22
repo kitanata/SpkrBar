@@ -22,6 +22,6 @@ def profile_link_new(request):
 
             link_model.save()
 
-            return redirect('/profile/edit/')
+            return redirect(request.user.get_profile())
     else:
         return HttpResponseNotFound()
