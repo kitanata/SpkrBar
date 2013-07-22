@@ -23,7 +23,7 @@ class SpeakerLink(models.Model):
     url_target = models.URLField(max_length=140)
 
     def __str__(self):
-        return self.link_name
+        return self.type_name
 
 
     class Meta:
