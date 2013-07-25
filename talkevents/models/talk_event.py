@@ -8,7 +8,7 @@ class TalkEvent(models.Model):
     attendees = models.ManyToManyField('core.SpkrbarUser', related_name='attending', blank=True)
 
     def __str__(self):
-        return ' '.join(str(talk), str(event))
+        return ' '.join(str(self.talk), str(self.event))
 
     class Meta:
         app_label = 'talkevents'
