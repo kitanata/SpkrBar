@@ -91,7 +91,7 @@ STATIC_ROOT = '/Users/raymond/Projects/SpkrBar/SpkrBar/static'
 STATIC_URL = '/static/'
 
 if DEBUG:
-    STATICFILES_DIRS = (,)
+    STATICFILES_DIRS = ()
 else:
     STATICFILES_DIRS = ('/home/spkrbar/SpkrBar/assets',)
 
