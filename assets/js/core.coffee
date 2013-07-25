@@ -1,8 +1,16 @@
 $('a.btn').tooltip()
 
-$('.expert-area li .delete-tag').click (el) =>
+$('.expert-area li .delete-profile-tag').click (el) =>
     itemId = $(el.currentTarget).data('id')
     postTo = '/profile/edit/tag/' + itemId + '/delete/'
+
+    $.post postTo, =>
+        $('.expert-area li[data-id=' + itemId + ']').remove()
+
+
+$('.expert-area li .delete-talk-tag').click (el) =>
+    itemId = $(el.currentTarget).data('id')
+    postTo = '/talk/tag/' + itemId + '/delete/'
 
     $.post postTo, =>
         $('.expert-area li[data-id=' + itemId + ']').remove()
