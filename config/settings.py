@@ -90,10 +90,7 @@ STATIC_ROOT = '/Users/raymond/Projects/SpkrBar/SpkrBar/static'
 # Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = '/static/'
 
-if DEBUG:
-    STATICFILES_DIRS = ()
-else:
-    STATICFILES_DIRS = ('/home/spkrbar/SpkrBar/core/assets',)
+STATICFILES_DIRS = ()
 
 # List of finder classes that know how to find static files in
 # various locations.
@@ -267,7 +264,7 @@ LOGGING = {
     }
 }
         
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'core'))
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 GEARS_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
