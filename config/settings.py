@@ -1,4 +1,5 @@
 # Django settings for SpkrBar project.
+import os
 
 DEBUG = True
 COMPRESS_ENABLED = True
@@ -180,9 +181,9 @@ INSTALLED_APPS = (
     'guardian',
     'django_markdown',
     'grappelli',
-    'compressor',
     'django.contrib.admin',
     'django.contrib.markup',
+    'django_gears',
     'south',
     'core',
     'locations',
@@ -260,9 +261,30 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
+        'less': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+        'coffeescript': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
         '': {
             'handlers': ['console', 'logfile'],
             'level': 'DEBUG',
         },
     }
+}
+        
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'core'))
+
+GEARS_ROOT = os.path.join(PROJECT_ROOT, 'static')
+
+GEARS_DIRS = (
+    os.path.join(PROJECT_ROOT, 'assets'),
+)
+
+GEARS_COMPILERS = {
+    '.less': 'gears_less.LESSCompiler',
+    '.coffee': 'gears_coffeescript.CoffeeScriptCompiler',
 }

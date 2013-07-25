@@ -1,4 +1,4 @@
-- load compress
+- load gears
 !!! 5
 
 %html{lang:"en"}
@@ -9,29 +9,10 @@
     %meta{name:"description", content:""}
     %meta{name:"author", content:""}
 
-    {% compress css %}
-      %link{href:"{{STATIC_URL}}css/bootstrap.css", rel:"stylesheet"}
-      %link{href:"{{STATIC_URL}}css/datetimepicker.css", rel:"stylesheet"}
-      %link{href:"{{STATIC_URL}}css/font-awesome.min.css", rel:"stylesheet"}
-      %link{href:"{{STATIC_URL}}css/colorbox.css", rel:"stylesheet"}
-      %link{href:"{{STATIC_URL}}css/leaflet.css", rel:"stylesheet"}
+    - css_asset_tag 'vendor/css/vendor.css'
+    - css_asset_tag 'css/styles.css'
 
-      %link{href:"{{STATIC_URL}}less/core.less", rel:"stylesheet", type:"text/less"}
-      %link{href:"{{STATIC_URL}}less/profile.less", rel:"stylesheet", type:"text/less"}
-      %link{href:"{{STATIC_URL}}less/speakers.less", rel:"stylesheet", type:"text/less"}
-      %link{href:"{{STATIC_URL}}less/talks.less", rel:"stylesheet", type:"text/less"}
-      %link{href:"{{STATIC_URL}}less/events.less", rel:"stylesheet", type:"text/less"}
-      %link{href:"{{STATIC_URL}}less/blog.less", rel:"stylesheet", type:"text/less"}
-
-      - block 'css'
-    {% endcompress %}
-
-    {% compress js %}
-      %script{src:"{{STATIC_URL}}js/jquery-1.9.1.min.js"}
-      %script{src:"{{STATIC_URL}}js/leaflet.js"}
-      %script{src:"{{STATIC_URL}}js/bootstrap-tooltip.js"}
-      %script{src:"{{STATIC_URL}}js/bootstrap-typeahead.js"}
-    {% endcompress %}
+    - js_asset_tag 'vendor/js/vendor.js'
 
     - block 'head'
 
@@ -152,14 +133,7 @@
       .footer
         %p &copy; Agile Hog LLC. 2013
 
-  {% compress js %}
-    %script{src:"{{STATIC_URL}}js/bootstrap-dropdown.js"}
-    %script{src:"{{STATIC_URL}}js/bootstrap-datetimepicker.min.js"}
-    %script{src:"{{STATIC_URL}}js/jquery.colorbox-min.js"}
-    %script{src:"{{STATIC_URL}}js/django-csrf.js"}
-    %script{type:"text/javascript"}
-      $('a.btn').tooltip()
-  {% endcompress %}
+  - js_asset_tag 'js/application.js'
 
   - block 'scripts'
 
