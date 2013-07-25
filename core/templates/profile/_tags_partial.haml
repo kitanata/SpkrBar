@@ -8,7 +8,9 @@
     - if profile.tags.all
       %ul.expert-area
         - for tag in profile.tags.all
-          %li.label.label-info {{tag}}
+          %li.profile-tag.label.label-info{data-id:"{{tag.id}}"}
+            {{tag}}
+            %i.delete-tag.icon-remove.pull-right{data-id:"{{tag.id}}"}
     - else
       No User Tags
 
