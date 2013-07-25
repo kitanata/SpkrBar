@@ -276,3 +276,11 @@ GEARS_COMPILERS = {
     '.less': 'gears_less.LESSCompiler',
     '.coffee': 'gears_coffeescript.CoffeeScriptCompiler',
 }
+
+GEARS_PUBLIC_ASSETS = (
+    lambda path: not any(path.endswith(ext) for ext in ('.css', '.js')),
+    r'^css/style\.css$',
+    r'^vendor/css/style\.css$',
+    r'^js/script\.js$',
+    r'^vendor/js/script\.js$',
+)
