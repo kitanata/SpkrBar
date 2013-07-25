@@ -93,7 +93,7 @@ STATIC_URL = '/static/'
 if DEBUG:
     STATICFILES_DIRS = ()
 else:
-    STATICFILES_DIRS = ('/home/spkrbar/SpkrBar/assets',)
+    STATICFILES_DIRS = ('/home/spkrbar/SpkrBar/core/assets',)
 
 # List of finder classes that know how to find static files in
 # various locations.
