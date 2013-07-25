@@ -3,10 +3,11 @@
 - block 'head'
   {{ form.media }}
 
-- block 'title'
-  %h2 Create a new Event
-
-- block 'subnav'
+- block 'subnav-container' 
+  .subnav
+    .row
+      .span12
+        %h2 Create a new Event for {{user.get_profile.name}}
 
 - block 'content'
   #event-new
@@ -18,16 +19,12 @@
             %input#name{name:"name", type:"text"}
 
           .span6
-            %label{for:"description"} Description:
-            %textarea#description{name:"description"}
-
-          .span6
             %label{for:"id_location"} Location:
             %input#id_location{placeholder:"Enter the location name or city or state", type:"text", autocomplete:"off"}
             %span.search.addon
               %i.icon-search
 
-            %button.btn.btn-warning#add-location{href:"#add-location-popup"}
+            %button#add-location.btn.btn-warning{href:"#add-location-popup"}
               %i.icon-plus
 
           .span6
@@ -39,24 +36,24 @@
             %input#end-date{name:"end-date", type:"text"}
 
           .span6
-            %button#create-event.btn.btn-warning{type:"submit"}
+            %button#create-event.btn.btn-warning
               Create Event
 
       .span6
         #map
 
-%div{style:"display:none"}
-  #add-location-popup{style:"background-color:white; padding: 40px;"}
-    %h2 Add New Location
-    %form{action:"/location/new/?next=/talk/{{talk.pk}}/event/new", method:"POST"}
-      - csrf_token
-      {{ location_form.as_p }}
+  %div{style:"display:none"}
+    #add-location-popup{style:"background-color:white; padding: 40px;"}
+      %h2 Add New Location
+      %form{action:"/location/new/?next=/event/new", method:"POST"}
+        - csrf_token
+        {{ location_form.as_p }}
 
-      %button.btn.btn-warning{type:"submit"} Add Location
+        %button.btn.btn-warning{type:"submit"} Add Location
 
 - block 'scripts'
   %script{type:"text/javascript"}
-    $('#add-location').colorbox({inline: true, width:"300px"});
+    $('#add-location').colorbox({inline: true, width:"400px"});
 
     L.Icon.Default.imagePath = '{{STATIC_URL}}img/';
 
@@ -117,7 +114,6 @@
     $('#create-event').on('click', function(){
         $.post("/event/new/", {
             'name': $('#name').val(),
-            'description': $('#description').val(),
             'location': currentLocation.id,
             'start-date': $("#start-date").val(),
             'end-date': $("#end-date").val()

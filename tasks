@@ -2,11 +2,10 @@ Bugs
 ------
 1. Add location on event creation page does not popup a location form.
 2. Create event submit button on event creation page does not submit the form.
-4. Signing up as a speaker sometimes causes a 500 internal service error. (The about me is more than 500 characters. Need a better error to show the user, need to lengthen this to 2000 characters. Don't create the user if we cant create the profile.)
-7. Date picker should close when minutes are selected.
-8. Add link to profile should be smart enough to differentiate between username for social profiles
+3. Add link to profile should be smart enough to differentiate between username for social profiles
 and fully qualified domain names.
-9. If there are no tags on a talk don't indent the talk event views.
+4. Add ability to delete tags, and links.
+4. Date picker should close when minutes are selected.
 
 Requests
 --------

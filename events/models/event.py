@@ -4,6 +4,7 @@ from django.db.models import Q
 class Event(models.Model):
     owner = models.ForeignKey('core.EventProfile')
 
+    name = models.CharField(max_length=300, default="")
     location = models.ForeignKey('locations.Location')
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
@@ -16,7 +17,7 @@ class Event(models.Model):
 
 
     def __str__(self):
-        return ' '.join([str(self.owner.name), str(self.start_date.year)])
+        return ' '.join([str(self.owner.name), str(self.start_date.year), ' - ', self.name])
 
 
     def get_absolute_url(self):
