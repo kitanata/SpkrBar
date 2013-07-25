@@ -2,7 +2,7 @@
 import os
 
 DEBUG = True
-COMPRESS_ENABLED = True
+GEARS_DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
