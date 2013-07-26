@@ -13,7 +13,7 @@ class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
             (USER_TYPE_EVENT, 'Event'),
         )
 
-    username = models.CharField(max_length=30, unique=True)
+    username = models.CharField(min_length=4, max_length=30, unique=True)
     email = models.EmailField()
 
     is_staff = models.BooleanField(_('staff status'), default=False,
