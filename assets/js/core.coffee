@@ -22,3 +22,11 @@ $('.profile-link .delete-profile-link').click (el) =>
 
     $.post postTo, =>
         $('.profile-link[data-id=' + itemId + ']').remove()
+
+$('.profile-link-form #id_type').change (el) =>
+    type = $(el.currentTarget).val()
+
+    if type in ['GITHUB', 'FACEBOOK', 'TWITTER']
+        $('.profile-link-form #id_url').attr('placeholder', 'URL or Username')
+    else
+        $('.profile-link-form #id_url').attr('placeholder', 'http://')

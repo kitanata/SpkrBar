@@ -26,8 +26,8 @@ class ProfilePhotoForm(forms.Form):
 
 class ProfileLinkForm(forms.Form):
     type = forms.ChoiceField(UserLink.LINK_TYPE_CHOICES)
-    url = forms.URLField(max_length=140, 
-            widget=forms.TextInput(attrs={'placeholder': 'http://'}))
+    url = forms.CharField(max_length=140, 
+            widget=forms.TextInput(attrs={'placeholder': 'URL or Username'}))
 
 
 class ProfileTagForm(forms.Form):
