@@ -1,7 +1,7 @@
 from django.db import models
 
-class SpeakerLink(models.Model):
-    speaker = models.ForeignKey('core.SpeakerProfile', related_name='links')
+class UserLink(models.Model):
+    user = models.ForeignKey('core.SpkrbarUser', related_name='links')
 
     FACEBOOK = 'FACEBOOK'
     TWITTER = 'TWITTER'

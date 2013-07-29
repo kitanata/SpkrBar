@@ -52,6 +52,7 @@ urlpatterns = patterns('',
     url(r'^profile/invite/$', 'core.views.profile_invite'),
     url(r'^profile/edit/photo/$', 'core.views.profile_edit_photo'),
     url(r'^profile/edit/link/new/$', 'core.views.profile_link_new'),
+    url(r'^profile/edit/link/(?P<link_id>\d+)/delete/$', 'core.views.profile_link_delete'),
     url(r'^profile/edit/tag/new/$', 'core.views.profile_tag_new'),
     url(r'^profile/edit/tag/(?P<tag_id>\d+)/delete/$', 'core.views.profile_tag_delete'),
 

@@ -1,13 +1,17 @@
-.row
-  .span3
-    %h2 Links
-    - if profile.links.all
-      - for link in profile.links.all
-        %p
-          %a{href:"{{link.url_target}}", target:"_blank"}
-            My {{ link.type_name|title }} Account
-    - else
-      No Outside Links
+
+- if profile.user.links.all or user == profile.user
+  .row
+    .span3
+      %h2 Links
+
+- if profile.user.links.all
+  - for link in profile.user.links.all
+    %p.profile-link{data-id:"{{link.id}}"}
+      %a{href:"{{link.url_target}}", target:"_blank"}
+        My {{ link.type_name|title }} Account
+      %i.delete-profile-link.icon-remove.pull-right{data-id:"{{link.id}}"}
+- else
+  No Outside Links
 
 - if user == profile.user
   .row
