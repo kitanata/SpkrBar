@@ -85,8 +85,11 @@ class TalkRatingForm(forms.ModelForm):
 
 
 class TalkLinkForm(forms.Form):
-    name = forms.CharField()
-    url = forms.URLField()
+    name = forms.CharField(
+            widget=forms.TextInput(attrs={'placeholder': 'Link Name'}),
+            required=False)
+    url = forms.CharField(max_length=140, 
+            widget=forms.TextInput(attrs={'placeholder': 'http://'}))
 
 
 class TalkSlideDeckForm(forms.Form):

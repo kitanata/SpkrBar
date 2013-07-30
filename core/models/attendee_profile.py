@@ -5,7 +5,7 @@ class AttendeeProfile(models.Model):
     first_name = models.CharField(max_length=300)
     last_name = models.CharField(max_length=300)
 
-    about_me = models.CharField(max_length=4000)
+    about_me = models.CharField(max_length=4000, blank=True)
 
     photo = models.ImageField(upload_to="photo", blank=True)
 
