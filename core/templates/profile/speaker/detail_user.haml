@@ -44,7 +44,7 @@
 
 - block 'scripts'
   %script{type:"text/javascript"}
-    $('.delete-talk').colorbox({inline: true, width:"300px"});
+    $('.delete-talk').colorbox({inline: true, width:"400px"});
 
     $('.delete-talk').click(function(el){
         var sel = $(el.currentTarget);
@@ -53,4 +53,4 @@
         $('.delete-confirm-link').attr('href', "/talk/" + sel.data('id') + "/delete/");
     });
 
-    $('.edit-profile').colorbox({inline: true, width:"300px"});
+    $('.edit-profile').colorbox({inline: true, width:"400px"});

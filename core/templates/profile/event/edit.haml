@@ -82,7 +82,7 @@
         .row
           .span3
             .link-list
-              - for link in speaker.speakerlink_set.all
+              - for link in event.user.links.all
                 %p 
                   %a{href:"{{link.url_target}}"}
                     My {{ link.type_name|title }} Account
