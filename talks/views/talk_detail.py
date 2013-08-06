@@ -10,7 +10,7 @@ from core.models import SpeakerProfile, SpkrbarUser
 from core.helpers import template
 
 from talks.models import Talk
-from talks.forms import TalkRatingForm
+from talks.forms import TalkRatingForm, TalkLinkForm
 
 @template('talks/talk_detail.haml')
 def talk_detail(request, talk_id):
@@ -53,6 +53,7 @@ def talk_detail(request, talk_id):
     events_accepting_talks = Event.objects.filter(accept_submissions=True)
 
     rating_form = TalkRatingForm()
+    link_form = TalkLinkForm()
 
     return {
         'last': talk.get_absolute_url(),
@@ -67,4 +68,5 @@ def talk_detail(request, talk_id):
         'will_have_links': will_have_links,
         'events_accepting_talks': events_accepting_talks,
         'rating_form': rating_form,
+        'link_form': link_form,
         }

@@ -72,9 +72,9 @@
             - if talk.tags.all
               %ul.expert-area
                 - for tag in talk.tags.all
-                  %li.tag.label.label-info{data-id:"{{tag.id}}"}
+                  %li.tag.label.label-info{data-talk:"{{talk.id}}", data-id:"{{tag.id}}"}
                     {{tag}}
-                    %i.delete-talk-tag.icon-remove.pull-right{data-id:"{{tag.id}}"}
+                    %i.delete-talk-tag.icon-remove.pull-right{data-talk:"{{talk.id}}", data-id:"{{tag.id}}"}
 
             - if talk.speaker.user == user
               %form{action:"/talk/{{talk.id}}/tag/new/", method:"POST"}
@@ -87,29 +87,7 @@
             - with attendees as collection
               - include '_user_list_partial.haml'
 
-          .span3
-            %h3 Links
-
-            - if talk.talklink_set.all
-              %ul
-                - for link in talk.talklink_set.all
-                  %li
-                    %a{href:"{{link.url}}"}
-                      {{link.name}}
-            - else
-              No links available.
-
-            - if talk.speaker.user == user
-              %form{action:"/talk/{{talk.id}}/link/new/", method:"POST"}
-                - csrf_token
-
-                %label{for:"link-name"} Name:
-                %input#link-name{name:"name", type:"text", placeholder:"Blog Post"}
-
-                %label{for:"link-url"} Url:
-                %input#link-url{name:"url", type:"url", placeholder:"http://"}
-
-                %button.btn.btn-warning{type:"submit"} Add New Link
+          - include 'talks/_links_partial.haml'
 
       .span9
         .row

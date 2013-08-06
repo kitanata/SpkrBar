@@ -2,22 +2,19 @@ import json
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseForbidden
 
-from talks.models import Talk, TalkTag
+from core.models import UserLink
 
 @login_required
-def talk_tag_delete(request, talk_id, tag_id):
+def profile_link_delete(request, link_id):
     if request.method == "POST":
-        talk = get_object_or_404(Talk, pk=talk_id)
+        link = get_object_or_404(UserLink, pk=link_id)
 
-        if not request.user.has_perm('change_talk', talk):
+        if link.user != request.user:
             return HttpResponseForbidden()
 
-        tag = get_object_or_404(TalkTag, pk=tag_id)
-
-        talk.tags.remove(tag)
-        talk.save()
+        link.delete()
 
         return HttpResponse(json.dumps({}), content_type="application/json")
     else:
