@@ -12,7 +12,7 @@
 - block 'subnav-container'
 
 - block 'content'
-  #register.row
+  #index.row
     .span4
       %h2 Speakers
       .promo
@@ -62,11 +62,22 @@
           One low monthly price.
 
 
-  .row
-    .section-title
-      %h2 Upcoming Talks
+  - if upcoming
+    .row
+      .section-title
+        %h2 Upcoming Speaking Engagements
 
-  .row
-    .talk-list
-      - for item in upcoming
-        - include 'talkevents/_talk_event_span6_detail_partial.haml'
+    .row
+      .talk-list
+        - for item in upcoming
+          - include 'talkevents/_talk_event_span6_detail_partial.haml'
+
+  - elif past
+    .row
+      .section-title
+        %h2 Previous Speaking Engagements
+
+    .row
+      .talk-list
+        - for item in past
+          - include 'talkevents/_talk_event_span6_detail_partial.haml'

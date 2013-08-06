@@ -158,37 +158,6 @@ i.photo-placeholder-large {
     margin-top: 20px;
 }
 
-#register {
-    h2 {
-        border-bottom: 1px solid #eee;
-    }
-
-    .promo {
-
-        i {
-            color: #D46961;
-            font-size: 1.4em;
-            padding-right: 10px;
-            vertical-align: middle;
-        }
-
-        .item {
-            width: 260px;
-            margin-bottom: 20px;
-            font-size: 16px;
-            line-height: 26px;
-            height: 60px;
-        }
-    }
-
-    ul {
-        li {
-            display: inline-block;
-            margin-right: 20px;
-        }
-    }
-}
-
 .register-options {
     margin-top: 40px;
 
@@ -327,5 +296,69 @@ ul.basic-item-list {
         .btn {
             margin-bottom: 10px;
         }
+    }
+}
+
+#index {
+    h2 {
+        border-bottom: 1px solid #eee;
+    }
+
+    .promo {
+
+        i {
+            color: #D46961;
+            font-size: 1.4em;
+            padding-right: 10px;
+            vertical-align: middle;
+        }
+
+        .item {
+            width: 260px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            line-height: 26px;
+            height: 60px;
+        }
+    }
+}
+
+form#register {
+
+    .field {
+        margin-bottom: 10px;
+        display: table;
+        width: 94.5%;
+
+        .input {
+            display: table-cell;
+
+            label {
+                font-size: 14px;
+                font-weight: 600;
+            }
+
+            input {
+                width: 300px;
+            }
+            
+            textarea {
+                width: 300px;
+            }
+        }
+
+        .error {    
+            position: relative;
+            display: table-cell;
+            width: 400px;
+
+            ul.errorlist {
+                font-weight: 600;
+                list-style-type: none;
+                position: absolute;
+                bottom: 0;
+            }
+        }
+
     }
 }

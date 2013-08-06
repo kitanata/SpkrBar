@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models import Q
 
 class Event(models.Model):
-    owner = models.ForeignKey('core.EventProfile')
+    owner = models.ForeignKey('core.EventProfile', related_name="events")
 
     name = models.CharField(max_length=300, default="")
     location = models.ForeignKey('locations.Location')

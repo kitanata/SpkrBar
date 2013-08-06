@@ -130,11 +130,10 @@ def attendee_profile(profile, user):
 
 
 def event_profile(profile, user):
-    events = profile.event_set.all()
+    events = profile.events.all()
 
     talk_events = TalkEvent.objects.filter(
-            talk__speaker=profile,
-            talk__published=True)
+            event__in=events, talk__published=True)
 
     current = talk_events.filter(
             event__start_date__lt=datetime.today(),

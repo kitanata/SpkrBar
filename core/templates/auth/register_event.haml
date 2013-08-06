@@ -10,17 +10,28 @@
     .span6
       .row
         .span12
-          %h3 Join us
+          %h3 Howdy Mr(or Ms.) Event Planner. Whats going on?
           %hr
 
       .row
         .span12
-          - if form.errors
-            .alert.alert-error {{form.errors}}
-
           %form#register{action:"/register/event/", method:"POST"}
             - csrf_token
-            {{ form.as_p }}
+            - for field in form
+              - if field.errors
+                .field.alert.alert-error
+                  .input
+                    {{ field.label_tag }} {{ field }}
+                  .error
+                    {{ field.errors }}
+              - elif form.errors
+                .field.alert.alert-success
+                  .input
+                    {{ field.label_tag }} {{ field }}
+              - else
+                .field
+                  .input
+                    {{ field.label_tag }} {{ field }}
 
             %br
             %input.btn.btn-warning{type:"submit", value:"Register"}
