@@ -21,7 +21,6 @@ def register_speaker(request):
 
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
-            about_me = form.cleaned_data['about_me']
 
             password = form.cleaned_data['password']
             confirm = form.cleaned_data['confirm']
@@ -48,7 +47,10 @@ def register_speaker(request):
             profile.user = user
             profile.first_name = first_name
             profile.last_name = last_name
-            profile.about_me = about_me
+
+            if 'about_me' in form.cleaned_data:
+                profile.about_me = form.cleaned_data['about_me']
+
             profile.save()
 
             text = """

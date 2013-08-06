@@ -43,7 +43,10 @@ def register_event(request):
             profile = EventProfile()
             profile.user = user
             profile.name = name
-            profile.description = description
+
+            if 'description' in form.cleaned_data:
+                profile.description = form.cleaned_data['description']
+
             profile.save()
 
             text = """
