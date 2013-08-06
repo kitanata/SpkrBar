@@ -16,11 +16,11 @@ from talks.forms import TalkRatingForm, TalkLinkForm
 def talk_detail(request, talk_id):
     talk = get_object_or_404(Talk, pk=talk_id)
 
-    talk_events = talk.talkevent_set.all()
-    attendees = SpkrbarUser.objects.filter(attending__in=talk_events).distinct()
+    engagements = talk.engagements.all()
+    attendees = SpkrbarUser.objects.filter(attending__in=engagements).distinct()
 
-    upcoming = talk_events.filter(event__start_date__gt=datetime.today())
-    past = talk_events.filter(event__end_date__gt=datetime.today())
+    upcoming = engagements.filter(event__start_date__gt=datetime.today())
+    past = engagements.filter(event__end_date__gt=datetime.today())
 
     user_attendance = False
     user_endorsed = False
@@ -31,7 +31,7 @@ def talk_detail(request, talk_id):
 
     if not request.user.is_anonymous():
         try:
-            user_attendance = talk_events.get(attendees__in=[request.user])
+            user_attendance = engagements.get(attendees__in=[request.user])
         except ObjectDoesNotExist:
             pass
 
@@ -50,7 +50,7 @@ def talk_detail(request, talk_id):
         width = min(width, 200)
         photo_col.append((photo.photo, width, width * aspect))
 
-    events_accepting_talks = Event.objects.filter(accept_submissions=True)
+    events = Event.objects.all()
 
     rating_form = TalkRatingForm()
     link_form = TalkLinkForm()
@@ -66,7 +66,7 @@ def talk_detail(request, talk_id):
         'user_endorsed': user_endorsed,
         'user_rated': user_rated,
         'will_have_links': will_have_links,
-        'events_accepting_talks': events_accepting_talks,
+        'events': events,
         'rating_form': rating_form,
         'link_form': link_form,
         }

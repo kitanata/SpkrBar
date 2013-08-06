@@ -1,15 +1,42 @@
 %div{style:'display:none'}
   #submit-talk-popup
-    %h2 Submit {{ talk.name }} to an event.
+    %h3 Create a new Engagement
+    %h4 {{ talk.name }}
     %form.submit-talk-event{action:"/talk/{{talk.id}}/submit/?last={{last}}", method:"POST"}
       - csrf_token
 
-      %select
-        - for event in events_accepting_talks
+      %label{for:"event-list"} Event:
+      %select#event-list
+        - for event in events 
           %option{val:"{{event.id}}"}
-            {{ event.name }}
+            {{ event }}
+
+      %label{for:"date"} Date:
+      %input#date{name:"date", type:"text"}
+
+      %label{for:"time"} Time:
+      %input#time{name:"time", type:"text"}
 
       %button.btn.btn-warning{type:"submit"} Submit
 
 %script{type:"text/javascript"}
   $('.submit-talk').colorbox({inline: true, width:"400px"});
+
+  var nowTemp = new Date();
+  var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+
+  $('#date').datepicker({
+      format: 'mm/dd/yyyy'
+  });
+
+  $('#date').datepicker('update', now);
+
+  $('#date').on('changeDate', function() {
+    $('#date').datepicker('hide');
+  });
+
+  $('#time').timepicker({
+    template: false,
+    showInputs: false,
+    minuteStep: 5
+  });

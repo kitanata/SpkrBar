@@ -3,6 +3,7 @@
 //= require bootstrap-tooltip
 //= require bootstrap-typeahead
 //= require bootstrap-dropdown
-//= require bootstrap-datetimepicker.min
+//= require bootstrap-timepicker.min
+//= require bootstrap-datepicker
 //= require jquery.colorbox-min
 //= require django-csrf

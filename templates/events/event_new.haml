@@ -27,13 +27,19 @@
             %button#add-location.btn.btn-warning{href:"#add-location-popup"}
               %i.icon-plus
 
-          .span6
+          .span3
             %label{for:"start-date"} Start Date:
             %input#start-date{name:"start-date", type:"text"}
+          .span3
+            %label{for:"start-time"} Start Time:
+            %input#start-time{name:"start-time", type:"text"}
 
-          .span6
+          .span3
             %label{for:"end-date"} End Date:
             %input#end-date{name:"end-date", type:"text"}
+          .span3
+            %label{for:"end-time"} End Time:
+            %input#end-time{name:"end-time", type:"text"}
 
           .span6
             %button#create-event.btn.btn-warning
@@ -103,12 +109,33 @@
         }
     });
 
-    $('#start-date').datetimepicker({
-        format: 'yyyy-mm-dd hh:ii'
+    var nowTemp = new Date();
+    var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+
+    $('#start-date').datepicker({ format: 'mm/dd/yyyy' });
+    $('#end-date').datepicker({ format: 'mm/dd/yyyy' });
+
+    $('#start-date').datepicker('update', now);
+    $('#end-date').datepicker('update', now);
+
+    $('#start-date').on('changeDate', function() {
+      $('#start-date').datepicker('hide');
     });
 
-    $('#end-date').datetimepicker({
-        format: 'yyyy-mm-dd hh:ii'
+    $('#end-date').on('changeDate', function() {
+      $('#end-date').datepicker('hide');
+    });
+
+    $('#start-time').timepicker({
+      template: false,
+      showInputs: false,
+      minuteStep: 5
+    });
+
+    $('#end-time').timepicker({
+      template: false,
+      showInputs: false,
+      minuteStep: 5
     });
 
     $('#create-event').on('click', function(){
@@ -116,7 +143,9 @@
             'name': $('#name').val(),
             'location': currentLocation.id,
             'start-date': $("#start-date").val(),
-            'end-date': $("#end-date").val()
+            'start-time': $("#start-time").val(),
+            'end-date': $("#end-date").val(),
+            'end-time': $("#end-time").val(),
         }, function(){
             window.location = "{{user.get_absolute_url}}";
         });

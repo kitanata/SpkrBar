@@ -14,9 +14,8 @@
             - if not user.is_anonymous
               - if user == talk.speaker.user
                   - if talk.published
-                    - if events_accepting_talks
-                      %a.btn.btn-warning.submit-talk{href:"#submit-talk-popup", data-toggle:"tooltip", data-original-title:"Submit Talk"}
-                        %i.icon-share-alt
+                    %a.btn.btn-warning.submit-talk{href:"#submit-talk-popup", data-toggle:"tooltip", data-original-title:"Create Engagement"}
+                      %i.icon-bullhorn
                     %a.btn.btn-warning{href:"/talk/{{talk.id}}/archive?last={{last}}", data-toggle:"tooltip", data-original-title:"Hide Talk"}
                       %i.icon-eye-close
                   - else
@@ -176,67 +175,23 @@
                   .span9
                     No photos available.
 
-        .talk-detail
-          - if events or talk.speaker.user == user and events
-            .row
-              .span9
-                %h3 Future Events
+        .row{style:"margin-top:40px"}
+          .span9
+            .comments
+              %h3 Comments
+              %hr
 
-                .row
-                  #locations
-                    - for event in events
-                      - with event.location as location
-                        .span9
-                          .location
-                            .map{id:"map{{location.id}}"}
-                            .details
-                              %h3
-                                %a{href:"/event/{{event.id}}"}
-                                  {{ location.name }}
+              - if not user.is_anonymous and talk.speaker.user != user
+                %form.add-comment-form{action:"/talk/{{talk.id}}/comment/new/", method:"POST"}
+                  - csrf_token
+                  %textarea{name:'comment', placeholder:"Add your comment..."}
+                  %input.btn.btn-warning{type:"submit", value:"Submit Comment"}
 
-                              {{ location.address }}<br />
-                              {{ location.city }}, {{location.state}}, {{location.zip_code}}
-
-          .comments{style:"margin-top:40px;"}
-            %h3 Comments
-            %hr
-
-            - if not user.is_anonymous and talk.speaker.user != user
-              %form.add-comment-form{action:"/talk/{{talk.id}}/comment/new/", method:"POST"}
-                - csrf_token
-                %textarea{name:'comment', placeholder:"Add your comment..."}
-                %input.btn.btn-warning{type:"submit", value:"Submit Comment"}
-
-            - if talk.talkcomment_set.all
-              %ul
-                - for comment in talk.talkcomment_set.all
-                  %li
-                    %h4 {{comment.commenter.get_full_name}} said...
-                    %p {{comment.comment}}
-            - else
-              No comments yet.
-
-
-- block 'talk_scripts'
-  %script{type:"text/javascript"}
-    L.Icon.Default.imagePath = '{{STATIC_URL}}img/';
-
-    - for event in events
-      - with event.location as location
-        (function() {
-            // create a map in the "map" div, set the view to a given place and zoom
-            var map = L.map('map{{location.id}}', {'zoomControl': false}).setView([39.95, -82.95], 6);
-
-            // add an OpenStreetMap tile layer
-            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                attribution: ''
-                }).addTo(map);
-
-            var url = "http://nominatim.openstreetmap.org/search/{{location.geocode_querystring}}?format=json"
-            $.get(url, function(data) {
-                if(data.length != 0) {
-                    L.marker([data[0].lat, data[0].lon]).addTo(map);
-                    map.setView([data[0].lat, data[0].lon], 14);
-                }
-            });
-        }).call(this);
+              - if talk.talkcomment_set.all
+                %ul
+                  - for comment in talk.talkcomment_set.all
+                    %li
+                      %h4 {{comment.commenter.get_full_name}} said...
+                      %p {{comment.comment}}
+              - else
+                No comments yet.

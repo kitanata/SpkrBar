@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, date, time
 
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
@@ -19,8 +19,13 @@ def event_new(request):
         event = Event()
         event.name = request.POST['name']
         event.owner = request.user.get_profile()
-        event.start_date = datetime.strptime(request.POST['start-date'], "%Y-%m-%d %H:%M")
-        event.end_date = datetime.strptime(request.POST['end-date'], "%Y-%m-%d %H:%M")
+
+        sdt = request.POST['start-date'] + request.POST['start-time']
+        edt = request.POST['end-date'] + request.POST['end-time']
+
+        event.start_date = datetime.strptime(sdt, "%m/%d/%Y%I:%M %p")
+        event.end_date = datetime.strptime(edt, "%m/%d/%Y%I:%M %p")
+
         event.location = get_object_or_404(Location, pk=request.POST['location'])
         event.save()
 
