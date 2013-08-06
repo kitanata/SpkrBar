@@ -1,3 +1,4 @@
+from urlparse import urlparse
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden, HttpResponseNotFound
@@ -16,12 +17,19 @@ def talk_link_new(request, talk_id):
         form = TalkLinkForm(request.POST)
 
         if form.is_valid():
+            name = form.cleaned_data['name']
+
+            if not name:
+                name = "Link"
+
             link = TalkLink()
-            link.name = form.cleaned_data['name']
-            link.url = form.cleaned_data['url']
+            link.name = name
+            link.url = urlparse(form.cleaned_data['url'], scheme="http"
+                    ).geturl()
             link.talk = talk
             link.save()
 
             return redirect(talk)
+        return HttpResponseNotFound()
     else:
         return HttpResponseNotFound()
