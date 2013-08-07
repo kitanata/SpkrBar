@@ -49,6 +49,8 @@ urlpatterns = patterns('',
 
     url(r'^speakers/$', 'core.views.speaker_list'),
 
+    url(r'^', include('talkevents.urls')),
+
     url(r'^profile/invite/thanks$', 'core.views.profile_invite_thanks'),
     url(r'^profile/invite/$', 'core.views.profile_invite'),
     url(r'^profile/edit/photo/$', 'core.views.profile_edit_photo'),
@@ -92,7 +94,6 @@ urlpatterns = patterns('',
     url(r'^grappelli/', include('grappelli.urls')),
     url('^markdown/', include( 'django_markdown.urls')),
 )
-
 
 if settings.DEBUG:
     urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

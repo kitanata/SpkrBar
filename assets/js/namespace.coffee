@@ -1,0 +1,3 @@
+window.SpkrBar =
+    Models: {}
+    Collections: {}

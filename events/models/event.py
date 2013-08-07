@@ -17,7 +17,10 @@ class Event(models.Model):
 
 
     def __str__(self):
-        return ' '.join([str(self.owner.name), str(self.start_date.year), ' - ', self.name])
+        if self.name:
+            return ' '.join([str(self.owner.name), str(self.start_date.year), ' - ', self.name])
+        else:
+            return ' '.join([str(self.owner.name), str(self.start_date.year)])
 
 
     def get_absolute_url(self):

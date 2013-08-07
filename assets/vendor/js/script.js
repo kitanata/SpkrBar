@@ -1,4 +1,6 @@
 //= require jquery-1.9.1.min
+//= require underscore
+//= require backbone
 //= require leaflet
 //= require bootstrap-tooltip
 //= require bootstrap-typeahead
