@@ -9,4 +9,6 @@
   - include 'talks/_popup_talk_photo_new_partial.haml'
   - include 'talks/_popup_talk_slides_new_partial.haml'
   - include 'talks/_popup_talk_video_new_partial.haml'
-  - block 'talk_scripts'
+
+  %script{type:"text/javascript"}
+    var talkView = new SpkrBar.Views.TalkDetail();
