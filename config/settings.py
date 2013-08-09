@@ -11,6 +11,8 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+APPEND_SLASH = False
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -284,6 +286,7 @@ GEARS_DIRS = (
 GEARS_COMPILERS = {
     '.less': 'gears_less.LESSCompiler',
     '.coffee': 'gears_coffeescript.CoffeeScriptCompiler',
+    '.hbs': 'gears_handlebars.HandlebarsCompiler'
 }
 
 GEARS_PUBLIC_ASSETS = (

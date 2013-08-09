@@ -1,0 +1,40 @@
+{% verbatim %}
+  %script#span9-engagement{type:"text/x-handlebars-template"}
+    .header
+      .title
+        {{#if show_buttons}}
+          .grid1
+            %a{href:"{{talk_url}}"}
+              {{ talk_name }}
+            %br by {{ speaker_name }}
+          .grid2
+            - include 'talkevents/_button_group_partial.haml'
+        {{else}}
+          %div
+            %a{href:"{{talk_url}}"}
+              {{ talk_name }}
+            %br by {{ speaker_name }}
+        {{/if}}
+
+      .location
+        .grid1
+          %a{href:"{{ event_url}}"}
+            at {{ event_name }}
+          %br in {{ city }}, {{ state}}
+        .grid2
+          {{ date }}
+          %br {{ time }}
+
+    .description
+      {{#if tags}}
+        .tag-cloud.pull-left
+          {{#each tags }}
+            .label.label-info {{ name }}
+          {{/each}}
+      {{/if}}
+
+      %span {{ abstract }}
+      .clearfix
+
+    .clearfix
+{% endverbatim %}

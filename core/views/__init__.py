@@ -21,6 +21,7 @@ from profile_invite_thanks import profile_invite_thanks
 
 from speaker_list import speaker_list
 from user_follow import user_follow
+from user_detail import UserDetail
 
 __all__ = [
     "index", "search",
@@ -31,4 +32,5 @@ __all__ = [
     "profile_tag_new", "profile_tag_delete",
     "profile_invite", "profile_invite_thanks",
     "speaker_list", "user_follow",
+    "UserDetail"
 ]

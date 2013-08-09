@@ -135,6 +135,12 @@
 
   - js_asset_tag 'js/script.js'
 
+  %script{type:"text/javascript"}
+    - if user.is_authenticated
+      var userId = {{ user.id }};
+      user = new SpkrBar.Models.User({'id': userId});
+      user.fetch()
+
   - block 'scripts'
 
   - include 'talks/_popup_talk_new_partial.haml'

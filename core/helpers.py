@@ -10,7 +10,6 @@ from django.core.mail import get_connection, EmailMultiAlternatives
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
-from rest_framework.renderers import JSONRenderer
 
 def save_photo_with_uuid(photo):
     photo_ext = photo.name.split('.')[-1]
@@ -80,13 +79,3 @@ def send_html_mail(subject, text, html, recipient, from_email=None):
     message = EmailMultiAlternatives(subject, text, from_email, recipient)
     message.attach_alternative(html, 'text/html')
     message.send()
-
-
-class JSONResponse(HttpResponse):
-    """
-    An HttpResponse that renders it's content into JSON.
-    """
-    def __init__(self, data, **kwargs):
-        content = JSONRenderer().render(data)
-        kwargs['content_type'] = 'application/json'
-        super(JSONResponse, self).__init__(content, **kwargs)

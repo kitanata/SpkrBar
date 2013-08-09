@@ -1,8 +1,8 @@
 from talkevents.models import TalkEvent
 from talkevents.serializers import EngagementSerializer
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, viewsets
 
-class EngagementDetail(generics.RetrieveUpdateDestroyAPIView):
+class EngagementDetail(viewsets.ModelViewSet):
     queryset = TalkEvent.objects.all()
     serializer_class = EngagementSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)

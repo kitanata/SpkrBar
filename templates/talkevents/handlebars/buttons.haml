@@ -1,0 +1,25 @@
+{% verbatim %}
+  .btn-group
+    {{#if user.attending}}
+      {{#unless user.endorsing}}
+        %a.btn.btn-warning{href:"/talk/{{item.talk.id}}/endorse?last={{last}}", data-original-title:"endorse talk", data-toggle:"tooltip"}
+          %i.icon-thumbs-up
+      {{else}}
+        %a.btn.disabled.btn-warning
+          %i.icon-thumbs-up
+      {{/unless}}
+
+      %a.btn.btn-warning{href:"/talk_event/{{item.id}}/attend?last={{last}}", data-original-title:"Cancel", data-toggle:"tooltip"}
+        %i.icon-ban-circle
+    {{else}}
+      {{#unless user.is_event_planner }}
+        %a.btn.btn-warning{href:"/talk_event/{{item.id}}/attend?last={{last}}", data-original-title:"Attend Talk", data-toggle:"tooltip"}
+          %i.icon-calendar
+      {{/unless}}
+    {{/if}
+
+    {{#if user.is_event_planner }}
+      %a.btn.btn-warning.recruit-talk{href:"#recruit-talk-popup", data-toggle:"tooltip", data-original-title:"Recruit this talk."}
+        %i.icon-hand-right
+    {{/if}}
+{% endverbatim %}

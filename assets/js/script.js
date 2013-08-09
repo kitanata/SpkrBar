@@ -1,6 +1,9 @@
 //= require namespace
 //= require core
 //= require models/engagement
+//= require models/event
+//= require models/user
 //= require collections/engagements
+//= require collections/events
 //= require views/profile_detail
 //= require views/talk_detail

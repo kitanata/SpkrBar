@@ -1,6 +1,5 @@
 SpkrBar.Models.Engagement = Backbone.Model.extend
     defaults:
-        id: 0
         talk: null
         event: null
         date: ""

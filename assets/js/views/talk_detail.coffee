@@ -37,11 +37,51 @@ class SpkrBar.Views.TalkDetail
             showInputs: false,
             minuteStep: 5
 
-        events = []
+        events = new SpkrBar.Collections.Events()
+        events.fetch
+            success: =>
+                $('#event-list').typeahead
+                    source: events.map (x) ->
+                        eventName = x.get('owner').name + ' ' + x.get('start_date')[0..3]
+                        if x.get('name')
+                            eventName += ' - ' + x.get('name')
+                        eventName
 
-        #- for event in events
-        #    name = "{{event}}"
-        #    events.push(name)
+        $('#submit-engagement').on 'click', =>
+            eventName = $('#event-list').val()
+            talkId = $('#talk-id').val()
+            date = $('#date').val()
+            time = $('#time').val()
 
-        $('#event-list').typeahead
-            source: events
+            hours = parseInt(time[0..1])
+            minutes = time[3..4]
+            meridian = time[6..7]
+
+            if meridian == "PM"
+                hours += 12
+
+            date = new Date(date[6..9], date[3..4], date[0..1], hours, minutes)
+
+            selEvent = events.find (x) ->
+                checkName = x.get('owner').name + ' ' + x.get('start_date')[0..3]
+                if x.get('name')
+                    checkName += ' - ' + x.get('name')
+                eventName == checkName
+
+            if selEvent
+                newEngagement = new SpkrBar.Models.Engagement
+                    talk: talkId
+                    event: selEvent.id
+                    date: date
+                    attendees: []
+                    from_speaker: true
+                    vetoed: false
+
+                window.engage = newEngagement
+                console.log newEngagement
+
+                newEngagement.save null,
+                    success: =>
+                        $.colorbox.close()
+                    error: (model, xhr, options) =>
+                        console.log xhr
