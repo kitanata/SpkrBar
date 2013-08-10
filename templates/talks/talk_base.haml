@@ -12,4 +12,4 @@
   - include 'talks/_popup_talk_video_new_partial.haml'
 
   %script{type:"text/javascript"}
-    var talkView = new SpkrBar.Views.TalkDetail();
+    var talkView = new SpkrBar.Views.TalkDetail("{{talk.id}}");

@@ -3,7 +3,9 @@
 //= require models/engagement
 //= require models/event
 //= require models/user
+//= require models/talk
 //= require collections/engagements
 //= require collections/events
 //= require views/profile_detail
 //= require views/talk_detail
+//= require views/span9_engagement

@@ -21,6 +21,8 @@ from talk_slides_new import talk_slides_new
 from talk_submit import talk_submit
 from talk_recruit import talk_recruit
 
+from rest_talk_detail import TalkDetail
+
 __all__ = [
     "talk_archive", "talk_publish",
     "talk_new", "talk_edit", "talk_delete", "talk_detail",
@@ -28,4 +30,5 @@ __all__ = [
     "talk_link_new", "talk_link_delete",
     "talk_comment_new", "talk_endorsement_new", "talk_rate_new",
     "talk_video_new", "talk_photo_new", "talk_slides_new",
-    "talk_submit", "talk_recruit"]
+    "talk_submit", "talk_recruit",
+    "TalkDetail"]

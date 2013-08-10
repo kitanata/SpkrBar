@@ -1,5 +1,22 @@
 class SpkrBar.Views.TalkDetail
-    constructor: () ->
+    constructor: (talk_id) ->
+        talkDetailModel = new SpkrBar.Models.Talk
+            id: talk_id
+        talkDetailModel.fetch
+            success: =>
+                engagements = talkDetailModel.get 'engagements'
+
+                _(engagements).each (x) =>
+                    engagementModel = new SpkrBar.Models.Engagement
+                        id: x
+                    engagementModel.fetch
+                        success: =>
+                            eventView = new SpkrBar.Views.Span9Engagement
+                                model: engagementModel
+                                talk: talkDetailModel
+
+                            $('#engagement-list-region').append eventView.render().el
+
         $('.expert-area li .delete-talk-tag').click (el) =>
             itemId = $(el.currentTarget).data('id')
             talkId = $(el.currentTarget).data('talk')
