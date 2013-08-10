@@ -3,12 +3,15 @@ SpkrBar.Views.Span9Engagement = Backbone.View.extend
     template: "#span9-engagement-templ"
 
     events:
-        "click .icon":          "open",
-        "click .button.edit":   "openEditDialog",
-        "click .button.delete": "destroy"
+        "click #delete-engagement": "onDeleteEngagement"
 
     initialize: ->
-        this.listenTo(this.model, "change", this.render)
+        @listenTo(@model, "change", @render)
+
+    onDeleteEngagement: () ->
+        @model.destroy
+            success: =>
+                @remove()
 
     render: ->
         source = $(@template).html()
@@ -17,8 +20,24 @@ SpkrBar.Views.Span9Engagement = Backbone.View.extend
         @$el.html(template(@context()))
         @
 
+    userAttending: ->
+        user.id in @model.get('attendees')
+
+    userEndorsed: ->
+        user.id in @model.get('endorsements')
+
+    userIsEventPlanner: ->
+        user.get('is_event_planner')
+
+    userOwnsEngagement: ->
+        user.id == @model.get('user_id')
+
+    willShowButtons: ->
+        @userOwnsEngagement() or @userAttending() or not @userIsEventPlanner()
+
     context: ->
-        show_buttons: false
+        id: @model.id
+        talk_id: @model.get('talk')
         talk_url: @model.get('talk_url')
         talk_name: @model.get('talk_name')
         speaker_name: @model.get('speaker_name')
@@ -26,7 +45,12 @@ SpkrBar.Views.Span9Engagement = Backbone.View.extend
         event_name: @model.get('event_name')
         city: @model.get('city')
         state: @model.get('state')
-        date: @model.get('date')
-        time: @model.get('time')
+        date: @model.get('formatted_date')
+        time: @model.get('formatted_time')
         tags: _(@model.get('tags')).map (x) -> {'name': x}
         abstract: @model.get('abstract')
+        user_attending: @userAttending()
+        user_endorsed: @userEndorsed()
+        user_event_planner: @userIsEventPlanner()
+        user_owned: @userOwnsEngagement()
+        show_buttons: @willShowButtons()

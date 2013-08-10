@@ -14,7 +14,7 @@
 - if talk.speaker.user == user
   .edit-links
     .span3
-      %form.talk-link-form{action:"/talk/{{talk.id}}/link/new/", method:"POST"}
+      %form.talk-link-form{action:"/talk/{{talk.id}}/link/new", method:"POST"}
         - csrf_token
         {{ link_form.name }}
         {{ link_form.url }}

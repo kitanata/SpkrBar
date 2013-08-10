@@ -1,26 +1,29 @@
 class SpkrBar.Views.TalkDetail
     constructor: (talk_id) ->
-        talkDetailModel = new SpkrBar.Models.Talk
+        engagementViews = []
+
+        @talkDetailModel = new SpkrBar.Models.Talk
             id: talk_id
-        talkDetailModel.fetch
+        @talkDetailModel.fetch
             success: =>
-                engagements = talkDetailModel.get 'engagements'
+                engagements = @talkDetailModel.get 'engagements'
 
                 _(engagements).each (x) =>
                     engagementModel = new SpkrBar.Models.Engagement
                         id: x
                     engagementModel.fetch
                         success: =>
-                            eventView = new SpkrBar.Views.Span9Engagement
+                            newView = new SpkrBar.Views.Span9Engagement
                                 model: engagementModel
-                                talk: talkDetailModel
+                                talk: @talkDetailModel
 
-                            $('#engagement-list-region').append eventView.render().el
+                            $('#engagement-list-region').append newView.render().el
+                            engagementViews.push(newView)
 
         $('.expert-area li .delete-talk-tag').click (el) =>
             itemId = $(el.currentTarget).data('id')
             talkId = $(el.currentTarget).data('talk')
-            postTo = '/talk/' + talkId + '/tag/' + itemId + '/delete/'
+            postTo = '/talk/' + talkId + '/tag/' + itemId + '/delete'
 
             $.post postTo, =>
                 $('.expert-area li[data-id=' + itemId + ']').remove()
@@ -28,7 +31,7 @@ class SpkrBar.Views.TalkDetail
         $('.talk-link .delete-talk-link').click (el) =>
             itemId = $(el.currentTarget).data('id')
             talkId = $(el.currentTarget).data('talk')
-            postTo = '/talk/' + talkId + '/link/' + itemId + '/delete/'
+            postTo = '/talk/' + talkId + '/link/' + itemId + '/delete'
 
             $.post postTo, =>
                 $('.talk-link[data-id=' + itemId + ']').remove()
@@ -95,10 +98,16 @@ class SpkrBar.Views.TalkDetail
                     vetoed: false
 
                 window.engage = newEngagement
-                console.log newEngagement
 
                 newEngagement.save null,
                     success: =>
                         $.colorbox.close()
+
+                        newView = new SpkrBar.Views.Span9Engagement
+                            model: newEngagement
+                            talk: @talkDetailModel
+
+                        $('#engagement-list-region').append newView.render().el
+                        engagementViews.push(newView)
+
                     error: (model, xhr, options) =>
-                        console.log xhr
