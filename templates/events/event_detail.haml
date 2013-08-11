@@ -40,10 +40,6 @@
         %i.icon-calendar
     %a.btn.btn-warning{href:"/profile/{{event.owner.user.username}}", data-toggle:"tooltip", data-original-title:"Event Profile"}
       %i.icon-user
-    - if user_talks and event.accept_submissions
-      %a.btn.btn-warning.submit-talk{href:"#submit-talk-popup"}
-        %i.icon-share-alt
-        Submit Talk
 
 - block 'content'
   - include 'events/_event_header_partial.haml'
@@ -78,7 +74,6 @@
 
 - block 'scripts'
   - include 'events/_popup_event_delete_partial.haml'
-  - include 'events/_popup_event_submit_talk_partial.haml'
 
   %script{type:"text/javascript"}
     (function() {
