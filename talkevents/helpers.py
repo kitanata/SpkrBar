@@ -5,12 +5,10 @@ from talkevents.models import TalkEvent
 
 def talk_event_groups(sample_size=0):
     group_defs = [ 
-            ('-', 14, "In the past couple weeks"), 
             ('+', 7, "Upcoming this week"), 
             ('+', 30, "In the next 30 days"),
             ('+', 90, "In the next 3 months"), 
-            ('+', 90, "In the next 6 months"), 
-            ('+', 180, "In the next year") ]
+            ('-', 90, "In the past 3 months")]
 
     talk_events = TalkEvent.objects.filter(talk__published=True)
 
