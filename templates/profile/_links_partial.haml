@@ -9,7 +9,8 @@
     %p.profile-link{data-id:"{{link.id}}"}
       %a{href:"{{link.url_target}}", target:"_blank"}
         My {{ link.type_name|title }}
-      %i.delete-profile-link.icon-remove.pull-right{data-id:"{{link.id}}"}
+      - if user == profile.user
+        %i.delete-profile-link.icon-remove.pull-right{data-id:"{{link.id}}"}
 
 - if user == profile.user
   .row
