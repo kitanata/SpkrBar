@@ -15,7 +15,7 @@
   .row
     .edit-links
       .span3
-        %form.profile-link-form{action:"/profile/edit/link/new/", method:"POST"}
+        %form.profile-link-form{action:"/profile/edit/link/new", method:"POST"}
           - csrf_token
           {{ link_form.type }}
           {{ link_form.url }}

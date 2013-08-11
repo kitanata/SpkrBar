@@ -22,6 +22,8 @@ from talk_submit import talk_submit
 from talk_recruit import talk_recruit
 
 from rest_talk_detail import TalkDetail
+from rest_talk_tag_list import TalkTagList
+from rest_talk_tag_detail import TalkTagDetail
 
 __all__ = [
     "talk_archive", "talk_publish",
@@ -31,4 +33,4 @@ __all__ = [
     "talk_comment_new", "talk_endorsement_new", "talk_rate_new",
     "talk_video_new", "talk_photo_new", "talk_slides_new",
     "talk_submit", "talk_recruit",
-    "TalkDetail"]
+    "TalkDetail", "TalkTagList", "TalkTagDetail"]

@@ -76,7 +76,7 @@
                     %i.delete-talk-tag.icon-remove.pull-right{data-talk:"{{talk.id}}", data-id:"{{tag.id}}"}
 
             - if talk.speaker.user == user
-              %form{action:"/talk/{{talk.id}}/tag/new/", method:"POST"}
+              %form{action:"/talk/{{talk.id}}/tag/new", method:"POST"}
                 - csrf_token
                 %input{name:"tag", type:"text", placeholder:"My Tag"}
                 %input.btn.btn-warning{type:"submit", value:"Tag this talk"}
@@ -181,7 +181,7 @@
               %hr
 
               - if not user.is_anonymous and talk.speaker.user != user
-                %form.add-comment-form{action:"/talk/{{talk.id}}/comment/new/", method:"POST"}
+                %form.add-comment-form{action:"/talk/{{talk.id}}/comment/new", method:"POST"}
                   - csrf_token
                   %textarea{name:'comment', placeholder:"Add your comment..."}
                   %input.btn.btn-warning{type:"submit", value:"Submit Comment"}

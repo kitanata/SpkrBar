@@ -1,7 +1,7 @@
 %div{style:"display:none"}
   #link-slides-popup{style:"background-color: white; padding: 40px;"}
     %h2 Add Slides Link
-    %form{action:"/talk/{{talk.id}}/slides/new/", method:"POST"}
+    %form{action:"/talk/{{talk.id}}/slides/new", method:"POST"}
       - csrf_token
 
       %label{for:"slide-source"} Source:

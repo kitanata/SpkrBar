@@ -21,7 +21,7 @@
     #edit-profile-popup{style:"background-color:white; padding: 40px;"}
       %h2 Edit Your Profile
 
-      %form{action:"/profile/edit/", method:"POST"}
+      %form{action:"/profile/edit", method:"POST"}
         - csrf_token
         %label{for:"name"} Name:
         {{ edit_form.name }}

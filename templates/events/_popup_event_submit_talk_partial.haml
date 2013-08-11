@@ -1,7 +1,7 @@
 %div{style:'display:none'}
   #submit-talk-popup
     %h2 Submit a talk to {{event.name}}
-    %form.submit-talk-event{action:"/event/{{event.id}}/submit_talk/", method:"POST"}
+    %form.submit-talk-event{action:"/event/{{event.id}}/submit_talk", method:"POST"}
       - csrf_token
 
       %select

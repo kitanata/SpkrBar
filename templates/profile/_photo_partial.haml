@@ -6,7 +6,7 @@
 
   - if user == profile.user
     .row
-      %form.profile-photo-form{action:"/profile/edit/photo/", method:"POST", enctype:"multipart/form-data"}
+      %form.profile-photo-form{action:"/profile/edit/photo", method:"POST", enctype:"multipart/form-data"}
         {% csrf_token %}
 
         .span3

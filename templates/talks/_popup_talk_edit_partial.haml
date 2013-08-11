@@ -1,7 +1,7 @@
 %div{style:"display:none"}
   #edit-talk-popup{style:"background-color: white; padding: 40px;"}
     %h2 Edit Talk
-    %form{action:"/talk/{{talk.id}}/edit/", method:"POST"}
+    %form{action:"/talk/{{talk.id}}/edit", method:"POST"}
       - csrf_token
       %label{for:"talk-name"} Name:
       %input#talk-name{name:"name", type:"text", value:"{{talk.name}}"}

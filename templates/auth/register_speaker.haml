@@ -15,7 +15,7 @@
 
       .row
         .span12
-          %form#register{action:"/register/speaker/", method:"POST"}
+          %form#register{action:"/register/speaker", method:"POST"}
             - csrf_token
             - for field in form
               - if field.errors

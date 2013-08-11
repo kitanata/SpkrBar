@@ -1,8 +1,13 @@
 from django.conf.urls import patterns, url
 
-from views import TalkDetail
+from views import TalkDetail, TalkTagList, TalkTagDetail
 
 urlpatterns = patterns('',
+
+    url(r'rest_talk_tag/(?P<pk>\d*)', TalkTagDetail.as_view(
+        actions={'get': 'retrieve', 'put': 'update', 'delete':'destroy'})),
+
+    url(r'rest_talk/(?P<pk>\d+)/tags', TalkTagList.as_view()),
     url(r'rest_talk/(?P<pk>\d*)', TalkDetail.as_view(
         actions={'get': 'retrieve', 'put': 'update', 'delete':'destroy'})),
 

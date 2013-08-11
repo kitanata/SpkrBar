@@ -1,7 +1,7 @@
 %div{style:"display:none"}
   #rate-talk-popup{style:"background-color: white; padding: 40px;"}
     %h2 Rate this talk
-    %form{action:"/talk/{{talk.id}}/rate/", method:"POST"}
+    %form{action:"/talk/{{talk.id}}/rate", method:"POST"}
       - csrf_token
       = rating_form.as_p
 

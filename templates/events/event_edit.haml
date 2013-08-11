@@ -128,7 +128,7 @@
     });
 
     $('#submit-event').on('click', function(){
-        $.post("/event/{{event.id}}/edit/", {
+        $.post("/event/{{event.id}}/edit", {
             'name': $('#name').val(),
             'description': $('#description').val(),
             'location': currentLocation.id,

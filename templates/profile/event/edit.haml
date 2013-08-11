@@ -20,7 +20,7 @@
               - else
                 %i.icon-user
 
-        %form.profile-photo-form{action:"/profile/edit/photo/", method:"POST", enctype:"multipart/form-data"}
+        %form.profile-photo-form{action:"/profile/edit/photo", method:"POST", enctype:"multipart/form-data"}
           {% csrf_token %}
 
           .row
@@ -35,7 +35,7 @@
         %h2 About You
         %hr
 
-        %form.profile-form{action:"/profile/edit/", method:"POST"}
+        %form.profile-form{action:"/profile/edit", method:"POST"}
           {% csrf_token %}
           .row
             .span9
@@ -68,7 +68,7 @@
         .row
           .edit-tags
             .span3
-              %form.profile-tag-form{action:"/profile/edit/tag/new/", method:"POST"}
+              %form.profile-tag-form{action:"/profile/edit/tag/new", method:"POST"}
                 - csrf_token
                 {{ tag_form.name }}
 
@@ -90,7 +90,7 @@
         .row
           .edit-links
             .span3
-              %form.profile-link-form{action:"/profile/edit/link/new/", method:"POST", enctype:"multipart/form-data"}
+              %form.profile-link-form{action:"/profile/edit/link/new", method:"POST", enctype:"multipart/form-data"}
                 - csrf_token
                 %label{for:"id_type"} Link Type:
                 {{ link_form.type }}

@@ -1,7 +1,7 @@
 %div{style:"display:none"}
   #link-video-popup{style:"background-color: white; padding: 40px;"}
     %h2 Add Video Link
-    %form{action:"/talk/{{talk.id}}/video/new/", method:"POST"}
+    %form{action:"/talk/{{talk.id}}/video/new", method:"POST"}
       - csrf_token
 
       %label{for:"video-source"} Source:

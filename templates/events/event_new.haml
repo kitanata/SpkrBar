@@ -139,7 +139,7 @@
     });
 
     $('#create-event').on('click', function(){
-        $.post("/event/new/", {
+        $.post("/event/new", {
             'name': $('#name').val(),
             'location': currentLocation.id,
             'start-date': $("#start-date").val(),
