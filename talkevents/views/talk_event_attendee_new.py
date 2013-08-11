@@ -15,7 +15,7 @@ def talk_event_attendee_new(request, talk_event_id):
         talk_event.attendees.add(request.user)
         talk_event.save()
 
-    if request.GET['last']:
+    if 'last' in request.GET and request.GET['last']:
         return redirect(request.GET['last'])
     else:
         return redirect(request.user)
