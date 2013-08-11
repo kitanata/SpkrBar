@@ -5,6 +5,7 @@ from talkevents.models import TalkEvent
 
 @login_required()
 def talk_event_attendee_new(request, talk_event_id):
+    print "THIS"
     talk_event = get_object_or_404(TalkEvent, pk=talk_event_id)
 
     if request.user.get_profile() in talk_event.attendees.all():

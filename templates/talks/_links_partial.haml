@@ -9,7 +9,8 @@
       %p.talk-link{data-talk:"{{talk.id}}", data-id:"{{link.id}}"}
         %a{href:"{{link.url_target}}", target:"_blank"}
           My {{ link.name|title }}
-        %i.delete-talk-link.icon-remove.pull-right{data-talk:"{{talk.id}}", data-id:"{{link.id}}"}
+        - if talk.speaker.user == user
+          %i.delete-talk-link.icon-remove.pull-right{data-talk:"{{talk.id}}", data-id:"{{link.id}}"}
 
 - if talk.speaker.user == user
   .edit-links

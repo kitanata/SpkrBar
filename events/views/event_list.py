@@ -10,8 +10,8 @@ def event_list(request):
     events = Event.objects.all()
 
     group_defs = [ 
-            ('-', 30, "Recent Events"), 
             ('+', 14, "Upcoming Events"), 
+            ('-', 30, "Recent Events"), 
             ('+', 90, "In the next 3 months"),
             ('+', 270, "In the next year")]
 

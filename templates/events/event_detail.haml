@@ -49,6 +49,15 @@
   - include 'events/_event_header_partial.haml'
 
   #event-detail
+    - if speakers
+      .row
+        .section-title
+          %h2 Speakers
+
+      .row.buffer
+        - for profile in speakers
+          {% include '_speaker_attendee_span6_partial.haml' %}
+
     - if upcoming
       .row
         .section-title
@@ -58,10 +67,10 @@
         - for item in upcoming
           - include 'talkevents/_talk_event_span6_detail_partial.haml'
 
-    - if recent
+    - if past
       .row
         .section-title
-          %h2 Recent Talks
+          %h2 Past Talks
 
       .row.buffer
         - for item in past

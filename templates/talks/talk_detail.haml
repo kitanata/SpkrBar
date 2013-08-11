@@ -73,7 +73,8 @@
                 - for tag in talk.tags.all
                   %li.tag.label.label-info{data-talk:"{{talk.id}}", data-id:"{{tag.id}}"}
                     {{tag}}
-                    %i.delete-talk-tag.icon-remove.pull-right{data-talk:"{{talk.id}}", data-id:"{{tag.id}}"}
+                    - if talk.speaker.user == user
+                      %i.delete-talk-tag.icon-remove.pull-right{data-talk:"{{talk.id}}", data-id:"{{tag.id}}"}
 
             - if talk.speaker.user == user
               %form{action:"/talk/{{talk.id}}/tag/new", method:"POST"}
