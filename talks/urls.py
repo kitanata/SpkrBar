@@ -4,10 +4,12 @@ from views import TalkDetail, TalkTagList, TalkTagDetail
 
 urlpatterns = patterns('',
 
-    url(r'^rest_talk_tag/(?P<pk>\d*)', TalkTagDetail.as_view(
+    url(r'^rest_talk/(?P<talk_id>\d+)/tag/(?P<pk>\d+)$', TalkTagDetail.as_view(
         actions={'get': 'retrieve', 'put': 'update', 'delete':'destroy'})),
+    url(r'^rest_talk/(?P<talk_id>\d+)/tag$', TalkTagDetail.as_view(
+        actions={'post': 'create'})),
+    url(r'^rest_talk/(?P<talk_id>\d+)/tags$', TalkTagList.as_view()),
 
-    url(r'^rest_talk/(?P<pk>\d+)/tags', TalkTagList.as_view()),
     url(r'^rest_talk/(?P<pk>\d*)', TalkDetail.as_view(
         actions={'get': 'retrieve', 'put': 'update', 'delete':'destroy'})),
 
@@ -16,8 +18,6 @@ urlpatterns = patterns('',
     url(r'^talk/(?P<talk_id>\d+)/edit$', 'talks.views.talk_edit'),
     url(r'^talk/(?P<talk_id>\d+)/delete$', 'talks.views.talk_delete'),
 
-    url(r'^talk/(?P<talk_id>\d+)/tag/new$', 'talks.views.talk_tag_new'),
-    url(r'^talk/(?P<talk_id>\d+)/tag/(?P<tag_id>\d+)/delete$', 'talks.views.talk_tag_delete'),
     url(r'^talk/(?P<talk_id>\d+)/comment/new$', 'talks.views.talk_comment_new'),
     url(r'^talk/(?P<talk_id>\d+)/rate$', 'talks.views.talk_rate_new'),
     url(r'^talk/(?P<talk_id>\d+)/endorse$', 'talks.views.talk_endorsement_new'),

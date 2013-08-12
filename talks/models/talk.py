@@ -9,8 +9,6 @@ class Talk(models.Model):
 
     published = models.BooleanField(default=True)
 
-    tags = models.ManyToManyField('TalkTag')
-
     endorsements = models.ManyToManyField(
             'core.SpkrbarUser', related_name='talks_endorsed')
 

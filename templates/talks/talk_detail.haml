@@ -67,20 +67,7 @@
       .span3
         .row
           .span3
-            %h3 Topics
-            - if talk.tags.all
-              %ul.expert-area
-                - for tag in talk.tags.all
-                  %li.tag.label.label-info{data-talk:"{{talk.id}}", data-id:"{{tag.id}}"}
-                    {{tag}}
-                    - if talk.speaker.user == user
-                      %i.delete-talk-tag.icon-remove.pull-right{data-talk:"{{talk.id}}", data-id:"{{tag.id}}"}
-
-            - if talk.speaker.user == user
-              %form{action:"/talk/{{talk.id}}/tag/new", method:"POST"}
-                - csrf_token
-                %input{name:"tag", type:"text", placeholder:"My Tag"}
-                %input.btn.btn-warning{type:"submit", value:"Tag this talk"}
+            #talk-tags
 
           .span3
             %h3 Attendees ({{attendees|length}})
@@ -91,17 +78,6 @@
 
       .span9
         .row
-          .span9
-            %h3 Upcoming Events
-            %hr
-
-          - if upcoming
-            #engagement-list-region
-          - else
-            .span9
-              No upcoming events
-
-        .row{style:"margin-top:20px"}
           .span4
             .row
               .span2
@@ -174,6 +150,17 @@
                 - else
                   .span9
                     No photos available.
+
+        .row{style:"margin-top:40px"}
+          .span9
+            %h3 Upcoming Events
+            %hr
+
+          - if upcoming
+            #engagement-list-region
+          - else
+            .span9
+              No upcoming events
 
         .row{style:"margin-top:40px"}
           .span9

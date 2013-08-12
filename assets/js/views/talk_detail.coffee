@@ -20,13 +20,15 @@ class SpkrBar.Views.TalkDetail
                             $('#engagement-list-region').append newView.render().el
                             engagementViews.push(newView)
 
-        $('.expert-area li .delete-talk-tag').click (el) =>
-            itemId = $(el.currentTarget).data('id')
-            talkId = $(el.currentTarget).data('talk')
-            postTo = '/talk/' + talkId + '/tag/' + itemId + '/delete'
+                talkTags = new SpkrBar.Collections.TalkTags
+                    talk_id: @talkDetailModel.id
+                talkTags.fetch
+                    success: =>
+                        talkTagsView = new SpkrBar.Views.TalkTags
+                            collection: talkTags
+                            talk: @talkDetailModel
 
-            $.post postTo, =>
-                $('.expert-area li[data-id=' + itemId + ']').remove()
+                        $('#talk-tags').append talkTagsView.render().el
 
         $('.talk-link .delete-talk-link').click (el) =>
             itemId = $(el.currentTarget).data('id')
