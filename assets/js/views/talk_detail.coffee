@@ -1,6 +1,6 @@
 class SpkrBar.Views.TalkDetail
     constructor: (talk_id) ->
-        engagementViews = []
+        @engagementViews = []
 
         @talkDetailModel = new SpkrBar.Models.Talk
             id: talk_id
@@ -18,7 +18,7 @@ class SpkrBar.Views.TalkDetail
                                 talk: @talkDetailModel
 
                             $('#engagement-list-region').append newView.render().el
-                            engagementViews.push(newView)
+                            @engagementViews.push(newView)
 
                 talkTags = new SpkrBar.Collections.TalkTags
                     talk_id: @talkDetailModel.id
@@ -30,13 +30,15 @@ class SpkrBar.Views.TalkDetail
 
                         $('#talk-tags').append talkTagsView.render().el
 
-        $('.talk-link .delete-talk-link').click (el) =>
-            itemId = $(el.currentTarget).data('id')
-            talkId = $(el.currentTarget).data('talk')
-            postTo = '/talk/' + talkId + '/link/' + itemId + '/delete'
+                talkLinks = new SpkrBar.Collections.TalkLinks
+                    talk_id: @talkDetailModel.id
+                talkLinks.fetch
+                    success: =>
+                        talkLinksView = new SpkrBar.Views.TalkLinks
+                            collection: talkLinks
+                            talk: @talkDetailModel
 
-            $.post postTo, =>
-                $('.talk-link[data-id=' + itemId + ']').remove()
+                        $('#talk-links').append talkLinksView.render().el
 
         @handleSubmitTalk()
 
@@ -110,6 +112,6 @@ class SpkrBar.Views.TalkDetail
                             talk: @talkDetailModel
 
                         $('#engagement-list-region').append newView.render().el
-                        engagementViews.push(newView)
+                        @engagementViews.push(newView)
 
                     error: (model, xhr, options) =>

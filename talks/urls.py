@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 
-from views import TalkDetail, TalkTagList, TalkTagDetail
+from views import TalkDetail, TalkTagList, TalkTagDetail, TalkLinkList, TalkLinkDetail
 
 urlpatterns = patterns('',
 
@@ -10,7 +10,13 @@ urlpatterns = patterns('',
         actions={'post': 'create'})),
     url(r'^rest_talk/(?P<talk_id>\d+)/tags$', TalkTagList.as_view()),
 
-    url(r'^rest_talk/(?P<pk>\d*)', TalkDetail.as_view(
+    url(r'^rest_talk/(?P<talk_id>\d+)/link/(?P<pk>\d+)$', TalkLinkDetail.as_view(
+        actions={'get': 'retrieve', 'put': 'update', 'delete':'destroy'})),
+    url(r'^rest_talk/(?P<talk_id>\d+)/link$', TalkLinkDetail.as_view(
+        actions={'post': 'create'})),
+    url(r'^rest_talk/(?P<talk_id>\d+)/links$', TalkLinkList.as_view()),
+
+    url(r'^rest_talk/(?P<pk>\d*)$', TalkDetail.as_view(
         actions={'get': 'retrieve', 'put': 'update', 'delete':'destroy'})),
 
     url(r'^talk/new$', 'talks.views.talk_new'),
