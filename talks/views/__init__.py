@@ -10,8 +10,6 @@ from talk_comment_new import talk_comment_new
 from talk_rate_new import talk_rate_new
 from talk_endorsement_new import talk_endorsement_new
 
-from talk_link_new import talk_link_new
-from talk_link_delete import talk_link_delete
 from talk_video_new import talk_video_new
 from talk_photo_new import talk_photo_new
 from talk_slides_new import talk_slides_new
@@ -29,7 +27,6 @@ from rest_talk_link_detail import TalkLinkDetail
 __all__ = [
     "talk_archive", "talk_publish",
     "talk_new", "talk_edit", "talk_delete", "talk_detail",
-    "talk_link_new", "talk_link_delete",
     "talk_comment_new", "talk_endorsement_new", "talk_rate_new",
     "talk_video_new", "talk_photo_new", "talk_slides_new",
     "talk_submit", "talk_recruit",

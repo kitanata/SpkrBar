@@ -36,6 +36,4 @@ urlpatterns = patterns('',
     url(r'^talk/(?P<talk_id>\d+)/slides/new$', 'talks.views.talk_slides_new'),
     url(r'^talk/(?P<talk_id>\d+)/video/new$', 'talks.views.talk_video_new'),
     url(r'^talk/(?P<talk_id>\d+)/photo/new$', 'talks.views.talk_photo_new'),
-    url(r'^talk/(?P<talk_id>\d+)/link/new$', 'talks.views.talk_link_new'),
-    url(r'^talk/(?P<talk_id>\d+)/link/(?P<link_id>\d+)/delete$', 'talks.views.talk_link_delete'),
 )

@@ -1,6 +1,6 @@
-SpkrBar.Views.Span9Engagement = Backbone.View.extend
-    className: "span9-engagement"
-    template: "#span9-engagement-templ"
+SpkrBar.Views.Engagement = Backbone.View.extend
+    className: "engagement"
+    template: "#engagement-templ"
 
     events:
         "click #delete-engagement": "onDeleteEngagement"

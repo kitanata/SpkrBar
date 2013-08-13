@@ -13,7 +13,7 @@ class EngagementSerializer(serializers.ModelSerializer):
     speaker_name = serializers.Field(source='talk.speaker.user.get_full_name')
     city = serializers.Field(source='event.location.city')
     state = serializers.Field(source='event.location.state')
-    tags = serializers.Field(source='talk.tags.all')
+    tags = serializers.Field(source='event.owner.tags.all')
     endorsements = serializers.Field(source='talk.endorsements.all')
     user_id = serializers.Field(source='talk.speaker.user.id')
 

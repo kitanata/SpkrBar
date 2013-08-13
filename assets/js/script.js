@@ -12,6 +12,6 @@
 //= require collections/talk_links
 //= require views/profile_detail
 //= require views/talk_detail
-//= require views/span9_engagement
+//= require views/engagement
 //= require views/talk_tags
 //= require views/talk_links

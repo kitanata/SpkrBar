@@ -152,16 +152,14 @@
                   .span9
                     No photos available.
 
-        .row{style:"margin-top:40px"}
-          .span9
-            %h3 Upcoming Events
-            %hr
-
-          - if upcoming
-            #engagement-list-region
-          - else
+        - if upcoming
+          .row{style:"margin-top:40px"}
             .span9
-              No upcoming events
+              %h3 Upcoming Events
+              %hr
+
+            .span9
+              #engagement-list-region
 
         .row{style:"margin-top:40px"}
           .span9

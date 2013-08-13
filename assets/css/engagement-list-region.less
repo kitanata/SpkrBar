@@ -1,97 +1,44 @@
 #engagement-list-region {
-    .span9-engagement {
+    display: table;
+    border-spacing: 20px;
+
+    .engagement {
         border: 1px solid #eee;
         margin-bottom: 20px;
         padding: 10px;
+        width: 318px;
+        min-height: 120px;
+        display: table-cell;
 
-        img {
-            display: block;
-            margin: 20px auto 20px auto;
-            max-width: 198px;
-            min-width: 198px;
+        &:not(:last-child) {
+            margin-right: 20px;
         }
 
-        span div {
+        .tag-cloud {
+            width: 254px;
+            height: 20px;
+            overflow: scroll;
+        }
+
+        .content-buttons {
             display: inline-block;
+            vertical-align: top;
+            width: 254px;
         }
 
-        .header, .header-s6, .header-s3 {
-            .title {
-                font-weight: 600;
-                font-size: 20px;
-                line-height: 24px;
-                min-height: 72px;
-
-                .subtitle {
-                    font-weight: 400;
-                    font-size: 14px;
-                    line-height: 20px;
-                }
-            }
-
-            .location, .time {
-                margin-top: 10px;
-                font-size: 14px;
-                line-height: 16px;
-                font-weight: bold;
-            }
-
-            .grid1, .grid2 {
-                display: inline-block;
-            }
+        .content {
+            width: 100%;
         }
 
-        .header {
-            .grid1 {
-                width: 468px;
-            }
-
-            .grid2 {
-                margin-left: 20px;
-                width: 182px;
-                text-align: right;
-                vertical-align: top;
-            }
+        a {
+            font-size: 16px;
+            font-weight: 600;
         }
 
-        .header-s6 {
-            .grid1 {
-                width: 300px;
-            }
-
-            .grid2 {
-                margin-left: 20px;
-                width: 112px;
-                text-align: right;
-                vertical-align: top;
-            }
+        .buttons {
+            display: inline-block;
+            vertical-align: top;
+            width: 40px;
         }
-
-        .description {
-            min-height: 80px;
-            margin-top: 20px;
-
-            img {
-                max-width: 120px;
-                margin-right: 20px;
-            }
-
-            i.icon-camera { 
-                display: block;
-                width: 120px;
-                margin-left: auto;
-                margin-right: auto;
-                font-size: 6em;
-                color: rgb(185, 185, 185);
-            }
-
-            .tag-cloud {
-                padding: 10px 10px 10px 0px;
-                width: 120px;
-                height: 80px;
-                overflow: scroll;
-            }
-        }
-
     }
 }

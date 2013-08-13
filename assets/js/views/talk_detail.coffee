@@ -13,7 +13,7 @@ class SpkrBar.Views.TalkDetail
                         id: x
                     engagementModel.fetch
                         success: =>
-                            newView = new SpkrBar.Views.Span9Engagement
+                            newView = new SpkrBar.Views.Engagement
                                 model: engagementModel
                                 talk: @talkDetailModel
 
@@ -107,7 +107,7 @@ class SpkrBar.Views.TalkDetail
                     success: =>
                         $.colorbox.close()
 
-                        newView = new SpkrBar.Views.Span9Engagement
+                        newView = new SpkrBar.Views.Engagement
                             model: newEngagement
                             talk: @talkDetailModel
 
