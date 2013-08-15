@@ -113,7 +113,7 @@
               %h2
                 - block 'title'
                   Title Of Page
-            .span6
+            .span6{style:"position: relative;"}
               .nav.btn-group.pull-right
                 - block 'subnav'
                   %a.btn.btn-warning{href:"#"}
@@ -122,6 +122,7 @@
                     Example
                   %a.btn.btn-warning{href:"#"}
                     Example
+              #notifications
 
       - block 'callout'
 

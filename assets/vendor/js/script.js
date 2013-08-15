@@ -9,4 +9,5 @@
 //= require bootstrap-timepicker.min
 //= require bootstrap-datepicker
 //= require jquery.colorbox-min
+//= require jquery.pnotify
 //= require django-csrf

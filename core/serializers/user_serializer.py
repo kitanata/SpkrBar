@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from core.models import SpkrbarUser
+from core.models import SpkrbarUser, Notification
+from notification_serializer import NotificationSerializer
 
 class UserSerializer(serializers.ModelSerializer):
     full_name = serializers.Field(source='get_full_name')
@@ -19,5 +20,5 @@ class UserSerializer(serializers.ModelSerializer):
                 'followers',
                 'is_speaker',
                 'is_attendee',
-                'is_event_planner'
+                'is_event_planner',
                 )

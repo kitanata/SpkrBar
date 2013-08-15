@@ -56,3 +56,39 @@
     $('.edit-profile').colorbox({inline: true, width:"400px"});
 
     var profileView = new SpkrBar.Views.ProfileDetail();
+
+    $.pnotify.defaults.history = false;
+    window.notification = $.pnotify({
+        title: 'Regular Notice',
+        text: 'Check me out! I\'m a notice.',
+        hide: false,
+        closer_hover: false,
+        sticker: false,
+        icon: false,
+        after_close: function(el) {
+          console.log(el);
+          console.log("HELLO");
+        },
+        after_open: function(el) {
+          $(el).attr('data-id', '42');
+        }
+    });
+
+    window.notification2 = $.pnotify({
+        title: 'Regular Notice 2',
+        text: 'Check me out! I\'m a notice.',
+        hide: false,
+        closer_hover: false,
+        sticker: false,
+        icon: false,
+        after_close: function(el) {
+          console.log(el);
+          console.log("HELLO");
+        },
+        after_open: function(el) {
+          $(el).attr('data-id', '64');
+        }
+    });
+
+    $('#notifications').append(notification);
+    $('#notifications').append(notification2);

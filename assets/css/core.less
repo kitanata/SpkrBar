@@ -1,4 +1,6 @@
 @bodyBorderColor: rgb(175,150,130);
+@orange: #F38E42;
+@bordeaux: rgb(189, 54, 47);
 
 body {
     padding-top: 0px;
@@ -53,7 +55,7 @@ body {
 
     .subnav {
         margin-bottom: 20px;
-        background-color: #F38E42;
+        background-color: @orange;
         padding: 0px 20px;
         color: #eee;
 
@@ -168,7 +170,7 @@ i.photo-placeholder-large {
         line-height: 1.2em;
 
         &:hover {
-            color: #F38E42;
+            color: @orange;
             text-decoration: none;
         }
     }
@@ -180,7 +182,7 @@ i.photo-placeholder-large {
         text-align: center;
 
         &:hover {
-            color: #F38E42;
+            color: @orange;
         }
     }
 }
@@ -195,7 +197,7 @@ ul.basic-item-list {
 }
 
 .section-title {
-    background-color: #F38E42;
+    background-color: @orange;
     padding: 1px 20px;
     color: #eee;
 
@@ -282,7 +284,7 @@ ul.basic-item-list {
 
         .header {
             padding: 20px;
-            background-color: #F38E42;
+            background-color: @orange;
             color: #eee;
 
             font-size: 18px;
@@ -360,5 +362,30 @@ form#register {
             }
         }
 
+    }
+}
+
+#notifications {
+    position: absolute;
+    right: 0px;
+    top: 50px;
+
+    .ui-pnotify-closer .icon-remove {
+        float: right;
+
+        &:hover {
+            color: @bordeaux;
+        }
+    }
+
+    .alert {
+        color: white;
+        background-color: @orange;
+        text-shadow: rgba(0, 0, 0, 0.498039) 0px 1px 0px;
+        padding-right: 14px;
+
+        h4 {
+            color: white;
+        }
     }
 }
