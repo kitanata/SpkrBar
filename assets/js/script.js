@@ -6,10 +6,12 @@
 //= require models/talk
 //= require models/talk_tag
 //= require models/talk_link
+//= require models/notification
 //= require collections/engagements
 //= require collections/events
 //= require collections/talk_tags
 //= require collections/talk_links
+//= require collections/notifications
 //= require views/profile_detail
 //= require views/talk_detail
 //= require views/engagement

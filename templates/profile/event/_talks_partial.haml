@@ -7,27 +7,46 @@
         - for item in current
           - include 'talkevents/_talk_event_span9_detail_partial.haml'
 
-- if upcoming
-  .row
-    .span9
-      %h2 Upcoming Speaking Engagements
-
-      .row
-        - for item in upcoming
-          - include 'talkevents/_talk_event_span9_detail_partial.haml'
-
 .row
   .span9
     - if events
       - for event in events
         .section-title
-          %h2
+          %h2.pull-left{style:"width:420px"}
             %a{href:"{{event.get_absolute_url}}"}
               {{ event }}
 
+          .btn-group.pull-right{style:"margin-top:15px"}
+            - if user == event.owner.user
+                %a.btn.btn-warning.edit-talk{href:"/event/{{event.id}}/edit", data-toggle:"tooltip", data-original-title:"Edit Event"}
+                  %i.icon-pencil
+                  Edit
+
+                - if not event.talkevent_set.all
+                  %a.btn.btn-danger.delete-event{data-name:"{{event.name}}", data-id:"{{event.id}}", href:"#delete-event-popup", data-toggle:"tooltip", data-original-title:"Delete Event"}
+                    %i.icon-trash
+                    Delete
+
+            - elif not user.is_anonymous
+              - if user_attending 
+                - if not user_endorsed
+                  %a.btn.btn-warning{href:"/event/{{event.id}}/endorse?last={{last}}", data-toggle:"tooltip", data-original-title:"Endorse Event"}
+                    %i.icon-thumbs-up
+                - else
+                  %a.btn.disabled.btn-warning
+                    %i.icon-thumbs-up
+                %a.btn.btn-warning{href:"/event/{{event.id}}/attend?last={{last}}", data-toggle:"tooltip", data-original-title:"Cancel Attendance"}
+                  %i.icon-ban-circle
+              - elif event and not user_attending
+                %a.btn.btn-warning{href:"/event/{{event.id}}/attend?last={{last}}", data-toggle:"tooltip", data-original-title:"Attend Event"}
+                  %i.icon-calendar
+              %a.btn.btn-warning{href:"/profile/{{event.owner.user.username}}", data-toggle:"tooltip", data-original-title:"Event Profile"}
+                %i.icon-user
+          .clearfix
+
         .buffer
         .row
-          - for item in event.talkevent_set.all
+          - for item in event.engagements.all
             - include 'talkevents/_talk_event_span3_detail_partial.haml'
     - else
       No events.

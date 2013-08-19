@@ -13,7 +13,7 @@ def event_delete(request, event_id):
     if not request.user.has_perm('delete_event', event):
         return HttpResponseForbidden()
 
-    talk = event.talk
+    profile = event.owner
     event.delete()
 
-    return redirect(talk)
+    return redirect(profile)

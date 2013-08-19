@@ -6,22 +6,13 @@
   {{ event.owner.name }} {{ event.start_date.year }}
 
 - block 'subnav'
-  - if user == event.owner
-      - if event.accept_submissions
-        %a.btn.btn-warning{href:"/event/{{event.id}}/close?last={{last}}", data-toggle:"tooltip", data-original-title:"Decline Talk Submissions"}
-          %i.icon-flag-alt
-          Close Proposals
-      - else
-        %a.btn.btn-warning{href:"/event/{{event.id}}/open?last={{last}}", data-toggle:"tooltip", data-original-title:"Accept Talk Submissions"}
-          %i.icon-flag
-          Open Proposals
-
+  - if user == event.owner.user
       %a.btn.btn-warning.edit-talk{href:"/event/{{event.id}}/edit", data-toggle:"tooltip", data-original-title:"Edit Event"}
         %i.icon-pencil
         Edit
 
       - if not event.talkevent_set.all
-        %a.btn.btn-warning.delete-event{data-name:"{{event.name}}", data-id:"{{event.id}}", href:"#delete-event-popup", data-toggle:"tooltip", data-original-title:"Delete Event"}
+        %a.btn.btn-danger.delete-event{data-name:"{{event.name}}", data-id:"{{event.id}}", href:"#delete-event-popup", data-toggle:"tooltip", data-original-title:"Delete Event"}
           %i.icon-trash
           Delete
 

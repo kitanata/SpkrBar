@@ -1,17 +1,21 @@
 #engagement-list-region {
-    display: table;
+    display: block;
     border-spacing: 20px;
 
     .engagement {
         border: 1px solid #eee;
-        margin-bottom: 20px;
         padding: 10px;
+        margin-bottom: 20px;
         width: 318px;
         min-height: 120px;
-        display: table-cell;
+        display: inline-block;
 
-        &:not(:last-child) {
+        &:nth-child(odd) {
             margin-right: 20px;
+        }
+
+        &.muted {
+            background: #eee;
         }
 
         .tag-cloud {

@@ -18,6 +18,8 @@ SpkrBar.Views.Engagement = Backbone.View.extend
         template = Handlebars.compile(source)
 
         @$el.html(template(@context()))
+        if not @model.get('confirmed')
+            @$el.addClass('muted')
         @
 
     userAttending: ->
@@ -49,6 +51,7 @@ SpkrBar.Views.Engagement = Backbone.View.extend
         time: @model.get('formatted_time')
         tags: _(@model.get('tags')).map (x) -> {'name': x}
         abstract: @model.get('abstract')
+        confirmed: @model.get('confirmed')
         user_attending: @userAttending()
         user_endorsed: @userEndorsed()
         user_event_planner: @userIsEventPlanner()

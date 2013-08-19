@@ -3,11 +3,10 @@
 - block 'head'
   {{ form.media }}
 
-- block 'subnav-container' 
-  .subnav
-    .row
-      .span12
-        %h2 Editing {{event}}
+- block 'title'
+  %h2 Edit your event
+
+- block 'subnav'
 
 - block 'content'
   #event-new
@@ -19,44 +18,41 @@
             %input#name{name:"name", type:"text", value:"{{event.name}}"}
 
           .span6
+            %label{for:"description"} Description:
+            <textarea id="description" name="description">{{event.description}}</textarea>
+
+          .span6
             %label{for:"id_location"} Location:
             %input#id_location{placeholder:"Enter the location name or city or state", type:"text", autocomplete:"off", value:"{{event.location.form_str}}"}
-
             %span.search.addon
               %i.icon-search
 
-            %button#add-location.btn.btn-warning{href:"#add-location-popup"}
+            %button.btn.btn-warning#add-location{href:"#add-location-popup"}
               %i.icon-plus
 
-          .span3
+          .span6
             %label{for:"start-date"} Start Date:
             %input#start-date{name:"start-date", type:"text", value:"{{start_date}}"}
-          .span3
-            %label{for:"start-time"} Start Time:
-            %input#start-time{name:"start-time", type:"text", value:"{{start_time}}"}
-
-          .span3
-            %label{for:"end-date"} End Date:
-            %input#end-date{name:"end-date", type:"text", value:"{{end_date}}"}
-          .span3
-            %label{for:"end-time"} End Time:
-            %input#end-time{name:"end-time", type:"text", value:"{{end_time}}"}
 
           .span6
-            %button#submit-event.btn.btn-warning
-              Save Event
+            %label{for:"end-date"} End Date:
+            %input#end-date{name:"end-date", type:"text", value:"{{end_date}}"}
+
+          .span6
+            %button#submit-event.btn.btn-warning{type:"submit"}
+              Update Event
 
       .span6
         #map
 
-  %div{style:"display:none"}
-    #add-location-popup{style:"background-color:white; padding: 40px;"}
-      %h2 Add New Location
-      %form{action:"/location/new/?next=/event/new", method:"POST"}
-        - csrf_token
-        {{ location_form.as_p }}
+%div{style:"display:none"}
+  #add-location-popup{style:"background-color:white; padding: 40px;"}
+    %h2 Add New Location
+    %form{action:"/location/new/?next=/talk/{{talk.pk}}/event/new", method:"POST"}
+      - csrf_token
+      {{ location_form.as_p }}
 
-        %button.btn.btn-warning{type:"submit"} Add Location
+      %button.btn.btn-warning{type:"submit"} Add Location
 
 - block 'scripts'
   %script{type:"text/javascript"}
@@ -76,6 +72,7 @@
     var locations = []
 
     var currentLocation = null;
+
     - for location in locations
       var name = "{{location.form_str}}"
       locations.push(name);
@@ -96,6 +93,7 @@
                   '<h4><a href="{{location.get_absolute_url}}">{{location.name}}</a></h4><br />{{location.address}}<br />{{location.city}}, {{location.state}} {{location.zip_code}}');
           }
       });
+
 
     updateLocation = function(location) {
         var url = "http://nominatim.openstreetmap.org/search/" + location.querystring + "?format=json";
@@ -121,30 +119,12 @@
         updateLocation(currentLocation);
     }
 
-    var nowTemp = new Date();
-    var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
-
-    $('#start-date').datepicker({ format: 'mm/dd/yyyy' });
-    $('#end-date').datepicker({ format: 'mm/dd/yyyy' });
-
-    $('#start-date').on('changeDate', function() {
-      $('#start-date').datepicker('hide');
+    $('#start-date').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii'
     });
 
-    $('#end-date').on('changeDate', function() {
-      $('#end-date').datepicker('hide');
-    });
-
-    $('#start-time').timepicker({
-      template: false,
-      showInputs: false,
-      minuteStep: 5
-    });
-
-    $('#end-time').timepicker({
-      template: false,
-      showInputs: false,
-      minuteStep: 5
+    $('#end-date').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii'
     });
 
     $('#submit-event').on('click', function(){
@@ -153,9 +133,7 @@
             'description': $('#description').val(),
             'location': currentLocation.id,
             'start-date': $("#start-date").val(),
-            'start-time': $("#start-time").val(),
-            'end-date': $("#end-date").val(),
-            'end-time': $("#end-time").val(),
+            'end-date': $("#end-date").val()
         }, function(){
             window.location = "{{event.get_absolute_url}}";
         });

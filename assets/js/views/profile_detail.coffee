@@ -29,3 +29,22 @@ class SpkrBar.Views.ProfileDetail
                 $('.profile-link-form #id_url').attr('placeholder', 'URL or Username')
             else
                 $('.profile-link-form #id_url').attr('placeholder', 'http://')
+
+        notifications = new SpkrBar.Collections.Notifications
+            user_id: user.id
+        notifications.fetch
+            success: =>
+                notifications.each (x) ->
+                    if not x.get('dismissed')
+                        newNote = $.pnotify
+                            title: x.get('title')
+                            text: x.get('message')
+                            hide: false
+                            closer_hover: false
+                            sticker: false
+                            icon: false
+                            after_close: (el) =>
+                                x.set 'dismissed', true
+                                x.save()
+
+                        $('#notifications').append(newNote)

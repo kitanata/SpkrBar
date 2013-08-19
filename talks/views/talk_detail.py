@@ -31,7 +31,7 @@ def talk_detail(request, talk_id):
 
     if not request.user.is_anonymous():
         try:
-            user_attendance = engagements.get(attendees__in=[request.user])
+            user_attendance = engagements.filter(attendees__in=[request.user])
         except ObjectDoesNotExist:
             pass
 

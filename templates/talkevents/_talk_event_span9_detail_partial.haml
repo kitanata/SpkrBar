@@ -20,7 +20,7 @@
       .location
         .grid1
           %a{href:"{{ item.event.get_absolute_url }}"}
-            at {{ item.event.owner.name }}
+            at {{ item.event }}
           %br in {{ item.event.location.city }}, {{ item.event.location.state }}
         .grid2
           {{ item.date.date }}

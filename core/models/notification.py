@@ -4,7 +4,8 @@ from django.db import models
 
 class Notification(models.Model):
     user = models.ForeignKey('core.SpkrbarUser', related_name='notifications')
-    message = models.CharField(max_length=300)
+    title = models.CharField(max_length=140, default="Notification")
+    message = models.CharField(max_length=1000)
     dismissed = models.BooleanField(default=False)
     date = models.DateTimeField(default=datetime.now())
 

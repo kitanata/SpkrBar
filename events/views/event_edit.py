@@ -20,10 +20,13 @@ def event_edit(request, event_id):
 
     if request.method == "POST":
         event.name = request.POST['name']
-        event.description = request.POST['description']
-        event.owner = request.user
-        event.start_date = datetime.strptime(request.POST['start-date'], "%Y-%m-%d %H:%M")
-        event.end_date = datetime.strptime(request.POST['end-date'], "%Y-%m-%d %H:%M")
+
+        sdt = request.POST['start-date'] + request.POST['start-time']
+        edt = request.POST['end-date'] + request.POST['end-time']
+
+        event.start_date = datetime.strptime(sdt, "%m/%d/%Y%I:%M %p")
+        event.end_date = datetime.strptime(edt, "%m/%d/%Y%I:%M %p")
+
         event.location = get_object_or_404(Location, pk=request.POST['location'])
         event.save()
 
@@ -33,13 +36,18 @@ def event_edit(request, event_id):
 
         locations = Location.objects.all()
 
-        start_date = event.start_date.strftime("%Y-%m-%d %H:%M")
-        end_date = event.end_date.strftime("%Y-%m-%d %H:%M")
+        start_date = event.start_date.strftime("%m/%d/%Y")
+        start_time = event.start_date.strftime("%H:%M")
+
+        end_date = event.end_date.strftime("%m/%d/%Y")
+        end_time = event.end_date.strftime("%H:%M")
 
         context = {
             'event': event,
             'start_date': start_date,
+            'start_time': start_time,
             'end_date': end_date,
+            'end_time': end_time,
             'location_form': location_form,
             'locations': locations
             }

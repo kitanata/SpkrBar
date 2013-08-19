@@ -7,4 +7,4 @@ class NotificationList(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
-        return Notification.objects.filter(dismissed=False, user__pk=self.kwargs['user_id'])
+        return Notification.objects.filter(user__pk=self.kwargs['user_id'])

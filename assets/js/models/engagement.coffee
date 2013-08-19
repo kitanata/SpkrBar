@@ -5,7 +5,7 @@ SpkrBar.Models.Engagement = Backbone.Model.extend
         date: ""
         attendees: []
         from_speaker: true
-        vetoed: false
+        confirmed: false
 
     initialize: ->
 
