@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import TalkEvent, TalkEventSubmission
+from models import TalkEvent
 
 class TalkEventAdmin(admin.ModelAdmin):
     search_fields = ['talk', 'event', 'date']
@@ -7,4 +7,3 @@ class TalkEventAdmin(admin.ModelAdmin):
     list_filter = ('event',)
 
 admin.site.register(TalkEvent, TalkEventAdmin)
-admin.site.register(TalkEventSubmission, admin.ModelAdmin)

@@ -1,9 +1,12 @@
 import dateutil.parser
 from datetime import datetime
-from talkevents.models import TalkEvent
-from talkevents.serializers import EngagementSerializer
+from string import Template
+
 from rest_framework import generics, permissions, viewsets
 from rest_framework.decorators import action
+
+from talkevents.models import TalkEvent
+from talkevents.serializers import EngagementSerializer
 
 from core.models import Notification
 from talks.models import Talk
@@ -23,15 +26,46 @@ class EngagementDetail(viewsets.ModelViewSet):
         talk = Talk.objects.get(pk=talk_id)
         event = Event.objects.get(pk=event_id)
 
-        if from_speaker:
-            print date
-            print datetime.now()
-            if date < datetime.now():
-                message = "%s says that they spoke at %s. Is this true? <a href='/confirm'>Yes</a> <a href='/decline'>No</a>"
-            else:
-                message = "%s would like to speak at %s. Is that okay? <a href='/confirm'>Yes</a> <a href='/decline'>No</a>"
+        newEngagement = super(EngagementDetail, self).create(request)
+        my_id = newEngagement.data['id']
 
-            message = message % (talk.speaker.user.get_full_name(), str(event))
+        from_speaker_past = Template("""
+            $speaker says that they spoke about $talk at $event.
+            Is this true? 
+            <div class="btn-group"> <a id="confirm-engagement" class="btn btn-warning" data-id="$id">Yes</a> <a id="decline-engagement" class="btn btn-warning" data-id="$id">No</a> </div>
+        """)
+
+        from_speaker_future = Template("""
+            $speaker would like to speak about $talk at $event.
+            Is that okay?
+            <div class="btn-group"> <a id="confirm-engagement" class="btn btn-warning" data-id="$id">Yes</a> <a id="decline-engagement" class="btn btn-warning" data-id="$id">No</a> </div>
+        """)
+
+        from_event_past = Template("""
+            $event says that you spoke about $talk at their event.
+            Is this true? 
+            <div class="btn-group"> <a id="confirm-engagement" class="btn btn-warning" data-id="$id">Yes</a> <a id="decline-engagement" class="btn btn-warning" data-id="$id">No</a> </div>
+        """)
+
+        from_event_future = Template("""
+            $event would like to speak about $talk at their event.
+            Is that okay?
+            <div class="btn-group"> <a id="confirm-engagement" class="btn btn-warning" data-id="$id">Yes</a> <a id="decline-engagement" class="btn btn-warning" data-id="$id">No</a> </div>
+        """)
+
+        if from_speaker:
+            if date < datetime.now():
+                message = from_speaker_past.substitute(
+                        id=my_id,
+                        speaker=talk.speaker.user.get_full_name(),
+                        talk=talk.name,
+                        event=str(event))
+            else:
+                message = from_speaker_future.substitute(
+                        id=my_id,
+                        speaker=talk.speaker.user.get_full_name(),
+                        talk=talk.name,
+                        event=str(event))
 
             new_note = Notification()
             new_note.title = "Engagement Request"
@@ -41,11 +75,15 @@ class EngagementDetail(viewsets.ModelViewSet):
             new_note.save()
         else:
             if date < datetime.now():
-                message = "%s says that you spoke at their event. Is this true? <a href='/confirm'>Yes</a> <a href='/decline'>No</a>"
+                message = from_speaker_past.substitute(
+                        id=my_id,
+                        talk=talk.name,
+                        event=str(event))
             else:
-                message = "%s would like you to speak at their event. Is that okay? <a href='/confirm'>Yes</a> <a href='/decline'>No</a>"
-
-            message = message % (str(event), )
+                message = from_speaker_future.substitute(
+                        id=my_id,
+                        talk=talk.name,
+                        event=str(event))
 
             new_note = Notification()
             new_note.title = "Engagement Request"
@@ -54,4 +92,4 @@ class EngagementDetail(viewsets.ModelViewSet):
             new_note.message = message
             new_note.save()
 
-        return super(EngagementDetail, self).create(request)
+        return newEngagement

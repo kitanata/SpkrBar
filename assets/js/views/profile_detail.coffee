@@ -42,7 +42,7 @@ class SpkrBar.Views.ProfileDetail
                     if not x.get('dismissed')
                         newNote = @createNotificationView(x)
                         $('#notifications').append(newNote)
-                        @noteViews.add newNote
+                        @noteViews.push x
 
         $('#show-notifications').click =>
             if @showNotes
@@ -57,6 +57,22 @@ class SpkrBar.Views.ProfileDetail
 
             @showNotes = !@showNotes
 
+    bindEngagementNotificationEvents: ->
+        $('#confirm-engagement').click (el) =>
+            id = $(el.currentTarget).data('id')
+            console.log $(el.currentTarget).parent().parent()
+            engagement = new SpkrBar.Models.Engagement
+                id: id
+            engagement.fetch()
+            engagement.confirmed = true
+            engagement.save()
+
+        $('#decline-engagement').click (el) =>
+            id = $(el.currentTarget).data('id')
+            engagement = new SpkrBar.Models.Engagement
+                id: id
+            engagement.destroy()
+
     createNotificationView: (note) ->
         $.pnotify
             title: note.get('title')
@@ -68,3 +84,5 @@ class SpkrBar.Views.ProfileDetail
             after_close: (el) =>
                 note.set 'dismissed', true
                 note.save()
+            after_open: =>
+                @bindEngagementNotificationEvents()
