@@ -30,21 +30,41 @@ class SpkrBar.Views.ProfileDetail
             else
                 $('.profile-link-form #id_url').attr('placeholder', 'http://')
 
-        notifications = new SpkrBar.Collections.Notifications
-            user_id: user.id
-        notifications.fetch
-            success: =>
-                notifications.each (x) ->
-                    if not x.get('dismissed')
-                        newNote = $.pnotify
-                            title: x.get('title')
-                            text: x.get('message')
-                            hide: false
-                            closer_hover: false
-                            sticker: false
-                            icon: false
-                            after_close: (el) =>
-                                x.set 'dismissed', true
-                                x.save()
 
+        @noteViews = []
+        @showNotes = true
+
+        @notifications = new SpkrBar.Collections.Notifications
+            user_id: user.id
+        @notifications.fetch
+            success: =>
+                @notifications.each (x) =>
+                    if not x.get('dismissed')
+                        newNote = @createNotificationView(x)
                         $('#notifications').append(newNote)
+                        @noteViews.add newNote
+
+        $('#show-notifications').click =>
+            if @showNotes
+                @notifications.each (x) =>
+                    if not _(@noteViews).contains(x)
+                        newNote = @createNotificationView(x)
+                        $('#notifications').append(newNote)
+                        @noteViews.push x
+            else
+                $.pnotify_remove_all()
+                @noteViews = []
+
+            @showNotes = !@showNotes
+
+    createNotificationView: (note) ->
+        $.pnotify
+            title: note.get('title')
+            text: note.get('message')
+            hide: false
+            closer_hover: false
+            sticker: false
+            icon: false
+            after_close: (el) =>
+                note.set 'dismissed', true
+                note.save()
