@@ -53,13 +53,13 @@ class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
         profile = self.get_profile()
 
         if self.user_type == SpkrbarUser.USER_TYPE_SPEAKER:
-            return ' '.join([str(profile.first_name), str(profile.last_name)])
+            return u' '.join([unicode(profile.first_name), unicode(profile.last_name)])
         elif self.user_type == SpkrbarUser.USER_TYPE_ATTENDEE:
-            return ' '.join([str(profile.first_name), str(profile.last_name)])
+            return u' '.join([unicode(profile.first_name), unicode(profile.last_name)])
         elif self.user_type == SpkrbarUser.USER_TYPE_EVENT:
-            return str(profile.name)
+            return unicode(profile.name)
         else:
-            return 'Error: Not a user'
+            return u'Error: Not a user'
 
 
     def get_short_name(self):
