@@ -5,6 +5,7 @@ from core.models.attendee_profile import AttendeeProfile
 from core.models.notification import Notification
 from core.models.user_link import UserLink
 from core.models.profile_tag import ProfileTag
+from core.models.comment import Comment
 
 __all__ = [
     'SpkrbarUser',
@@ -13,4 +14,5 @@ __all__ = [
     'AttendeeProfile',
     'ProfileTag',
     'Notification',
-    'UserLink']
+    'UserLink',
+    'Comment' ]
