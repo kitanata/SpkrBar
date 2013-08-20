@@ -15,5 +15,6 @@
 //= require views/profile_detail
 //= require views/talk_detail
 //= require views/engagement
+//= require views/notification
 //= require views/talk_tags
 //= require views/talk_links
