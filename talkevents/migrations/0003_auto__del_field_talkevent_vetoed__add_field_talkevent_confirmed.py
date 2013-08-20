@@ -16,7 +16,7 @@ class Migration(SchemaMigration):
                       self.gf('django.db.models.fields.BooleanField')(default=False),
                       keep_default=False)
 
-        for x in orm.talkevent.all():
+        for x in orm.talkevent.objects.all():
             x.confirmed = True
             x.save()
 
