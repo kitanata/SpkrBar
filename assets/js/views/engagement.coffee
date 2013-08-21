@@ -23,15 +23,19 @@ SpkrBar.Views.Engagement = Backbone.View.extend
         @
 
     userAttending: ->
+        if not user then return false
         user.id in @model.get('attendees')
 
     userEndorsed: ->
+        if not user then return false
         user.id in @model.get('endorsements')
 
     userIsEventPlanner: ->
+        if not user then return false
         user.get('is_event_planner')
 
     userOwnsEngagement: ->
+        if not user then return false
         user.id == @model.get('user_id')
 
     willShowButtons: ->

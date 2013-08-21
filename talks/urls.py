@@ -1,8 +1,15 @@
 from django.conf.urls import patterns, url
 
-from views import TalkDetail, TalkTagList, TalkTagDetail, TalkLinkList, TalkLinkDetail
+from views import TalkDetail, TalkTagList, TalkTagDetail
+from views import TalkLinkList, TalkLinkDetail
+from views import TalkCommentList, TalkCommentDetail
 
 urlpatterns = patterns('',
+    url(r'^rest_talk/(?P<talk_id>\d+)/comment/(?P<pk>\d+)$', TalkCommentDetail.as_view(
+        actions={'get': 'retrieve', 'put': 'update', 'delete':'destroy'})),
+    url(r'^rest_talk/(?P<talk_id>\d+)/comment$', TalkCommentDetail.as_view(
+        actions={'post': 'create'})),
+    url(r'^rest_talk/(?P<talk_id>\d+)/comments$', TalkCommentList.as_view()),
 
     url(r'^rest_talk/(?P<talk_id>\d+)/tag/(?P<pk>\d+)$', TalkTagDetail.as_view(
         actions={'get': 'retrieve', 'put': 'update', 'delete':'destroy'})),

@@ -141,6 +141,8 @@
       var userId = {{ user.id }};
       user = new SpkrBar.Models.User({'id': userId});
       user.fetch()
+    - else
+      user = null;
 
     var $buoop = {vs:{i:9,f:20,o:11,s:5,n:9}} 
     $buoop.ol = window.onload; 

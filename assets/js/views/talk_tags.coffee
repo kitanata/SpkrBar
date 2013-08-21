@@ -35,7 +35,9 @@ SpkrBar.Views.TalkTags = Backbone.View.extend
         @
 
     userOwnsContent: ->
+        if not user then return false
         user.id == @talk.get('user')
+
 
     context: ->
         tags: @collection.map (x) -> {'id': x.id, 'tag': x.get('name')}
