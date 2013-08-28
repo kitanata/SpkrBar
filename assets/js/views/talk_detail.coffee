@@ -40,6 +40,16 @@ class SpkrBar.Views.TalkDetail
 
                         $('#talk-links').append talkLinksView.render().el
 
+                talkComments = new SpkrBar.Collections.TalkComments
+                    talk_id: @talkDetailModel.id
+                talkComments.fetch
+                    success: =>
+                        talkCommentsView = new SpkrBar.Views.TalkComments
+                            collection: talkComments
+                            talk: @talkDetailModel
+
+                        $('#talk-comments').append talkCommentsView.render().el
+
         @handleSubmitTalk()
 
     handleSubmitTalk: () ->
