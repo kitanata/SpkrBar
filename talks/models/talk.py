@@ -15,8 +15,8 @@ class Talk(models.Model):
     class Meta:
         app_label = 'talks'
 
-    def __str__(self):
-        return self.name
+    def __unicode__(self):
+        return unicode(self.name)
 
     def get_absolute_url(self):
         return "/talk/" + str(self.pk)

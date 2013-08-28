@@ -16,11 +16,11 @@ class Event(models.Model):
             'core.SpkrbarUser', related_name='events_endorsed', blank=True)
 
 
-    def __str__(self):
+    def __unicode__(self):
         if self.name:
-            return ' '.join([str(self.owner.name), str(self.start_date.year), ' - ', self.name])
+            return u' '.join([unicode(self.owner.name), unicode(self.start_date.year), u' - ', unicode(self.name)])
         else:
-            return ' '.join([str(self.owner.name), str(self.start_date.year)])
+            return u' '.join([unicode(self.owner.name), unicode(self.start_date.year)])
 
 
     def get_absolute_url(self):
