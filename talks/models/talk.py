@@ -10,7 +10,7 @@ class Talk(models.Model):
     published = models.BooleanField(default=True)
 
     endorsements = models.ManyToManyField(
-            'core.SpkrbarUser', related_name='talks_endorsed')
+            'core.SpkrbarUser', related_name='talks_endorsed', blank=True)
 
     class Meta:
         app_label = 'talks'
