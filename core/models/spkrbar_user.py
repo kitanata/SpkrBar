@@ -36,8 +36,8 @@ class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
 
-    def __str__(self):
-        return self.username
+    def unicode(self):
+        return unicode(self.username)
 
 
     def is_speaker(self):
@@ -53,24 +53,24 @@ class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
         profile = self.get_profile()
 
         if self.user_type == SpkrbarUser.USER_TYPE_SPEAKER:
-            return ' '.join([str(profile.first_name), str(profile.last_name)])
+            return u' '.join([unicode(profile.first_name), unicode(profile.last_name)])
         elif self.user_type == SpkrbarUser.USER_TYPE_ATTENDEE:
-            return ' '.join([str(profile.first_name), str(profile.last_name)])
+            return u' '.join([unicode(profile.first_name), unicode(profile.last_name)])
         elif self.user_type == SpkrbarUser.USER_TYPE_EVENT:
-            return str(profile.name)
+            return unicode(profile.name)
         else:
-            return 'Error: Not a user'
+            return u'Error: Not a user'
 
 
     def get_short_name(self):
         profile = self.get_profile()
 
         if self.user_type == SpkrbarUser.USER_TYPE_SPEAKER:
-            return str(profile.first_name)
+            return unicode(profile.first_name)
         elif self.user_type == SpkrbarUser.USER_TYPE_ATTENDEE:
-            return str(profile.first_name)
+            return unicode(profile.first_name)
         elif self.user_type == SpkrbarUser.USER_TYPE_EVENT:
-            return str(profile.name)
+            return unicode(profile.name)
         else:
             return 'NOT_A_USER'
 

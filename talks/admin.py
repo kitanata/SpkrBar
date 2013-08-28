@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import *
 
 class TalkAdmin(admin.ModelAdmin):
-    list_display = ['name']
+    list_display = ['name', 'abstract']
 
 class TalkSlideDeckAdmin(admin.ModelAdmin):
     list_display = ['talk_name', 'source', 'data', 'aspect']
