@@ -42,14 +42,14 @@
                     %a.btn.disabled.btn-warning
                       %i.icon-thumbs-up
                       Endorsed
-                  - if not user_rated
-                    %a.btn.btn-warning.rate-talk{href:"#rate-talk-popup", data-toggle:"tooltip", data-original-title:"Rate this talk."}
-                      %i.icon-legal
-                      Rate
-                  - else
-                    %a.btn.disabled.btn-warning
-                      %i.icon-legal
-                      Rated
+                  /- if not user_rated
+                  /  %a.btn.btn-warning.rate-talk{href:"#rate-talk-popup", data-toggle:"tooltip", data-original-title:"Rate this talk."}
+                  /    %i.icon-legal
+                  /    Rate
+                  /- else
+                  /  %a.btn.disabled.btn-warning
+                  /    %i.icon-legal
+                  /    Rated
 
 
       - else
