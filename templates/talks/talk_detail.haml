@@ -163,21 +163,4 @@
 
         .row{style:"margin-top:40px"}
           .span9
-            .comments
-              %h3 Comments
-              %hr
-
-              - if not user.is_anonymous and talk.speaker.user != user
-                %form.add-comment-form{action:"/talk/{{talk.id}}/comment/new", method:"POST"}
-                  - csrf_token
-                  %textarea{name:'comment', placeholder:"Add your comment..."}
-                  %input.btn.btn-warning{type:"submit", value:"Submit Comment"}
-
-              - if talk.talkcomment_set.all
-                %ul
-                  - for comment in talk.talkcomment_set.all
-                    %li
-                      %h4 {{comment.commenter.get_full_name}} said...
-                      %p {{comment.comment}}
-              - else
-                No comments yet.
+            #talk-comments

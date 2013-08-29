@@ -18,7 +18,6 @@ from core.forms import ProfileLinkForm, ProfileTagForm, ProfilePhotoForm
 from core.forms import EventEditProfileForm, EditProfileForm
 
 def speaker_profile(profile, user):
-    import pdb; pdb.set_trace()
     talks = Talk.objects.filter(speaker=profile)
 
     if profile.user != user:

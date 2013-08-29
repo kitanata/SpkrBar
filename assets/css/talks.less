@@ -166,11 +166,48 @@
         }
     }
 
-    .add-comment-form {
+    .comments {
 
         textarea {
-            width: 680px;
+            display: block;
+            width: 686px;
             height: 120px;
+        }
+
+        .comment-root {
+            margin-top: 20px;
+        }
+
+        ul {
+            margin: 0px;
+            list-style-type: none;
+            border: 1px dotted #005580;
+            border-radius: 5px;
+
+            li {
+                padding: 10px;
+            }
+
+            .comment-buttons {
+                padding: 5px 10px;
+                border-top: 1px dotted #005580;
+
+                a {
+                    border-radius: 5px;
+                    padding: 5px;
+                    background: white;
+                    margin-right: 10px;
+
+                    &:hover {
+                        cursor: pointer;
+                        text-decoration: none;
+                    }
+                }
+            }
+        }
+
+        .submit {
+            display: block;
         }
     }
 

@@ -41,6 +41,9 @@ SpkrBar.Views.Engagement = Backbone.View.extend
     willShowButtons: ->
         @userOwnsEngagement() or @userAttending() or not @userIsEventPlanner()
 
+    formattedDate: ->
+        moment(@model.get('date')).format('LLL')
+
     context: ->
         id: @model.id
         talk_id: @model.get('talk')
@@ -51,8 +54,7 @@ SpkrBar.Views.Engagement = Backbone.View.extend
         event_name: @model.get('event_name')
         city: @model.get('city')
         state: @model.get('state')
-        date: @model.get('formatted_date')
-        time: @model.get('formatted_time')
+        date: @formattedDate()
         tags: _(@model.get('tags')).map (x) -> {'name': x}
         abstract: @model.get('abstract')
         confirmed: @model.get('confirmed')

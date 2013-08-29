@@ -10,3 +10,4 @@
 //= require bootstrap-datepicker
 //= require jquery.colorbox-min
 //= require django-csrf
+//= require moment.min

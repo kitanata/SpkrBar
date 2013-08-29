@@ -94,7 +94,8 @@ class SpkrBar.Views.TalkDetail
             if meridian == "PM"
                 hours += 12
 
-            date = new Date(date[6..9], date[3..4], date[0..1], hours, minutes)
+            date = new Date(date[6..9], date[0..1] - 1, date[3..4], hours, minutes)
+            date = date.toISOString()
 
             selEvent = events.find (x) ->
                 checkName = x.get('owner').name + ' ' + x.get('start_date')[0..3]

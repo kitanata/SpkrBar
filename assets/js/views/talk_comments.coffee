@@ -3,31 +3,19 @@ SpkrBar.Views.TalkComments = Backbone.View.extend
     template: "#talk-comments-templ"
 
     events:
-        "click .add-talk-link": 'onAddTalkLink'
-        "click .delete-talk-link": 'onDeleteTalkLink'
+        "click .comment-reply": 'onCommentReply'
+        "click .comment-delete": 'onCommentDelete'
+        "click .comment-report": 'onCommentReport'
 
     initialize: (options) ->
         @talk = options.talk
         @listenTo(@collection, "change add remove", @render)
 
-    onAddTalkLink: ->
-        name = $('#new-talk-link-name').val()
-        url = $('#new-talk-link-url').val()
+    onCommentReply: ->
 
-        newLink = new SpkrBar.Models.TalkLink
-            talk: @talk.id
-            name: name
-            url: url
-        newLink.save()
-        @collection.add newLink
+    onCommentDelete: ->
 
-    onDeleteTalkLink: (el) ->
-        linkId = $(el.currentTarget).data('id')
-        deadLink = @collection.find (x) => x.id == linkId
-
-        deadLink.destroy
-            success: =>
-                @collection.remove deadLink
+    onCommentReport: ->
 
     render: ->
         source = $(@template).html()
@@ -36,10 +24,24 @@ SpkrBar.Views.TalkComments = Backbone.View.extend
         @$el.html(template(@context()))
         @
 
+    canComment: ->
+        if user then true else false
+
     userOwnsContent: ->
         if not user then return false
         user.id == @talk.get('user')
 
+    canDeleteComment: (comment) ->
+        @userOwnsContent() or comment.user == user
+
+    mapComment: (comment) ->
+        'id': comment.id
+        'name': comment.name
+        'comment': comment.comment
+        'datetime': comment.datetime
+        'children': [@mapComment(child) for child in comment.children]
+        'can_delete': @canDeleteComment(comment)
+
     context: ->
-        links: @collection.map (x) -> {'id': x.id, 'name': x.get('name'), 'url': x.get('url')}
-        user_owned: @userOwnsContent()
+        comments: @collection.map (x) => @mapComment(x.get('comment'))
+        can_comment: @canComment()
