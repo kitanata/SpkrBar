@@ -38,6 +38,10 @@ def event_detail(request, event_id):
     past = engagements.filter(date__lt=yesterday).order_by('-date')
 
     speakers = SpeakerProfile.objects.filter(talk__in=[e.talk for e in engagements]).distinct()
+    speakers = speakers.annotate(
+            num_tags=Count('tags'),
+            num_links=Count('user__links')).order_by(
+                    '-photo', '-about_me', '-num_tags', '-num_links')[:20]
 
     if not request.user.is_anonymous():
         user_talks = Talk.objects.filter(speaker=request.user.get_profile())
