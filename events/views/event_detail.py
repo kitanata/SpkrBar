@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
 from django.shortcuts import get_object_or_404
-from django.db.models import Q
+from django.db.models import Q, Count
 
 from talkevents.models import TalkEvent
 from core.helpers import render_to
