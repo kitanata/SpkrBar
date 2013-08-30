@@ -54,6 +54,15 @@
         - for item in upcoming
           - include 'talkevents/_talk_event_span6_detail_partial.haml'
 
+    - if current
+      .row
+        .section-title
+          %h2 Upcoming Talks
+
+      .row.buffer
+        - for item in upcoming
+          - include 'talkevents/_talk_event_span6_detail_partial.haml'
+
     - if past
       .row
         .section-title
