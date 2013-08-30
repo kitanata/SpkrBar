@@ -57,10 +57,10 @@
     - if current
       .row
         .section-title
-          %h2 Upcoming Talks
+          %h2 Current Talks
 
       .row.buffer
-        - for item in upcoming
+        - for item in current
           - include 'talkevents/_talk_event_span6_detail_partial.haml'
 
     - if past
