@@ -30,8 +30,8 @@ def search(request):
             Q(talk__tags__in=talk_tags))
 
     events = Event.objects.filter(
-            Q(start_date__gte=datetime.today()),
             Q(owner__name__icontains=query) |
+            Q(name__icontains=query) |
             Q(location__name__icontains=query))
 
     profile_tags = ProfileTag.objects.filter(name__icontains=query)

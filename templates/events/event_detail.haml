@@ -3,7 +3,7 @@
 - block 'title'
   - if endorsements
     {{ endorsements|length }} <i class="icon-thumbs-up"></i>
-  {{ event.owner.name }} {{ event.start_date.year }}
+  {{ event }}
 
 - block 'subnav'
   - if user == event.owner.user
@@ -29,8 +29,8 @@
     - elif event and not user_attending
       %a.btn.btn-warning{href:"/event/{{event.id}}/attend?last={{last}}", data-toggle:"tooltip", data-original-title:"Attend Event"}
         %i.icon-calendar
-    %a.btn.btn-warning{href:"/profile/{{event.owner.user.username}}", data-toggle:"tooltip", data-original-title:"Event Profile"}
-      %i.icon-user
+  %a.btn.btn-warning{href:"/profile/{{event.owner.user.username}}", data-toggle:"tooltip", data-original-title:"Event Profile"}
+    %i.icon-user
 
 - block 'content'
   - include 'events/_event_header_partial.haml'

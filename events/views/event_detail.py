@@ -13,7 +13,7 @@ from talks.models import Talk
 def event_detail(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
 
-    engagements = event.engagements.all()
+    engagements = event.engagements.filter(confirmed=True)
 
     if request.user.is_anonymous():
         engagements = engagements.filter(talk__published=True)
@@ -37,7 +37,7 @@ def event_detail(request, event_id):
     upcoming = engagements.filter(date__gt=tomorrow).order_by('date')
     past = engagements.filter(date__lt=yesterday).order_by('-date')
 
-    speakers = SpeakerProfile.objects.filter(talk__in=[e.talk for e in engagements])
+    speakers = SpeakerProfile.objects.filter(talk__in=[e.talk for e in engagements]).distinct()
 
     if not request.user.is_anonymous():
         user_talks = Talk.objects.filter(speaker=request.user.get_profile())
