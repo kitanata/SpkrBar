@@ -32,7 +32,7 @@ class SpeakerProfile(models.Model):
 
         return events.filter(date__lt=datetime.now()).order_by('-date')
 
-    def unicode(self):
+    def __unicode__(self):
         return self.user.get_full_name()
 
     class Meta:

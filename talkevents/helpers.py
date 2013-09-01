@@ -13,7 +13,7 @@ def talk_event_groups(sample_size=0):
     talk_events = TalkEvent.objects.filter(talk__published=True)
 
     groups = []
-    end_date = datetime.today()
+    end_date = datetime.today() - timedelta(days=1)
     for group in group_defs:
         if group[0] == '-':
             start_date = datetime.today() - timedelta(days=group[1])
