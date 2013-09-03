@@ -4,8 +4,8 @@ from core.models import Comment
 
 class CommentSerializer(serializers.ModelSerializer):
     name = serializers.RelatedField(source='user.get_full_name')
-    datetime = serializers.DateTimeField(format="%B %m, %Y at %I:%M %p")
-    user = serializers.PrimaryKeyRelatedField(read_only=True)
+    datetime = serializers.DateTimeField()
+    user = serializers.PrimaryKeyRelatedField()
     class Meta:
         model = Comment
         fields = (
@@ -13,6 +13,7 @@ class CommentSerializer(serializers.ModelSerializer):
             'user',
             'name',
             'comment',
+            'parent',
             'children',
             'datetime',
             )

@@ -8,22 +8,21 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^$', 'core.views.index'),
-    url(r'^search$', 'core.views.search'),
-    url(r'^mobile', include('mobile.urls')),
+    #url(r'^search$', 'core.views.search'),
+    #url(r'^mobile', include('mobile.urls')),
 
-    url(r'^', include('events.urls')),
-    url(r'^', include('talks.urls')),
+    #url(r'^', include('events.urls')),
+    #url(r'^', include('talks.urls')),
 
-    url(r'^talks$', 'talkevents.views.talk_event_list'),
-    url(r'^speakers$', 'core.views.speaker_list'),
+    #url(r'^talks$', 'talkevents.views.talk_event_list'),
+    #url(r'^speakers$', 'core.views.speaker_list'),
 
-    url(r'^', include('talkevents.urls')),
-    url(r'^', include('core.urls')),
+    #url(r'^', include('talkevents.urls')),
+    #url(r'^', include('core.urls')),
 
-    url(r'^location/new$', 'locations.views.location_new'),
+    #url(r'^location/new$', 'locations.views.location_new'),
 
-    url(r'^', include('blog.urls')),
+    #url(r'^', include('blog.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     #url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
@@ -36,3 +35,5 @@ urlpatterns = patterns('',
 
 if settings.DEBUG:
     urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns = urlpatterns + patterns('', url(r'^.*$', 'core.views.index'))

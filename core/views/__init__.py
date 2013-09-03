@@ -26,6 +26,8 @@ from user_detail import UserDetail
 from notification_detail import NotificationDetail
 from notification_list import NotificationList
 
+from comment_detail import CommentDetail
+
 __all__ = [
     "index", "search",
     "register_user", "login_user", "logout_user",
@@ -35,5 +37,6 @@ __all__ = [
     "profile_tag_new", "profile_tag_delete",
     "profile_invite", "profile_invite_thanks",
     "speaker_list", "user_follow",
-    "UserDetail", "NotificationDetail", "NotificationList"
+    "UserDetail", "NotificationDetail", "NotificationList",
+    "CommentDetail"
 ]

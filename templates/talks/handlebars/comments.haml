@@ -4,36 +4,11 @@
       %h3 Comments
       %hr
 
-      {{#unless comments}}
-        No comments yet.
-      {{/unless}}
-
-
       {{#if can_comment}}
-        %textarea{name:'comment', placeholder:"Add your comment..."}
-        %button.submit.btn.btn-warning{type:"submit"} Submit Comment
+        .tawrap
+          %textarea.comment-text{name:'comment', placeholder:"Add your comment..."}
+          %button.comment-create.btn.btn-warning Submit Comment
       {{/if}}
 
-
-      {{#if comments}}
-        .comment-root
-          %ul
-            {{#each comments}}
-              %li
-                %h4 On {{datetime}}, {{name}} said...
-                %p {{comment}}
-              .comment-buttons
-                %a.comment-reply{data-id:"{{id}}"}
-                  %i.icon-reply
-                  Reply
-                %a.comment-report{data-id:"{{id}}"}
-                  %i.icon-file-alt
-                  Report
-                {{#if can_delete}}
-                  %a.comment-delete{data-id:"{{id}}"}
-                    %i.icon-remove
-                    Delete
-                {{/if}}
-          {{/each}}
-      {{/if}}
+      .comment-root
 {% endverbatim %}

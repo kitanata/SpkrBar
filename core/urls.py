@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, url
-from views import UserDetail, NotificationDetail, NotificationList
+from views import UserDetail, NotificationDetail, NotificationList, CommentDetail
 
 urlpatterns = patterns('',
     url(r'^profile/invite/thanks$', 'core.views.profile_invite_thanks'),
@@ -19,6 +19,11 @@ urlpatterns = patterns('',
     url(r'^user/(?P<user_id>\d+)/note$', NotificationDetail.as_view(
         actions={'post': 'create'})),
     url(r'^user/(?P<user_id>\d+)/notes$', NotificationList.as_view()),
+
+    url(r'^comment/(?P<pk>\d+)$', CommentDetail.as_view(
+        actions={'get': 'retrieve', 'put': 'update', 'delete':'destroy'})),
+    url(r'^comment$', CommentDetail.as_view(
+        actions={'post': 'create'})),
 
     url(r'^user/(?P<pk>\d+)$', UserDetail.as_view()),
 

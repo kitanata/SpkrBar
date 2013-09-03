@@ -1,0 +1,93 @@
+{% verbatim %}  
+  %script#main-layout-templ{type:"text/x-handlebars-template"}
+    .container-narrow
+      #masthead
+        .masthead
+          .row
+            .span3
+              %img.logo{src:"/static/img/logo.png"}
+            .span9
+              .row
+                .span9
+                  .search.pull-right
+                    %form{method:"GET", action:"/search"}
+                      %input.search-query{name:"query", type:"text", placeholder:"Search"}
+                      %button.btn.btn-warning
+                        %i.icon-search
+              .row
+                .span9
+                  %ul.nav.nav-pills.pull-right
+                    %li
+                      %a.talks
+                        %i.icon-comments-alt
+                        Talks
+                    %li
+                      %a.speakers
+                        %i.icon-group
+                        Speakers
+                    %li
+                      %a.events
+                        %i.icon-calendar
+                        Events
+
+                    {{#unless userIsAnonymous}}
+                      {{#if userIsSpeaker }}
+                        %li
+                          %a.add-talk
+                            %i.icon-plus
+                            Add Talk
+                      {{else}}
+                        {{#if userIsEventPlanner }}
+                          %li
+                            %a.add-event
+                              %i.icon-plus
+                              Add Event
+                        {{/if}}
+                      {{/if}}
+                    {{/unless}}
+
+                    %li
+                      %a.blog
+                        %i.icon-file-text
+                        Blog
+
+                    {{#if userIsAnonymous}}
+                      %li
+                        %a.login
+                          %i.icon-signin
+                          Login
+                      %li
+                        %a.register Register
+                    {{else}}
+                      %li.dropdown
+                        %a.dropdown-toggle{data-toggle:"dropdown", href:"#"}
+                          %i.icon-gear
+                          My Account
+                          %b.caret
+
+                        %ul.dropdown-menu
+                          %li
+                            %a.profile
+                              %i.icon-user
+                              My Profile
+                          %li
+                            %a.invite
+                              %i.icon-mail-forward
+                              Send Invites
+                          {{#if userIsSuperuser}}
+                            %li
+                              %a.admin{href:"/admin"}
+                                %i.icon-gears
+                                Administration
+                          {{/if}}
+                          %li
+                            %a.logout{href:"/logout"}
+                              %i.icon-signout
+                              Logout
+                    {{/if}}
+
+      #content
+      .clearfix
+      #footer
+        %p &copy; Agile Hog LLC. 2013
+{% endverbatim %}

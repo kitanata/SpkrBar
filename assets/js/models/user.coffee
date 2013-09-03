@@ -8,6 +8,7 @@ SpkrBar.Models.User = Backbone.Model.extend
         is_speaker: false
         is_attendee: false
         is_event_planner: false
+        is_superuser: false
 
     initialize: ->
 

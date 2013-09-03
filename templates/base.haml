@@ -23,120 +23,10 @@
     %link{rel:"shortcut icon", href:"../assets/ico/favicon.png"}
 
   %body
-    .container-narrow
-      .masthead
-        .row
-          .span3
-            %a{href:"/"}
-              %img.logo{src:"{{STATIC_URL}}img/logo.png"}
-          .span9
-            .row
-              .span9
-                .search.pull-right
-                  %form{method:"GET", action:"/search"}
-                    %input.search-query{name:"query", type:"text", placeholder:"Search"}
-                    %button.btn.btn-warning
-                      %i.icon-search
-            .row
-              .span9
-                %ul.nav.nav-pills.pull-right
-                  %li
-                    %a{href:"/talks"}
-                      %i.icon-comments-alt
-                      Talks
-                  %li
-                    %a{href:"/speakers"}
-                      %i.icon-group
-                      Speakers
-                  %li
-                    %a{href:"/events"}
-                      %i.icon-calendar
-                      Events
-
-                  - if not user.is_anonymous
-                    - if user.is_speaker
-                      %li
-                        %a.add-talk{href:"#add-talk-popup"}
-                          %i.icon-plus
-                          Add Talk
-                    - elif user.is_event_planner
-                      %li
-                        %a.add-event{href:"/event/new"}
-                          %i.icon-plus
-                          Add Event
-
-                  %li
-                    %a{href:"/blog"}
-                      %i.icon-file-text
-                      Blog
-
-                  - if user.is_anonymous
-                    %li
-                      %a{href:"/login"}
-                        %i.icon-signin
-                        Login
-                    %li
-                      %a{href:"/register"} Register
-                  - else
-                    %li.dropdown
-                      %a.dropdown-toggle{data-toggle:"dropdown", href:"#"}
-                        %i.icon-gear
-                        My Account
-                        %b.caret
-
-                      - if user.notification_set.all
-                        Notifications
-
-                      %ul.dropdown-menu
-                        %li
-                          %a{href:"{{user.get_absolute_url}}"}
-                            %i.icon-user
-                            My Profile
-                        %li
-                          %a{href:"/profile/invite"}
-                            %i.icon-mail-forward
-                            Send Invites
-                        - if user.is_superuser
-                          %li
-                            %a{href:"/admin"}
-                              %i.icon-gears
-                              Administration
-                        %li
-                          %a{href:"/logout"}
-                            %i.icon-signout
-                            Logout
-
-      - block 'subnav-container' 
-        .subnav
-          .row
-            .span6
-              %h2
-                - block 'title'
-                  Title Of Page
-            .span6{style:"position: relative;"}
-              .nav.btn-group.pull-right
-                - block 'subnav'
-                  %a.btn.btn-warning{href:"#"}
-                    Example
-                  %a.btn.btn-warning{href:"#"}
-                    Example
-                  %a.btn.btn-warning{href:"#"}
-                    Example
-              #notifications
-
-      - block 'callout'
-
-      .content-container
-        - block 'content'
-
-      .clearfix
-
-      .footer
-        %p &copy; Agile Hog LLC. 2013
-
-  - js_asset_tag 'js/script.js'
+    #main
 
   %script{type:"text/javascript"}
+
     - if user.is_authenticated
       var userId = {{ user.id }};
       user = new SpkrBar.Models.User({'id': userId});
@@ -153,6 +43,11 @@
       e.setAttribute("src", "http://browser-update.org/update.js"); 
       document.body.appendChild(e); 
     } 
+
+  - include 'handlebars/main.haml'
+  - include 'handlebars/index.haml'
+  - include 'handlebars/callout.haml'
+  - js_asset_tag 'js/script.js'
 
   - block 'scripts'
 

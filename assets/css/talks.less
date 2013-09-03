@@ -1,3 +1,7 @@
+@bodyBorderColor: rgb(175,150,130);
+@orange: #F38E42;
+@bordeaux: rgb(189, 54, 47);
+
 .talk_event {
     border: 1px solid #eee;
     margin-bottom: 20px;
@@ -168,21 +172,35 @@
 
     .comments {
 
+        .tawrap, .reply-area { 
+            padding-right: 40px;
+        }
+
+        .reply-area {
+            margin-bottom: 20px;
+        }
+
         textarea {
-            display: block;
-            width: 686px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            margin-left: 20px;
+            width: 100%;
             height: 120px;
         }
 
         .comment-root {
             margin-top: 20px;
+
+            .comment-root {
+                padding-left: 10px;
+            }
         }
 
         ul {
             margin: 0px;
             list-style-type: none;
-            border: 1px dotted #005580;
-            border-radius: 5px;
+            border-left: 10px solid @orange;
 
             li {
                 padding: 10px;
@@ -190,7 +208,7 @@
 
             .comment-buttons {
                 padding: 5px 10px;
-                border-top: 1px dotted #005580;
+                border-top: 1px solid @orange;
 
                 a {
                     border-radius: 5px;
@@ -206,7 +224,8 @@
             }
         }
 
-        .submit {
+        .comment-create, .comment-reply-create {
+            margin-left: 20px;
             display: block;
         }
     }

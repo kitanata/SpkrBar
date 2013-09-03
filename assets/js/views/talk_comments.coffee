@@ -3,45 +3,55 @@ SpkrBar.Views.TalkComments = Backbone.View.extend
     template: "#talk-comments-templ"
 
     events:
-        "click .comment-reply": 'onCommentReply'
-        "click .comment-delete": 'onCommentDelete'
-        "click .comment-report": 'onCommentReport'
+        "click .comment-create": 'onCommentCreate'
 
     initialize: (options) ->
         @talk = options.talk
-        @listenTo(@collection, "change add remove", @render)
 
-    onCommentReply: ->
+        @commentViews = []
+        @collection.each (x) =>
+            comment = new SpkrBar.Models.Comment
+                id: x.get('comment')
+            comment.fetch 
+                success: =>
+                    view = new SpkrBar.Views.Comment
+                        talk: @talk
+                        model: comment
+                    @commentViews.push view
+                    @render()
 
-    onCommentDelete: ->
+    onCommentCreate: ->
+        commentText = $('.comment-text').val()
 
-    onCommentReport: ->
+        if commentText
+            comment = new SpkrBar.Models.Comment
+                user: user.id
+                comment: commentText
+                datetime: (new Date(Date.now())).toISOString()
+            comment.save null,
+                success: =>
+                    talk_comment = new SpkrBar.Models.TalkComment
+                        talk: @talk.id
+                        comment: comment.id
+                    talk_comment.save null, success: =>
+                        @collection.add talk_comment
+                        @comments.add comment
 
     render: ->
         source = $(@template).html()
         template = Handlebars.compile(source)
 
         @$el.html(template(@context()))
+
+        commentArea = @$el.find('.comment-root')
+
+        _(@commentViews).each (x) =>
+            commentArea.append(x.render().el)
+
         @
 
     canComment: ->
         if user then true else false
 
-    userOwnsContent: ->
-        if not user then return false
-        user.id == @talk.get('user')
-
-    canDeleteComment: (comment) ->
-        @userOwnsContent() or comment.user == user
-
-    mapComment: (comment) ->
-        'id': comment.id
-        'name': comment.name
-        'comment': comment.comment
-        'datetime': comment.datetime
-        'children': [@mapComment(child) for child in comment.children]
-        'can_delete': @canDeleteComment(comment)
-
     context: ->
-        comments: @collection.map (x) => @mapComment(x.get('comment'))
         can_comment: @canComment()

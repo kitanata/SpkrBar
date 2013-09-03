@@ -1,0 +1,11 @@
+{% verbatim %}
+  %script#callout-templ{type:"text/x-handlebars-template"}
+    .jumbotron.callout
+      {{#if userIsAnonymous }}
+        %h3.btn-warning Conferences are social again.
+        %a.btn.btn-large.btn-warning{href:"/register/"} <b>Register Now.</b>
+      {{else}}
+        %h3.btn-warning Conferences are social again.
+        %a.add-talk.btn.btn-large.btn-warning{href:"#add-talk-popup"} Add your talk.
+      {{/if}}
+{% endverbatim %}
