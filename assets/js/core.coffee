@@ -62,10 +62,14 @@ class SpkrBarApp
 
         @upcomingEngagementsView = new SpkrBar.Views.Collections.EngagementsSpan6
             collection: (new SpkrBar.Collections.Engagements upcoming[0...4])
+            model: new Backbone.Model
+                title: "Upcoming Speaking Engagements"
         @upcomingEngagementsView.render()
 
         @pastEngagementsView = new SpkrBar.Views.Collections.EngagementsSpan6
             collection: (new SpkrBar.Collections.Engagements past[0...4])
+            model: new Backbone.Model
+                title: "Recent Speaking Engagements"
         @pastEngagementsView.render()
 
         @app.mainRegion.show(@mainLayout)
@@ -84,6 +88,14 @@ class SpkrBarApp
             ['+', 0, 30, "n30d"],
             ['+', 30, 90, "n3m"],
             ['+', 90, 180, "n6m"]]
+
+        titles = 
+            l6m: "Last 6 Months"
+            l3m: "Last 3 Months"
+            l30d: "Last 30 Days"
+            n30d: "Next 30 Days"
+            n3m: "Next 3 Months"
+            n6m: "Next 6 Months"
 
         engagementGroups = @engagementCollection.groupBy (x) =>
             group = _(groups).find (y) ->
@@ -112,6 +124,8 @@ class SpkrBarApp
             if group != "undefined"
                 view = new SpkrBar.Views.Collections.EngagementsSpan6
                     collection: (new SpkrBar.Collections.Engagements engagements)
+                    model: new Backbone.Model
+                        title: titles[group]
                 view.render()
                 @talksLayout[group].show(view)
 
