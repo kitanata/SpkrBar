@@ -1,4 +1,4 @@
-SpkrBar.Views.Callout = Backbone.Marionette.ItemView.extend
+SpkrBar.Views.Items.Callout = Backbone.Marionette.ItemView.extend
     template: Handlebars.compile($("#callout-templ").html())
 
     serializeData: ->

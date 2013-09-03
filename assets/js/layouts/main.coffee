@@ -36,10 +36,10 @@ SpkrBar.Layouts.Main = Backbone.Marionette.Layout.extend
     userIsSuperuser: @userIsSuperuser()
 
   onClickLogo: ->
-    console.log "HERE"
+    spkrbar.showIndexView()
 
   onClickTalks: ->
-    console.log "talks"
+    spkrbar.mainLayout.content.show(spkrbar.generalLayout)
 
   onClickSpeakers: ->
     console.log "speakers"

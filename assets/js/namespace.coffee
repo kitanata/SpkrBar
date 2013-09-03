@@ -1,6 +1,8 @@
 window.SpkrBar =
     Models: {}
     Collections: {}
-    Views: {}
+    Views:
+        Collections: {}
+        Items: {}
     Layouts: {}
     Routers: {}

@@ -51,27 +51,15 @@
               %i.icon-ok-circle
               One low monthly price.
 
-      #upcoming
-      {{#if upcoming}}
-        .row
-          .section-title
-            %h2 Upcoming Speaking Engagements
+      .row
+        .section-title
+          %h2 Upcoming Speaking Engagements
+        .talk-list
+          #upcoming
 
-        .row
-          .talk-list
-            - for item in upcoming
-              - include 'talkevents/_talk_event_span6_detail_partial.haml'
-      {{else}}
-        {{#if past}}
+      .row
+        .section-title
+          %h2 Previous Speaking Engagements
+        .talk-list
           #past
-          .row
-            .section-title
-              %h2 Previous Speaking Engagements
-
-          .row
-            .talk-list
-              - for item in past
-                - include 'talkevents/_talk_event_span6_detail_partial.haml'
-        {{/if}}
-      {{/if}}
 {% endverbatim %}

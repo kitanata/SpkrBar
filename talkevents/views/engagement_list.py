@@ -7,4 +7,4 @@ class EngagementList(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
-        return TalkEvent.objects.filter(confirmed=True)
+        return TalkEvent.objects.filter(confirmed=True, talk__published=True)

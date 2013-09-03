@@ -17,7 +17,7 @@ urlpatterns = patterns('',
     #url(r'^talks$', 'talkevents.views.talk_event_list'),
     #url(r'^speakers$', 'core.views.speaker_list'),
 
-    #url(r'^', include('talkevents.urls')),
+    url(r'^rest/', include('talkevents.urls')),
     #url(r'^', include('core.urls')),
 
     #url(r'^location/new$', 'locations.views.location_new'),

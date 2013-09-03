@@ -1,6 +1,5 @@
-SpkrBar.Views.Engagement = Backbone.View.extend
-    className: "engagement"
-    template: "#engagement-templ"
+SpkrBar.Views.Items.EngagementSpan6 = Backbone.Marionette.ItemView.extend
+    template: Handlebars.compile($("#engagement-span6-templ").html())
 
     events:
         "click #delete-engagement": "onDeleteEngagement"
@@ -8,35 +7,26 @@ SpkrBar.Views.Engagement = Backbone.View.extend
     initialize: ->
         @listenTo(@model, "change", @render)
 
-    onDeleteEngagement: () ->
+    onDeleteEngagement: ->
         @model.destroy
             success: =>
                 @remove()
 
-    render: ->
-        source = $(@template).html()
-        template = Handlebars.compile(source)
-
-        @$el.html(template(@context()))
-        if not @model.get('confirmed')
-            @$el.addClass('muted')
-        @
-
     userAttending: ->
-        if not user then return false
-        user.id in @model.get('attendees')
+        if not spkrbar.user then return false
+        spkrbar.user.id in @model.get('attendees')
 
     userEndorsed: ->
-        if not user then return false
-        user.id in @model.get('endorsements')
+        if not spkrbar.user then return false
+        spkrbar.user.id in @model.get('endorsements')
 
     userIsEventPlanner: ->
-        if not user then return false
-        user.get('is_event_planner')
+        if not spkrbar.user then return false
+        spkrbar.user.get('is_event_planner')
 
     userOwnsEngagement: ->
-        if not user then return false
-        user.id == @model.get('user_id')
+        if not spkrbar.user then return false
+        spkrbar.user.id == @model.get('user_id')
 
     willShowButtons: ->
         @userOwnsEngagement() or @userAttending() or not @userIsEventPlanner()
@@ -44,7 +34,7 @@ SpkrBar.Views.Engagement = Backbone.View.extend
     formattedDate: ->
         moment(@model.get('date')).format('LLL')
 
-    context: ->
+    serializeData: ->
         id: @model.id
         talk_id: @model.get('talk')
         talk_url: @model.get('talk_url')

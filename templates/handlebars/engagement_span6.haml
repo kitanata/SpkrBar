@@ -1,0 +1,60 @@
+{% verbatim %}
+  %script#engagement-span6-templ{type:"text/x-handlebars-template"}
+    .span6
+      .talk_event
+        .header-s6
+          .title
+            {{#if show_buttons}}
+              .grid1
+                %a{href:"{{talk_url}}"}
+                  {{ talk_name }}
+                %br by {{ speaker_name }}
+
+              .grid2
+                .btn-group
+                  {{#if user_attending}}
+                    {{#if user_endorsed}}
+                      %a.btn.btn-warning{href:"/talk/{{talk_id}}/endorse", data-original-title:"Endorse Talk", data-toggle:"tooltip"}
+                        %i.icon-thumbs-up
+                    {{else}}
+                      %a.btn.disabled.btn-warning
+                        %i.icon-thumbs-up
+                    {{/if}}
+                    %a.btn.btn-warning{href:"/talk_event/{{id}}/attend", data-original-title:"Cancel", data-toggle:"tooltip"}
+                      %i.icon-ban-circle
+                  {{else}}
+                    {{#unless user_event_planner}}
+                      %a.btn.btn-warning{href:"/talk_event/{{id}}/attend", data-original-title:"Attend Talk", data-toggle:"tooltip"}
+                        %i.icon-calendar
+                    {{/unless}}
+                  {{/if}}
+                  {{#if user_owned}}
+                    #delete-engagement.btn.btn-danger{data-id:"{{id}}"}
+                      %i.icon-remove
+                  {{/if}}
+            {{else}}
+              %div
+                %a{href:"{{talk_url}}"}
+                  {{ talk_name }}
+                %br by {{ speaker_name }}
+            {{/if}}
+
+          .location
+            .grid1
+              %a{href:"{{ event_url }}"}
+                at {{ event_name }}
+              %br in {{ city }}, {{ state }}
+            .grid2
+              {{ date }}
+              %br {{ time }}
+
+        .description
+          {{#if tags}}
+            .tag-cloud.pull-left
+              {{#each tags }}
+                .label.label-info {{ name }}
+              {{/each}}
+          {{/if}}
+          %span {{ abstract }}
+          .clearfix
+{% endverbatim %}

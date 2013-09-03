@@ -26,13 +26,7 @@
     #main
 
   %script{type:"text/javascript"}
-
-    - if user.is_authenticated
-      var userId = {{ user.id }};
-      user = new SpkrBar.Models.User({'id': userId});
-      user.fetch()
-    - else
-      user = null;
+    window.userId = {{ user.id }};
 
     var $buoop = {vs:{i:9,f:20,o:11,s:5,n:9}} 
     $buoop.ol = window.onload; 
@@ -42,11 +36,14 @@
       e.setAttribute("type", "text/javascript"); 
       e.setAttribute("src", "http://browser-update.org/update.js"); 
       document.body.appendChild(e); 
-    } 
+      } 
 
   - include 'handlebars/main.haml'
   - include 'handlebars/index.haml'
   - include 'handlebars/callout.haml'
+  - include 'handlebars/general_layout.haml'
+  - include 'handlebars/engagement_thumb.haml'
+  - include 'handlebars/engagement_span6.haml'
   - js_asset_tag 'js/script.js'
 
   - block 'scripts'
