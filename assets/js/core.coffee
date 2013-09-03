@@ -38,8 +38,8 @@ class SpkrBarApp
         @indexLayout = new SpkrBar.Layouts.Index()
         @indexLayout.render()
 
-        @generalLayout = new SpkrBar.Layouts.General()
-        @generalLayout.render()
+        @talksLayout = new SpkrBar.Layouts.Talks()
+        @talksLayout.render()
 
         @calloutView = new SpkrBar.Views.Items.Callout()
         @calloutView.render()
@@ -74,5 +74,45 @@ class SpkrBarApp
         @indexLayout.upcoming.show(@upcomingEngagementsView)
         @indexLayout.past.show(@pastEngagementsView)
 
+    showTalksView: ->
+        now = new Date(Date.now()).getTime()
+
+        groups = [
+            ['-', 180, 90, "l6m"],
+            ['-', 90, 30, "l3m"],
+            ['-', 30, 0, "l30d"],
+            ['+', 0, 30, "n30d"],
+            ['+', 30, 90, "n3m"],
+            ['+', 90, 180, "n6m"]]
+
+        engagementGroups = @engagementCollection.groupBy (x) =>
+            group = _(groups).find (y) ->
+                if y[0] == '-'
+                    startDate = now - (y[1] * 24 * 60 * 60 * 1000)
+                    endDate = now - (y[2] * 24 * 60 * 60 * 1000)
+                else
+                    startDate = now + (y[1] * 24 * 60 * 60 * 1000)
+                    endDate = now + (y[2] * 24 * 60 * 60 * 1000)
+
+                start = (new Date(startDate)).toISOString()
+                end = (new Date(endDate)).toISOString()
+                test = x.get('date')
+
+                if test > start and test < end
+                    true
+                else
+                    false
+            if group
+                group[3]
+
+        @app.mainRegion.show(@mainLayout)
+        @mainLayout.content.show(@talksLayout)
+
+        for group, engagements of engagementGroups
+            if group != "undefined"
+                view = new SpkrBar.Views.Collections.EngagementsSpan6
+                    collection: (new SpkrBar.Collections.Engagements engagements)
+                view.render()
+                @talksLayout[group].show(view)
 
 window.spkrbar = new SpkrBarApp()

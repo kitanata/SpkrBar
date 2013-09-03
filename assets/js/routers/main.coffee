@@ -1,9 +1,9 @@
 class mainController
     talksHandler: ->
-        console.log "talks"
+        spkrbar.showTalksView()
 
     mainHandler: ->
-        console.log "main"
+        spkrbar.showIndexView()
 
 SpkrBar.Routers.Main = Backbone.Marionette.AppRouter.extend
     controller: new mainController()

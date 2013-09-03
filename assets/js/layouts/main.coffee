@@ -39,7 +39,7 @@ SpkrBar.Layouts.Main = Backbone.Marionette.Layout.extend
     spkrbar.showIndexView()
 
   onClickTalks: ->
-    spkrbar.mainLayout.content.show(spkrbar.generalLayout)
+    spkrbar.showTalksView()
 
   onClickSpeakers: ->
     console.log "speakers"
