@@ -9,7 +9,7 @@ def login_user(request):
     if request.method == "GET":
         return render_to(request, 'auth/login.haml')
     else:
-        username = request.POST['username']
+        username = request.POST['username'].lower()
         password = request.POST['password']
         user = authenticate(username=username, password=password)
 
