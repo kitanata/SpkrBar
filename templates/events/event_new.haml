@@ -95,7 +95,12 @@
     $('#id_location').typeahead({
         source: locations, 
         updater: function(selection){
-            currentLocation = locationModels[selection];
+            if(selection in locationModels){
+              currentLocation = locationModels[selection];
+            }
+            else {
+              currentLocation = null;
+            }
 
             var url = "http://nominatim.openstreetmap.org/search/" + currentLocation.querystring + "?format=json";
 
@@ -139,14 +144,22 @@
     });
 
     $('#create-event').on('click', function(){
-        $.post("/event/new", {
-            'name': $('#name').val(),
-            'location': currentLocation.id,
-            'start-date': $("#start-date").val(),
-            'start-time': $("#start-time").val(),
-            'end-date': $("#end-date").val(),
-            'end-time': $("#end-time").val(),
-        }, function(){
-            window.location = "{{user.get_absolute_url}}";
-        });
+        if(currentLocation == null) {
+          $.colorbox({
+            html:"<h1 style='padding:20px'>That location doesn't exist.</h1><h1 style='padding:20px'>Please add one first by clicking on the plus sign.</h1>",
+            width:"600px"
+            });
+        }
+        else {
+          $.post("/event/new", {
+              'name': $('#name').val(),
+              'location': currentLocation.id,
+              'start-date': $("#start-date").val(),
+              'start-time': $("#start-time").val(),
+              'end-date': $("#end-date").val(),
+              'end-time': $("#end-time").val(),
+          }, function(){
+              window.location = "{{user.get_absolute_url}}";
+          });
+        }
     });
