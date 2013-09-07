@@ -52,7 +52,7 @@
   %div{style:"display:none"}
     #add-location-popup{style:"background-color:white; padding: 40px;"}
       %h2 Add New Location
-      %form{action:"/location/new/?next=/event/new", method:"POST"}
+      %form{action:"/location/new?next=/event/new", method:"POST"}
         - csrf_token
         {{ location_form.as_p }}
 

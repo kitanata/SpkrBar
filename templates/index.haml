@@ -4,7 +4,7 @@
   .jumbotron.callout
     - if user.is_anonymous
       %h3.btn-warning Conferences are social again.
-      %a.btn.btn-large.btn-warning{href:"/register/"} <b>Register Now.</b>
+      %a.btn.btn-large.btn-warning{href:"/register"} <b>Register Now.</b>
     - else
       %h3.btn-warning Conferences are social again.
       %a.add-talk.btn.btn-large.btn-warning{href:"#add-talk-popup"} Add your talk.
@@ -53,14 +53,13 @@
           Find and recruit great speakers to speak at your events.
         .item
           %i.icon-ok-circle
-          Easily manage the speaker proposal process.
+          Persist data about your event from year to year.
         .item
           %i.icon-ok-circle
           Promote your event through speakers and attendees.
         .item
           %i.icon-ok-circle
-          One low monthly price.
-
+          Absolutely Free!
 
   - if upcoming
     .row
