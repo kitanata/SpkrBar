@@ -4,7 +4,6 @@ SpkrBar.Models.Talk = Backbone.Model.extend
         location: null
         start_date: null
         end_date: null
-        attendees: null
         endorsements: null
 
     initialize: ->

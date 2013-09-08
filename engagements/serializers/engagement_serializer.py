@@ -36,7 +36,6 @@ class EngagementSerializer(serializers.ModelSerializer):
                 'talk', 
                 'event', 
                 'date',
-                'attendees',
                 'endorsements',
                 'from_speaker',
                 'confirmed')

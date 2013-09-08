@@ -66,7 +66,7 @@ class TalkForm(forms.ModelForm):
             'abstract': forms.Textarea(attrs={'cols': 80, 'rows': 5}),
             'photo': CustomClearableFileInput()
         }
-        exclude = ('speaker', 'media', 'published', 'tags', 'attendees', 'endorsements')
+        exclude = ('speaker', 'media', 'published', 'tags', 'links', 'endorsements')
 
 
 class TalkRatingForm(forms.ModelForm):

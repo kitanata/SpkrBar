@@ -12,7 +12,7 @@
         .span2
           .nav.btn-group.pull-right
             - if not user.is_anonymous
-              - if user == talk.speaker.user
+              - if user == talk.speaker
                   - if talk.published
                     %a.btn.btn-warning.submit-talk{href:"#submit-talk-popup", data-toggle:"tooltip", data-original-title:"Create Engagement"}
                       %i.icon-bullhorn
@@ -33,23 +33,22 @@
                   %a.btn.btn-warning.recruit-talk{href:"#recruit-talk-popup", data-toggle:"tooltip", data-original-title:"Recruit this talk."}
                     %i.icon-hand-right
                     Recruit Talk
-                - if user_attendance
-                  - if not user_endorsed
-                    %a.btn.btn-warning{href:"/talk/{{talk.id}}/endorse?last={{last}}"}
-                      %i.icon-thumbs-up
-                      Endorse
-                  - else
-                    %a.btn.disabled.btn-warning
-                      %i.icon-thumbs-up
-                      Endorsed
-                  - if not user_rated
-                    %a.btn.btn-warning.rate-talk{href:"#rate-talk-popup", data-toggle:"tooltip", data-original-title:"Rate this talk."}
-                      %i.icon-legal
-                      Rate
-                  - else
-                    %a.btn.disabled.btn-warning
-                      %i.icon-legal
-                      Rated
+                - if not user_endorsed
+                  %a.btn.btn-warning{href:"/talk/{{talk.id}}/endorse?last={{last}}"}
+                    %i.icon-thumbs-up
+                    Endorse
+                - else
+                  %a.btn.disabled.btn-warning
+                    %i.icon-thumbs-up
+                    Endorsed
+                - if not user_rated
+                  %a.btn.btn-warning.rate-talk{href:"#rate-talk-popup", data-toggle:"tooltip", data-original-title:"Rate this talk."}
+                    %i.icon-legal
+                    Rate
+                - else
+                  %a.btn.disabled.btn-warning
+                    %i.icon-legal
+                    Rated
 
 
       - else
@@ -70,11 +69,6 @@
             #talk-tags
 
           .span3
-            %h3 Attendees ({{attendees|length}})
-            - with attendees as collection
-              - include '_user_list_partial.haml'
-
-          .span3
             #talk-links
 
       .span9
@@ -84,7 +78,7 @@
               .span2
                 %h3 Slides
 
-              - if talk.speaker.user == user
+              - if talk.speaker == user
                 .span2
                   %a.btn.btn-warning.link-slides.pull-right{href:"#link-slides-popup"} Add Slides
 
@@ -109,7 +103,7 @@
               .span2
                 %h3 Videos
 
-              - if talk.speaker.user == user
+              - if talk.speaker == user
                 .span2
                   %a.btn.btn-warning.link-video.pull-right{href:"#link-video-popup"} Add Videos
 
@@ -133,7 +127,7 @@
               .span2
                 %h3 Photos
 
-              - if talk.speaker.user == user
+              - if talk.speaker == user
                 .span7
                   %a.btn.btn-warning.upload-photo.pull-right{href:"#upload-photo-popup"} Upload Photos
 
@@ -167,7 +161,7 @@
               %h3 Comments
               %hr
 
-              - if not user.is_anonymous and talk.speaker.user != user
+              - if not user.is_anonymous and talk.speaker != user
                 %form.add-comment-form{action:"/talk/{{talk.id}}/comment/new", method:"POST"}
                   - csrf_token
                   %textarea{name:'comment', placeholder:"Add your comment..."}

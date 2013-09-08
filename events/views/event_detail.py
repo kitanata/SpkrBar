@@ -13,7 +13,7 @@ from talks.models import Talk
 def event_detail(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
 
-    engagements = event.engagements.filter(confirmed=True)
+    engagements = event.engagements.all()
 
     if request.user.is_anonymous():
         engagements = engagements.filter(talk__published=True)
@@ -22,25 +22,16 @@ def event_detail(request, event_id):
                 Q(talk__published=True) | 
                 Q(talk__speaker=request.user))
 
-    user_attending = False
-
-    attendees = event.attendees.all()
-    endorsements = event.endorsements.all()
-    user_attending = (request.user in attendees)
-    user_endorsed = (request.user in endorsements)
-
-    will_have_links = not user_attending or not user_endorsed
-
     yesterday = datetime.today() - timedelta(days=1)
     tomorrow = datetime.today() + timedelta(days=1)
     current = engagements.filter(date__gt=yesterday, date__lt=tomorrow).order_by('date')
     upcoming = engagements.filter(date__gt=tomorrow).order_by('date')
     past = engagements.filter(date__lt=yesterday).order_by('-date')
 
-    speakers = SpeakerProfile.objects.filter(talk__in=[e.talk for e in engagements]).distinct()
+    speakers = SpkrbarUser.objects.filter(talk__in=[e.talk for e in engagements]).distinct()
     speakers = speakers.annotate(
             num_tags=Count('tags'),
-            num_links=Count('user__links')).order_by(
+            num_links=Count('links')).order_by(
                     '-photo', '-about_me', '-num_tags', '-num_links')[:20]
 
     if not request.user.is_anonymous():
@@ -50,12 +41,7 @@ def event_detail(request, event_id):
 
     context = {
         'event': event,
-        'attendees': attendees,
-        'endorsements': endorsements,
-        'user_attending': user_attending,
-        'user_endorsed': user_endorsed,
         'user_talks': user_talks,
-        'will_have_links': will_have_links,
         'querystring': event.location.geocode_querystring(),
         'city_querystring': event.location.geocode_city_querystring(),
         'current': current,

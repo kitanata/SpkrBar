@@ -45,26 +45,3 @@ class SpeakerRegisterForm(forms.Form):
 
     password = forms.CharField(min_length=8, widget=forms.PasswordInput())
     confirm = forms.CharField(min_length=8, widget=forms.PasswordInput())
-
-
-class EventRegisterForm(forms.Form):
-    username = forms.CharField(max_length=40)
-    name = forms.CharField()
-    description = forms.CharField(max_length=1400, required=False,
-            widget=forms.Textarea(attrs={'rows':6, 'cols':40}))
-    email = forms.EmailField()
-
-    password = forms.CharField(min_length=8, widget=forms.PasswordInput())
-    confirm = forms.CharField(min_length=8, widget=forms.PasswordInput())
-
-
-class AttendeeRegisterForm(forms.Form):
-    username = forms.CharField(max_length=40)
-    first_name = forms.CharField()
-    last_name = forms.CharField()
-    email = forms.EmailField()
-    about_me = forms.CharField(max_length=1400, required=False,
-            widget=forms.Textarea(attrs={'rows':6, 'cols':40}))
-
-    password = forms.CharField(min_length=8, widget=forms.PasswordInput())
-    confirm = forms.CharField(min_length=8, widget=forms.PasswordInput())

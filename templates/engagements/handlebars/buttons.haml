@@ -1,0 +1,10 @@
+{% verbatim %}
+  .btn-group
+    {{#unless user.endorsing}}
+      %a.btn.btn-warning{href:"/talk/{{item.talk.id}}/endorse?last={{last}}", data-original-title:"endorse talk", data-toggle:"tooltip"}
+        %i.icon-thumbs-up
+    {{else}}
+      %a.btn.disabled.btn-warning
+        %i.icon-thumbs-up
+    {{/unless}}
+{% endverbatim %}

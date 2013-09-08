@@ -17,24 +17,15 @@ def talk_detail(request, talk_id):
     talk = get_object_or_404(Talk, pk=talk_id)
 
     engagements = talk.engagements.all()
-    attendees = SpkrbarUser.objects.filter(attending__in=engagements).distinct()
 
-    upcoming = engagements.filter(event__start_date__gt=datetime.today())
-    past = engagements.filter(event__end_date__gt=datetime.today())
+    upcoming = engagements.filter(date__gt=datetime.today())
+    past = engagements.filter(date__lt=datetime.today())
 
-    user_attendance = False
     user_endorsed = False
     user_rated = False
     will_have_links = False
 
-    attendees = attendees.filter()
-
     if not request.user.is_anonymous():
-        try:
-            user_attendance = engagements.filter(attendees__in=[request.user])
-        except ObjectDoesNotExist:
-            pass
-
         user_endorsed = (request.user in talk.endorsements.all())
         user_rated = (request.user in [x.rater for x in talk.ratings.all()])
 
@@ -61,8 +52,6 @@ def talk_detail(request, talk_id):
         'photos': photo_col,
         'upcoming': upcoming,
         'past': past,
-        'attendees': attendees,
-        'user_attendance': user_attendance,
         'user_endorsed': user_endorsed,
         'user_rated': user_rated,
         'will_have_links': will_have_links,

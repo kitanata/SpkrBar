@@ -5,9 +5,7 @@ SpkrBar.Models.User = Backbone.Model.extend
         email: ""
         following: []
         followers: []
-        is_speaker: false
-        is_attendee: false
-        is_event_planner: false
+        is_speaker: true
 
     initialize: ->
 

@@ -36,14 +36,8 @@ def search(request):
 
     profile_tags = ProfileTag.objects.filter(name__icontains=query)
 
-    speakers = SpeakerProfile.objects.filter(
-            Q(user__username__icontains=query) |
-            Q(first_name__icontains=query) |
-            Q(last_name__icontains=query) |
-            Q(tags__in=profile_tags))
-
-    attendees = AttendeeProfile.objects.filter(
-            Q(user__username__icontains=query) |
+    speakers = SpkrbarUser.objects.filter(
+            Q(username__icontains=query) |
             Q(first_name__icontains=query) |
             Q(last_name__icontains=query) |
             Q(tags__in=profile_tags))
@@ -57,10 +51,6 @@ def search(request):
     if speakers.count() > 12:
         speakers = random.sample(speakers, 12)
 
-    if attendees.count() > 12:
-        attendees = random.sample(attendees, 12)
-
     return {'talks': talks,
             'events': events,
-            'speakers': speakers,
-            'attendees': attendees}
+            'speakers': speakers}

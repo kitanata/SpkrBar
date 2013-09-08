@@ -48,12 +48,3 @@
               %li
                 %a{href:"/mobile/talk/{{talk.talk.pk}}"}
                   = talk.talk.name
-
-      - if attending
-        %div{data-role:"collapsible", data-theme:"a", data-content-theme:"a"}
-          %h2 Talks They Are Attending
-          %ul{data-role:"listview"}
-            - for talk in attending
-              %li
-                %a{href:"/mobile/talk/{{talk.talk.pk}}"}
-                  = talk.talk.name

@@ -9,21 +9,12 @@
             %br by {{ speaker_name }}
           .grid2
             .btn-group
-              {{#if user_attending}}
-                {{#if user_endorsed}}
-                  %a.btn.btn-warning{href:"/talk/{{talk_id}}/endorse", data-original-title:"Endorse Talk", data-toggle:"tooltip"}
-                    %i.icon-thumbs-up
-                {{else}}
-                  %a.btn.disabled.btn-warning
-                    %i.icon-thumbs-up
-                {{/if}}
-                %a.btn.btn-warning{href:"/talk_event/{{id}}/attend", data-original-title:"Cancel", data-toggle:"tooltip"}
-                  %i.icon-ban-circle
+              {{#if user_endorsed}}
+                %a.btn.btn-warning{href:"/talk/{{talk_id}}/endorse", data-original-title:"Endorse Talk", data-toggle:"tooltip"}
+                  %i.icon-thumbs-up
               {{else}}
-                {{#unless user_event_planner}}
-                  %a.btn.btn-warning{href:"/talk_event/{{id}}/attend", data-original-title:"Attend Talk", data-toggle:"tooltip"}
-                    %i.icon-calendar
-                {{/unless}}
+                %a.btn.disabled.btn-warning
+                  %i.icon-thumbs-up
               {{/if}}
               {{#if user_owned}}
                 #delete-engagement.btn.btn-danger{data-id:"{{id}}"}

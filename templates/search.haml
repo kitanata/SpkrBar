@@ -3,7 +3,7 @@
 - block 'subnav-container' 
 
 - block 'content'
-  - if not talks and not speakers and not events and not attendees
+  - if not talks and not speakers and not events
     .row
       .section-title
         %h2 Search Returned 0 Results
@@ -17,7 +17,7 @@
         .section
           .row
             - for item in talks
-              - include 'talkevents/_talk_event_span6_detail_partial.haml'
+              - include 'engagements/_talk_event_span6_detail_partial.haml'
 
   - if speakers
     .row
@@ -28,7 +28,7 @@
         .section
           .row
             - for profile in speakers
-              {% include '_speaker_attendee_span6_partial.haml' %}
+              {% include '_speaker_span6_partial.haml' %}
 
   - if events
     .row
@@ -40,18 +40,6 @@
           .event-list.row{style:"margin-bottom:40px"}
             - for event in events
               - include 'events/_event_span6_detail_partial.haml'
-
-  - if attendees
-    .row
-      .section-title
-        %h2 Attendees
-    .row
-      .span12
-        .section
-          .row
-            - for profile in attendees
-              {% include '_speaker_attendee_span6_partial.haml' %}
-
 
 - block 'scripts'
   - if events

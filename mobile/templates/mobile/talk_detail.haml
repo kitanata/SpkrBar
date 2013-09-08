@@ -25,13 +25,3 @@
                 = tag.name
         .about
           = talk_event.talk.abstract
-
-    %div{data-role:"collapsible-set", data-theme:"a", data-content-theme:"a"}
-      - if talk_event.attendees.all
-        %div{data-role:"collapsible", data-theme:"a", data-content-theme:"a", data-collapsed:"false"}
-          %h2 Attendees
-          %ul{data-role:"listview"}
-            - for attendee in talk_event.attendees.all
-              %li
-                %a{href:"/mobile/profile/{{attendee.username}}"}
-                  = attendee.get_full_name

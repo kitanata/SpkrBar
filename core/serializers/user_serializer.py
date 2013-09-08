@@ -5,9 +5,6 @@ from notification_serializer import NotificationSerializer
 
 class UserSerializer(serializers.ModelSerializer):
     full_name = serializers.Field(source='get_full_name')
-    is_speaker = serializers.Field(source='is_speaker')
-    is_attendee = serializers.Field(source='is_attendee')
-    is_event_planner = serializers.Field(source='is_event_planner')
 
     class Meta:
         model = SpkrbarUser
@@ -17,8 +14,5 @@ class UserSerializer(serializers.ModelSerializer):
                 'full_name',
                 'email', 
                 'following', 
-                'followers',
-                'is_speaker',
-                'is_attendee',
-                'is_event_planner',
+                'followers'
                 )

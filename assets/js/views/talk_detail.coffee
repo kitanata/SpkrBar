@@ -97,7 +97,6 @@ class SpkrBar.Views.TalkDetail
                     talk: talkId
                     event: selEvent.id
                     date: date
-                    attendees: []
                     from_speaker: true
                     vetoed: false
 

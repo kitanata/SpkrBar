@@ -9,13 +9,13 @@ from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
-from core.models import SpeakerProfile, SpkrbarUser
+from core.models import SpkrbarUser
 
 from events.models import Event
 
 from core.helpers import template
-from talkevents.helpers import talk_event_groups
-from talkevents.models import TalkEvent
+from engagements.helpers import talk_event_groups
+from engagements.models import Engagement
 
 def login_user(request):
     if request.method == "GET":
@@ -98,7 +98,7 @@ def search(request):
 
 @template('mobile/speakers.haml')
 def speakers(request):
-    speakers = SpeakerProfile.objects.all()
+    speakers = SpkrbarUser.objects.all()
     return {'speakers': speakers}
 
 @template('mobile/profile.haml')
@@ -112,10 +112,7 @@ def profile(request):
 def profile_detail(request, username):
     profile = get_object_or_404(SpkrbarUser, username=username).get_profile()
 
-    if profile.user.is_speaker() or profile.user.is_attendee():
-        return build_profile(profile)
-    else:
-        return redirect("/mobile/profile")
+    return build_profile(profile)
 
 
 def build_profile(profile):
@@ -124,10 +121,6 @@ def build_profile(profile):
             Q(talk__speaker__user=profile.user),
             Q(date__gte=datetime.today()))
 
-    attending = profile.user.attending.filter(
-            date__gte=datetime.today())
-
     return {'profile': profile,
-            'upcoming': upcoming,
-            'attending': attending}
+            'upcoming': upcoming}
 

@@ -19,14 +19,10 @@
             <i class="icon-trash"></i>
         </a>
     - elif not user.is_anonymous
-      - if user_attending and not user_endorsed
+      - if not user_endorsed
         %a.btn.btn-warning{href:"/talk/{{event.talk.id}}/endorse?last={{last}}"}
           %i.icon-thumbs-up
           Endorse
-      - elif event and not user_attending
-        %a.btn.btn-warning{href:"/event/{{event.id}}/attend?last={{last}}"}
-          %i.icon-calendar
-          Attend
 
 <!-- This contains the hidden content for inline calls -->
 %div{style:'display:none'}

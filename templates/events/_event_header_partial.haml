@@ -1,9 +1,6 @@
 #event-header
   .row
     .span4
-      %h5
-        {{ event.start_date.date }} at {{ event.start_date.time }} to
-        %br {{ event.end_date.date }} at {{ event.end_date.time }}
       %p {{ event.description }}
       %p
         - with event.location as location

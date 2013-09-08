@@ -34,12 +34,3 @@
           %li
             %a{href:"{{item.talk.get_absolute_url}}"}
               {{ item.talk.name|truncatechars:30 }}
-
-  - if attended
-    .span3{style:"margin-top: 40px"}
-      %h2 Attended
-      %ul.basic-item-list
-        - for item in attended
-          %li
-            %a{href:"{{item.talk.get_absolute_url}}"}
-              {{ item.talk.name|truncatechars:30 }}

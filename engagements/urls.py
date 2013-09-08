@@ -7,6 +7,4 @@ urlpatterns = patterns('',
         actions={'get': 'retrieve', 'put': 'update', 'delete':'destroy'})),
     url(r'^engagement$', EngagementDetail.as_view(
         actions={'post': 'create'})),
-
-    url(r'^talk_event/(?P<talk_event_id>\d+)/attend$', 'talkevents.views.talk_event_attendee_new'),
 )

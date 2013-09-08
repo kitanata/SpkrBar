@@ -43,15 +43,13 @@ def register_user(request):
 
                 return {'form': form}
 
-            profile = SpeakerProfile()
-            profile.user = user
-            profile.first_name = first_name
-            profile.last_name = last_name
+            user.first_name = first_name
+            user.last_name = last_name
 
             if 'about_me' in form.cleaned_data:
-                profile.about_me = form.cleaned_data['about_me']
+                user.about_me = form.cleaned_data['about_me']
 
-            profile.save()
+            user.save()
 
             text = """
                 Hi there! 
@@ -77,7 +75,7 @@ def register_user(request):
             user = authenticate(username=username, password=password)
             login(request, user)
 
-            return redirect(request.user.get_profile().get_absolute_url())
+            return redirect(request.user.get_absolute_url())
     else:
         form = SpeakerRegisterForm()
 

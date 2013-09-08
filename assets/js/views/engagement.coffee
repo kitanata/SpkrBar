@@ -22,20 +22,11 @@ SpkrBar.Views.Engagement = Backbone.View.extend
             @$el.addClass('muted')
         @
 
-    userAttending: ->
-        user.id in @model.get('attendees')
-
     userEndorsed: ->
         user.id in @model.get('endorsements')
 
-    userIsEventPlanner: ->
-        user.get('is_event_planner')
-
     userOwnsEngagement: ->
         user.id == @model.get('user_id')
-
-    willShowButtons: ->
-        @userOwnsEngagement() or @userAttending() or not @userIsEventPlanner()
 
     context: ->
         id: @model.id
@@ -52,8 +43,7 @@ SpkrBar.Views.Engagement = Backbone.View.extend
         tags: _(@model.get('tags')).map (x) -> {'name': x}
         abstract: @model.get('abstract')
         confirmed: @model.get('confirmed')
-        user_attending: @userAttending()
         user_endorsed: @userEndorsed()
         user_event_planner: @userIsEventPlanner()
         user_owned: @userOwnsEngagement()
-        show_buttons: @willShowButtons()
+        show_buttons: true

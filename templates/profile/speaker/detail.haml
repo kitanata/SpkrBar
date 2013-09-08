@@ -1,10 +1,10 @@
 - extends 'base.haml'
 
 - block 'title'
-  {{ profile.user.get_full_name }}
+  {{ profile.get_full_name }}
 
 - block 'subnav'
-  - with profile.user as other_user
+  - with profile as other_user
     - include '_follow_user_partial.haml'
 
 - block 'content'
@@ -16,4 +16,3 @@
         - include 'profile/speaker/_sidebar_partial.haml'
       .span9
         - include 'profile/speaker/_talks_partial.haml'
-        - include 'profile/speaker/_attending_partial.haml'

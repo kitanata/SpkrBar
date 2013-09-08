@@ -1,6 +1,6 @@
-.span9
+.span6
   .talk_event
-    .header
+    .header-s6
       .title
         - if not user.is_anonymous and item.talk.speaker != user
           .grid1
@@ -9,18 +9,18 @@
             %br by {{ item.talk.speaker.user.get_full_name }}
 
           .grid2
-            {% include 'talkevents/_button_group_partial.haml' %}
+            {% include 'engagements/_button_group_partial.haml' %}
 
         - else
           %div
             %a{href:"{{item.talk.get_absolute_url}}"}
-              {{ item.talk.name|truncatechars:68 }}
+              {{ item.talk.name|truncatechars:38 }}
             %br by {{ item.talk.speaker.user.get_full_name }}
 
       .location
         .grid1
           %a{href:"{{ item.event.get_absolute_url }}"}
-            at {{ item.event }}
+            at {{ item.event.owner.name }}
           %br in {{ item.event.location.city }}, {{ item.event.location.state }}
         .grid2
           {{ item.date.date }}
@@ -31,8 +31,5 @@
         .tag-cloud.pull-left
           - for tag in item.talk.tags.all
             .label.label-info {{ tag.name }}
-
-      %span {{ item.talk.abstract|truncatechars:240 }}
+      %span {{ item.talk.abstract|truncatechars:140 }}
       .clearfix
-
-    .clearfix

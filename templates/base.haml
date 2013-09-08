@@ -4,7 +4,7 @@
 %html{lang:"en"}
   %head
     %meta{charset:"utf-8"}
-    %title SpkrBar.com - A site for speakers, conferences, and the people who attend them.
+    %title SpkrBar.com - Helping good speakers become great speakers.
     %meta{name:"viewport", content:"width=device-width, initial-scale=1.0"}
     %meta{name:"description", content:""}
     %meta{name:"author", content:""}
@@ -54,16 +54,10 @@
                       Events
 
                   - if not user.is_anonymous
-                    - if user.is_speaker
-                      %li
-                        %a.add-talk{href:"#add-talk-popup"}
-                          %i.icon-plus
-                          Add Talk
-                    - elif user.is_event_planner
-                      %li
-                        %a.add-event{href:"/event/new"}
-                          %i.icon-plus
-                          Add Event
+                    %li
+                      %a.add-talk{href:"#add-talk-popup"}
+                        %i.icon-plus
+                        Add Talk
 
                   %li
                     %a{href:"/blog"}

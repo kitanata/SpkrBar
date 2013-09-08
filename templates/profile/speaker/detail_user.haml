@@ -1,7 +1,7 @@
 - extends 'base.haml'
 
 - block 'title'
-  {{ profile.user.get_full_name }}
+  {{ profile.get_full_name }}
 
 - block 'subnav'
   - include 'profile/speaker/_links_partial.haml'
@@ -15,7 +15,6 @@
         - include 'profile/speaker/_sidebar_partial.haml'
       .span9
         - include 'profile/speaker/_talks_partial.haml'
-        - include 'profile/speaker/_attending_partial.haml'
 
   %div{style:'display:none'}
     #delete-talk-popup{style:"background-color:white; padding: 40px;"}
