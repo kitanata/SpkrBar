@@ -3,10 +3,10 @@ from datetime import datetime, timedelta
 from django.shortcuts import get_object_or_404
 from django.db.models import Q, Count
 
-from talkevents.models import TalkEvent
+from engagements.models import Engagement
 from core.helpers import render_to
 
-from core.models import SpeakerProfile
+from core.models import SpkrbarUser
 from events.models import Event
 from talks.models import Talk
 

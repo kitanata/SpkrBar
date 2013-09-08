@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseNotFound
 
-from core.models import ProfileTag
+from core.models import UserTag
 
 @login_required
 def profile_tag_delete(request, tag_id):

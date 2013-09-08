@@ -35,8 +35,4 @@ urlpatterns = patterns('',
                 'template_name': "auth/password_reset_confirm.haml",
                 'post_reset_redirect': '/login'
                 }),
-    
-    url(r'^register/speaker$', 'core.views.register_speaker'),
-    url(r'^register/attendee$', 'core.views.register_attendee'),
-    url(r'^register/event$', 'core.views.register_event'),
 )

@@ -15,7 +15,7 @@ APPEND_SLASH = False
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'spkrbar',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': 'spkrbar',
@@ -186,7 +186,7 @@ INSTALLED_APPS = (
     'locations',
     'talks',
     'events',
-    'talkevents',
+    'engagements',
     'blog',
     'mobile'
 )

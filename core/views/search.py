@@ -6,8 +6,8 @@ from django.shortcuts import redirect
 from core.helpers import template
 
 from talks.models import TalkTag
-from talkevents.models import TalkEvent
-from core.models import SpeakerProfile, AttendeeProfile, ProfileTag
+from engagements.models import Engagement
+from core.models import SpkrbarUser, UserTag
 from events.models import Event
 
 @template('search.haml')
@@ -22,7 +22,7 @@ def search(request):
 
     talk_tags = TalkTag.objects.filter(name__icontains=query)
 
-    talks = TalkEvent.objects.filter(
+    talks = Engagement.objects.filter(
             Q(talk__published=True), 
             Q(date__gte=datetime.today()),
             Q(talk__name__icontains=query) | 

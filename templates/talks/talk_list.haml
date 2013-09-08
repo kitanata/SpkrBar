@@ -1,0 +1,22 @@
+- extends 'base.haml'
+
+- block 'subnav-container'
+
+- block 'content'
+  .row
+    .section-title
+      %h2 Recently Created Talks
+
+  .row
+    .talk-list
+      - for item in recently_created
+        - include 'talks/_talk_span6_detail_partial.haml'
+
+  .row
+    .section-title
+      %h2 Recently Updated Talks
+
+  .row
+    .talk-list
+      - for item in recently_updated
+        - include 'talks/_talk_span6_detail_partial.haml'

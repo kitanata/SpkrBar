@@ -1,0 +1,26 @@
+.span6
+  .talk_event
+    .header-s6
+      .title
+        - if not user.is_anonymous and item.speaker != user
+          .grid1
+            %a{href:"{{item.get_absolute_url}}"}
+              {{ item.name|truncatechars:48 }}
+            %br by {{ item.speaker.get_full_name }}
+
+          .grid2
+            {% include 'talkevents/_button_group_partial.haml' %}
+
+        - else
+          %div
+            %a{href:"{{item.get_absolute_url}}"}
+              {{ item.name|truncatechars:38 }}
+            %br by {{ item.speaker.get_full_name }}
+
+    .description
+      - if item.tags.all
+        .tag-cloud.pull-left
+          - for tag in item.tags.all
+            .label.label-info {{ tag.name }}
+      %span {{ item.abstract|truncatechars:140 }}
+      .clearfix

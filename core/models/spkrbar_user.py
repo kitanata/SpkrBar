@@ -4,17 +4,17 @@ from django.utils import timezone
 from django.db import models
 
 class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
-    USER_TYPE_ATTENDEE = 'ATTENDEE'
-    USER_TYPE_SPEAKER = 'SPEAKER'
-    USER_TYPE_EVENT = 'EVENT'
-    USER_TYPES = (
-            (USER_TYPE_ATTENDEE, 'Attendee'),
-            (USER_TYPE_SPEAKER, 'Speaker'),
-            (USER_TYPE_EVENT, 'Event'),
-        )
-
     username = models.CharField(max_length=30, unique=True)
     email = models.EmailField()
+
+    first_name = models.CharField(max_length=300)
+    last_name = models.CharField(max_length=300)
+
+    about_me = models.CharField(max_length=4000, blank=True)
+
+    photo = models.ImageField(upload_to="photo", blank=True)
+
+    tags = models.ManyToManyField('core.UserTag', blank=True)
 
     is_staff = models.BooleanField(_('staff status'), default=False,
         help_text=_('Designates whether the user can log into this admin '
@@ -24,77 +24,43 @@ class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
                     'active. Unselect this instead of deleting accounts.'))
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
 
-    user_type = models.CharField(
-            max_length=10, choices=USER_TYPES, default=USER_TYPE_SPEAKER)
-
     following = models.ManyToManyField('self', 
             related_name="followers", symmetrical=False)
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email', 'user_type']
+    REQUIRED_FIELDS = ['email']
 
     objects = UserManager()
 
-
-    def unicode(self):
-        return unicode(self.username)
-
-
-    def is_speaker(self):
-        return self.user_type == SpkrbarUser.USER_TYPE_SPEAKER
-
-    def is_event_planner(self):
-        return self.user_type == SpkrbarUser.USER_TYPE_EVENT
-
-    def is_attendee(self):
-        return self.user_type == SpkrbarUser.USER_TYPE_ATTENDEE
-
     def get_full_name(self):
-        profile = self.get_profile()
-
-        if self.user_type == SpkrbarUser.USER_TYPE_SPEAKER:
-            return u' '.join([unicode(profile.first_name), unicode(profile.last_name)])
-        elif self.user_type == SpkrbarUser.USER_TYPE_ATTENDEE:
-            return u' '.join([unicode(profile.first_name), unicode(profile.last_name)])
-        elif self.user_type == SpkrbarUser.USER_TYPE_EVENT:
-            return unicode(profile.name)
-        else:
-            return u'Error: Not a user'
-
+        return u' '.join([unicode(self.first_name), unicode(self.last_name)])
 
     def get_short_name(self):
-        profile = self.get_profile()
+        return unicode(self.first_name)
 
-        if self.user_type == SpkrbarUser.USER_TYPE_SPEAKER:
-            return unicode(profile.first_name)
-        elif self.user_type == SpkrbarUser.USER_TYPE_ATTENDEE:
-            return unicode(profile.first_name)
-        elif self.user_type == SpkrbarUser.USER_TYPE_EVENT:
-            return unicode(profile.name)
-        else:
-            return 'NOT_A_USER'
-
-
-    def get_profile(self):
-        if self.user_type == SpkrbarUser.USER_TYPE_SPEAKER:
-            return self.speakerprofile
-        elif self.user_type == SpkrbarUser.USER_TYPE_ATTENDEE:
-            return self.attendeeprofile
-        elif self.user_type == SpkrbarUser.USER_TYPE_EVENT:
-            return self.eventprofile
-        else:
-            return None
-
-    
     def get_absolute_url(self):
-        if self.user_type == SpkrbarUser.USER_TYPE_SPEAKER:
-            return self.speakerprofile.get_absolute_url()
-        elif self.user_type == SpkrbarUser.USER_TYPE_ATTENDEE:
-            return self.attendeeprofile.get_absolute_url()
-        elif self.user_type == SpkrbarUser.USER_TYPE_EVENT:
-            return self.eventprofile.get_absolute_url()
+        return "/profile/" + self.username
+
+    def published_upcoming_events_attending(self, user_profile=None):
+        if user_profile:
+            events = self.events_attending.filter(
+                    Q(talk__published=True) | Q(talk__speaker=request.user))
         else:
-            return "/"
+            events = self.events_attending.filter(talk__published=True)
+        
+        return events.filter(date__gt=datetime.now()).order_by('date')
+
+    def published_past_events_attended(self, user_profile=None):
+        if user_profile:
+            events = self.events_attending.filter(
+                    Q(talk__published=True) | Q(talk__speaker=request.user))
+        else:
+            events = self.events_attending.filter(talk__speaker__published=True)
+
+        return events.filter(date__lt=datetime.now()).order_by('-date')
+
+    def __unicode__(self):
+        return self.user.get_full_name()
 
     class Meta:
         app_label = 'core'

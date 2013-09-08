@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseNotFound
 
-from core.models import ProfileTag
+from core.models import UserTag
 
 from core.forms import ProfileTagForm
 

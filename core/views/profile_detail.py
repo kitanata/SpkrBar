@@ -12,7 +12,7 @@ from talks.models import Talk
 
 from events.models import Event
 
-from talkevents.models import TalkEvent
+from engagements.models import Engagement
 
 from core.forms import ProfileLinkForm, ProfileTagForm, ProfilePhotoForm
 from core.forms import EventEditProfileForm, EditProfileForm
@@ -31,7 +31,7 @@ def speaker_profile(profile, user):
             'about_me':profile.about_me
         })
 
-    talk_events = TalkEvent.objects.filter(
+    talk_events = Engagement.objects.filter(
             talk__speaker=profile,
             talk__published=True)
 

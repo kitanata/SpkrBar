@@ -2,6 +2,6 @@ from django.contrib import admin
 from .models import Event
 
 class EventAdmin(admin.ModelAdmin):
-    list_display = ['owner', 'start_date', 'end_date', 'location', 'accept_submissions']
+    list_display = ['name', 'year', 'location']
 
 admin.site.register(Event, EventAdmin)

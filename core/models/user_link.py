@@ -25,6 +25,5 @@ class UserLink(models.Model):
     def __str__(self):
         return self.type_name
 
-
     class Meta:
         app_label = 'core'

@@ -6,7 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 
 from events.models import Event
-from core.models import SpeakerProfile, SpkrbarUser
+from core.models import SpkrbarUser
 from core.helpers import template
 
 from talks.models import Talk

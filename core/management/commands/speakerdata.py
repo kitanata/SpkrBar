@@ -7,13 +7,11 @@ from django.http import HttpResponseForbidden
 
 from guardian.shortcuts import assign_perm
 
-from core.models import SpkrbarUser, ProfileTag
-from core.models import SpeakerProfile, EventProfile, AttendeeProfile
+from core.models import SpkrbarUser, UserTag
 
 from locations.models import Location
 from events.models import Event
 from talks.models import Talk, TalkTag
-from talkevents.models import TalkEvent
 from blog.models import BlogPost
 
 random.seed(datetime.now())
@@ -91,7 +89,7 @@ def generate_datetime():
 
 def generate_profile_tags():
     for tag in profile_tags:
-        new_tag = ProfileTag()
+        new_tag = UserTag()
         new_tag.name = tag
         new_tag.save()
 
@@ -108,50 +106,23 @@ def generate_speaker(username):
             username,
             'test@spkrbar.com',
             'abcd1234')
-    user.user_type = SpkrbarUser.USER_TYPE_SPEAKER
-    user.save()
 
     first_name = random.choice(user_first_names)
     last_name = random.choice(user_last_names)
 
-    profile = SpeakerProfile()
-    profile.user = user
-    profile.first_name = first_name
-    profile.last_name = last_name
-    profile.about_me = user_description
-    profile.save()
-
-    build_tags_on_profile(profile)
-
-    return profile
-
-
-def generate_attendee(username):
-    user = SpkrbarUser.objects.create_user(
-            username,
-            'testattendee@spkrbar.com',
-            'abcd1234')
-    user.user_type = SpkrbarUser.USER_TYPE_ATTENDEE
+    user.first_name = first_name
+    user.last_name = last_name
+    user.about_me = user_description
     user.save()
 
-    first_name = random.choice(user_first_names)
-    last_name = random.choice(user_last_names)
+    build_tags_on_profile(user)
 
-    profile = AttendeeProfile()
-    profile.user = user
-    profile.first_name = first_name
-    profile.last_name = last_name
-    profile.about_me = user_description
-    profile.save()
-
-    build_tags_on_profile(profile)
-
-    return profile
+    return user
 
 
 def build_tags_on_profile(profile):
     for i in range(0, random.choice(range(2,7))):
-        tag = ProfileTag.objects.get(name=random.choice(profile_tags))
+        tag = UserTag.objects.get(name=random.choice(profile_tags))
 
         if tag not in profile.tags.all():
             profile.tags.add(tag)
@@ -176,46 +147,20 @@ def generate_talk(speaker):
         if tag not in talk.tags.all():
             talk.tags.add(tag)
 
-    assign_perm('change_talk', speaker.user, talk)
-    assign_perm('delete_talk', speaker.user, talk)
+    #assign_perm('change_talk', speaker, talk)
+    #assign_perm('delete_talk', speaker, talk)
 
     return talk
 
 
-def generate_event(username, location):
-    user = SpkrbarUser.objects.create_superuser(
-            username,
-            'testevent@spkrbar.com',
-            'abcd1234')
-    user.user_type = SpkrbarUser.USER_TYPE_EVENT
-    user.save()
-
-    event_profile = EventProfile()
-    event_profile.user = user
-    event_profile.name = random.choice(event_names)
-    event_profile.description = user_description
-    event_profile.save()
-
+def generate_event(location):
     event = Event()
-    event.owner = event_profile
+    event.name = random.choice(event_names)
+    event.year = random.choice(range(1985, 2014))
     event.location = location
-    event.accept_submissions = (random.choice(range(0, 10)) % 2 == 0)
-    event.start_date = generate_datetime()
-    event.end_date = event.start_date + timedelta(days=3)
     event.save()
 
     return event
-
-
-def generate_talk_event(talk, event):
-    talk_event = TalkEvent()
-    talk_event.talk = talk
-    talk_event.event = event
-    delta = timedelta(days=random.choice([1,2]), hours=random.choice(range(1, 10)))
-    talk_event.date = event.start_date + delta
-    talk_event.save()
-
-    return talk_event
 
 
 def generate_admin_user():
@@ -223,17 +168,13 @@ def generate_admin_user():
             'raymond',
             'raymondchandleriii@gmail.com',
             'abcd1234')
-    user.user_type = SpkrbarUser.USER_TYPE_SPEAKER
+
+    user.first_name = "Raymond"
+    user.last_name = "Chandler III"
+    user.about_me = "I'm a little teapot, short and stout!"
     user.save()
 
-    speaker = SpeakerProfile()
-    speaker.user = user
-    speaker.first_name = "Raymond"
-    speaker.last_name = "Chandler III"
-    speaker.about_me = "I'm a little teapot, short and stout!"
-    speaker.save()
-
-    return speaker
+    return user
 
 
 def generate_blog_post():
@@ -291,17 +232,13 @@ class Command(BaseCommand):
             if i % 17 == 0 or i == 0:
                 un = "event" + str(i / 10)
                 print "Generating Event " + un
-                event = generate_event(un, location)
+                event = generate_event(location)
 
             print "Generating Talk"
             talk = generate_talk(speaker)
 
-            print "Generating Attendee"
-            un = 'attendee' + str(i)
-            attendee = generate_attendee(un)
-
-            print "Generating Talk Event"
-            talk_event = generate_talk_event(talk, event)
+            #print "Generating Talk Event"
+            #talk_event = generate_talk_event(talk, event)
 
         print "Generating Followers For Users"
         users = SpkrbarUser.objects.all()
@@ -312,21 +249,5 @@ class Command(BaseCommand):
 
                 if follower not in user.followers.all():
                     user.followers.add(follower)
-
-        print "Generating Talk Event Attendees"
-        talkevents = TalkEvent.objects.all()
-
-        for t in talkevents:
-            for i in range(0, random.choice(range(3,11))):
-                attendee = random.choice(users)
-
-                if attendee not in t.attendees.all():
-                    t.attendees.add(attendee)
-
-        print "Generating Talk Endorsements"
-        for t in talkevents:
-            for attendee in t.attendees.all():
-                if random.choice([True, False]):
-                    t.talk.endorsements.add(attendee)
 
         self.stdout.write('Successfully loaded test data.')
