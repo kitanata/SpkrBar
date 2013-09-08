@@ -35,7 +35,7 @@ def event_detail(request, event_id):
                     '-photo', '-about_me', '-num_tags', '-num_links')[:20]
 
     if not request.user.is_anonymous():
-        user_talks = Talk.objects.filter(speaker=request.user.get_profile())
+        user_talks = Talk.objects.filter(speaker=request.user)
     else:
         user_talks = None
 
