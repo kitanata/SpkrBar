@@ -1,8 +1,8 @@
 .user-list-partial
   - for item in collection
     %a{href:"{{item.get_absolute_url}}", data-toggle:"tooltip", data-original-title:"{{ item.get_full_name }}"}
-      - if item.get_profile.photo
-        %img{src:"{{MEDIA_URL}}{{item.get_profile.photo}}"}
+      - if item.photo
+        %img{src:"{{MEDIA_URL}}{{item.photo}}"}
         %span {{ item.get_short_name }}
       - else
         %i.icon-user

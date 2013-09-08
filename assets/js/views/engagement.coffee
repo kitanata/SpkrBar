@@ -44,6 +44,5 @@ SpkrBar.Views.Engagement = Backbone.View.extend
         abstract: @model.get('abstract')
         confirmed: @model.get('confirmed')
         user_endorsed: @userEndorsed()
-        user_event_planner: @userIsEventPlanner()
         user_owned: @userOwnsEngagement()
         show_buttons: true

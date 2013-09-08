@@ -103,14 +103,12 @@ def speakers(request):
 
 @template('mobile/profile.haml')
 def profile(request):
-
-    profile = request.user.get_profile()
-    return build_profile(profile)
+    return build_profile(request.user)
 
 
 @template('mobile/speaker_detail.haml')
 def profile_detail(request, username):
-    profile = get_object_or_404(SpkrbarUser, username=username).get_profile()
+    profile = get_object_or_404(SpkrbarUser, username=username)
 
     return build_profile(profile)
 

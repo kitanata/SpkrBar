@@ -9,7 +9,13 @@
             %br by {{ item.speaker.get_full_name }}
 
           .grid2
-            {% include 'engagements/_button_group_partial.haml' %}
+            .btn-group
+              - if user not in item.endorsements.all
+                %a.btn.btn-warning{href:"/talk/{{item.id}}/endorse?last={{last}}", data-original-title:"Endorse Talk", data-toggle:"tooltip"}
+                  %i.icon-thumbs-up
+              - else
+                %a.btn.disabled.btn-warning
+                  %i.icon-thumbs-up
 
         - else
           %div

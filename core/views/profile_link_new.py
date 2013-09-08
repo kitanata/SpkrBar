@@ -13,8 +13,6 @@ def profile_link_new(request):
         form = ProfileLinkForm(request.POST)
 
         if form.is_valid():
-            profile = request.user.get_profile()
-
             link_model = UserLink()
 
             link_type = form.cleaned_data['type']
@@ -47,10 +45,10 @@ def profile_link_new(request):
 
             link_model.type_name = link_type
             link_model.url_target = orig_url
-            link_model.user = profile.user
+            link_model.user = request.user
             link_model.save()
 
-            return redirect(request.user.get_profile())
+            return redirect(request.user)
         return HttpResponseNotFound()
     else:
         return HttpResponseNotFound()

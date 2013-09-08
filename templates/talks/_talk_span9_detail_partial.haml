@@ -4,7 +4,7 @@
       .title
         %a{href:"{{item.get_absolute_url}}"}
           {{ item.name|truncatechars:40 }}
-        %br by {{ item.speaker.user.get_full_name }}
+        %br by {{ item.speaker.get_full_name }}
     .description
       - if item.tags.all
         .tag-cloud.pull-left

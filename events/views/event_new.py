@@ -18,7 +18,6 @@ def event_new(request):
     if request.method == "POST":
         event = Event()
         event.name = request.POST['name']
-        event.owner = request.user.get_profile()
 
         sdt = request.POST['start-date'] + request.POST['start-time']
         edt = request.POST['end-date'] + request.POST['end-time']

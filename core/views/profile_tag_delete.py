@@ -9,10 +9,10 @@ from core.models import UserTag
 @login_required
 def profile_tag_delete(request, tag_id):
     if request.method == "POST":
-        tag = get_object_or_404(ProfileTag, pk=tag_id)
+        tag = get_object_or_404(UserTag, pk=tag_id)
 
-        request.user.get_profile().tags.remove(tag)
-        request.user.get_profile().save()
+        request.user.tags.remove(tag)
+        request.user.save()
 
         return HttpResponse(json.dumps({}), content_type="application/json")
     else:

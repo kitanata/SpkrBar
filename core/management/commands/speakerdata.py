@@ -147,8 +147,8 @@ def generate_talk(speaker):
         if tag not in talk.tags.all():
             talk.tags.add(tag)
 
-    #assign_perm('change_talk', speaker, talk)
-    #assign_perm('delete_talk', speaker, talk)
+    assign_perm('change_talk', speaker, talk)
+    assign_perm('delete_talk', speaker, talk)
 
     return talk
 

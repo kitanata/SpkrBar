@@ -1,18 +1,18 @@
 
-- if profile.user.links.all or user == profile.user
+- if profile.links.all or user == profile
   .row
     .span3
       %h2 Links
 
-- if profile.user.links.all
-  - for link in profile.user.links.all
+- if profile.links.all
+  - for link in profile.links.all
     %p.profile-link{data-id:"{{link.id}}"}
       %a{href:"{{link.url_target}}", target:"_blank"}
         My {{ link.type_name|title }}
-      - if user == profile.user
+      - if user == profile
         %i.delete-profile-link.icon-remove.pull-right{data-id:"{{link.id}}"}
 
-- if user == profile.user
+- if user == profile
   .row
     .edit-links
       .span3

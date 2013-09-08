@@ -10,12 +10,12 @@
         - for tag in profile.tags.all
           %li.tag.label.label-info{data-id:"{{tag.id}}"}
             {{tag}}
-            - if user == profile.user
+            - if user == profile
               %i.delete-profile-tag.icon-remove.pull-right{data-id:"{{tag.id}}"}
     - else
       No User Tags
 
-- if user == profile.user
+- if user == profile
   .row
     .edit-tags
       .span3

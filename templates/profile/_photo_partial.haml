@@ -4,7 +4,7 @@
   - else
     %i.icon-user
 
-  - if user == profile.user
+  - if user == profile
     .row
       %form.profile-photo-form{action:"/profile/edit/photo", method:"POST", enctype:"multipart/form-data"}
         {% csrf_token %}

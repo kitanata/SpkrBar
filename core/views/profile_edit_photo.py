@@ -12,13 +12,11 @@ def profile_edit_photo(request):
         form = ProfilePhotoForm(request.FILES)
 
         if form.is_valid():
-            profile = request.user.get_profile()
-
             if 'photo' in request.FILES:
                 photo = request.FILES['photo']
-                profile.photo = save_photo_with_uuid(photo)
+                request.user.photo = save_photo_with_uuid(photo)
 
-            profile.save()
+            request.user.save()
 
             return redirect(request.user)
     else:
