@@ -5,10 +5,10 @@ class TalkAdmin(admin.ModelAdmin):
     list_display = ['name', 'abstract']
 
 class TalkSlideDeckAdmin(admin.ModelAdmin):
-    list_display = ['talk_name', 'source', 'data', 'aspect']
+    list_display = ['talk_name', 'source', 'embed_data', 'aspect']
 
 class TalkVideoAdmin(admin.ModelAdmin):
-    list_display = ['talk_name', 'source', 'data', 'aspect']
+    list_display = ['talk_name', 'source', 'embed_data', 'aspect']
 
 class TalkCommentAdmin(admin.ModelAdmin):
     list_display = ['talk', 'commenter', 'comment', 'datetime']

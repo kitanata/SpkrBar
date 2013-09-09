@@ -42,7 +42,7 @@ class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
         return "/profile/" + self.username
 
     def __unicode__(self):
-        return self.user.get_full_name()
+        return self.get_full_name()
 
     class Meta:
         app_label = 'core'

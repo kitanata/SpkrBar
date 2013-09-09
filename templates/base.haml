@@ -100,28 +100,29 @@
                             %i.icon-signout
                             Logout
 
-      - block 'subnav-container' 
-        .subnav
-          .row
-            .span6
-              %h2
-                - block 'title'
-                  Title Of Page
-            .span6{style:"position: relative;"}
-              .nav.btn-group.pull-right
-                - block 'subnav'
-                  %a.btn.btn-warning{href:"#"}
-                    Example
-                  %a.btn.btn-warning{href:"#"}
-                    Example
-                  %a.btn.btn-warning{href:"#"}
-                    Example
-              #notifications
+      - block 'content-container'
+        - block 'subnav-container' 
+          .subnav
+            .row
+              .span6
+                %h2
+                  - block 'title'
+                    Title Of Page
+              .span6{style:"position: relative;"}
+                .nav.btn-group.pull-right
+                  - block 'subnav'
+                    %a.btn.btn-warning{href:"#"}
+                      Example
+                    %a.btn.btn-warning{href:"#"}
+                      Example
+                    %a.btn.btn-warning{href:"#"}
+                      Example
+                #notifications
 
-      - block 'callout'
+        - block 'callout'
 
-      .content-container
-        - block 'content'
+        .content-container
+          - block 'content'
 
       .clearfix
 
@@ -135,6 +136,8 @@
       var userId = {{ user.id }};
       user = new SpkrBar.Models.User({'id': userId});
       user.fetch()
+    - else
+      user = {id: 0}
 
     var $buoop = {vs:{i:9,f:20,o:11,s:5,n:9}} 
     $buoop.ol = window.onload; 

@@ -1,10 +1,13 @@
 SpkrBar.Models.Talk = Backbone.Model.extend
     defaults:
-        owner: null
+        speaker: null
+        published: false
         location: null
         start_date: null
         end_date: null
-        endorsements: null
+        photo: ""
+        endorsements: []
+        ratings: []
 
     initialize: ->
 

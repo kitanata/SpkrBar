@@ -4,11 +4,11 @@ from views import TalkDetail, TalkTagList, TalkTagDetail, TalkLinkList, TalkLink
 
 urlpatterns = patterns('',
 
-    url(r'^rest_talk/(?P<talk_id>\d+)/tag/(?P<pk>\d+)$', TalkTagDetail.as_view(
+    url(r'^rest/talk_tag/(?P<pk>\d+)$', TalkTagDetail.as_view(
         actions={'get': 'retrieve', 'put': 'update', 'delete':'destroy'})),
-    url(r'^rest_talk/(?P<talk_id>\d+)/tag$', TalkTagDetail.as_view(
+    url(r'^rest/talk_tag$', TalkTagDetail.as_view(
         actions={'post': 'create'})),
-    url(r'^rest_talk/(?P<talk_id>\d+)/tags$', TalkTagList.as_view()),
+    url(r'^rest/talk_tags$', TalkTagList.as_view()),
 
     url(r'^rest_talk/(?P<talk_id>\d+)/link/(?P<pk>\d+)$', TalkLinkDetail.as_view(
         actions={'get': 'retrieve', 'put': 'update', 'delete':'destroy'})),

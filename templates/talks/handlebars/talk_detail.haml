@@ -1,0 +1,191 @@
+{% verbatim %}
+  %script#talk-detail-templ{type:"text/x-handlebars-template"}
+    .subnav
+      .row
+        .span10
+          %h2
+            {{#if numEndorsements }}
+            {{ numEndorsements }} <i class="icon-thumbs-up"></i>
+            {{/if}}
+            {{ name }}
+        .span2
+          .nav.btn-group.pull-right
+            {{#if userLoggedIn}}
+              {{#if userOwnsContent}}
+                {{#if published }}
+                  %a.btn.btn-warning.submit-talk{href:"#submit-talk-popup", data-toggle:"tooltip", data-original-title:"Create Engagement"}
+                    %i.icon-bullhorn
+                  %a.btn.btn-warning{href:"/talk/{{talk.id}}/archive?last={{last}}", data-toggle:"tooltip", data-original-title:"Hide Talk"}
+                    %i.icon-eye-close
+                {{else}}
+                  %a.btn.btn-warning{href:"/talk/{{talk.id}}/publish?last={{last}}", data-toggle:"tooltip", data-original-title:"Publish Talk"}
+                    %i.icon-eye-open
+                  %a.btn.btn-warning.edit-talk{href:"#edit-talk-popup", data-toggle:"tooltip", data-original-title:"Edit Talk"}
+                    %i.icon-pencil
+                  - if not talk.talkevent_set.all
+                    %a.btn.btn-warning.delete-talk{data-name:"{{talk.name}}", data-id:"{{talk.id}}", href:"#delete-talk-popup", data-toggle:"tooltip", data-original-title:"Delete Talk"}
+                      %i.icon-trash
+                {{/if}}
+              {{else}}
+                {{#if userEndorsed}}
+                  %a.btn.btn-warning{href:"/talk/{{talk.id}}/endorse?last={{last}}"}
+                    %i.icon-thumbs-up
+                    Endorse
+                {{else}}
+                  %a.btn.disabled.btn-warning
+                    %i.icon-thumbs-up
+                    Endorsed
+                {{/if}}
+                {{#if userRated}}
+                  %a.btn.btn-warning.rate-talk{href:"#rate-talk-popup", data-toggle:"tooltip", data-original-title:"Rate this talk."}
+                    %i.icon-legal
+                    Rate
+                {{else}}
+                  %a.btn.disabled.btn-warning
+                    %i.icon-legal
+                    Rated
+                {{/if}}
+              {{/if}}
+            {{/if}}
+
+    .content-container
+      #talk
+        .talk-header
+          .row.buffer
+            .span3
+              .picture.well
+                {{#if photo}}
+                  %img{src:"/media/{{photo}}"}
+                {{else}}
+                  %i.icon-user.photo-placeholder-large
+                {{/if}}
+
+                .about
+                  %h4
+                    %a{href:"{{speakerUrl}}"}
+                      {{ speaker }}
+
+            .span9
+              .talk-detail
+                %h3 Abstract
+                %p {{ abstract }}
+
+        .row
+          .span3
+            .row
+              .span3
+                #talk-tags
+
+              .span3
+                #talk-links
+
+          .span9
+            .row
+              .span4
+                .row
+                  .span2
+                    %h3 Slides
+
+                  {{#if userOwnsContent}}
+                    .span2
+                      %a.btn.btn-warning.link-slides.pull-right{href:"#link-slides-popup"} Add Slides
+                  {{/if}}
+
+                .row
+                  .span4
+                    %hr
+
+                .row
+                  {{#if slides}}
+                    {{#each}}
+                      .span4
+                        {{embed_code}}
+                    {{/each}}
+                  {{else}}
+                    .span4
+                      No slides available.
+                  {{/if}}
+
+              .span4.offset1
+                .row
+                  .span2
+                    %h3 Videos
+
+                  {{#if userOwnsContent}}
+                    .span2
+                      %a.btn.btn-warning.link-video.pull-right{href:"#link-video-popup"} Add Videos
+                  {{/if}}
+
+                .row
+                  .span4
+                    %hr
+                
+                .row
+                  {{#if videos}}
+                    {{#each videos}}
+                      .span4
+                        {{embed_code}}
+                    {{/each}}
+                  {{else}}
+                    .span4
+                      No videos available.
+                  {{/if}}
+
+            .row{style:"margin-top:40px;"}
+              .span9
+                .row
+                  .span2
+                    %h3 Photos
+
+                  {{#if userOwnsContent}}
+                    .span7
+                      %a.btn.btn-warning.upload-photo.pull-right{href:"#upload-photo-popup"} Upload Photos
+                  {{/if}}
+
+                .row
+                  .span9
+                    %hr
+
+                .row
+                  {{#if photos}}
+                    .span9
+                      .photos
+                        {{#each photos}}
+                          {{html_code}}
+                        {{/each}}
+                      .clearfix
+                  {{else}}
+                    .span9
+                      No photos available.
+                  {{/if}}
+
+            .row{style:"margin-top:40px"}
+              .span9
+                %h3 Speaking Engagements
+                %hr
+
+              .span9
+                #engagement-list-region
+
+            .row{style:"margin-top:40px"}
+              .span9
+                .comments
+                  %h3 Comments
+                  %hr
+
+                  {{#if userLoggedIn}}
+                    %form.add-comment-form{action:"/talk/{{talk.id}}/comment/new", method:"POST"}
+                      %textarea{name:'comment', placeholder:"Add your comment..."}
+                      %input.btn.btn-warning{type:"submit", value:"Submit Comment"}
+
+                    {{#if comments}}
+                      %ul
+                        - for comment in talk.talkcomment_set.all
+                          %li
+                            %h4 {{comment.commenter.get_full_name}} said...
+                            %p {{comment.comment}}
+                    {{else}}
+                      No comments yet.
+                    {{/if}}
+                  {{/if}}
+{% endverbatim %}

@@ -7,12 +7,10 @@ class EventSerializer(serializers.ModelSerializer):
         model = Event
         fields = (
                 'id', 
-                'owner', 
+                'updated_at',
+                'created_at',
                 'name', 
+                'year',
                 'location', 
-                'start_date', 
-                'end_date', 
-                'attendees',
-                'endorsements',
                 )
         depth = 1

@@ -1,5 +1,8 @@
 - extends 'base.haml'
 
+- block 'content-container'
+  #talk-detail-container
+
 - block 'scripts'
   - include 'talks/handlebars/engagement.haml'
   - include 'talks/handlebars/tags.haml'
@@ -12,5 +15,14 @@
   - include 'talks/_popup_talk_slides_new_partial.haml'
   - include 'talks/_popup_talk_video_new_partial.haml'
 
+  - include 'talks/handlebars/talk_detail.haml'
+
   %script{type:"text/javascript"}
-    var talkView = new SpkrBar.Views.TalkDetail("{{talk.id}}");
+    var talkModel = new SpkrBar.Models.Talk({id:"{{talk.id}}"});
+
+    talkModel.fetch({
+      success: function(model){
+        var talkView = new SpkrBar.Views.TalkDetail({model: model});
+        $('#talk-detail-container').html(talkView.render().el);
+      }
+    });

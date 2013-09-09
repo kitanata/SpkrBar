@@ -14,9 +14,11 @@ SpkrBar.Views.TalkTags = Backbone.View.extend
         name = $('#new-talk-tag-name').val()
 
         newTag = new SpkrBar.Models.TalkTag
-            talk: @talk.id
             name: name
-        newTag.save()
+        newTag.save null, 
+            success: =>
+                @talk.tags.add newTag.id
+                @talk.save()
         @collection.add newTag
 
     onDeleteTalkTag: (el) ->

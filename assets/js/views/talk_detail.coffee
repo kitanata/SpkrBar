@@ -1,46 +1,55 @@
-class SpkrBar.Views.TalkDetail
-    constructor: (talk_id) ->
+SpkrBar.Views.TalkDetail = Backbone.View.extend
+    template: "#talk-detail-templ"
+
+    initialize: (options) ->
         @engagementViews = []
 
-        @talkDetailModel = new SpkrBar.Models.Talk
-            id: talk_id
-        @talkDetailModel.fetch
+        @talkTags = new SpkrBar.Collections.TalkTags()
+
+        @fetchTalkTags => 
+            @fetchTalkDetailModel => 
+                @handleSubmitTalk()
+
+    fetchTalkTags: (next) ->
+        @talkTags.fetch
+            success: => 
+                next()
+
+    fetchTalkDetailModel: (next) ->
+        engagements = @model.get 'engagements'
+
+        _(engagements).each (x) =>
+            engagementModel = new SpkrBar.Models.Engagement
+                id: x
+            engagementModel.fetch
+                success: =>
+                    newView = new SpkrBar.Views.Engagement
+                        model: engagementModel
+                        talk: @model
+
+                    $('#engagement-list-region').append newView.render().el
+                    @engagementViews.push(newView)
+
+        tagIds = @model.get('tags')
+        tags = new Backbone.Collection(@talkTags.filter (x) => x.id in tagIds)
+
+        talkTagsView = new SpkrBar.Views.TalkTags
+            collection: tags
+            talk: @model
+
+        $('#talk-tags').append talkTagsView.render().el
+
+        talkLinks = new SpkrBar.Collections.TalkLinks
+            talk_id: @model.id
+        talkLinks.fetch
             success: =>
-                engagements = @talkDetailModel.get 'engagements'
+                talkLinksView = new SpkrBar.Views.TalkLinks
+                    collection: talkLinks
+                    talk: @model
 
-                _(engagements).each (x) =>
-                    engagementModel = new SpkrBar.Models.Engagement
-                        id: x
-                    engagementModel.fetch
-                        success: =>
-                            newView = new SpkrBar.Views.Engagement
-                                model: engagementModel
-                                talk: @talkDetailModel
+                $('#talk-links').append talkLinksView.render().el
 
-                            $('#engagement-list-region').append newView.render().el
-                            @engagementViews.push(newView)
-
-                talkTags = new SpkrBar.Collections.TalkTags
-                    talk_id: @talkDetailModel.id
-                talkTags.fetch
-                    success: =>
-                        talkTagsView = new SpkrBar.Views.TalkTags
-                            collection: talkTags
-                            talk: @talkDetailModel
-
-                        $('#talk-tags').append talkTagsView.render().el
-
-                talkLinks = new SpkrBar.Collections.TalkLinks
-                    talk_id: @talkDetailModel.id
-                talkLinks.fetch
-                    success: =>
-                        talkLinksView = new SpkrBar.Views.TalkLinks
-                            collection: talkLinks
-                            talk: @talkDetailModel
-
-                        $('#talk-links').append talkLinksView.render().el
-
-        @handleSubmitTalk()
+        next()
 
     handleSubmitTalk: () ->
         $('.submit-talk').colorbox({inline: true, width:"400px"})
@@ -113,4 +122,37 @@ class SpkrBar.Views.TalkDetail
                         $('#engagement-list-region').append newView.render().el
                         @engagementViews.push(newView)
 
-                    error: (model, xhr, options) =>
+    render: ->
+        source = $(@template).html()
+        template = Handlebars.compile(source)
+
+        @$el.html(template(@context()))
+        @
+
+    userLoggedIn: ->
+        user.id != 0
+
+    userOwnsContent: ->
+        user.id == @model.get('user')
+
+    userEndorsed: ->
+        user.id in @model.get('endorsements')
+
+    userRated: ->
+        user.id in @model.get('ratings')
+
+    context: ->
+        userLoggedIn: @userLoggedIn()
+        userOwnsContent: @userOwnsContent()
+        userEndorsed: @userEndorsed()
+        numEndorsements: @model.get('endorsements').length
+        published: @model.get('published')
+        speaker: @model.get('speaker')
+        speakerUrl: @model.get('speaker_url')
+        name: @model.get('name')
+        abstract: @model.get('abstract')
+        photo: @model.get('photo')
+        slides: @model.get('slides')
+        videos: @model.get('videos')
+        photos: @model.get('photos')
+        comments: @model.get('comments')

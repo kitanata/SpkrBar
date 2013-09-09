@@ -36,9 +36,13 @@ SpkrBar.Views.TalkLinks = Backbone.View.extend
         @$el.html(template(@context()))
         @
 
+    userLoggedIn: ->
+        user != undefined
+
     userOwnsContent: ->
         user.id == @talk.get('user')
 
     context: ->
         links: @collection.map (x) -> {'id': x.id, 'name': x.get('name'), 'url': x.get('url')}
-        user_owned: @userOwnsContent()
+        userOwnsContent: @userOwnsContent()
+        userLoggedIn: @userLoggedIn()
