@@ -8,7 +8,6 @@ from core.helpers import template
 from talks.models import TalkTag
 from engagements.models import Engagement
 from core.models import SpkrbarUser, UserTag
-from events.models import Event
 
 @template('search.haml')
 def search(request):

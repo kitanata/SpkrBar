@@ -10,8 +10,8 @@ from guardian.shortcuts import assign_perm
 from core.models import SpkrbarUser, UserTag
 
 from locations.models import Location
-from events.models import Event
 from talks.models import Talk, TalkTag
+from engagements.models import Engagement, Rating
 from blog.models import BlogPost
 
 random.seed(datetime.now())
@@ -73,6 +73,10 @@ profile_tags = ["Game Design", "Python", "Ruby", "JavaScript",
         "Interactive Design", "Industrial Design", "C++", ".NET", "C#",
         "Java", "Delphi", "Oracle", "SQL", "MongoDB", "Django", "Rails",
         "Foreign Languages"]
+
+room_names = ['Woodward Hall', 'Jefferson Room', 'Cartoon 1', 'Cartoon 2',
+    'Adams Room', 'Creek Hall', 'The Guild Hall', 'Smith Adams', 'Wilson Room',
+    'Eliot Hall', 'Fitzgerald Hall', 'Hawking Room', 'Rothschild Hall']
 
 user_description = "Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro. De carne lumbering animata corpora quaeritis. Summus brains sit morbo vel maleficia? De apocalypsi gorger omero undead survivor dictum mauris. Hi mindless mortuis soulless creaturas, imo evil stalking monstra adventus resi dentevil vultus comedat cerebella viventium. Qui animated corpse, cricket bat max brucks terribilem incessu zomby. The voodoo sacerdos flesh eater, suscitat mortuos comedere carnem virus."
 talk_description = user_description
@@ -153,14 +157,31 @@ def generate_talk(speaker):
     return talk
 
 
-def generate_event(location):
-    event = Event()
-    event.name = random.choice(event_names)
-    event.year = random.choice(range(1985, 2014))
-    event.location = location
-    event.save()
+def generate_engagement(talk, location):
+    engagement = Engagement()
+    engagement.talk = talk
+    engagement.location = location
+    engagement.event_name = random.choice(event_names)
+    engagement.date = generate_datetime().date()
+    engagement.time = generate_datetime().time()
+    engagement.room = random.choice(room_names)
+    engagement.active = random.choice([True, False])
+    engagement.save()
 
-    return event
+    return engagement
+
+
+def generate_rating(engagement):
+    rating = Rating()
+    rating.talk_engagement = engagement
+    rating.engagement = random.choice(range(1,6))
+    rating.knowledge = random.choice(range(1,6))
+    rating.professionalism = random.choice(range(1,6))
+    rating.resources = random.choice(range(1,6))
+    rating.discussion = random.choice(range(1,6))
+    rating.save()
+
+    return engagement
 
 
 def generate_admin_user():
@@ -229,16 +250,16 @@ class Command(BaseCommand):
                 print "Generating Speaker " + un
                 speaker = generate_speaker(un)
 
-            if i % 17 == 0 or i == 0:
-                un = "event" + str(i / 10)
-                print "Generating Event " + un
-                event = generate_event(location)
-
             print "Generating Talk"
             talk = generate_talk(speaker)
 
-            #print "Generating Talk Event"
-            #talk_event = generate_talk_event(talk, event)
+            for j in range(0, random.choice(range(3, 8))):
+                print "Generating Engagement"
+                engagement = generate_engagement(talk, location)
+
+                for j in range(0, random.choice(range(10, 46))):
+                    print "Generating Rating for Engagement"
+                    rating = generate_rating(engagement)
 
         print "Generating Followers For Users"
         users = SpkrbarUser.objects.all()

@@ -70,16 +70,6 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
             showInputs: false,
             minuteStep: 5
 
-        events = new SpkrBar.Collections.Events()
-        events.fetch
-            success: =>
-                $('#event-list').typeahead
-                    source: events.map (x) ->
-                        eventName = x.get('owner').name + ' ' + x.get('start_date')[0..3]
-                        if x.get('name')
-                            eventName += ' - ' + x.get('name')
-                        eventName
-
         $('#submit-engagement').on 'click', =>
             eventName = $('#event-list').val()
             talkId = $('#talk-id').val()

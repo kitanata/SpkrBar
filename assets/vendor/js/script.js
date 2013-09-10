@@ -2,6 +2,7 @@
 //= require underscore
 //= require backbone
 //= require handlebars
+//= require moment.min
 //= require leaflet
 //= require bootstrap-tooltip
 //= require bootstrap-typeahead

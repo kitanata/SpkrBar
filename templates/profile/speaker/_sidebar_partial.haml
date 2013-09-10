@@ -6,31 +6,11 @@
 
   {% include 'profile/_followers_list_partial.haml' %}
 
-  .span3{style:"margin-top: 40px"}
-    %h2 My Talks
-    - if talks
-      %ul.basic-item-list
-        - for item in talks
-          %li
-            %a{href:"{{item.get_absolute_url}}"}
-              {{ item.name|truncatechars:30 }}
-    - else
-      No talks.
-
-  - if events
+  - if engagements
     .span3{style:"margin-top: 40px"}
-      %h2 Events
+      %h2 Engagements
       %ul.basic-item-list
-        - for item in events
+        - for item in engagements
           %li
             %a{href:"{{item.get_absolute_url}}"}
               {{ item|truncatechars:30 }}
-
-  - if past
-    .span3{style:"margin-top: 40px"}
-      %h2 Past Talks
-      %ul.basic-item-list
-        - for item in past
-          %li
-            %a{href:"{{item.talk.get_absolute_url}}"}
-              {{ item.talk.name|truncatechars:30 }}

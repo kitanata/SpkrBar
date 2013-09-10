@@ -20,4 +20,3 @@ admin.site.register(TalkVideo, TalkVideoAdmin)
 
 admin.site.register(TalkTag, admin.ModelAdmin)
 admin.site.register(TalkPhoto, admin.ModelAdmin)
-admin.site.register(TalkRating, admin.ModelAdmin)

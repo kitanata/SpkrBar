@@ -12,7 +12,7 @@ urlpatterns = patterns('',
     url(r'^search$', 'core.views.search'),
     url(r'^mobile', include('mobile.urls')),
 
-    url(r'^', include('events.urls')),
+    #url(r'^', include('events.urls')),
     url(r'^', include('talks.urls')),
 
     url(r'^talks$', 'talks.views.talk_list'),

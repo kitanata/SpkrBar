@@ -10,8 +10,6 @@ from core.helpers import render_to
 
 from talks.models import Talk
 
-from events.models import Event
-
 from engagements.models import Engagement
 
 from core.forms import ProfileLinkForm, ProfileTagForm, ProfilePhotoForm
@@ -35,13 +33,8 @@ def profile_detail(request, username):
 
     engagements = Engagement.objects.filter(
             talk__speaker=profile,
-            talk__published=True)
-
-    events = []
-    [events.append(te.event) for te in engagements if te.event not in events]
-
-    upcoming = engagements.filter(date__gt=datetime.today())
-    past = engagements.filter(date__lt=datetime.today())
+            talk__published=True,
+            active=True)
 
     if request.user.is_anonymous():
         following = profile.following.all()
@@ -53,10 +46,8 @@ def profile_detail(request, username):
     template = 'profile/speaker/detail.haml'
     context = {
         'profile': profile,
-        'upcoming': upcoming,
-        'past': past,
+        'engagements': engagements,
         'talks': talks,
-        'events': events,
         'following': following,
         'followers': followers,
         'last': '/profile/' + username

@@ -1,9 +1,9 @@
 from django.contrib import admin
-from models import Engagement
+from models import Engagement, Rating
 
 class EngagementAdmin(admin.ModelAdmin):
-    search_fields = ['talk', 'event', 'date']
-    list_display = ('talk', 'event', 'date')
-    list_filter = ('event',)
+    search_fields = ['talk', 'event_name', 'room', 'date', 'time']
+    list_display = ('talk', 'event_name', 'room', 'date', 'time')
 
 admin.site.register(Engagement, EngagementAdmin)
+admin.site.register(Rating, admin.ModelAdmin)

@@ -18,31 +18,24 @@ SpkrBar.Views.Engagement = Backbone.View.extend
         template = Handlebars.compile(source)
 
         @$el.html(template(@context()))
-        if not @model.get('confirmed')
+        if not @model.get('active')
             @$el.addClass('muted')
         @
-
-    userEndorsed: ->
-        user.id in @model.get('endorsements')
 
     userOwnsEngagement: ->
         user.id == @model.get('user_id')
 
     context: ->
         id: @model.id
-        talk_id: @model.get('talk')
-        talk_url: @model.get('talk_url')
-        talk_name: @model.get('talk_name')
-        speaker_name: @model.get('speaker_name')
-        event_url: @model.get('event_url')
         event_name: @model.get('event_name')
-        city: @model.get('city')
-        state: @model.get('state')
-        date: @model.get('formatted_date')
-        time: @model.get('formatted_time')
-        tags: _(@model.get('tags')).map (x) -> {'name': x}
-        abstract: @model.get('abstract')
-        confirmed: @model.get('confirmed')
-        user_endorsed: @userEndorsed()
+        room: @model.get('room')
+        date: moment(@model.get('date')).format('LL')
+        time: moment(@model.get('time'), "HH:mm:ss").format('hh:mm A')
+        location_name: @model.get('location').name
+        address: @model.get('location').address
+        city: @model.get('location').city
+        state: @model.get('location').state
+        zip_code: @model.get('location').zip_code
         user_owned: @userOwnsEngagement()
+        active: @model.get('active')
         show_buttons: true

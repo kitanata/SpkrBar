@@ -1,46 +1,32 @@
 {% verbatim %}
   %script#engagement-templ{type:"text/x-handlebars-template"}
-    {{#if show_buttons}}
-      .content-buttons
-        %a{href:"{{ event_url}}"}
-          {{ event_name }}
-        %br in {{ city }}, {{ state}}
-        {{ date }}
-        %br {{ time }}
+    .content-buttons
+      %a {{ event_name }}
 
-        {{#if tags}}
-          .tag-cloud.pull-left
-            {{#each tags }}
-              .label.label-info {{ name }}
-            {{/each}}
-        {{/if}}
+      %br
+      %b {{room}} at {{ time }}
+
+      %p
+        {{address}}
+        {{city}}, {{state}} {{zip_code}}
+
+    {{#if active}}
       .buttons
         .btn-group.btn-group-vertical
-          {{#if user_endorsed}}
-            %a.btn.btn-warning{href:"/talk/{{talk_id}}/endorse", data-original-title:"Endorse Talk", data-toggle:"tooltip"}
-              %i.icon-thumbs-up
-          {{else}}
-            %a.btn.disabled.btn-warning
-              %i.icon-thumbs-up
-          {{/if}}
+          %a.btn.btn-warning.rate{data-id:"{{id}}", data-original-title:"Rate this talk", data-toggle:"tooltip"}
+            %i.icon-legal
           {{#if user_owned}}
-            #delete-engagement.btn.btn-danger{data-id:"{{id}}"}
+            .analyze-engagement.btn.btn-warning{data-id:"{{id}}"}
+              %i.icon-eye-open
+            {{#if active}}
+              .start-engagement.btn.btn-success{data-id:"{{id}}"}
+                %i.icon-circle
+            {{else}}
+              .end-engagement.btn.btn-danger{data-id:"{{id}}"}
+                %i.icon-circle-blank
+            {{/if}}
+            .delete-engagement.btn.btn-danger{data-id:"{{id}}"}
               %i.icon-remove
           {{/if}}
-    {{else}}
-      .content
-        %div
-          %a{href:"{{ event_url}}"}
-            {{ event_name }}
-          %br in {{ city }}, {{ state}}
-          {{ date }}
-          %br {{ time }}
-
-        {{#if tags}}
-          .tag-cloud.pull-left
-            {{#each tags }}
-              .label.label-info {{ name }}
-            {{/each}}
-        {{/if}}
     {{/if}}
 {% endverbatim %}

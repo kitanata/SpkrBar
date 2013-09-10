@@ -10,7 +10,6 @@ from engagements.serializers import EngagementSerializer
 
 from core.models import Notification
 from talks.models import Talk
-from events.models import Event
 
 class EngagementDetail(viewsets.ModelViewSet):
     queryset = Engagement.objects.all()

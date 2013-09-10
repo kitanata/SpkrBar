@@ -11,8 +11,6 @@ from django.contrib.auth.models import User
 
 from core.models import SpkrbarUser
 
-from events.models import Event
-
 from core.helpers import template
 from engagements.helpers import talk_event_groups
 from engagements.models import Engagement

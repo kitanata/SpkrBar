@@ -1,7 +1,7 @@
 from django.db import models
 from datetime import datetime
 
-class TalkRating(models.Model):
+class Rating(models.Model):
     #Engagement - Did the speaker keep attendees at the talk engaged and interested in the topic being presented?
     ENGAGE_RATING_CHOICES = (
         (1, "1 - I was bored throughout the entire presentation."),
@@ -42,9 +42,10 @@ class TalkRating(models.Model):
         (4, '4 - The speaker asked the audience questions and answered questions throughoughly.'),
         (5, '5 - The speaker involved everyone in the talk and encouraged continuing discussions beyond the event.'))
 
-    talk = models.ForeignKey('Talk', related_name="ratings")
-    rater = models.ForeignKey('core.SpkrbarUser', null=True)
-    datetime = models.DateTimeField(default=datetime.now())
+    talk_engagement = models.ForeignKey('engagements.Engagement', related_name="ratings")
+    
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     engagement = models.IntegerField(choices=ENGAGE_RATING_CHOICES, default=1)
     knowledge = models.IntegerField(choices=KNOWLEDGE_RATING_CHOICES, default=1)

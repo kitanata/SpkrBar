@@ -1,25 +1,7 @@
-- if current
+- if talks
   .row
     .span9
-      %h2 Talks Happening Now
-
-      .row
-        - for item in current
-          - include 'engagements/_talk_event_span9_detail_partial.haml'
-
-- if upcoming
-  .row
-    .span9
-      %h2 Upcoming Speaking Engagements
-
-      .row
-        - for item in upcoming
-          - include 'engagements/_talk_event_span9_detail_partial.haml'
-
-- if not current and not upcoming
-  .row
-    .span9
-      %h2 Unscheduled Talks
+      %h2 My Talks
 
       .row
         - for item in talks

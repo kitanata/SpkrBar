@@ -33,5 +33,4 @@ class TalkSerializer(serializers.ModelSerializer):
                 'photos',
                 'comments',
                 'engagements',
-                'endorsements',
-                'ratings')
+                'endorsements')

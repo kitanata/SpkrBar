@@ -30,9 +30,6 @@ urlpatterns = patterns('',
     url(r'^talk/(?P<talk_id>\d+)/publish$', 'talks.views.talk_publish'),
     url(r'^talk/(?P<talk_id>\d+)/archive$', 'talks.views.talk_archive'),
 
-    url(r'^talk/(?P<talk_id>\d+)/recruit$', 'talks.views.talk_recruit'),
-    url(r'^talk/(?P<talk_id>\d+)/submit$', 'talks.views.talk_submit'),
-
     url(r'^talk/(?P<talk_id>\d+)/slides/new$', 'talks.views.talk_slides_new'),
     url(r'^talk/(?P<talk_id>\d+)/video/new$', 'talks.views.talk_video_new'),
     url(r'^talk/(?P<talk_id>\d+)/photo/new$', 'talks.views.talk_photo_new'),

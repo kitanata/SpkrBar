@@ -4,8 +4,9 @@ from django.http import HttpResponseNotFound
 
 from guardian.shortcuts import assign
 
-from talks.models import Talk, TalkRating
-from talks.forms import TalkRatingForm
+from talks.models import Talk
+from engagements.models import Rating
+from engagements.forms import RatingForm
 
 @login_required
 def talk_rate_new(request, talk_id):
