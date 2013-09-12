@@ -8,4 +8,4 @@ SpkrBar.Models.Engagement = Backbone.Model.extend
 
     initialize: ->
 
-    urlRoot: "/engagement"
+    urlRoot: "/rest/engagement"

@@ -6,7 +6,7 @@
           .grid1
             %a{href:"{{item.talk.get_absolute_url}}"}
               {{ item.talk.name|truncatechars:48 }}
-            %br by {{ item.talk.speaker.user.get_full_name }}
+            %br by {{ item.talk.speaker.get_full_name }}
 
           .grid2
             {% include 'engagements/_button_group_partial.haml' %}
@@ -15,16 +15,16 @@
           %div
             %a{href:"{{item.talk.get_absolute_url}}"}
               {{ item.talk.name|truncatechars:38 }}
-            %br by {{ item.talk.speaker.user.get_full_name }}
+            %br by {{ item.talk.speaker.get_full_name }}
 
       .location
         .grid1
-          %a{href:"{{ item.event.get_absolute_url }}"}
-            at {{ item.event.owner.name }}
-          %br in {{ item.event.location.city }}, {{ item.event.location.state }}
+          %a{href:"/engagement/{{ item.event_name|slugify }}"}
+            at {{ item.event_name }}
+          %br in {{ item.location.city }}, {{ item.location.state }}
         .grid2
-          {{ item.date.date }}
-          %br {{ item.date.time }}
+          {{ item.date }}
+          %br {{ item.time }}
 
     .description
       - if item.talk.tags.all

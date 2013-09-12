@@ -1,0 +1,31 @@
+- extends 'base.haml'
+
+- block 'subnav-container'
+
+- block 'content'
+  .row
+    .section-title
+      %h2 Speakers
+
+  .row
+    .talk-list
+      - for profile in speakers
+        - include '_speaker_span6_partial.haml'
+
+  .row
+    .section-title
+      %h2 Current Engagements
+
+  .row
+    .talk-list
+      - for item in current
+        - include 'engagements/_talk_event_span6_detail_partial.haml'
+
+  .row
+    .section-title
+      %h2 Past Engagements
+
+  .row
+    .talk-list
+      - for item in past
+        - include 'engagements/_talk_event_span6_detail_partial.haml'
