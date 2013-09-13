@@ -23,6 +23,7 @@ class TalkSerializer(serializers.ModelSerializer):
                 'abstract', 
                 'published', 
                 'tags', 
+                'links',
                 'slides',
                 'videos',
                 'photos',
