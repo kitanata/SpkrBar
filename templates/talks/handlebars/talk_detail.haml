@@ -63,7 +63,7 @@
                 .about
                   %h4
                     %a{href:"{{speakerUrl}}"}
-                      {{ speaker }}
+                      {{ speakerName }}
 
             .span9
               .talk-detail
@@ -75,6 +75,30 @@
             .row
               .span3
                 #talk-tags
+                  {{#if showTags}}
+                    %h3 Topics
+                  {{/if}}
+
+                  {{#if tags}}
+                    %ul.expert-area
+                      {{#if userOwnsContent}}
+                        {{#each tags}}
+                          %li.tag.label.label-info{data-id:"{{id}}"}
+                            {{tag}}
+                            %i.delete-talk-tag.icon-remove.pull-right{data-id:"{{id}}"}
+                        {{/each}}
+                      {{else}}
+                        {{#each tags}}
+                          %li.tag.label.label-info{data-id:"{{id}}"}
+                            {{tag}}
+                        {{/each}}
+                      {{/if}}
+                  {{/if}}
+
+                  {{#if userOwnsContent}}
+                      %input#new-talk-tag-name{name:"tag", type:"text", placeholder:"My Tag"}
+                      %input.add-talk-tag.btn.btn-warning{type:"submit", value:"Tag this talk"}
+                  {{/if}}
 
               .span3
                 #talk-links

@@ -1,17 +1,24 @@
 SpkrBar.Views.TalkDetail = Backbone.View.extend
     template: "#talk-detail-templ"
 
+    events:
+        "click .add-talk-tag": 'onAddTalkTag'
+        "click .delete-talk-tag": 'onDeleteTalkTag'
+
     initialize: (options) ->
         @engagementViews = []
 
-        @talkTags = new SpkrBar.Collections.TalkTags()
+        @allTags = new SpkrBar.Collections.TalkTags()
+        @tags = new Backbone.Collection()
+
+        @listenTo(@tags, "change add remove reset", @render)
 
         @fetchTalkTags => 
             @fetchTalkDetailModel => 
                 @handleSubmitTalk()
 
     fetchTalkTags: (next) ->
-        @talkTags.fetch
+        @allTags.fetch
             success: => 
                 next()
 
@@ -31,13 +38,7 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
                     @engagementViews.push(newView)
 
         tagIds = @model.get('tags')
-        tags = new Backbone.Collection(@talkTags.filter (x) => x.id in tagIds)
-
-        talkTagsView = new SpkrBar.Views.TalkTags
-            collection: tags
-            talk: @model
-
-        $('#talk-tags').append talkTagsView.render().el
+        @tags.reset(@allTags.filter (x) => x.id in tagIds)
 
         talkLinks = new SpkrBar.Collections.TalkLinks
             talk_id: @model.id
@@ -123,7 +124,7 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         user.id != 0
 
     userOwnsContent: ->
-        user.id == @model.get('user')
+        user.id == @model.get('speaker').id
 
     userEndorsed: ->
         user.id in @model.get('endorsements')
@@ -131,14 +132,18 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
     userRated: ->
         user.id in @model.get('ratings')
 
+    showTags: ->
+        console.log @tags
+        @tags.length != 0 or @userOwnsContent()
+
     context: ->
         userLoggedIn: @userLoggedIn()
         userOwnsContent: @userOwnsContent()
         userEndorsed: @userEndorsed()
         numEndorsements: @model.get('endorsements').length
         published: @model.get('published')
-        speaker: @model.get('speaker')
-        speakerUrl: @model.get('speaker_url')
+        speakerName: @model.get('speaker').full_name
+        speakerUrl: @model.get('speaker').url
         name: @model.get('name')
         abstract: @model.get('abstract')
         photo: @model.get('photo')
@@ -146,3 +151,37 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         videos: @model.get('videos')
         photos: @model.get('photos')
         comments: @model.get('comments')
+        showTags: @showTags()
+        tags: @tags.map (x) -> {'id': x.id, 'tag': x.get('name')}
+
+    onAddTalkTag: ->
+        name = $('#new-talk-tag-name').val()
+
+        tag = @allTags.find (x) => x.get('name') == name
+
+        addTagToModel = (tag) =>
+            tags = @model.get('tags')
+            tags.push tag.id
+            @tags.add tag
+            @model.set 'tags', tags
+            @model.save()
+
+        if tag
+            addTagToModel(tag)
+        else
+            newTags = new SpkrBar.Models.TalkTag
+                name: name
+
+            newTag.save null, 
+                success: =>
+                    addTagToModel(newTag)
+                    @allTags.add newTag
+
+    onDeleteTalkTag: (el) ->
+        tagId = $(el.currentTarget).data('id')
+        tags = _(@model.get('tags')).reject (x) => x == tagId
+        @model.set 'tags', tags
+        @model.save()
+
+        deadTag = @tags.find (x) => x.id == tagId
+        @tags.remove(deadTag)

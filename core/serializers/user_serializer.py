@@ -5,6 +5,7 @@ from notification_serializer import NotificationSerializer
 
 class UserSerializer(serializers.ModelSerializer):
     full_name = serializers.Field(source='get_full_name')
+    url = serializers.Field(source='get_absolute_url')
 
     class Meta:
         model = SpkrbarUser
@@ -12,6 +13,8 @@ class UserSerializer(serializers.ModelSerializer):
                 'id', 
                 'username', 
                 'full_name',
+                'url',
+                'photo',
                 'email', 
                 'following', 
                 'followers'

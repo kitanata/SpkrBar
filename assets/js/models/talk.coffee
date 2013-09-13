@@ -11,4 +11,4 @@ SpkrBar.Models.Talk = Backbone.Model.extend
 
     initialize: ->
 
-    urlRoot: "/rest_talk"
+    urlRoot: "/rest/talk"
