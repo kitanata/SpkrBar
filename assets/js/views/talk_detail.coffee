@@ -6,6 +6,13 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         "click .delete-talk-tag": 'onDeleteTalkTag'
         "click .add-talk-link": 'onAddTalkLink'
         "click .delete-talk-link": 'onDeleteTalkLink'
+        "click #add-slides": "onClickAddSlides"
+        "click #add-videos": "onClickAddVideos"
+        "click #add-photos": "onClickAddPhotos"
+        "click #edit-talk": "onClickEditTalk"
+        "click #delete-talk": "onClickDeleteTalk"
+        "click #create-engagement": "onClickCreateEngagement"
+        "click .publish-talk": "onClickPublishTalk"
 
     initialize: (options) ->
         @engagementViews = []
@@ -16,6 +23,7 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
 
         @listenTo(@tags, "change add remove reset", @render)
         @listenTo(@links, "change add remove", @render)
+        @listenTo(@model, "change", @render)
 
         @fetchTalkTags => 
             @fetchTalkDetailModel => 
@@ -218,3 +226,37 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
                 links = _(@model.get 'links').reject (x) -> x == linkId
                 @model.set 'links', links
                 @model.save()
+
+    onClickAddSlides: ->
+        $.colorbox
+            html: $('#link-slides-popup').clone()
+            width: "400px"
+
+    onClickAddVideos: ->
+        $.colorbox
+            html: $('#link-video-popup').clone()
+            width: "400px"
+
+    onClickAddPhotos: ->
+        $.colorbox
+            html: $('#upload-photo-popup').clone()
+            width: "400px"
+
+    onClickEditTalk: ->
+        $.colorbox
+            html: $('#edit-talk-popup').clone()
+            width: "400px"
+
+    onClickDeleteTalk: ->
+        $.colorbox
+            html: $('#delete-talk-popup').clone()
+            width: "400px"
+
+    onClickPublishTalk: ->
+        @model.set 'published', !(@model.get 'published')
+        @model.save()
+
+    onClickCreateEngagement: ->
+        $.colorbox
+            html: $('#create-engagement-popup').clone()
+            width: "400px"

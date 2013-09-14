@@ -13,19 +13,18 @@
             {{#if userLoggedIn}}
               {{#if userOwnsContent}}
                 {{#if published }}
-                  %a.btn.btn-warning.submit-talk{href:"#submit-talk-popup", data-toggle:"tooltip", data-original-title:"Create Engagement"}
-                    %i.icon-bullhorn
-                  %a.btn.btn-warning{href:"/talk/{{talk.id}}/archive?last={{last}}", data-toggle:"tooltip", data-original-title:"Hide Talk"}
+                  %button.publish-talk.btn.btn-warning{data-toggle:"tooltip", data-original-title:"Hide Talk"}
                     %i.icon-eye-close
                 {{else}}
-                  %a.btn.btn-warning{href:"/talk/{{talk.id}}/publish?last={{last}}", data-toggle:"tooltip", data-original-title:"Publish Talk"}
+                  %button.publish-talk.btn.btn-warning{data-toggle:"tooltip", data-original-title:"Publish Talk"}
                     %i.icon-eye-open
-                  %a.btn.btn-warning.edit-talk{href:"#edit-talk-popup", data-toggle:"tooltip", data-original-title:"Edit Talk"}
-                    %i.icon-pencil
-                  - if not talk.talkevent_set.all
-                    %a.btn.btn-warning.delete-talk{data-name:"{{talk.name}}", data-id:"{{talk.id}}", href:"#delete-talk-popup", data-toggle:"tooltip", data-original-title:"Delete Talk"}
-                      %i.icon-trash
                 {{/if}}
+                  %button#create-engagement.btn.btn-warning{data-toggle:"tooltip", data-original-title:"Create Engagement"}
+                    %i.icon-bullhorn
+                  %button#edit-talk.btn.btn-warning{data-toggle:"tooltip", data-original-title:"Edit Talk"}
+                    %i.icon-pencil
+                  %button#delete-talk.btn.btn-warning{data-toggle:"tooltip", data-original-title:"Delete Talk"}
+                    %i.icon-trash
               {{else}}
                 {{#if userEndorsed}}
                   %a.btn.btn-warning{href:"/talk/{{talk.id}}/endorse?last={{last}}"}
@@ -137,7 +136,7 @@
 
                   {{#if userOwnsContent}}
                     .span2
-                      %a.btn.btn-warning.link-slides.pull-right{href:"#link-slides-popup"} Add Slides
+                      %button#add-slides.btn.btn-warning.link-slides.pull-right Add Slides
                   {{/if}}
 
                 .row
@@ -162,7 +161,7 @@
 
                   {{#if userOwnsContent}}
                     .span2
-                      %a.btn.btn-warning.link-video.pull-right{href:"#link-video-popup"} Add Videos
+                      %button#add-videos.btn.btn-warning.link-video.pull-right Add Videos
                   {{/if}}
 
                 .row
@@ -188,7 +187,7 @@
 
                   {{#if userOwnsContent}}
                     .span7
-                      %a.btn.btn-warning.upload-photo.pull-right{href:"#upload-photo-popup"} Upload Photos
+                      %button#add-photos.btn.btn-warning.upload-photo.pull-right Upload Photos
                   {{/if}}
 
                 .row
@@ -222,10 +221,11 @@
                   %h3 Comments
                   %hr
 
-                  %form.add-comment-form{action:"/talk/{{talk.id}}/comment/new", method:"POST"}
-                    %input{type:"text", name:"name", placeholder:"Enter your full name"}
-                    %textarea{name:'comment', placeholder:"Add your comment..."}
-                    %input.btn.btn-warning{type:"submit", value:"Submit Comment"}
+                  {{#if userLoggedIn }}
+                    %form.add-comment-form{action:"/talk/{{talk.id}}/comment/new", method:"POST"}
+                      %textarea{name:'comment', placeholder:"Add your comment..."}
+                      %input.btn.btn-warning{type:"submit", value:"Submit Comment"}
+                  {{/if}}
 
                   {{#if comments}}
                     %ul
@@ -236,4 +236,9 @@
                   {{else}}
                     No comments yet.
                   {{/if}}
+
+                  {{#unless userLoggedIn}}
+                    .login-to-comment{style:"margin-top:20px;"}
+                      %a.btn.btn-warning{href:"/login"} Login to comment
+                  {{/unless}}
 {% endverbatim %}
