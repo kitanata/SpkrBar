@@ -19,4 +19,3 @@ admin.site.register(TalkSlideDeck, TalkSlideDeckAdmin)
 admin.site.register(TalkVideo, TalkVideoAdmin)
 
 admin.site.register(TalkTag, admin.ModelAdmin)
-admin.site.register(TalkPhoto, admin.ModelAdmin)

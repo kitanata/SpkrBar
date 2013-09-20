@@ -12,6 +12,5 @@ __all__ = [
     'TalkLinkSerializer',
     'TalkSlideDeckSerializer',
     'TalkVideoSerializer',
-    'TalkPhotoSerializer',
     'TalkCommentSerializer',
     ]

@@ -15,5 +15,5 @@ class TalkVideo(models.Model):
         return self.talk.name
 
     def build_embed_code(self):
-        height = 300 * self.aspect
-        return "<iframe width='300' height='%d' src='%s' frameborder='0' webkitAllowFullScreen, mozallowfullscreen, allowfullscreen></iframe>" % (height,self.embed_data,)
+        height = 280
+        return "<iframe width='292' height='%d' src='%s' frameborder='0' webkitAllowFullScreen, mozallowfullscreen, allowfullscreen></iframe>" % (height,self.embed_data,)

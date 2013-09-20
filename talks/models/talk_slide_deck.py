@@ -21,5 +21,5 @@ class TalkSlideDeck(models.Model):
             " marginheight='0' scrolling='no' style='border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px'"
             " allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>" % (self.embed_data, height)
         elif self.source == "SPEAKERDECK":
-            return "<script class='speakerdeck-embed' async data-id='%s' data-ratio='%d' src='//speakerdeck.com/assets/embed.js'></script>" % (self.embed_data, self.aspect)
+            return "<script async class='speakerdeck-embed' data-id='%s' data-ratio='%f' src='//speakerdeck.com/assets/embed.js'></script>" % (self.embed_data, self.aspect)
         return ""

@@ -13,6 +13,8 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         "click #delete-talk": "onClickDeleteTalk"
         "click #create-engagement": "onClickCreateEngagement"
         "click .publish-talk": "onClickPublishTalk"
+        "click .delete-slide": "onClickDeleteSlide"
+        "click .delete-video": "onClickDeleteVideo"
 
     initialize: (options) ->
         @engagementViews = []
@@ -20,9 +22,13 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         @allTags = new SpkrBar.Collections.TalkTags()
         @tags = new Backbone.Collection()
         @links = new Backbone.Collection()
+        @slides = new Backbone.Collection()
+        @videos = new Backbone.Collection()
 
         @listenTo(@tags, "change add remove reset", @render)
         @listenTo(@links, "change add remove", @render)
+        @listenTo(@slides, "change add remove", @render)
+        @listenTo(@videos, "change add remove", @render)
         @listenTo(@model, "change", @render)
 
         @fetchTalkTags => 
@@ -37,6 +43,8 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
     fetchTalkDetailModel: (next) ->
         engagements = @model.get 'engagements'
         links = @model.get 'links'
+        slides = @model.get 'slides'
+        videos = @model.get 'videos'
 
         _(engagements).each (x) =>
             engagementModel = new SpkrBar.Models.Engagement
@@ -59,6 +67,20 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
             linkModel.fetch
                 success: =>
                     @links.push linkModel
+
+        _(slides).each (x) =>
+            slideModel = new SpkrBar.Models.TalkSlideDeck
+                id: x
+            slideModel.fetch
+                success: =>
+                    @slides.push slideModel
+
+        _(videos).each (x) =>
+            videoModel = new SpkrBar.Models.TalkVideo
+                id: x
+            videoModel.fetch
+                success: =>
+                    @videos.push videoModel
 
         next()
 
@@ -158,10 +180,9 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         speakerUrl: @model.get('speaker').url
         name: @model.get('name')
         abstract: @model.get('abstract')
-        photo: @model.get('photo')
-        slides: @model.get('slides')
-        videos: @model.get('videos')
-        photos: @model.get('photos')
+        photo: @model.get('speaker').photo
+        slides: @slides.map (x) -> {'id': x.id, 'embed_code': x.get('embed_code')}
+        videos: @videos.map (x) -> {'id': x.id, 'embed_code': x.get('embed_code')}
         comments: @model.get('comments')
         showTags: @showTags()
         showLinks: @showLinks()
@@ -232,10 +253,24 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
             html: $('#link-slides-popup').clone()
             width: "400px"
 
+    onClickDeleteSlide: (el) ->
+        slideId = $(el.currentTarget).data('id')
+
+        slide = @slides.find (x) => x.id == slideId
+        @slides.remove slide
+        slide.destroy()
+
     onClickAddVideos: ->
         $.colorbox
             html: $('#link-video-popup').clone()
             width: "400px"
+
+    onClickDeleteVideo: (el) ->
+        vidId = $(el.currentTarget).data('id')
+
+        video = @videos.find (x) => x.id == vidId
+        @videos.remove video
+        video.destroy()
 
     onClickAddPhotos: ->
         $.colorbox

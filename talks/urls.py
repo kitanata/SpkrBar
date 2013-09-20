@@ -1,6 +1,8 @@
 from django.conf.urls import patterns, url
 
-from views import TalkDetail, TalkTagList, TalkTagDetail, TalkLinkList, TalkLinkDetail
+from views import TalkDetail, TalkTagList, TalkTagDetail
+from views import TalkLinkList, TalkLinkDetail, TalkSlideDeckDetail
+from views import TalkVideoDetail
 
 urlpatterns = patterns('',
 
@@ -16,6 +18,16 @@ urlpatterns = patterns('',
         actions={'post': 'create'})),
     url(r'^rest/talk_links$', TalkLinkList.as_view()),
 
+    url(r'^rest/talk_slide/(?P<pk>\d+)$', TalkSlideDeckDetail.as_view(
+        actions={'get': 'retrieve', 'put': 'update', 'delete':'destroy'})),
+    url(r'^rest/talk_slide$', TalkSlideDeckDetail.as_view(
+        actions={'post': 'create'})),
+
+    url(r'^rest/talk_video/(?P<pk>\d+)$', TalkVideoDetail.as_view(
+        actions={'get': 'retrieve', 'put': 'update', 'delete':'destroy'})),
+    url(r'^rest/talk_video$', TalkVideoDetail.as_view(
+        actions={'post': 'create'})),
+
     url(r'^rest/talk/(?P<pk>\d*)$', TalkDetail.as_view(
         actions={'get': 'retrieve', 'put': 'update', 'delete':'destroy'})),
 
@@ -30,5 +42,4 @@ urlpatterns = patterns('',
 
     url(r'^talk/(?P<talk_id>\d+)/slides/new$', 'talks.views.talk_slides_new'),
     url(r'^talk/(?P<talk_id>\d+)/video/new$', 'talks.views.talk_video_new'),
-    url(r'^talk/(?P<talk_id>\d+)/photo/new$', 'talks.views.talk_photo_new'),
 )

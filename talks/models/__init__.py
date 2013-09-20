@@ -10,7 +10,6 @@ __all__ = [
     "Talk",
     "TalkComment",
     "TalkLink",
-    "TalkPhoto",
     "TalkSlideDeck",
     "TalkTag",
     "TalkVideo" ]

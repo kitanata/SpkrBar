@@ -19,7 +19,7 @@ def profile_edit(request):
             request.user.about_me = form.cleaned_data['about_me']
             request.user.save()
 
-            return redirect(profile.get_absolute_url())
+            return redirect(request.user.get_absolute_url())
 
     else:
         return HttpResponseNotFound()

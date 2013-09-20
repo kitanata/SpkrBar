@@ -11,7 +11,7 @@ urlpatterns = patterns('',
     url(r'^profile/edit/tag/(?P<tag_id>\d+)/delete$', 'core.views.profile_tag_delete'),
 
     url(r'^profile/edit$', 'core.views.profile_edit'),
-    url(r'^profile/(?P<username>\w+)$', 'core.views.profile_detail'),
+    url(r'^profile/(?P<username>[\w+.?@?\d*]*)$','core.views.profile_detail'),
 
     url(r'^user/(?P<username>\w+)/follow$', 'core.views.user_follow'),
     url(r'^user/(?P<user_id>\d+)/note/(?P<pk>\d+)$', NotificationDetail.as_view(

@@ -29,10 +29,10 @@ def talk_video_new(request, talk_id):
             video.source = form.cleaned_data['source']
 
             if video.source == YOUTUBE or video.source == VIMEO:
-                video.data = embed['src']
+                video.embed_data = embed['src']
                 w = embed['width']
                 h = embed['height']
-                video.aspect = int(w) / float(h) if float(h) != 0 else 0
+                video.aspect = int(h) / float(w) if float(w) != 0 else 0
             else:
                 return HttpResponseNotFound()
 

@@ -145,9 +145,14 @@
 
                 .row
                   {{#if slides}}
-                    {{#each}}
+                    {{#each slides}}
                       .span4
-                        {{embed_code}}
+                        .media-container
+                          .media-header
+                            %button.btn.pull-right.delete-slide{data-id:"{{id}}"}
+                              %i.icon-remove
+                          .media-embed
+                            {{{embed_code}}}
                     {{/each}}
                   {{else}}
                     .span4
@@ -172,39 +177,16 @@
                   {{#if videos}}
                     {{#each videos}}
                       .span4
-                        {{embed_code}}
+                        .media-container
+                          .media-header
+                            %button.btn.pull-right.delete-video{data-id:"{{id}}"}
+                              %i.icon-remove
+                          .media-embed
+                            {{{embed_code}}}
                     {{/each}}
                   {{else}}
                     .span4
                       No videos available.
-                  {{/if}}
-
-            .row{style:"margin-top:40px;"}
-              .span9
-                .row
-                  .span2
-                    %h3 Photos
-
-                  {{#if userOwnsContent}}
-                    .span7
-                      %button#add-photos.btn.btn-warning.upload-photo.pull-right Upload Photos
-                  {{/if}}
-
-                .row
-                  .span9
-                    %hr
-
-                .row
-                  {{#if photos}}
-                    .span9
-                      .photos
-                        {{#each photos}}
-                          {{html_code}}
-                        {{/each}}
-                      .clearfix
-                  {{else}}
-                    .span9
-                      No photos available.
                   {{/if}}
 
             .row{style:"margin-top:40px"}
