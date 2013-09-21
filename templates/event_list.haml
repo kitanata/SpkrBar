@@ -12,7 +12,7 @@
         .span6
           .event
             .title
-              %a{href:"/event/{{event.name}}"}
+              %a{href:"/event/{{event.name|slugify}}"}
                 {{event.name}}
                 %i.icon-bullhorn.pull-right
                   = event.numtalks
