@@ -22,6 +22,9 @@ urlpatterns = patterns('',
 
     url(r'^user/(?P<pk>\d+)$', UserDetail.as_view()),
 
+    url(r'^events$', 'core.views.event_list'),
+    url(r'^event/(?P<slug>[\w+-]*)$', 'core.views.event_detail'),
+
     url(r'^login$', 'core.views.login_user'),
     url(r'^logout$', 'core.views.logout_user'),
     url(r'^register$', 'core.views.register_user'),

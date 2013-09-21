@@ -20,6 +20,9 @@ from speaker_list import speaker_list
 from user_follow import user_follow
 from user_detail import UserDetail
 
+from event_list import event_list
+from event_detail import event_detail
+
 from notification_detail import NotificationDetail
 from notification_list import NotificationList
 
@@ -30,6 +33,6 @@ __all__ = [
     "profile_link_new", "profile_link_delete",
     "profile_tag_new", "profile_tag_delete",
     "profile_invite", "profile_invite_thanks",
-    "speaker_list", "user_follow",
+    "speaker_list", "user_follow", "event_list", "event_detail",
     "UserDetail", "NotificationDetail", "NotificationList"
 ]

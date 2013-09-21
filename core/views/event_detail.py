@@ -5,8 +5,8 @@ from django.db.models import Q
 from engagements.models import Engagement
 from core.helpers import template
 
-@template('engagements/engagement.haml')
-def engagement_view(request, slug):
+@template('event_detail.haml')
+def event_detail(request, slug):
     slugs = slug.split('-')
     engagements = Engagement.objects.filter(
         reduce(lambda x, y: x & y, [Q(event_name__icontains=x) for x in slugs]),

@@ -5,18 +5,18 @@
 - block 'content'
   .row
     .section-title
-      %h2 Recently Created Talks
+      %h2 Upcoming Engagements
 
   .row
     .talk-list
-      - for item in recently_created
-        - include 'talks/_talk_span6_detail_partial.haml'
+      - for item in upcoming
+        - include 'engagements/_talk_event_span6_detail_partial.haml'
 
   .row
     .section-title
-      %h2 Recently Updated Talks
+      %h2 Recent Engagements
 
   .row
     .talk-list
-      - for item in recently_updated
-        - include 'talks/_talk_span6_detail_partial.haml'
+      - for item in recent
+        - include 'engagements/_talk_event_span6_detail_partial.haml'

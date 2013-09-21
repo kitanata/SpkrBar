@@ -1,51 +1,48 @@
 - extends 'base.haml'
 
-- block 'title'
-  - if endorsements
-    {{ endorsements|length }} <i class="icon-thumbs-up"></i>
-  {{ event }}
-
-- block 'subnav'
+- block 'subnav-container'
 
 - block 'content'
-  - include 'events/_event_header_partial.haml'
+  #event-header
+    .row
+      .span4
+        %p {{ event.description }}
+        %p
+          - with event.location as location
+            {{ location.name }}<br />
+            {{ location.address }}<br />
+            {{ location.city }}, {{location.state}}, {{location.zip_code}}
 
-  #event-detail
-    - if speakers
-      .row
-        .section-title
-          %h2 Speakers
+      .span8
+        %p
+          #map
 
-      .row.buffer
-        - for profile in speakers
-          {% include '_speaker_span6_partial.haml' %}
+  .row
+    .section-title
+      %h2 Speakers
 
-    - if upcoming
-      .row
-        .section-title
-          %h2 Upcoming Talks
+  .row
+    .talk-list
+      - for profile in speakers
+        - include '_speaker_span6_partial.haml'
 
-      .row.buffer
-        - for item in upcoming
-          - include 'engagements/_talk_event_span6_detail_partial.haml'
+  .row
+    .section-title
+      %h2 Current Engagements
 
-    - if current
-      .row
-        .section-title
-          %h2 Current Talks
+  .row
+    .talk-list
+      - for item in current
+        - include 'engagements/_talk_event_span6_detail_partial.haml'
 
-      .row.buffer
-        - for item in current
-          - include 'engagements/_talk_event_span6_detail_partial.haml'
+  .row
+    .section-title
+      %h2 Past Engagements
 
-    - if past
-      .row
-        .section-title
-          %h2 Past Talks
-
-      .row.buffer
-        - for item in past
-          - include 'engagements/_talk_event_span6_detail_partial.haml'
+  .row
+    .talk-list
+      - for item in past
+        - include 'engagements/_talk_event_span6_detail_partial.haml'
 
 - block 'scripts'
   %script{type:"text/javascript"}
