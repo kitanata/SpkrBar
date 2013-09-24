@@ -292,6 +292,9 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         @model.save()
 
     onClickCreateEngagement: ->
+        createEngagementView = new SpkrBar.Views.CreateEngagement
+            talk: @model
+
         $.colorbox
-            html: $('#create-engagement-popup').clone()
-            width: "400px"
+            html: createEngagementView.render().el
+            width: "514px"
