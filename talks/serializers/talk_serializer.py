@@ -15,6 +15,8 @@ class TalkSerializer(serializers.ModelSerializer):
         fields = (
                 'id', 
                 'speaker',
+                'created_at',
+                'updated_at',
                 'name', 
                 'abstract', 
                 'published', 

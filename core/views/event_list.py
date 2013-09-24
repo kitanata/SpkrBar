@@ -11,7 +11,7 @@ def event_list(request):
     end_date = datetime.today() + timedelta(days=14)
 
     engagements = Engagement.objects.filter(
-        active=True, date__gte=start_date.date(), date__lt=end_date.date()
+        date__gte=start_date.date(), date__lt=end_date.date()
         ).order_by('event_name')
 
     events = list()

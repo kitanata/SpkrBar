@@ -18,8 +18,6 @@ SpkrBar.Views.Engagement = Backbone.View.extend
         template = Handlebars.compile(source)
 
         @$el.html(template(@context()))
-        if not @model.get('active')
-            @$el.addClass('muted')
         @
 
     userOwnsEngagement: ->

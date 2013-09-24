@@ -6,13 +6,21 @@
   #event-header
     .row
       .span4
-        %p {{ event.description }}
-        %p
-          - with event.location as location
-            {{ location.name }}<br />
-            {{ location.address }}<br />
-            {{ location.city }}, {{location.state}}, {{location.zip_code}}
+        %h3 {{ name }}
+        %h4 
+          .label.label-info {{ speakers|length }}
+          .desc Speakers
+        %h4
+          .label.label-info {{ num_engagements }}
+          .desc Engagements
 
+        .event-tag-area
+          - for tag in tags
+            .label.label-info
+              %span.count
+                {{tag.0}}
+              %span.name
+                {{tag.1|title}}
       .span8
         %p
           #map
@@ -26,23 +34,15 @@
       - for profile in speakers
         - include '_speaker_span6_partial.haml'
 
-  .row
-    .section-title
-      %h2 Current Engagements
+  - for year, engs in talks.items
+    .row
+      .section-title
+        %h2 {{name}} - {{year}}
 
-  .row
-    .talk-list
-      - for item in current
-        - include 'engagements/_talk_event_span6_detail_partial.haml'
-
-  .row
-    .section-title
-      %h2 Past Engagements
-
-  .row
-    .talk-list
-      - for item in past
-        - include 'engagements/_talk_event_span6_detail_partial.haml'
+    .row
+      .talk-list
+        - for item in engs
+          - include 'engagements/_talk_event_span6_detail_partial.haml'
 
 - block 'scripts'
   %script{type:"text/javascript"}

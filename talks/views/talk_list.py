@@ -8,13 +8,13 @@ def talk_list(request):
     start_date = datetime.today() - timedelta(days=7)
     end_date = datetime.today()
     recent = Engagement.objects.filter(
-        active=True, date__gte=start_date, date__lt=end_date
+        date__gte=start_date, date__lt=end_date
         ).order_by('-date', '-time')
 
     start_date = datetime.today()
     end_date = datetime.today() + timedelta(days=7)
     upcoming = Engagement.objects.filter(
-        active=True, date__gte=start_date, date__lte=end_date
+        date__gte=start_date, date__lte=end_date
         ).order_by('-date', '-time')
 
     return {'upcoming': upcoming, 'recent': recent}

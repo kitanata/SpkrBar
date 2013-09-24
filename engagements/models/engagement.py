@@ -14,8 +14,6 @@ class Engagement(models.Model):
     location = models.ForeignKey('locations.Location')
     room = models.CharField(max_length=1000)
 
-    active = models.BooleanField(default=False)
-
     def __str__(self):
         return ' '.join([str(self.event_name), str(self.date.year), ' - ', self.room])
 

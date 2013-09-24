@@ -33,8 +33,7 @@ def profile_detail(request, username):
 
     engagements = Engagement.objects.filter(
             talk__speaker=profile,
-            talk__published=True,
-            active=True)
+            talk__published=True)
 
     if request.user.is_anonymous():
         following = profile.following.all()
