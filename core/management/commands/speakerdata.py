@@ -11,7 +11,7 @@ from core.models import SpkrbarUser, UserTag
 
 from locations.models import Location
 from talks.models import Talk, TalkTag
-from engagements.models import Engagement, Rating
+from engagements.models import Engagement
 from blog.models import BlogPost
 
 random.seed(datetime.now())
@@ -165,21 +165,7 @@ def generate_engagement(talk, location):
     engagement.date = generate_datetime().date()
     engagement.time = generate_datetime().time()
     engagement.room = random.choice(room_names)
-    engagement.active = random.choice([True, False])
     engagement.save()
-
-    return engagement
-
-
-def generate_rating(engagement):
-    rating = Rating()
-    rating.talk_engagement = engagement
-    rating.engagement = random.choice(range(1,6))
-    rating.knowledge = random.choice(range(1,6))
-    rating.professionalism = random.choice(range(1,6))
-    rating.resources = random.choice(range(1,6))
-    rating.discussion = random.choice(range(1,6))
-    rating.save()
 
     return engagement
 
@@ -256,10 +242,6 @@ class Command(BaseCommand):
             for j in range(0, random.choice(range(3, 8))):
                 print "Generating Engagement"
                 engagement = generate_engagement(talk, location)
-
-                for j in range(0, random.choice(range(10, 46))):
-                    print "Generating Rating for Engagement"
-                    rating = generate_rating(engagement)
 
         print "Generating Followers For Users"
         users = SpkrbarUser.objects.all()

@@ -24,23 +24,28 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         @links = new Backbone.Collection()
         @slides = new Backbone.Collection()
         @videos = new Backbone.Collection()
+        @engagements = new Backbone.Collection()
+
+        @locations = new SpkrBar.Collections.Locations()
 
         @listenTo(@tags, "change add remove reset", @render)
         @listenTo(@links, "change add remove", @render)
         @listenTo(@slides, "change add remove", @render)
         @listenTo(@videos, "change add remove", @render)
+        @listenTo(@engagements, "change add remove", @buildEngagementViews)
         @listenTo(@model, "change", @render)
 
+        @locations.fetch()
+
         @fetchTalkTags => 
-            @fetchTalkDetailModel => 
-                @handleSubmitTalk()
+            @fetchTalkDetailModel()
 
     fetchTalkTags: (next) ->
         @allTags.fetch
             success: => 
                 next()
 
-    fetchTalkDetailModel: (next) ->
+    fetchTalkDetailModel: ->
         engagements = @model.get 'engagements'
         links = @model.get 'links'
         slides = @model.get 'slides'
@@ -51,12 +56,7 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
                 id: x
             engagementModel.fetch
                 success: =>
-                    newView = new SpkrBar.Views.Engagement
-                        model: engagementModel
-                        talk: @model
-
-                    $('#engagement-list-region').append newView.render().el
-                    @engagementViews.push(newView)
+                    @engagements.add engagementModel
 
         tagIds = @model.get('tags')
         @tags.reset(@allTags.filter (x) => x.id in tagIds)
@@ -82,75 +82,25 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
                 success: =>
                     @videos.push videoModel
 
-        next()
-
-    handleSubmitTalk: () ->
-        $('.submit-talk').colorbox({inline: true, width:"400px"})
-
-        nowTemp = new Date()
-        now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0)
-
-        $('#date').datepicker
-            format: 'mm/dd/yyyy'
-
-        $('#date').datepicker 'update', now
-
-        $('#date').on 'changeDate', () ->
-            $('#date').datepicker('hide')
-
-        $('#time').timepicker
-            template: false,
-            showInputs: false,
-            minuteStep: 5
-
-        $('#submit-engagement').on 'click', =>
-            eventName = $('#event-list').val()
-            talkId = $('#talk-id').val()
-            date = $('#date').val()
-            time = $('#time').val()
-
-            hours = parseInt(time[0..1])
-            minutes = time[3..4]
-            meridian = time[6..7]
-
-            if meridian == "PM"
-                hours += 12
-
-            date = new Date(date[6..9], date[3..4], date[0..1], hours, minutes)
-
-            selEvent = events.find (x) ->
-                checkName = x.get('owner').name + ' ' + x.get('start_date')[0..3]
-                if x.get('name')
-                    checkName += ' - ' + x.get('name')
-                eventName == checkName
-
-            if selEvent
-                newEngagement = new SpkrBar.Models.Engagement
-                    talk: talkId
-                    event: selEvent.id
-                    date: date
-                    from_speaker: true
-                    vetoed: false
-
-                window.engage = newEngagement
-
-                newEngagement.save null,
-                    success: =>
-                        $.colorbox.close()
-
-                        newView = new SpkrBar.Views.Engagement
-                            model: newEngagement
-                            talk: @talkDetailModel
-
-                        $('#engagement-list-region').append newView.render().el
-                        @engagementViews.push(newView)
-
     render: ->
         source = $(@template).html()
         template = Handlebars.compile(source)
 
         @$el.html(template(@context()))
         @
+
+    buildEngagementViews: ->
+        @engagementViews = []
+        $('#engagement-list-region').html('')
+
+        @engagements.each (x) =>
+            newView = new SpkrBar.Views.Engagement
+                model: x
+                talk: @model
+
+            $('#engagement-list-region').append newView.render().el
+            @engagementViews.push(newView)
+        @render()
 
     userLoggedIn: ->
         user.id != 0
@@ -294,6 +244,8 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
     onClickCreateEngagement: ->
         createEngagementView = new SpkrBar.Views.CreateEngagement
             talk: @model
+            locations: @locations
+            parent: @
 
         $.colorbox
             html: createEngagementView.render().el

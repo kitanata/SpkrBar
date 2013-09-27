@@ -20,9 +20,7 @@ urlpatterns = patterns('',
 
     url(r'^', include('engagements.urls')),
     url(r'^', include('core.urls')),
-
-    url(r'^location/new$', 'locations.views.location_new'),
-
+    url(r'^', include('locations.urls')),
     url(r'^', include('blog.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:

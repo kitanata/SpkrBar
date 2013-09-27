@@ -4,8 +4,6 @@ from engagements.models import Engagement
 from locations.serializers import LocationSerializer
 
 class EngagementSerializer(serializers.ModelSerializer):
-    location = LocationSerializer()
-
     class Meta:
         model = Engagement
         fields = (
@@ -16,4 +14,5 @@ class EngagementSerializer(serializers.ModelSerializer):
                 'room',
                 'date',
                 'time',
-                'location')
+                'location',
+                'talk')

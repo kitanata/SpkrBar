@@ -1,6 +1,8 @@
 //= require jquery-1.9.1.min
 //= require underscore
+//= require underscore.string.min
 //= require backbone
+//= require backbone-validation
 //= require handlebars
 //= require moment.min
 //= require leaflet

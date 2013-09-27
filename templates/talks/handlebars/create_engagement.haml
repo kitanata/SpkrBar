@@ -3,11 +3,13 @@
     .colorbox-content
         %h3 Create a new Engagement
 
+        #req-alert.alert.alert-danger{style:"display:none;"}
+
         %hr
 
         .fieldset-left
-            %label{for:"event-list"} Event Name:
-            %input#event-list{name:"event", type:"text", autocomplete:"off"}
+            %label{for:"event-name"} Event Name:
+            %input#event-name{type:"text"}
 
             %label{for:"room"} Room:
             %input#room{type:"text"}
@@ -21,9 +23,9 @@
         .fieldset-right
             .location-search
                 %label{for:"loc-name"} Location Name:
-                %input#loc-name{type:"text"}
-                %span.search.addon
-                  %i.icon-search
+                %input#loc-name{type:"text", data-provide:'typeahead'}
+                %span#loc-reset.search.btn.addon
+                  %i.icon-remove
 
             %label{for:"loc-address"} Location Address:
             %input#loc-address{type:"text"}
