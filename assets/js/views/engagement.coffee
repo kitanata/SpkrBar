@@ -5,7 +5,9 @@ SpkrBar.Views.Engagement = Backbone.View.extend
     events:
         "click #delete-engagement": "onDeleteEngagement"
 
-    initialize: ->
+    initialize: (options) ->
+        @location = options.location
+        @talk = options.talk
         @listenTo(@model, "change", @render)
 
     onDeleteEngagement: () ->
@@ -20,20 +22,22 @@ SpkrBar.Views.Engagement = Backbone.View.extend
         @$el.html(template(@context()))
         @
 
-    userOwnsEngagement: ->
-        user.id == @model.get('user_id')
+    userOwned: ->
+        user.id == @talk.get('speaker').id
+
+    eventUrl: ->
+        "/event/" + _.str.slugify(@model.get('event_name'))
 
     context: ->
         id: @model.id
         event_name: @model.get('event_name')
+        event_url: @eventUrl()
         room: @model.get('room')
         date: moment(@model.get('date')).format('LL')
         time: moment(@model.get('time'), "HH:mm:ss").format('hh:mm A')
-        location_name: @model.get('location').name
-        address: @model.get('location').address
-        city: @model.get('location').city
-        state: @model.get('location').state
-        zip_code: @model.get('location').zip_code
-        user_owned: @userOwnsEngagement()
-        active: @model.get('active')
-        show_buttons: true
+        location_name: @location.get('name')
+        address: @location.get('address')
+        city: @location.get('city')
+        state: @location.get('state')
+        zip_code: @location.get('zip_code')
+        userOwned: @userOwned()

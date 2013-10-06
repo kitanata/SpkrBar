@@ -17,6 +17,7 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         "click .delete-video": "onClickDeleteVideo"
 
     initialize: (options) ->
+        @shouldRender = false
         @engagementViews = []
 
         @allTags = new SpkrBar.Collections.TalkTags()
@@ -28,17 +29,17 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
 
         @locations = new SpkrBar.Collections.Locations()
 
-        @listenTo(@tags, "change add remove reset", @render)
-        @listenTo(@links, "change add remove", @render)
-        @listenTo(@slides, "change add remove", @render)
-        @listenTo(@videos, "change add remove", @render)
+        @listenTo(@tags, "change add remove reset", @invalidate)
+        @listenTo(@links, "change add remove", @invalidate)
+        @listenTo(@slides, "change add remove", @invalidate)
+        @listenTo(@videos, "change add remove", @invalidate)
         @listenTo(@engagements, "change add remove", @buildEngagementViews)
-        @listenTo(@model, "change", @render)
+        @listenTo(@model, "change", @invalidate)
 
-        @locations.fetch()
-
-        @fetchTalkTags => 
-            @fetchTalkDetailModel()
+        @locations.fetch
+            success: =>
+                @fetchTalkTags => 
+                    @fetchTalkDetailModel()
 
     fetchTalkTags: (next) ->
         @allTags.fetch
@@ -83,13 +84,33 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
                     @videos.push videoModel
 
     render: ->
+        console.log "Render"
         source = $(@template).html()
         template = Handlebars.compile(source)
 
         @$el.html(template(@context()))
         @
 
+    invalidate: ->
+        console.log "Invalidate"
+        if not @shouldRender
+            setTimeout =>
+                @beforeRender()
+                @render()
+                @afterRender()
+                @shouldRender = false
+            , 500
+            @shouldRender = true
+
+    beforeRender: ->
+
+    afterRender: ->
+        console.log "AfterRender"
+        _(@engagementViews).each (enView) =>
+            $('#engagement-list-region').append enView.render().el
+
     buildEngagementViews: ->
+        console.log "buildEngagementViews"
         @engagementViews = []
         $('#engagement-list-region').html('')
 
@@ -97,10 +118,9 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
             newView = new SpkrBar.Views.Engagement
                 model: x
                 talk: @model
-
-            $('#engagement-list-region').append newView.render().el
+                location: @locations.find (y) => y.id == x.get('location')
             @engagementViews.push(newView)
-        @render()
+        @invalidate()
 
     userLoggedIn: ->
         user.id != 0
