@@ -5,6 +5,7 @@
 //= require backbone-validation
 //= require handlebars
 //= require moment.min
+//= require markdown.min
 //= require leaflet
 //= require bootstrap-tooltip
 //= require bootstrap-typeahead
@@ -12,4 +13,6 @@
 //= require bootstrap-timepicker.min
 //= require bootstrap-datepicker
 //= require jquery.colorbox-min
+//= require jquery.markitup
+//= require markitup.set
 //= require django-csrf

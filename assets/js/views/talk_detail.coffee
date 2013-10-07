@@ -141,6 +141,7 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         @links.length != 0 or @userOwnsContent()
 
     context: ->
+        id: @model.id
         userLoggedIn: @userLoggedIn()
         userOwnsContent: @userOwnsContent()
         userEndorsed: @userEndorsed()
@@ -149,7 +150,7 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         speakerName: @model.get('speaker').full_name
         speakerUrl: @model.get('speaker').url
         name: @model.get('name')
-        abstract: @model.get('abstract')
+        abstract: markdown.toHTML(@model.get('abstract'))
         photo: @model.get('speaker').photo
         slides: @slides.map (x) -> {'id': x.id, 'embed_code': x.get('embed_code')}
         videos: @videos.map (x) -> {'id': x.id, 'embed_code': x.get('embed_code')}
@@ -248,9 +249,9 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
             width: "400px"
 
     onClickEditTalk: ->
-        $.colorbox
-            html: $('#edit-talk-popup').clone()
-            width: "400px"
+        editor = new SpkrBar.Views.TalkEdit
+            model: @model
+        editor.render()
 
     onClickDeleteTalk: ->
         $.colorbox

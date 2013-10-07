@@ -26,24 +26,15 @@
                   %button#delete-talk.btn.btn-warning{data-toggle:"tooltip", data-original-title:"Delete Talk"}
                     %i.icon-trash
               {{else}}
-                {{#if userEndorsed}}
-                  %a.btn.btn-warning{href:"/talk/{{talk.id}}/endorse?last={{last}}"}
+                {{#unless userEndorsed}}
+                  %a.btn.btn-warning{href:"/talk/{{id}}/endorse"}
                     %i.icon-thumbs-up
                     Endorse
                 {{else}}
                   %a.btn.disabled.btn-warning
                     %i.icon-thumbs-up
                     Endorsed
-                {{/if}}
-                {{#if userRated}}
-                  %a.btn.btn-warning.rate-talk{href:"#rate-talk-popup", data-toggle:"tooltip", data-original-title:"Rate this talk."}
-                    %i.icon-legal
-                    Rate
-                {{else}}
-                  %a.btn.disabled.btn-warning
-                    %i.icon-legal
-                    Rated
-                {{/if}}
+                {{/unless}}
               {{/if}}
             {{/if}}
 
@@ -67,7 +58,7 @@
             .span9
               .talk-detail
                 %h3 Abstract
-                %p {{ abstract }}
+                %p {{{ abstract }}}
 
         .row
           .span3
