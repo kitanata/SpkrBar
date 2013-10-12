@@ -1,35 +1,40 @@
-.span6
-  .talk_event
-    .header-s6
-      .title
-        - if not user.is_anonymous and item.talk.speaker != user
-          .grid1
-            %a{href:"{{item.talk.get_absolute_url}}"}
-              {{ item.talk.name|truncatechars:48 }}
-            %br by {{ item.talk.speaker.get_full_name }}
-
-          .grid2
-            {% include 'engagements/_button_group_partial.haml' %}
-
-        - else
-          %div
-            %a{href:"{{item.talk.get_absolute_url}}"}
-              {{ item.talk.name|truncatechars:38 }}
-            %br by {{ item.talk.speaker.get_full_name }}
-
-      .location
+.talk_event
+  .header-s6
+    .title
+      - if not user.is_anonymous and item.talk.speaker != user
         .grid1
-          %a{href:"/engagement/{{ item.event_name|slugify }}"}
-            at {{ item.event_name }}
-          %br in {{ item.location.city }}, {{ item.location.state }}
-        .grid2
-          {{ item.date }}
-          %br {{ item.time }}
+          %a{href:"{{item.talk.get_absolute_url}}"}
+            {{ item.talk.name|truncatechars:48 }}
+          %br by {{ item.talk.speaker.get_full_name }}
 
-    .description
-      - if item.talk.tags.all
-        .tag-cloud.pull-left
-          - for tag in item.talk.tags.all
-            .label.label-info {{ tag.name }}
-      %span {{ item.talk.abstract|truncatechars:140 }}
-      .clearfix
+        .grid2
+          {% include 'engagements/_button_group_partial.haml' %}
+
+      - else
+        %div
+          %a{href:"{{item.talk.get_absolute_url}}"}
+            {{ item.talk.name|truncatechars:38 }}
+          %br by {{ item.talk.speaker.get_full_name }}
+
+    .location
+      .grid1
+        %a{href:"/event/{{ item.event_name|slugify }}"}
+          at {{ item.event_name }}
+        %br in {{ item.location.city }}, {{ item.location.state }}
+      .grid2
+        {{ item.date }}
+        %br {{ item.time }}
+
+  .speaker-media
+    - if item.speaker.photo
+      %img{src:"{{MEDIA_URL}}{{ item.speaker.photo }}"}
+    - else
+      %i.icon-user
+
+  .tag-cloud
+    - if item.tags.all
+     - for tag in item.tags.all|slice:":4"
+        .label.label-info {{tag|title}}
+
+  .description
+    .abstract {{ item.talk.abstract|truncatechars:140 }}

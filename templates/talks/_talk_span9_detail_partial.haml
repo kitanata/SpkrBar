@@ -6,9 +6,8 @@
           {{ item.name|truncatechars:40 }}
     .description
       - if item.tags.all
-        .tag-cloud.pull-left
-          - for tag in item.tags.all
-            .label.label-info {{ tag.name }}
+        - for tag in item.tags.all
+          .label.label-info {{ tag.name }}
 
-      %span {{ item.abstract|truncatechars:240 }}
+      .abstract {{ item.abstract|truncatechars:240 }}
     .clearfix

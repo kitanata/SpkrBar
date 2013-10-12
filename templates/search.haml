@@ -4,40 +4,40 @@
 
 - block 'content'
   - if not talks and not speakers and not events
-    .row
+    .row-fluid
       .section-title
         %h2 Search Returned 0 Results
 
   - if talks
-    .row
+    .row-fluid
       .section-title
         %h2 Talks
-    .row
+    .row-fluid
       .span12
         .section
-          .row
+          .row-fluid
             - for item in talks
               - include 'engagements/_talk_event_span6_detail_partial.haml'
 
   - if speakers
-    .row
+    .row-fluid
       .section-title
         %h2 Speakers
-    .row
+    .row-fluid
       .span12
         .section
-          .row
+          .row-fluid
             - for profile in speakers
               {% include '_speaker_span6_partial.haml' %}
 
   - if events
-    .row
+    .row-fluid
       .section-title
         %h2 Events
-    .row
+    .row-fluid
       .span12
         .section
-          .event-list.row{style:"margin-bottom:40px"}
+          .event-list.row-fluid{style:"margin-bottom:40px"}
             - for event in events
               - include 'events/_event_span6_detail_partial.haml'
 

@@ -5,13 +5,6 @@
     margin-bottom: 20px;
     padding: 10px;
 
-    img {
-        display: block;
-        margin: 20px auto 20px auto;
-        max-width: 198px;
-        min-width: 198px;
-    }
-
     span div {
         display: inline-block;
     }
@@ -55,16 +48,47 @@
     }
 
     .header-s6 {
+        position: relative;
+
         .grid1 {
-            width: 300px;
+            width: 80%;
         }
 
         .grid2 {
-            margin-left: 20px;
-            width: 112px;
-            text-align: right;
-            vertical-align: top;
+            position: absolute;
+            top: 5px;
+            right: 5px;
         }
+
+        .location .grid2 {
+            top: 80px;
+        }
+    }
+
+    .speaker-media {
+        display: inline-block;
+
+        img {
+            max-width: 120px;
+            max-height: 120px;
+            margin-top: 20px;
+        }
+
+        i { 
+            display: block;
+            width: 118px;
+            margin-top: 20px;
+            font-size: 10em;
+            color: rgb(185, 185, 185);
+        }
+    }
+
+    .tag-cloud {
+        display: inline-block;
+        margin-left: 4px;
+        margin-top: 20px;
+        width: 10px;
+        vertical-align: top;
     }
 
     .description {
@@ -85,11 +109,8 @@
             color: rgb(185, 185, 185);
         }
 
-        .tag-cloud {
-            padding: 10px 10px 10px 0px;
-            width: 120px;
-            height: 80px;
-            overflow: scroll;
+        .abstract {
+            margin-top: 10px;
         }
     }
 
@@ -131,6 +152,7 @@
 
 
 #talk {
+    padding: 20px;
 
     .talk-photo {
         margin-top: 20px;
@@ -170,8 +192,12 @@
     .add-comment-form {
 
         textarea {
-            width: 680px;
+            width: 99%;
             height: 120px;
+        }
+
+        button {
+            display: block;
         }
     }
 
@@ -196,6 +222,7 @@
     .media-embed {
         clear: both;
         padding-top: 10px;
+        min-height: 400px;
     }
 }
 
@@ -262,7 +289,15 @@
 
 
 .talk-list {
-    margin: 20px 0px 40px 0px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    padding: 20px;
+
+    .talk_event {
+        flex: 1 0 300px;
+        margin: 10px;
+    }
 }
 
 #rate-talk-popup form {

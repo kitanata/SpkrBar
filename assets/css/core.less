@@ -4,8 +4,7 @@
 
 body {
     padding-top: 0px;
-    padding-bottom: 80px;
-    background-color: rgb(230, 190, 160);
+    padding-bottom: 0px;
 
     .callout {
         position: relative;
@@ -32,8 +31,7 @@ body {
     }
 
     .masthead {
-        padding: 6px 20px 0px 20px;
-        border-bottom: 1px solid #eee;
+        border-bottom: 5px solid @orange;
 
         .nav {
             margin: 10px 0px 0px 0px;
@@ -54,7 +52,6 @@ body {
     }
 
     .subnav {
-        margin-bottom: 20px;
         background-color: @orange;
         padding: 0px 20px;
         color: #eee;
@@ -64,13 +61,8 @@ body {
         }
     }
 
-    .content-container {
-        margin-left: 20px;
-    }
-
-    .container-narrow {
-        margin: 0 auto;
-        max-width: 980px;
+    .container-fluid {
+        padding: 0px;
         background-color: white;
 
         border-left: 2px solid @bodyBorderColor;
@@ -79,10 +71,6 @@ body {
 
         -webkit-box-shadow: 0px 3px 5px 2px @bodyBorderColor;
         box-shadow: 0px 3px 5px 2px @bodyBorderColor;
-    }
-
-    .container-narrow > hr {
-        margin: 30px 0;
     }
 
     .footer {

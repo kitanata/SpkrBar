@@ -1,7 +1,7 @@
 {% verbatim %}
   %script#talk-detail-templ{type:"text/x-handlebars-template"}
     .subnav
-      .row
+      .row-fluid
         .span10
           %h2
             {{#if numEndorsements }}
@@ -41,7 +41,7 @@
     .content-container
       #talk
         .talk-header
-          .row.buffer
+          .row-fluid
             .span3
               .picture.well
                 {{#if photo}}
@@ -60,10 +60,10 @@
                 %h3 Abstract
                 %p {{{ abstract }}}
 
-        .row
+        .row-fluid
           .span3
-            .row
-              .span3
+            .row-fluid
+              .span12
                 #talk-tags
                   {{#if showTags}}
                     %h3 Topics
@@ -90,7 +90,7 @@
                       %input.add-talk-tag.btn.btn-warning{type:"submit", value:"Tag this talk"}
                   {{/if}}
 
-              .span3
+              .span12
                 #talk-links
                   {{#if showLinks}}
                     %h3 Links
@@ -119,25 +119,25 @@
                   {{/if}}
 
           .span9
-            .row
-              .span4
-                .row
-                  .span2
+            .row-fluid
+              .span6
+                .row-fluid
+                  .span9
                     %h3 Slides
 
                   {{#if userOwnsContent}}
-                    .span2
+                    .span3
                       %button#add-slides.btn.btn-warning.link-slides.pull-right Add Slides
                   {{/if}}
 
-                .row
-                  .span4
+                .row-fluid
+                  .span12
                     %hr
 
-                .row
+                .row-fluid
                   {{#if slides}}
                     {{#each slides}}
-                      .span4
+                      .span12
                         .media-container
                           .media-header
                             %button.btn.pull-right.delete-slide{data-id:"{{id}}"}
@@ -146,28 +146,28 @@
                             {{{embed_code}}}
                     {{/each}}
                   {{else}}
-                    .span4
+                    .span12
                       No slides available.
                   {{/if}}
 
-              .span4.offset1
-                .row
-                  .span2
+              .span6
+                .row-fluid
+                  .span9
                     %h3 Videos
 
                   {{#if userOwnsContent}}
-                    .span2
+                    .span3
                       %button#add-videos.btn.btn-warning.link-video.pull-right Add Videos
                   {{/if}}
 
-                .row
-                  .span4
+                .row-fluid
+                  .span12
                     %hr
                 
-                .row
+                .row-fluid
                   {{#if videos}}
                     {{#each videos}}
-                      .span4
+                      .span12
                         .media-container
                           .media-header
                             %button.btn.pull-right.delete-video{data-id:"{{id}}"}
@@ -176,20 +176,21 @@
                             {{{embed_code}}}
                     {{/each}}
                   {{else}}
-                    .span4
+                    .span12
                       No videos available.
                   {{/if}}
 
-            .row{style:"margin-top:40px"}
-              .span9
+            .row-fluid{style:"margin-top:40px"}
+              .span12
                 %h3 Speaking Engagements
                 %hr
 
-              .span9
+            .row-fluid
+              .span12
                 #engagement-list-region
 
-            .row{style:"margin-top:40px"}
-              .span9
+            .row-fluid{style:"margin-top:40px"}
+              .span12
                 .comments
                   %h3 Comments
                   %hr
@@ -197,7 +198,8 @@
                   {{#if userLoggedIn }}
                     %form.add-comment-form{action:"/talk/{{talk.id}}/comment/new", method:"POST"}
                       %textarea{name:'comment', placeholder:"Add your comment..."}
-                      %input.btn.btn-warning{type:"submit", value:"Submit Comment"}
+                      %button.btn.btn-warning{type:"submit"}
+                        Submit Comment
                   {{/if}}
 
                   {{#if comments}}

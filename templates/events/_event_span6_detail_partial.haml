@@ -1,6 +1,6 @@
 .span6
   .event
-    .row
+    .row-fluid
       .span6
         %h3.pull-left
           %a{href:"{{event.get_absolute_url}}"}
@@ -12,7 +12,7 @@
             {{event.owner.description|truncatechars:240}}
 
       .span6{style:"margin-top:20px"}
-        .row
+        .row-fluid
           .span3
             - with event.location as location
               {{ location.name }}<br />

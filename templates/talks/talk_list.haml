@@ -3,20 +3,20 @@
 - block 'subnav-container'
 
 - block 'content'
-  .row
+  .row-fluid
     .section-title
       %h2 Upcoming Engagements
 
-  .row
+  .row-fluid
     .talk-list
       - for item in upcoming
         - include 'engagements/_talk_event_span6_detail_partial.haml'
 
-  .row
+  .row-fluid
     .section-title
       %h2 Recent Engagements
 
-  .row
+  .row-fluid
     .talk-list
       - for item in recent
         - include 'engagements/_talk_event_span6_detail_partial.haml'

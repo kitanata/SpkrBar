@@ -5,15 +5,15 @@
 
 - block 'subnav-container' 
   .subnav
-    .row
+    .row-fluid
       .span12
         %h2 Create a new Event for {{user.name}}
 
 - block 'content'
   #event-new
-    .row.buffer
+    .row-fluid.buffer
       .span6
-        .row
+        .row-fluid
           .span6
             %label{for:"name"} Event Name:
             %input#name{name:"name", type:"text"}

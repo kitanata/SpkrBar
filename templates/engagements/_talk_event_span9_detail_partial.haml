@@ -28,11 +28,10 @@
 
     .description
       - if item.talk.tags.all
-        .tag-cloud.pull-left
-          - for tag in item.talk.tags.all
-            .label.label-info {{ tag.name }}
+        - for tag in item.talk.tags.all
+          .label.label-info {{ tag.name }}
 
-      %span {{ item.talk.abstract|truncatechars:240 }}
+      .abstract {{ item.talk.abstract|truncatechars:240 }}
       .clearfix
 
     .clearfix

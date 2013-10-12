@@ -1,8 +1,8 @@
 - if talks
-  .row
-    .span9
+  .row-fluid
+    .span12
       %h2 My Talks
 
-      .row
+      .talk-list{style:"padding-left:0px;margin-left:-10px;"}
         - for item in talks
-          - include 'talks/_talk_span9_detail_partial.haml'
+          - include 'talks/_talk_span6_detail_partial.haml'

@@ -6,6 +6,7 @@
 - block 'subnav'
 
 - block 'content'
-  .row
-    - for profile in speakers
-      {% include '_speaker_span6_partial.haml' %}
+  .row-fluid
+    .speaker-list
+        - for profile in speakers
+          {% include '_speaker_span6_partial.haml' %}

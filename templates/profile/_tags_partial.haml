@@ -1,5 +1,5 @@
-.row
-  .span3
+.row-fluid
+  .span12
     - if topic_title
       %h2 {{topic_title}}
     - else
@@ -16,9 +16,9 @@
       No User Tags
 
 - if user == profile
-  .row
+  .row-fluid
     .edit-tags
-      .span3
+      .span12
         %form.profile-tag-form{action:"/profile/edit/tag/new", method:"POST"}
           - csrf_token
           {{ tag_form.name }}

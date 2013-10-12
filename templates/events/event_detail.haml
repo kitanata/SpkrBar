@@ -12,38 +12,38 @@
 
   #event-detail
     - if speakers
-      .row
+      .row-fluid
         .section-title
           %h2 Speakers
 
-      .row.buffer
+      .row-fluid.buffer
         - for profile in speakers
           {% include '_speaker_span6_partial.haml' %}
 
     - if upcoming
-      .row
+      .row-fluid
         .section-title
           %h2 Upcoming Talks
 
-      .row.buffer
+      .row-fluid.buffer
         - for item in upcoming
           - include 'engagements/_talk_event_span6_detail_partial.haml'
 
     - if current
-      .row
+      .row-fluid
         .section-title
           %h2 Current Talks
 
-      .row.buffer
+      .row-fluid.buffer
         - for item in current
           - include 'engagements/_talk_event_span6_detail_partial.haml'
 
     - if past
-      .row
+      .row-fluid
         .section-title
           %h2 Past Talks
 
-      .row.buffer
+      .row-fluid.buffer
         - for item in past
           - include 'engagements/_talk_event_span6_detail_partial.haml'
 

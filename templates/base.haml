@@ -23,22 +23,22 @@
     %link{rel:"shortcut icon", href:"../assets/ico/favicon.png"}
 
   %body
-    .container-narrow
+    .container-fluid
       .masthead
-        .row
+        .row-fluid
           .span3
             %a{href:"/"}
               %img.logo{src:"{{STATIC_URL}}img/logo.png"}
           .span9
-            .row
-              .span9
+            .row-fluid
+              .span12
                 .search.pull-right
                   %form{method:"GET", action:"/search"}
                     %input.search-query{name:"query", type:"text", placeholder:"Search"}
                     %button.btn.btn-warning
                       %i.icon-search
-            .row
-              .span9
+            .row-fluid
+              .span12
                 %ul.nav.nav-pills.pull-right
                   %li
                     %a{href:"/talks"}
@@ -103,7 +103,7 @@
       - block 'content-container'
         - block 'subnav-container' 
           .subnav
-            .row
+            .row-fluid
               .span6
                 %h2
                   - block 'title'
@@ -111,12 +111,6 @@
               .span6{style:"position: relative;"}
                 .nav.btn-group.pull-right
                   - block 'subnav'
-                    %a.btn.btn-warning{href:"#"}
-                      Example
-                    %a.btn.btn-warning{href:"#"}
-                      Example
-                    %a.btn.btn-warning{href:"#"}
-                      Example
                 #notifications
 
         - block 'callout'

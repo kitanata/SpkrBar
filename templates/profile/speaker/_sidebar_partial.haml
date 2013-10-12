@@ -1,13 +1,11 @@
-.row
-  .span3
-    {% include 'profile/_tags_partial.haml' %}
-  .span3{style:"margin-top: 40px"}
-    {% include 'profile/_links_partial.haml' %}
+.row-fluid
+  {% include 'profile/_tags_partial.haml' %}
+  {% include 'profile/_links_partial.haml' %}
 
   {% include 'profile/_followers_list_partial.haml' %}
 
   - if engagements
-    .span3{style:"margin-top: 40px"}
+    .span12{style:"margin-top: 40px"}
       %h2 Engagements
       %ul.basic-item-list
         - for item in engagements

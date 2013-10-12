@@ -1,50 +1,16 @@
 - extends 'base.haml'
 
-- block 'callout'
-  .jumbotron.callout
-    - if user.is_anonymous
-      %h3.btn-warning Conferences are social again.
-      %a.btn.btn-large.btn-warning{href:"/register"} <b>Get started</b>
-    - else
-      %h3.btn-warning Conferences are social again.
-      %a.add-talk.btn.btn-large.btn-warning{href:"#add-talk-popup"} Add your talk.
-
 - block 'subnav-container'
 
 - block 'content'
-  #index.row
-    .promo
-      .span6
-        .item
-          %i.icon-ok-circle
-          Quickly, level up your speaking skills
-      .span6
-        .item
-          %i.icon-ok-circle
-          More speaking gigs, less work
-      .span6
-        .item
-          %i.icon-ok-circle
-          Collect detailed feedback, effortlessly
-      .span6
-        .item
-          %i.icon-ok-circle 
-          Promote yourself, and your talks online
-      .span6
-        .item
-          %i.icon-ok-circle
-          Your talks, one resource
-      .span6
-        .item
-          %i.icon-ok-circle
-          Network with excellent speakers
+  .best-way
+    ~~ The best way to share, manage, and discover awesome presentations online. ~~
 
   - if talks
-    .row
+    .row-fluid
       .section-title
         %h2 Recently Updated Talks
 
-    .row
-      .talk-list
-        - for item in talks
-          - include 'talks/_talk_span6_detail_partial.haml'
+    .talk-list
+      - for item in talks
+        - include 'talks/_talk_span6_detail_partial.haml'

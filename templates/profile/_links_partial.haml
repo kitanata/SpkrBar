@@ -1,7 +1,6 @@
-
 - if profile.links.all or user == profile
-  .row
-    .span3
+  .row-fluid
+    .span12
       %h2 Links
 
 - if profile.links.all
@@ -13,9 +12,9 @@
         %i.delete-profile-link.icon-remove.pull-right{data-id:"{{link.id}}"}
 
 - if user == profile
-  .row
+  .row-fluid
     .edit-links
-      .span3
+      .span12
         %form.profile-link-form{action:"/profile/edit/link/new", method:"POST"}
           - csrf_token
           {{ link_form.type }}

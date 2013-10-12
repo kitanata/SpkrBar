@@ -5,7 +5,7 @@
     %i.icon-user
 
   - if user == profile
-    .row
+    .row-fluid
       %form.profile-photo-form{action:"/profile/edit/photo", method:"POST", enctype:"multipart/form-data"}
         {% csrf_token %}
 

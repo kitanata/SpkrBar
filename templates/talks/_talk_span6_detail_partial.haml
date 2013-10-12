@@ -1,32 +1,37 @@
-.span6
-  .talk_event
-    .header-s6
-      .title
-        - if not user.is_anonymous and item.speaker != user
-          .grid1
-            %a{href:"{{item.get_absolute_url}}"}
-              {{ item.name|truncatechars:48 }}
-            %br by {{ item.speaker.get_full_name }}
+.talk_event
+  .header-s6
+    .title
+      - if not user.is_anonymous and item.speaker != user
+        .grid1
+          %a{href:"{{item.get_absolute_url}}"}
+            {{ item.name|truncatechars:48 }}
+          %br by {{ item.speaker.get_full_name }}
 
-          .grid2
-            .btn-group
-              - if user not in item.endorsements.all
-                %a.btn.btn-warning{href:"/talk/{{item.id}}/endorse?last={{last}}", data-original-title:"Endorse Talk", data-toggle:"tooltip"}
-                  %i.icon-thumbs-up
-              - else
-                %a.btn.disabled.btn-warning
-                  %i.icon-thumbs-up
+        .grid2
+          .btn-group
+            - if user not in item.endorsements.all
+              %a.btn.btn-warning{href:"/talk/{{item.id}}/endorse?last={{last}}", data-original-title:"Endorse Talk", data-toggle:"tooltip"}
+                %i.icon-thumbs-up
+            - else
+              %a.btn.disabled.btn-warning
+                %i.icon-thumbs-up
 
-        - else
-          %div
-            %a{href:"{{item.get_absolute_url}}"}
-              {{ item.name|truncatechars:38 }}
-            %br by {{ item.speaker.get_full_name }}
+      - else
+        %div
+          %a{href:"{{item.get_absolute_url}}"}
+            {{ item.name|truncatechars:38 }}
+          %br by {{ item.speaker.get_full_name }}
 
-    .description
-      - if item.tags.all
-        .tag-cloud.pull-left
-          - for tag in item.tags.all
-            .label.label-info {{ tag.name }}
-      %span {{ item.abstract|truncatechars:140 }}
-      .clearfix
+  .speaker-media
+    - if item.speaker.photo
+      %img{src:"{{MEDIA_URL}}{{ item.speaker.photo }}"}
+    - else
+      %i.icon-user
+
+  .tag-cloud
+    - if item.tags.all
+     - for tag in item.tags.all|slice:":4"
+        .label.label-info {{tag|title}}
+
+  .description
+    .abstract {{ item.abstract|truncatechars:140 }}

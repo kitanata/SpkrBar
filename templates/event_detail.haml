@@ -1,12 +1,12 @@
 - extends 'base.haml'
 
-- block 'subnav-container'
+- block 'title'
+  %h3 {{ name }}
 
 - block 'content'
   #event-header
-    .row
+    .row-fluid
       .span4
-        %h3 {{ name }}
         %h4 
           .label.label-info {{ speakers|length }}
           .desc Speakers
@@ -25,21 +25,21 @@
         %p
           #map
 
-  .row
+  .row-fluid
     .section-title
       %h2 Speakers
 
-  .row
-    .talk-list
+  .row-fluid
+    .speaker-list
       - for profile in speakers
         - include '_speaker_span6_partial.haml'
 
   - for year, engs in talks.items
-    .row
+    .row-fluid
       .section-title
         %h2 {{name}} - {{year}}
 
-    .row
+    .row-fluid
       .talk-list
         - for item in engs
           - include 'engagements/_talk_event_span6_detail_partial.haml'

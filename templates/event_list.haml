@@ -6,26 +6,25 @@
 - block 'subnav'
 
 - block 'content'
-  .row
+  .row-fluid
     .event-list
       - for event in events
-        .span6
-          .event
-            .title
-              %a{href:"/event/{{event.name|slugify}}"}
-                {{event.name}}
-                %i.icon-bullhorn.pull-right
-                  = event.numtalks
-            .start-date
-              Starting On {{event.earliest_date}} at {{event.earliest_time}}
-            .end-date
-              Ending On {{event.latest_date}} at {{event.latest_time}}
+        .event
+          .title
+            %a{href:"/event/{{event.name|slugify}}"}
+              {{event.name}}
+              %i.icon-bullhorn.pull-right
+                = event.numtalks
+          .start-date
+            Starting On {{event.earliest_date}} at {{event.earliest_time}}
+          .end-date
+            Ending On {{event.latest_date}} at {{event.latest_time}}
 
-            - if event.tags
-              .event-tag-area
-                - for tag in event.tags
-                  .label.label-info
-                    %span.count
-                      {{tag.0}}
-                    %span.name
-                      {{tag.1|title}}
+          - if event.tags
+            .event-tag-area
+              - for tag in event.tags
+                .label.label-info
+                  %span.count
+                    {{tag.0}}
+                  %span.name
+                    {{tag.1|title}}
