@@ -8,7 +8,6 @@ SpkrBar.Views.TalkEdit = Backbone.View.extend
     initialize: (options) ->
         @listenTo(@model, "change", @render)
 
-
     render: ->
         source = $(@template).html()
         template = Handlebars.compile(source)
@@ -27,7 +26,7 @@ SpkrBar.Views.TalkEdit = Backbone.View.extend
             width: "780px"
             height: "500px"
 
-        $("#talk-abstract").markItUp();
- 
+        $("#talk-abstract").markItUp(SpkrBar.markdownSettings);
+
     onSaveTalk: ->
 

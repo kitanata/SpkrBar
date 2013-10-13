@@ -14,5 +14,4 @@
 //= require bootstrap-datepicker
 //= require jquery.colorbox-min
 //= require jquery.markitup
-//= require markitup.set
 //= require django-csrf
