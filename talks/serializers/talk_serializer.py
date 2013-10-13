@@ -7,7 +7,6 @@ from talk_video_serializer import TalkVideoSerializer
 from talk_comment_serializer import TalkCommentSerializer
 
 class TalkSerializer(serializers.ModelSerializer):
-    speaker = UserSerializer()
     comments = TalkCommentSerializer()
 
     class Meta:

@@ -12,7 +12,7 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         "click #edit-talk": "onClickEditTalk"
         "click #delete-talk": "onClickDeleteTalk"
         "click #create-engagement": "onClickCreateEngagement"
-        "click .publish-talk": "onClickPublishTalk"
+        "click #publish-talk": "onClickPublishTalk"
         "click .delete-slide": "onClickDeleteSlide"
         "click .delete-video": "onClickDeleteVideo"
 
@@ -26,6 +26,7 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         @slides = new Backbone.Collection()
         @videos = new Backbone.Collection()
         @engagements = new Backbone.Collection()
+        @speaker = new SpkrBar.Models.User()
 
         @locations = new SpkrBar.Collections.Locations()
 
@@ -35,6 +36,7 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         @listenTo(@videos, "change add remove", @invalidate)
         @listenTo(@engagements, "change add remove", @buildEngagementViews)
         @listenTo(@model, "change", @invalidate)
+        @listenTo(@speaker, "change", @invalidate)
 
         @locations.fetch
             success: =>
@@ -51,6 +53,9 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         links = @model.get 'links'
         slides = @model.get 'slides'
         videos = @model.get 'videos'
+
+        @speaker.id = @model.get('speaker')
+        @speaker.fetch()
 
         _(engagements).each (x) =>
             engagementModel = new SpkrBar.Models.Engagement
@@ -126,7 +131,7 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         user.id != 0
 
     userOwnsContent: ->
-        user.id == @model.get('speaker').id
+        user.id == @speaker.id
 
     userEndorsed: ->
         user.id in @model.get('endorsements')
@@ -147,11 +152,11 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         userEndorsed: @userEndorsed()
         numEndorsements: @model.get('endorsements').length
         published: @model.get('published')
-        speakerName: @model.get('speaker').full_name
-        speakerUrl: @model.get('speaker').url
+        speakerName: @speaker.get('full_name')
+        speakerUrl: @speaker.get('url')
         name: @model.get('name')
         abstract: markdown.toHTML(@model.get('abstract'))
-        photo: @model.get('speaker').photo
+        photo: @speaker.get('photo')
         slides: @slides.map (x) -> {'id': x.id, 'embed_code': x.get('embed_code')}
         videos: @videos.map (x) -> {'id': x.id, 'embed_code': x.get('embed_code')}
         comments: @model.get('comments')
@@ -251,7 +256,11 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
     onClickEditTalk: ->
         editor = new SpkrBar.Views.TalkEdit
             model: @model
-        editor.render()
+
+        $.colorbox
+            html: editor.render().el
+            width: "700px"
+            height: "520px"
 
     onClickDeleteTalk: ->
         $.colorbox

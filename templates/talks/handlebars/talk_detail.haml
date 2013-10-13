@@ -13,10 +13,10 @@
             {{#if userLoggedIn}}
               {{#if userOwnsContent}}
                 {{#if published }}
-                  %button.publish-talk.btn.btn-warning{data-toggle:"tooltip", data-original-title:"Hide Talk"}
+                  %button#publish-talk.btn.btn-warning{data-toggle:"tooltip", data-original-title:"Hide Talk"}
                     %i.icon-eye-close
                 {{else}}
-                  %button.publish-talk.btn.btn-warning{data-toggle:"tooltip", data-original-title:"Publish Talk"}
+                  %button#publish-talk.btn.btn-warning{data-toggle:"tooltip", data-original-title:"Publish Talk"}
                     %i.icon-eye-open
                 {{/if}}
                   %button#create-engagement.btn.btn-warning{data-toggle:"tooltip", data-original-title:"Create Engagement"}
@@ -57,7 +57,6 @@
 
             .span9
               .talk-detail
-                %h3 Abstract
                 %p {{{ abstract }}}
 
         .row-fluid
@@ -90,6 +89,7 @@
                       %input.add-talk-tag.btn.btn-warning{type:"submit", value:"Tag this talk"}
                   {{/if}}
 
+            .row-fluid
               .span12
                 #talk-links
                   {{#if showLinks}}

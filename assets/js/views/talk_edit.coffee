@@ -2,9 +2,6 @@ SpkrBar.Views.TalkEdit = Backbone.View.extend
     className: "talk-edit"
     template: "#talk-edit-templ"
 
-    events:
-        "click #submit-talk": "onSaveTalk"
-
     initialize: (options) ->
         @listenTo(@model, "change", @render)
 
@@ -21,11 +18,14 @@ SpkrBar.Views.TalkEdit = Backbone.View.extend
         abstract: @model.get('abstract')
 
     afterRender: ->
-        $.colorbox
-            html: @$el.html()
-            width: "700px"
-            height: "520px"
-
-        $("#talk-abstract").markItUp(SpkrBar.markdownSettings);
+        @$el.find("#talk-abstract").markItUp(SpkrBar.markdownSettings);
+        @$el.find("#submit-talk").on 'click', =>
+            @onSaveTalk()
 
     onSaveTalk: ->
+        @model.set 'name', $('#talk-name').val()
+        @model.set 'abstract', $('#talk-abstract').val()
+
+        @model.save null, 
+            success: =>
+                $.colorbox.close()
