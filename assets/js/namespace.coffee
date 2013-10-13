@@ -3,10 +3,13 @@ window.SpkrBar =
     Collections: {}
     Views: {}
     markdownTitle: (markItUp, char) ->
-        '\n'+[heading += char for x in $.trim(markItUp.selection||markItUp.placeHolder)]+'\n'
+        heading = Array($.trim(markItUp.selection||markItUp.placeHolder).length + 1).join char
+        '\n'+heading+'\n'
     markdownSettings: 
         nameSpace: 'markdown'
-        previewParserPath: '~/sets/markdown/preview.php'
+        previewParser: (content) -> markdown.toHTML(content)
+        previewAutoRefresh: true
+        previewInWindow: true
         onShiftEnter: 
             keepDefault:false
             openWith:'\n\n'

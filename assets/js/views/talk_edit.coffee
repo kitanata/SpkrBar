@@ -23,10 +23,9 @@ SpkrBar.Views.TalkEdit = Backbone.View.extend
     afterRender: ->
         $.colorbox
             html: @$el.html()
-            width: "780px"
-            height: "500px"
+            width: "700px"
+            height: "520px"
 
         $("#talk-abstract").markItUp(SpkrBar.markdownSettings);
 
     onSaveTalk: ->
-

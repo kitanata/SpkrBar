@@ -295,3 +295,5 @@ GEARS_PUBLIC_ASSETS = (
     r'^js/script\.js$',
     r'^vendor/js/script\.js$',
 )
+
+GEARS_FINGERPRINTING = False

@@ -5,9 +5,12 @@
 body {
 /*	background-color:#3875D7;*/
 }
+.markdown {
+	margin-left: -9px;
+	width: 600px;
+}
 .markItUp  {
 	background-color:white;
-	padding:13px;
 }
 .markItUp * {
 	margin:0px; padding:0px;
@@ -39,11 +42,11 @@ body {
 	border:0px solid white;
 }
 .markItUpPreviewFrame	{
-	overflow:auto;
 	background-color:#FFFFFF;
 	width:99.9%;
-	height:350px;
-	margin:5px 0;
+	height:200px;
+	overflow:scroll;
+	border: none;
 }
 .markItUpHeader {
 	width:650px;
