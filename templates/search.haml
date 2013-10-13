@@ -16,8 +16,9 @@
       .span12
         .section
           .row-fluid
-            - for item in talks
-              - include 'engagements/_talk_event_span6_detail_partial.haml'
+            .talk-list
+              - for item in talks
+                - include 'talks/_talk_span6_detail_partial.haml'
 
   - if speakers
     .row-fluid
@@ -27,8 +28,9 @@
       .span12
         .section
           .row-fluid
-            - for profile in speakers
-              {% include '_speaker_span6_partial.haml' %}
+            .speaker-list
+              - for profile in speakers
+                {% include '_speaker_span6_partial.haml' %}
 
   - if events
     .row-fluid
@@ -37,9 +39,10 @@
     .row-fluid
       .span12
         .section
-          .event-list.row-fluid{style:"margin-bottom:40px"}
-            - for event in events
-              - include 'events/_event_span6_detail_partial.haml'
+          .row-fluid{style:"margin-bottom:40px"}
+            .event-list
+              - for event in events
+                - include 'events/_event_span6_detail_partial.haml'
 
 - block 'scripts'
   - if events
