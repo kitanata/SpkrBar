@@ -19,6 +19,7 @@ from rest_talk_link_detail import TalkLinkDetail
 
 from rest_talk_slide_deck_detail import TalkSlideDeckDetail
 from rest_talk_video_detail import TalkVideoDetail
+from rest_talk_comment_detail import TalkCommentDetail
 
 __all__ = [
     "talk_list", "talk_new", "talk_edit", "talk_delete", "talk_detail",
@@ -27,5 +28,6 @@ __all__ = [
     "TalkDetail", 
     "TalkTagList", "TalkTagDetail",
     "TalkLinkList", "TalkLinkDetail",
-    'TalkSlideDeckDetail', 'TalkVideoDetail'
+    'TalkSlideDeckDetail', 'TalkVideoDetail',
+    'TalkCommentDetail'
     ]

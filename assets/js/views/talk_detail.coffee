@@ -13,12 +13,14 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         "click #delete-talk": "onClickDeleteTalk"
         "click #create-engagement": "onClickCreateEngagement"
         "click #publish-talk": "onClickPublishTalk"
+        "click #submit-comment": "onClickSubmitComment"
         "click .delete-slide": "onClickDeleteSlide"
         "click .delete-video": "onClickDeleteVideo"
 
     initialize: (options) ->
         @shouldRender = false
         @engagementViews = []
+        @commentViews = []
 
         @allTags = new SpkrBar.Collections.TalkTags()
         @tags = new Backbone.Collection()
@@ -53,6 +55,7 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         links = @model.get 'links'
         slides = @model.get 'slides'
         videos = @model.get 'videos'
+        comments = @model.get 'comments'
 
         @speaker.id = @model.get('speaker')
         @speaker.fetch()
@@ -88,6 +91,21 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
                 success: =>
                     @videos.push videoModel
 
+        _(comments).each (x) =>
+            commentModel = new SpkrBar.Models.TalkComment
+                id: x
+            commentModel.fetch
+                success: =>
+                    commenter = new SpkrBar.Models.User
+                        id: commentModel.get('commenter')
+                    commenter.fetch
+                        success: =>
+                            commentView = new SpkrBar.Views.Comment
+                                parent: @
+                                model: commentModel
+                                commenter: commenter
+                            @commentViews.push commentView
+
     render: ->
         console.log "Render"
         source = $(@template).html()
@@ -114,6 +132,9 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         _(@engagementViews).each (enView) =>
             $('#engagement-list-region').append enView.render().el
 
+        _(@commentViews).each (comView) =>
+            $('.root-comment-list').append comView.render().el
+
     buildEngagementViews: ->
         console.log "buildEngagementViews"
         @engagementViews = []
@@ -128,7 +149,7 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         @invalidate()
 
     userLoggedIn: ->
-        user.id != 0
+        user != null
 
     userOwnsContent: ->
         user.id == @speaker.id
@@ -159,11 +180,15 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         photo: @speaker.get('photo')
         slides: @slides.map (x) -> {'id': x.id, 'embed_code': x.get('embed_code')}
         videos: @videos.map (x) -> {'id': x.id, 'embed_code': x.get('embed_code')}
-        comments: @model.get('comments')
         showTags: @showTags()
         showLinks: @showLinks()
         tags: @tags.map (x) -> {'id': x.id, 'tag': x.get('name')}
         links: @links.map (x) -> {'id': x.id, 'name': x.get('name'), 'url': x.get('url')}
+
+    deleteComment: (comView) ->
+        @commentViews = _(@commentViews).without comView
+        comView.model.destroy()
+        @invalidate()
 
     onAddTalkTag: ->
         name = $('#new-talk-tag-name').val()
@@ -280,3 +305,18 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         $.colorbox
             html: createEngagementView.render().el
             width: "514px"
+
+    onClickSubmitComment: ->
+        newComment = new SpkrBar.Models.TalkComment
+            talk: @model.id
+            commenter: user.id
+            comment: $('#comment-area').val()
+
+        newComment.save null,
+            success: =>
+                commentView = new SpkrBar.Views.Comment
+                    parent: @
+                    model: newComment
+                    commenter: user
+                @commentViews.push commentView
+                @invalidate()

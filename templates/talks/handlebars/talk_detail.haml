@@ -196,21 +196,13 @@
                   %hr
 
                   {{#if userLoggedIn }}
-                    %form.add-comment-form{action:"/talk/{{talk.id}}/comment/new", method:"POST"}
-                      %textarea{name:'comment', placeholder:"Add your comment..."}
-                      %button.btn.btn-warning{type:"submit"}
-                        Submit Comment
+                    %textarea#comment-area{placeholder:"Add your comment..."}
+                    %button#submit-comment.btn.btn-warning
+                      Submit Comment
                   {{/if}}
 
-                  {{#if comments}}
-                    %ul
-                      - for comment in talk.talkcomment_set.all
-                        %li
-                          %h4 {{comment.commenter.get_full_name}} said...
-                          %p {{comment.comment}}
-                  {{else}}
-                    No comments yet.
-                  {{/if}}
+                  %ul
+                    .root-comment-list
 
                   {{#unless userLoggedIn}}
                     .login-to-comment{style:"margin-top:20px;"}
