@@ -91,18 +91,18 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
                 success: =>
                     @videos.push videoModel
 
-        _(comments).each (x) =>
-            commentModel = new SpkrBar.Models.TalkComment
-                id: x
-            commentModel.fetch
-                success: =>
+        @model.get('comments').fetch
+            success: =>
+                console.log "callback"
+                @model.get('comments').each (x) =>
                     commenter = new SpkrBar.Models.User
-                        id: commentModel.get('commenter')
+                        id: x.get('commenter')
+
                     commenter.fetch
                         success: =>
                             commentView = new SpkrBar.Views.Comment
                                 parent: @
-                                model: commentModel
+                                model: x 
                                 commenter: commenter
                             @commentViews.push commentView
 
@@ -152,10 +152,13 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         user != null
 
     userOwnsContent: ->
-        user.id == @speaker.id
+        user != null and user.id == @speaker.id
 
     userEndorsed: ->
-        user.id in @model.get('endorsements')
+        if user == null
+            return false
+        else
+            user.id in @model.get('endorsements')
 
     userRated: ->
         user.id in @model.get('ratings')
@@ -316,6 +319,7 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
             success: =>
                 commentView = new SpkrBar.Views.Comment
                     parent: @
+                    talk: @model
                     model: newComment
                     commenter: user
                 @commentViews.push commentView

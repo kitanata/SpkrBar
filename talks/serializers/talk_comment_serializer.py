@@ -10,5 +10,6 @@ class TalkCommentSerializer(serializers.ModelSerializer):
             'talk',
             'commenter',
             'comment',
+            'children',
             'updated_at',
             'created_at')

@@ -23,7 +23,7 @@ SpkrBar.Views.Engagement = Backbone.View.extend
         @
 
     userOwned: ->
-        user.id == @talk.get('speaker').id
+        user != null and user.id == @talk.get('speaker').id
 
     eventUrl: ->
         "/event/" + _.str.slugify(@model.get('event_name'))

@@ -1,4 +1,4 @@
-SpkrBar.Models.Talk = Backbone.Model.extend
+SpkrBar.Models.Talk = Backbone.RelationalModel.extend
     defaults:
         speaker: null
         created_at: ""
@@ -14,6 +14,16 @@ SpkrBar.Models.Talk = Backbone.Model.extend
         slides: []
         videos: []
 
-    initialize: ->
+    relations: [
+        {
+            type: Backbone.HasMany
+            key: 'comments'
+            relatedModel: 'SpkrBar.Models.TalkComment'
+            collectionType: 'SpkrBar.Collections.TalkComments'
+            reverseRelation: {
+                key: 'talk'
+            }
+        }
+    ]
 
     urlRoot: "/rest/talk"

@@ -2,7 +2,7 @@ from django.conf.urls import patterns, url
 
 from views import TalkDetail, TalkTagList, TalkTagDetail
 from views import TalkLinkList, TalkLinkDetail, TalkSlideDeckDetail
-from views import TalkVideoDetail, TalkCommentDetail
+from views import TalkVideoDetail, TalkCommentDetail, TalkCommentList
 
 urlpatterns = patterns('',
 
@@ -33,6 +33,7 @@ urlpatterns = patterns('',
     url(r'^rest/talk_comment$', TalkCommentDetail.as_view(
         actions={'post': 'create'})),
 
+    url(r'^rest/talk/(?P<talk_id>\d*)/comments$', TalkCommentList.as_view()),
     url(r'^rest/talk/(?P<pk>\d*)$', TalkDetail.as_view(
         actions={'get': 'retrieve', 'put': 'update', 'delete':'destroy'})),
 
@@ -41,7 +42,6 @@ urlpatterns = patterns('',
     url(r'^talk/(?P<talk_id>\d+)/edit$', 'talks.views.talk_edit'),
     url(r'^talk/(?P<talk_id>\d+)/delete$', 'talks.views.talk_delete'),
 
-    url(r'^talk/(?P<talk_id>\d+)/comment/new$', 'talks.views.talk_comment_new'),
     url(r'^talk/(?P<talk_id>\d+)/endorse$', 'talks.views.talk_endorsement_new'),
 
     url(r'^talk/(?P<talk_id>\d+)/slides/new$', 'talks.views.talk_slides_new'),

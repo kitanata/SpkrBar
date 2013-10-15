@@ -3,6 +3,7 @@
 //= require underscore.string.min
 //= require backbone
 //= require backbone-validation
+//= require backbone-relational
 //= require handlebars
 //= require moment.min
 //= require markdown.min

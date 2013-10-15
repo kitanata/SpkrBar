@@ -5,4 +5,4 @@ from rest_framework import generics, permissions, viewsets
 class UserDetail(generics.RetrieveUpdateAPIView):
     queryset = SpkrbarUser.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
