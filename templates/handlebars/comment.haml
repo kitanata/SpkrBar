@@ -1,9 +1,9 @@
 {% verbatim %}
   %script#comment-templ{type:"text/x-handlebars-template"}
     %li
-      %h4 On {{created_at}}, {{commenter}} said...
+      %h4 {{created_at}} {{commenter}} said...
       %p {{comment}}
-      .edit-reply-area{style:"display:none;"}
+      .edit-reply-area{data-id:"{{id}}", style:"display:none;"}
         %textarea.comment-area{data-id:"{{id}}", placeholder:"Add your comment..."}
         %button.submit-comment.btn.btn-warning{data-id:"{{id}}"}
           Submit Comment
@@ -16,5 +16,5 @@
           {{/if}}
         {{/if}}
       %ul
-        .comment-list
+        .comment-list{data-id:"{{id}}"}
 {% endverbatim %}

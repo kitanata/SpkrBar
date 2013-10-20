@@ -28,7 +28,6 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         @slides = new Backbone.Collection()
         @videos = new Backbone.Collection()
         @engagements = new Backbone.Collection()
-        @speaker = new SpkrBar.Models.User()
 
         @locations = new SpkrBar.Collections.Locations()
 
@@ -38,7 +37,6 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         @listenTo(@videos, "change add remove", @invalidate)
         @listenTo(@engagements, "change add remove", @buildEngagementViews)
         @listenTo(@model, "change", @invalidate)
-        @listenTo(@speaker, "change", @invalidate)
 
         @locations.fetch
             success: =>
@@ -56,9 +54,6 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         slides = @model.get 'slides'
         videos = @model.get 'videos'
         comments = @model.get 'comments'
-
-        @speaker.id = @model.get('speaker')
-        @speaker.fetch()
 
         _(engagements).each (x) =>
             engagementModel = new SpkrBar.Models.Engagement
@@ -91,20 +86,35 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
                 success: =>
                     @videos.push videoModel
 
+
         @model.get('comments').fetch
             success: =>
-                console.log "callback"
-                @model.get('comments').each (x) =>
-                    commenter = new SpkrBar.Models.User
-                        id: x.get('commenter')
+                comments = new Backbone.Collection @model.get('comments').models
+                views = _([])
 
-                    commenter.fetch
-                        success: =>
+                while comments.length != 0
+                    comment = comments.shift()
+
+                    if comment.get('parent') == null
+                        commentView = new SpkrBar.Views.Comment
+                            talk: @model
+                            parent: @
+                            model: comment
+                        @commentViews.push commentView
+                        views.push commentView
+                    else
+                        parent = views.find (y) =>
+                            y.model == comment.get('parent')
+
+                        if parent
                             commentView = new SpkrBar.Views.Comment
-                                parent: @
-                                model: x 
-                                commenter: commenter
-                            @commentViews.push commentView
+                                talk: @model
+                                parent: parent
+                                model: comment
+                            parent.childComments.push commentView
+                            views.push commentView
+                        else
+                            comments.push comment
 
     render: ->
         console.log "Render"
@@ -152,7 +162,7 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         user != null
 
     userOwnsContent: ->
-        user != null and user.id == @speaker.id
+        user != null and user.id == @model.get('speaker').id
 
     userEndorsed: ->
         if user == null
@@ -176,11 +186,11 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         userEndorsed: @userEndorsed()
         numEndorsements: @model.get('endorsements').length
         published: @model.get('published')
-        speakerName: @speaker.get('full_name')
-        speakerUrl: @speaker.get('url')
+        speakerName: @model.get('speaker').get('full_name')
+        speakerUrl: @model.get('speaker').get('url')
         name: @model.get('name')
         abstract: markdown.toHTML(@model.get('abstract'))
-        photo: @speaker.get('photo')
+        photo: @model.get('speaker').get('photo')
         slides: @slides.map (x) -> {'id': x.id, 'embed_code': x.get('embed_code')}
         videos: @videos.map (x) -> {'id': x.id, 'embed_code': x.get('embed_code')}
         showTags: @showTags()
@@ -311,8 +321,9 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
 
     onClickSubmitComment: ->
         newComment = new SpkrBar.Models.TalkComment
-            talk: @model.id
-            commenter: user.id
+            talk: @model
+            parent: null
+            commenter: user
             comment: $('#comment-area').val()
 
         newComment.save null,

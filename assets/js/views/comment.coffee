@@ -11,11 +11,11 @@ SpkrBar.Views.Comment = Backbone.View.extend
     initialize: (options) ->
         @talk = options.talk
         @parent = options.parent
-        @commenter = options.commenter
         @mode = 'read'
-        @commentViews = []
+        @childComments = []
 
         @listenTo(@model, "change", @render)
+        @listenTo(@model.get('commenter'), "change", @render)
 
     render: ->
         source = $(@template).html()
@@ -27,64 +27,104 @@ SpkrBar.Views.Comment = Backbone.View.extend
         @
 
     afterRender: ->
-        _(@commentViews).each (comView) =>
-            @$el.find('.comment-list').append comView.render().el
+        _(@childComments).each (comView) =>
+            @$el.find('.comment-list[data-id=' + @model.id + ']').append comView.render().el
+
+        @delegateEvents()
 
     userLoggedIn: ->
         user != null
 
     userOwnsComment: ->
-        user.id == @commenter.id
+        user.id == @model.get('commenter').id
 
     context: ->
         userLoggedIn: @userLoggedIn()
         userOwnsComment: @userOwnsComment()
         id: @model.id
-        created_at: @model.get('created_at')
-        commenter: @commenter.get('full_name')
+        created_at: _.str.capitalize(moment(@model.get('created_at')).fromNow())
+        commenter: @model.get('commenter').get('full_name')
         comment: @model.get('comment')
 
-    onClickReply: ->
+    onClickReply: (el) ->
+        commentId = $(el.currentTarget).data('id')
+
+        if commentId != @model.id
+            return false
+
         if @mode == 'reply'
-            @$el.find('.edit-reply-area').toggle()
+            @$el.find('.edit-reply-area[data-id=' + commentId + ']').toggle()
         else
-            @$el.find('.edit-reply-area').show()
+            @$el.find('.edit-reply-area[data-id=' + commentId + ']').show()
             @mode = 'reply'
 
-        @$el.find('.comment-area').val ""
-        @$el.find('.submit-comment').text "Reply"
+        @$el.find('.comment-area[data-id=' + commentId + ']').val ""
+        @$el.find('.submit-comment[data-id=' + commentId + ']').text "Reply"
 
-    onClickEdit: ->
+        el.stopPropagation()
+
+    onClickEdit: (el) ->
+        commentId = $(el.currentTarget).data('id')
+
+        if commentId != @model.id
+            return true
+
         if @mode == 'edit'
-            @$el.find('.edit-reply-area').toggle()
+            @$el.find('.edit-reply-area[data-id=' + commentId + ']').toggle()
         else
-            @$el.find('.edit-reply-area').show()
+            @$el.find('.edit-reply-area[data-id=' + commentId + ']').show()
             @mode = 'edit'
 
-        @$el.find('.comment-area').val @model.get('comment')
-        @$el.find('.submit-comment').text "Save"
+        @$el.find('.comment-area[data-id=' + commentId + ']').val @model.get('comment')
+        @$el.find('.submit-comment[data-id=' + commentId + ']').text "Save"
 
-    onClickDelete: ->
-        @parent.deleteComment(@)
+        el.stopPropagation()
 
-    onClickSubmit: ->
+    onClickDelete: (el) ->
+        commentId = $(el.currentTarget).data('id')
+
+        if commentId != @model.id
+            return true
+
+        if @model.get('children').length != 0
+            @model.set 'comment', "[DELETED]"
+            @model.save()
+        else
+            @parent.deleteComment(@)
+
+        el.stopPropagation()
+
+    onClickSubmit: (el) ->
+        commentId = $(el.currentTarget).data('id')
+
+        if commentId != @model.id
+            return true
+
         if @mode == 'edit'
-            @model.set 'comment', @$el.find('.comment-area').val()
+            @model.set 'comment', @$el.find('.comment-area[data-id=' + @model.id + ']').val()
             @model.save()
         else
             newComment = new SpkrBar.Models.TalkComment
-                talk: @talk.id
-                parent: @model.id
-                commenter: user.id
-                comment: @$el.find('.comment-area').val()
+                talk: @talk
+                parent: @model
+                commenter: user
+                comment: @$el.find('.comment-area[data-id=' + @model.id + ']').val()
 
             newComment.save null, 
                 success: => 
                     commentView = new SpkrBar.Views.Comment
                         parent: @
-                        talk: @parent.model
+                        talk: @talk
                         model: newComment
                         commenter: user
-                    @commentViews.push commentView
+                    @childComments.push commentView
+                    @render()
 
             @model.fetch()
+
+        el.stopPropagation()
+
+    deleteComment: (commentView) ->
+        @childComments = _(@childComments).without commentView
+        commentView.model.destroy()
+        @render()

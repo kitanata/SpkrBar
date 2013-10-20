@@ -23,6 +23,15 @@ SpkrBar.Models.Talk = Backbone.RelationalModel.extend
             reverseRelation: {
                 key: 'talk'
             }
+        },
+        {
+            type: Backbone.HasOne
+            key: 'speaker'
+            relatedModel: 'SpkrBar.Models.User'
+            reverseRelation: {
+                key: 'talks'
+            }
+            autoFetch: true
         }
     ]
 

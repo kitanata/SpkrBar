@@ -1,4 +1,4 @@
-SpkrBar.Models.User = Backbone.Model.extend
+SpkrBar.Models.User = Backbone.RelationalModel.extend
     defaults:
         username: ""
         full_name: ""
