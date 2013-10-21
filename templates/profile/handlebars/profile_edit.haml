@@ -1,0 +1,15 @@
+{% verbatim %}
+    %script#profile-edit-templ{type:"text/x-handlebars-template"}
+        #edit-profile-popup{style:"background-color: white; padding: 20px;"}
+            %h2 Edit Profile
+
+            %label{for:"profile-name"} Name:
+            %input#profile-name{name:"name", type:"text", value:"{{name}}"}
+
+            %label{for:"about-me"} About me:
+            %textarea#about-me {{about}}
+
+            %br
+            %button#submit-profile.btn.btn-warning
+                Save
+{% endverbatim %}

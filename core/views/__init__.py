@@ -26,6 +26,9 @@ from event_detail import event_detail
 from notification_detail import NotificationDetail
 from notification_list import NotificationList
 
+from rest_user_link_detail import UserLinkDetail
+from rest_user_tag_detail import UserTagDetail
+
 __all__ = [
     "index", "search",
     "register_user", "login_user", "logout_user",
@@ -34,5 +37,6 @@ __all__ = [
     "profile_tag_new", "profile_tag_delete",
     "profile_invite", "profile_invite_thanks",
     "speaker_list", "user_follow", "event_list", "event_detail",
-    "UserDetail", "NotificationDetail", "NotificationList"
+    "UserDetail", "NotificationDetail", "NotificationList",
+    "UserLinkDetail", "UserTagDetail"
 ]

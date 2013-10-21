@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, url
-from views import UserDetail, NotificationDetail, NotificationList
+from views import UserDetail, UserTagDetail, UserLinkDetail
+from views import NotificationDetail, NotificationList
 
 urlpatterns = patterns('',
     url(r'^profile/invite/thanks$', 'core.views.profile_invite_thanks'),
@@ -12,6 +13,16 @@ urlpatterns = patterns('',
 
     url(r'^profile/edit$', 'core.views.profile_edit'),
     url(r'^profile/(?P<username>[\w+.?@?\d*]*)$','core.views.profile_detail'),
+
+    url(r'^rest/user_tag/(?P<pk>\d+)$', UserTagDetail.as_view(
+        actions={'get': 'retrieve', 'put': 'update', 'delete':'destroy'})),
+    url(r'^rest/user_tag$', UserTagDetail.as_view(
+        actions={'post': 'create'})),
+
+    url(r'^rest/user_link/(?P<pk>\d+)$', UserLinkDetail.as_view(
+        actions={'get': 'retrieve', 'put': 'update', 'delete':'destroy'})),
+    url(r'^rest/user_link$', UserLinkDetail.as_view(
+        actions={'post': 'create'})),
 
     url(r'^user/(?P<username>\w+)/follow$', 'core.views.user_follow'),
     url(r'^user/(?P<user_id>\d+)/note/(?P<pk>\d+)$', NotificationDetail.as_view(

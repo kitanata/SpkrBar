@@ -13,9 +13,14 @@ class UserSerializer(serializers.ModelSerializer):
                 'id', 
                 'username', 
                 'full_name',
+                'first_name',
+                'last_name',
+                'about_me',
                 'url',
                 'photo',
                 'email', 
                 'following', 
-                'followers'
+                'followers',
+                'tags',
+                'links'
                 )

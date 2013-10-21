@@ -36,3 +36,18 @@ SpkrBar.Models.Talk = Backbone.RelationalModel.extend
     ]
 
     urlRoot: "/rest/talk"
+
+    toJSON: (options) ->
+        speaker: @get('speaker').id
+        name: @get('name')
+        abstract: @get('abstract')
+        comments: @get('comments')
+        endorsements: @get('endorsements')
+        engagements: @get('engagements')
+        links: @get('links')
+        tags: @get('tags')
+        slides: @get('slides')
+        videos: @get('videos')
+        published: @get('published')
+        created_at: @get('created_at')
+        updated_at: @get('updated_at')

@@ -1,6 +1,4 @@
 from talk_new import talk_new
-from talk_edit import talk_edit
-from talk_delete import talk_delete
 from talk_detail import talk_detail
 from talk_list import talk_list
 
@@ -22,7 +20,7 @@ from rest_talk_comment_detail import TalkCommentDetail
 from rest_talk_comment_list import TalkCommentList
 
 __all__ = [
-    "talk_list", "talk_new", "talk_edit", "talk_delete", "talk_detail",
+    "talk_list", "talk_new", "talk_detail",
     "talk_endorsement_new", "talk_video_new", "talk_photo_new", "talk_slides_new",
     "TalkDetail", 
     "TalkTagList", "TalkTagDetail",
