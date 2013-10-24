@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models import Q
 
 class Talk(models.Model):
-    speaker = models.ForeignKey('core.SpkrbarUser')
+    speaker = models.ForeignKey('core.SpkrbarUser', related_name="talks")
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -15,7 +15,7 @@ class Talk(models.Model):
         'talks.TalkTag', related_name='talks', blank=True)
 
     endorsements = models.ManyToManyField(
-            'core.SpkrbarUser', related_name='talks', blank=True)
+            'core.SpkrbarUser', related_name='endorsed_talks', blank=True)
 
     class Meta:
         app_label = 'talks'

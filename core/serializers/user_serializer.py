@@ -22,5 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
                 'following', 
                 'followers',
                 'tags',
-                'links'
+                'links',
+                'talks',
+                'engagements'
                 )

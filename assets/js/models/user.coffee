@@ -29,6 +29,16 @@ SpkrBar.Models.User = Backbone.RelationalModel.extend
             key: 'following'
             relatedModel: 'SpkrBar.Models.User'
         },
+        {
+            type: Backbone.HasMany
+            key: 'talks'
+            relatedModel: 'SpkrBar.Models.Talk'
+        },
+        {
+            type: Backbone.HasMany
+            key: 'engagements'
+            relatedModel: 'SpkrBar.Models.Engagement'
+        }
     ]
 
     urlRoot: "/user"

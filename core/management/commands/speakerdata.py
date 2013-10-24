@@ -160,6 +160,7 @@ def generate_talk(speaker):
 def generate_engagement(talk, location):
     engagement = Engagement()
     engagement.talk = talk
+    engagement.speaker = talk.speaker
     engagement.location = location
     engagement.event_name = random.choice(event_names)
     engagement.date = generate_datetime().date()

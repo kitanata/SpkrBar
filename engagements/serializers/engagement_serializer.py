@@ -15,4 +15,5 @@ class EngagementSerializer(serializers.ModelSerializer):
                 'date',
                 'time',
                 'location',
-                'talk')
+                'talk',
+                'speaker')

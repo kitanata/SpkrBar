@@ -4,6 +4,7 @@ from django.utils import formats
 
 class Engagement(models.Model):
     talk = models.ForeignKey('talks.Talk', related_name='engagements')
+    speaker = models.ForeignKey('core.SpkrbarUser', related_name='engagements')
 
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)

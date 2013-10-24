@@ -1,4 +1,4 @@
-SpkrBar.Models.Engagement = Backbone.Model.extend
+SpkrBar.Models.Engagement = Backbone.RelationalModel.extend
     defaults:
         updated_at: "2013-09-13T19:23:00.807"
         created_at: "2013-09-11T21:12:15.908"
@@ -8,6 +8,7 @@ SpkrBar.Models.Engagement = Backbone.Model.extend
         time: "18:30:00"
         location: 0
         talk: 0
+        speaker: 0
 
     initialize: ->
 

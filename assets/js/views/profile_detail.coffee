@@ -1,6 +1,9 @@
 SpkrBar.Views.ProfileDetail = Backbone.View.extend
     template: "#profile-detail-templ"
 
+    events:
+        "click .profile-photo-upload": "onClickProfilePhotoUpload"
+
     initialize: (options) ->
         @shouldRender = false
 
@@ -8,11 +11,15 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
         @listenTo(@model.get('tags'), "change add remove reset", @invalidate)
         @listenTo(@model.get('followers'), "change add remove reset", @invalidate)
         @listenTo(@model.get('following'), "change add remove reset", @invalidate)
+        @listenTo(@model.get('talks'), "change add remove reset", @invalidate)
+        @listenTo(@model.get('engagements'), "change add remove reset", @invalidate)
 
         @model.fetchRelated('links')
         @model.fetchRelated('tags')
         @model.fetchRelated('followers')
         @model.fetchRelated('following')
+        @model.fetchRelated('talks')
+        @model.fetchRelated('engagements')
 
     render: ->
         console.log "Render"
@@ -53,6 +60,13 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
         first_name: follow.get('first_name')
         photo: follow.get('photo')
 
+    mapEngagements: ->
+        engs = @model.get('engagements').map (x) -> 
+            'name': x.get('event_name')
+            'url': _.str.slugify(x.get('event_name'))
+
+        _.uniq engs, false, (x) -> x.name
+
     context: ->
         name: @model.get('full_name')
         about: @model.get('about_me')
@@ -61,11 +75,15 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
         showLinks: @showLinks()
         tags: @model.get('tags').map (x) -> {'id': x.id, 'tag': x.get('name')}
         links: @model.get('links').map (x) -> {'id': x.id, 'name': x.get('name'), 'url': x.get('url')}
+        engagements: @mapEngagements()
         numFollowing: @model.get('following').length
         numFollowers: @model.get('followers').length
         followers: @model.get('followers').map @mapFollowUser
         following: @model.get('following').map @mapFollowUser
         userOwnsContent: @userOwnsContent()
+
+    onClickProfilePhotoUpload: ->
+        console.log "Upload the photo"
         
     oldconst: ->
         $('.expert-area li .delete-profile-tag').click (el) =>
