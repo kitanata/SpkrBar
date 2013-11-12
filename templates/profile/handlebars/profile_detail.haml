@@ -158,15 +158,35 @@
                     {{/each}}
             {{/if}}
 
-            .span9
-              - if talks
-                .row-fluid
-                  .span12
-                    %h2 My Talks
+          .span9
+            {{#if showTalks}}
+              .row-fluid
+                .span12
+                  %h2 My Talks
 
-                    .talk-list{style:"padding-left:0px;margin-left:-10px;"}
-                    - for item in talks
-                      - include 'talks/_talk_span6_detail_partial.haml'
+                  .talk-list{style:"padding-left:0px;margin-left:-10px;"}
+                    {{#each talks}}
+                      .talk_event
+                        .header-s6
+                          .title
+                            .grid1
+                              %a{href:"{{url}}"}
+                                {{ name }}
+
+                            .grid2
+                              .btn-group
+                                {{#if endorsed}}
+                                  %a.btn.btn-warning{href:"{{url}}/endorse", data-original-title:"Endorse Talk", data-toggle:"tooltip"}
+                                    %i.icon-thumbs-up
+                                {{else}}
+                                  %a.btn.disabled.btn-warning
+                                    %i.icon-thumbs-up
+                                {{/if}}
+
+                        .description
+                          .abstract {{ abstract }}
+                    {{/each}}
+            {{/if}}
 
       %div{style:'display:none'}
         #delete-talk-popup{style:"background-color:white; padding: 40px;"}

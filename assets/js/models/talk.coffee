@@ -31,11 +31,16 @@ SpkrBar.Models.Talk = Backbone.RelationalModel.extend
             reverseRelation: {
                 key: 'talks'
             }
-            autoFetch: true
         }
     ]
 
     urlRoot: "/rest/talk"
+
+    userEndorsed: ->
+        if user == null
+            return false
+        else
+            user.id in @get('endorsements')
 
     toJSON: (options) ->
         speaker: @get('speaker').id

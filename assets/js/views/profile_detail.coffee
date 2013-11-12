@@ -54,6 +54,9 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
     showLinks: ->
         @model.get('links').length != 0 or @userOwnsContent()
 
+    showTalks: ->
+        @model.get('talks').length != 0 or @userOwnsContent()
+
     mapFollowUser: (follow) ->
         url: follow.get('url')
         name: follow.get('full_name')
@@ -67,14 +70,23 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
 
         _.uniq engs, false, (x) -> x.name
 
+    mapTalks: ->
+        @model.get('talks').map (x) ->
+            'name': x.get('name')
+            'abstract': x.get('abstract')
+            'url': '/talk/' + x.get('id')
+            'endorsed': x.userEndorsed()
+
     context: ->
         name: @model.get('full_name')
         about: @model.get('about_me')
         photo: @model.get('photo')
         showTags: @showTags()
         showLinks: @showLinks()
+        showTalks: @showTalks()
         tags: @model.get('tags').map (x) -> {'id': x.id, 'tag': x.get('name')}
         links: @model.get('links').map (x) -> {'id': x.id, 'name': x.get('name'), 'url': x.get('url')}
+        talks: @mapTalks()
         engagements: @mapEngagements()
         numFollowing: @model.get('following').length
         numFollowers: @model.get('followers').length

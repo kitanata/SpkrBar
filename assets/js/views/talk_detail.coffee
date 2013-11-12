@@ -37,6 +37,8 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         @listenTo(@videos, "change add remove", @invalidate)
         @listenTo(@engagements, "change add remove", @buildEngagementViews)
         @listenTo(@model, "change", @invalidate)
+        
+        @model.fetchRelated('speaker')
 
         @locations.fetch
             success: =>
@@ -164,12 +166,6 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
     userOwnsContent: ->
         user != null and user.id == @model.get('speaker').id
 
-    userEndorsed: ->
-        if user == null
-            return false
-        else
-            user.id in @model.get('endorsements')
-
     userRated: ->
         user.id in @model.get('ratings')
 
@@ -183,7 +179,7 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         id: @model.id
         userLoggedIn: @userLoggedIn()
         userOwnsContent: @userOwnsContent()
-        userEndorsed: @userEndorsed()
+        userEndorsed: @model.userEndorsed()
         numEndorsements: @model.get('endorsements').length
         published: @model.get('published')
         speakerName: @model.get('speaker').get('full_name')
