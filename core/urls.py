@@ -31,7 +31,8 @@ urlpatterns = patterns('',
         actions={'post': 'create'})),
     url(r'^user/(?P<user_id>\d+)/notes$', NotificationList.as_view()),
 
-    url(r'^user/(?P<pk>\d+)$', UserDetail.as_view()),
+    url(r'^rest/user/(?P<pk>\d+)$', UserDetail.as_view(
+        actions={'get': 'retrieve', 'put': 'update', 'delete':'destroy'})),
 
     url(r'^events$', 'core.views.event_list'),
     url(r'^event/(?P<slug>[\w+-]*)$', 'core.views.event_detail'),

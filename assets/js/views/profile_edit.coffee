@@ -14,17 +14,17 @@ SpkrBar.Views.ProfileEdit = Backbone.View.extend
         @
 
     context: ->
-        name: @model.get('name')
-        abstract: @model.get('abstract')
+        name: @model.getFullName()
+        about: @model.get('about_me')
 
     afterRender: ->
-        @$el.find("#talk-abstract").markItUp(SpkrBar.markdownSettings);
-        @$el.find("#submit-talk").on 'click', =>
-            @onSaveTalk()
+        @$el.find("#about-me").markItUp(SpkrBar.markdownSettings);
+        @$el.find("#submit-profile").on 'click', =>
+            @onSaveProfile()
 
-    onSaveTalk: ->
-        @model.set 'name', $('#talk-name').val()
-        @model.set 'abstract', $('#talk-abstract').val()
+    onSaveProfile: ->
+        @model.setFullName $('#profile-name').val()
+        @model.set 'about_me', $('#about-me').val()
 
         @model.save null, 
             success: =>

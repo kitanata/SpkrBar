@@ -3,10 +3,12 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
 
     events:
         "click .profile-photo-upload": "onClickProfilePhotoUpload"
+        "click #edit-profile": "onClickEditProfile"
 
     initialize: (options) ->
         @shouldRender = false
 
+        @listenTo(@model, "change", @invalidate)
         @listenTo(@model.get('links'), "change add remove reset", @invalidate)
         @listenTo(@model.get('tags'), "change add remove reset", @invalidate)
         @listenTo(@model.get('followers'), "change add remove reset", @invalidate)
@@ -73,13 +75,13 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
     mapTalks: ->
         @model.get('talks').map (x) ->
             'name': x.get('name')
-            'abstract': x.get('abstract')
+            'abstract': _.str.stripTags(markdown.toHTML(x.get('abstract')))
             'url': '/talk/' + x.get('id')
             'endorsed': x.userEndorsed()
 
     context: ->
-        name: @model.get('full_name')
-        about: @model.get('about_me')
+        name: @model.getFullName()
+        about: markdown.toHTML(@model.get('about_me'))
         photo: @model.get('photo')
         showTags: @showTags()
         showLinks: @showLinks()
@@ -96,6 +98,15 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
 
     onClickProfilePhotoUpload: ->
         console.log "Upload the photo"
+
+    onClickEditProfile: ->
+        editor = new SpkrBar.Views.ProfileEdit
+            model: @model
+
+        $.colorbox
+            html: editor.render().el
+            width: "700px"
+            height: "520px"
         
     oldconst: ->
         $('.expert-area li .delete-profile-tag').click (el) =>

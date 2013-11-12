@@ -10,7 +10,7 @@
               %a#show-notifications.btn.btn-warning
                 %i.icon-bell-alt
                 Alerts
-              %a.btn.btn-warning.edit-profile{href:"#edit-profile-popup", data-toggle:"tooltip", data-original-title:"Edit Profile"}
+              %a#edit-profile.btn.btn-warning{data-toggle:"tooltip", data-original-title:"Edit Profile"}
                 %i.icon-pencil
                 Edit
             {{/if}}
@@ -33,7 +33,7 @@
                     Upload Photo
               {{/if}}
           .span9
-            {{ about }}
+            {{{ about }}}
 
         .row-fluid
           .span3
@@ -198,16 +198,4 @@
 
           %a.delete-confirm-link.btn.btn-danger{href:"#", style:"margin-top: 20px;"} Yes. Delete this talk
 
-      %div{style:'display:none'}
-        #edit-profile-popup{style:"background-color:white; padding: 40px;"}
-          %h2 Edit Your Profile
-
-          %form{action:"/profile/edit", method:"POST"}
-            - csrf_token
-            %label{for:"name"} Name:
-            {{ edit_form.name }}
-            %label{for:"about"} About:
-            {{ edit_form.about_me }}
-
-            %button.btn.btn-warning{type:"submit"} Save
 {% endverbatim %}

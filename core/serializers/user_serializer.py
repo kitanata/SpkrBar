@@ -4,7 +4,6 @@ from core.models import SpkrbarUser, Notification
 from notification_serializer import NotificationSerializer
 
 class UserSerializer(serializers.ModelSerializer):
-    full_name = serializers.Field(source='get_full_name')
     url = serializers.Field(source='get_absolute_url')
 
     class Meta:
@@ -12,7 +11,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = (
                 'id', 
                 'username', 
-                'full_name',
                 'first_name',
                 'last_name',
                 'about_me',
