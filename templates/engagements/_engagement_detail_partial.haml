@@ -4,7 +4,7 @@
       - if not user.is_anonymous and item.talk.speaker != user
         .grid1
           %a{href:"{{item.talk.get_absolute_url}}"}
-            {{ item.talk.name|truncatechars:48 }}
+            {{ item.talk.name|truncatechars:42 }}
           %br by {{ item.talk.speaker.get_full_name }}
 
         .grid2
@@ -25,16 +25,16 @@
         {{ item.date }}
         %br {{ item.time }}
 
-  .speaker-media
-    - if item.speaker.photo
-      %img{src:"{{MEDIA_URL}}{{ item.speaker.photo }}"}
-    - else
-      %i.icon-user
-
   .tag-cloud
-    - if item.tags.all
-     - for tag in item.tags.all|slice:":4"
+    - if item.talk.tags.all
+     - for tag in item.talk.tags.all|slice:":4"
         .label.label-info {{tag|title}}
 
   .description
-    .abstract {{ item.talk.abstract|truncatechars:140 }}
+    .speaker-media
+      - if item.speaker.photo
+        %img{src:"{{MEDIA_URL}}{{ item.speaker.photo }}"}
+      - else
+        %i.icon-user
+
+    .abstract {{ item.talk.abstract|truncatechars:300 }}
