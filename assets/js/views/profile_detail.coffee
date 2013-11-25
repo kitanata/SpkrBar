@@ -7,6 +7,10 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
         "click #add-profile-tag": "onClickAddProfileTag"
         "keypress #new-profile-tag-name": "onKeyAddProfileTag"
         "click .delete-profile-tag": "onClickDeleteProfileTag"
+        "keypress #new-profile-link-url": "onKeyAddProfileLink"
+        "change #new-profile-link-type": "onChangeProfileLinkType"
+        "click .add-profile-link": "onClickAddProfileLink"
+        "click .delete-profile-link": "onClickDeleteProfileLink"
 
     initialize: (options) ->
         @shouldRender = false
@@ -148,23 +152,79 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
         @model.save()
 
 
-    oldconst: ->
-        $('.profile-link .delete-profile-link').click (el) =>
-            itemId = $(el.currentTarget).data('id')
-            postTo = '/profile/edit/link/' + itemId + '/delete'
+    onChangeProfileLinkType: (el) ->
+        linkType = $("#new-profile-link-type").val()
 
-            $.post postTo, =>
-                $('.profile-link[data-id=' + itemId + ']').remove()
+        $("#new-profile-link-other").hide()
 
-        $('.profile-link-form #id_type').change (el) =>
-            type = $(el.currentTarget).val()
+        if linkType == "WEB"
+            $("#new-profile-link-other").show()
 
-            if type in ['GITHUB', 'FACEBOOK', 'TWITTER']
-                $('.profile-link-form #id_url').attr('placeholder', 'URL or Username')
+        if linkType in ["WEB", "LIN", "LAN", "BLO"]
+            $("#new-profile-link-url").attr 'placeholder', 'http://'
+        else
+            $("#new-profile-link-url").attr 'placeholder', 'username or http://'
+
+
+    onKeyAddProfileLink: (el) ->
+        if el.which == 13
+            @onClickAddProfileLink(el)
+
+
+    onClickAddProfileLink: (el) ->
+        linkType = $("#new-profile-link-type").val()
+        urlTarget = $("#new-profile-link-url").val()
+
+        link = new SpkrBar.Models.UserLink
+            user: user
+            type_name: linkType
+
+        if linkType == "WEB"
+            link.set 'other_name', $("#new-profile-link-other").val()
+            link.set 'urlTarget', urlTarget
+
+        url_map = 
+            "FAC": "facebook"
+            "GIT": "github"
+            "TWI": "twitter"
+
+        parseShittyUrl = (text) ->
+            if text[0..6] == 'http://'
+                text = text[7..]
+
+            if text[0..3] == 'www'
+                text = text[4..]
+
+            if text[0] == '.'
+                text = text[1..]
+
+            "http://www." + text
+
+        if linkType in ["FAC", "GIT", "TWI"]
+            text = urlTarget
+
+            if text[0] == '@'
+                text = text[1..]
+                link.set 'url_target', "http://www." + url_map[linkType] + "/" + text
             else
-                $('.profile-link-form #id_url').attr('placeholder', 'http://')
+                link.set 'url_target', parseShittyUrl(text)
+        else
+            link.set 'url_target', parseShittyUrl(text)
+
+        link.save()
+        @model.get('links').add link
+        @model.save()
 
 
+    onClickDeleteProfileLink: (el) ->
+        linkId = $(el.currentTarget).data('id')
+        link = @model.get('links').find (x) => x.id == linkId
+        @model.get('links').remove link
+        link.destroy()
+        @model.save()
+
+
+    oldconst: ->
         @noteViews = []
         @showNotes = true
 
