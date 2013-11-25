@@ -5,7 +5,8 @@ SpkrBar.Views.NavBar = Backbone.View.extend
         "click #add-talk-navbar": "onClickAddTalk"
 
     initialize: (options) ->
-        @listenTo(user, 'change', @render)
+        if user
+            @listenTo(user, 'change', @render)
 
     render: ->
         console.log "Render"
@@ -39,10 +40,16 @@ SpkrBar.Views.NavBar = Backbone.View.extend
     userOwnsContent: ->
         user != null and user.id == @model.get('speaker').id
 
+    userProfileLink: ->
+        if user == null
+            ""
+        else
+            user.get('url')
+
     context: ->
         userLoggedIn: @userLoggedIn()
         userIsStaff: @userIsStaff()
-        profileLink: user.get('url')
+        profileLink: @userProfileLink()
 
     onClickAddTalk: ->
         editor = new SpkrBar.Views.TalkEdit

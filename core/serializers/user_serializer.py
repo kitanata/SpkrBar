@@ -10,14 +10,11 @@ class UserSerializer(serializers.ModelSerializer):
         model = SpkrbarUser
         fields = (
                 'id', 
-                'username', 
                 'is_staff',
-                'first_name',
-                'last_name',
+                'full_name',
                 'about_me',
                 'url',
                 'photo',
-                'email', 
                 'following', 
                 'followers',
                 'tags',

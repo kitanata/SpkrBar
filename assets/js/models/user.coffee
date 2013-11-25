@@ -1,9 +1,6 @@
 SpkrBar.Models.User = Backbone.RelationalModel.extend
     defaults:
-        username: ""
-        first_name: ""
-        last_name: ""
-        email: ""
+        full_name: ""
         following: []
         followers: []
         tags: []
@@ -58,7 +55,7 @@ SpkrBar.Models.User = Backbone.RelationalModel.extend
         engagements: @get('engagements').map (x) -> x.id
 
     getFullName: ->
-        return @get('first_name') + " " + @get('last_name')
+        return @get('full_name')
 
     setFullName: (fullName) ->
         words = _.str.words(fullName)

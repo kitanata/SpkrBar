@@ -17,14 +17,11 @@ def register_user(request):
         form = SpeakerRegisterForm(request.POST)
 
         if form.is_valid():
-            username = form.cleaned_data['username'].lower()
-
-            first_name = form.cleaned_data['first_name']
-            last_name = form.cleaned_data['last_name']
+            email = form.cleaned_data['email'].lower()
+            full_name = form.cleaned_data['full_name']
 
             password = form.cleaned_data['password']
             confirm = form.cleaned_data['confirm']
-            email = form.cleaned_data['email']
 
             if password != confirm:
                 errors = form._errors.setdefault("password", ErrorList())
@@ -33,18 +30,16 @@ def register_user(request):
                 return {'form': form}
 
             try:
-                user = SpkrbarUser.objects.create_user(username, email, password)
-                user.user_type = SpkrbarUser.USER_TYPE_SPEAKER
+                user = SpkrbarUser.objects.create_user(email, password)
                 user.save()
             except IntegrityError as e:
                 print e
                 errors = form._errors.setdefault("password", ErrorList())
-                errors.append("That username is taken. Try another.")
+                errors.append("That email is already being used. Try another.")
 
                 return {'form': form}
 
-            user.first_name = first_name
-            user.last_name = last_name
+            user.full_name = full_name
 
             if 'about_me' in form.cleaned_data:
                 user.about_me = form.cleaned_data['about_me']
@@ -72,7 +67,7 @@ def register_user(request):
             mes = email_template.render(Context({'message': text}))
             send_html_mail("Welcome to SpkrBar", text, mes, [user.email])
 
-            user = authenticate(username=username, password=password)
+            user = authenticate(email=email, password=password)
             login(request, user)
 
             return redirect(request.user.get_absolute_url())

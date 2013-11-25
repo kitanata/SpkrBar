@@ -107,15 +107,13 @@ def generate_talk_tags():
 
 def generate_speaker(username):
     user = SpkrbarUser.objects.create_user(
-            username,
-            'test@spkrbar.com',
+            username + '@spkrbar.com',
             'abcd1234')
 
     first_name = random.choice(user_first_names)
     last_name = random.choice(user_last_names)
 
-    user.first_name = first_name
-    user.last_name = last_name
+    user.full_name = ' '.join([first_name, last_name])
     user.about_me = user_description
     user.save()
 
@@ -173,12 +171,10 @@ def generate_engagement(talk, location):
 
 def generate_admin_user():
     user = SpkrbarUser.objects.create_superuser(
-            'raymond',
             'raymondchandleriii@gmail.com',
             'abcd1234')
 
-    user.first_name = "Raymond"
-    user.last_name = "Chandler III"
+    user.full_name = "Raymond Chandler III"
     user.about_me = "I'm a little teapot, short and stout!"
     user.save()
 
@@ -213,10 +209,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         speaker = generate_admin_user()
-
-        anon_profile = SpkrbarUser.objects.get(username="AnonymousUser")
-        anon_profile.published = False
-        anon_profile.save()
 
         print "Generating Speaker Tags"
         generate_profile_tags()

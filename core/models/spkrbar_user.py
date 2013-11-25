@@ -1,14 +1,41 @@
-from django.contrib.auth.models import AbstractBaseUser, UserManager, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 from django.db import models
 
-class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
-    username = models.CharField(max_length=30, unique=True)
-    email = models.EmailField()
+class SpkrbarUserManager(BaseUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        """
+        Creates and saves a User with the given email and password.
+        """
+        now = timezone.now()
 
-    first_name = models.CharField(max_length=300)
-    last_name = models.CharField(max_length=300)
+        if not email:
+            raise ValueError('The given email must be set')
+
+        email = SpkrbarUserManager.normalize_email(email)
+
+        user = self.model(email=email,
+                          is_staff=False, is_active=True, is_superuser=False,
+                          last_login=now, date_joined=now, **extra_fields)
+
+        user.set_password(password)
+        user.save(using=self._db)
+
+        return user
+
+    def create_superuser(self, email, password, **extra_fields):
+        u = self.create_user(email, password, **extra_fields)
+        u.is_staff = True
+        u.is_active = True
+        u.is_superuser = True
+        u.save(using=self._db)
+        return u
+
+
+class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
+    email = models.EmailField(max_length=254, unique=True)
+    full_name = models.CharField(max_length=300)
 
     about_me = models.CharField(max_length=4000, blank=True)
 
@@ -27,19 +54,19 @@ class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
     following = models.ManyToManyField('self', 
             related_name="followers", symmetrical=False)
 
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email']
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
 
-    objects = UserManager()
+    objects = SpkrbarUserManager()
 
     def get_full_name(self):
-        return u' '.join([unicode(self.first_name), unicode(self.last_name)])
+        return unicode(self.full_name)
 
     def get_short_name(self):
-        return unicode(self.first_name)
+        return unicode(self.full_name)
 
     def get_absolute_url(self):
-        return "/profile/" + self.username
+        return "/profile/" + str(self.pk)
 
     def __unicode__(self):
         return self.get_full_name()

@@ -36,10 +36,8 @@ class ProfileTagForm(forms.Form):
 
 
 class SpeakerRegisterForm(forms.Form):
-    username = forms.CharField(max_length=40)
-    first_name = forms.CharField()
-    last_name = forms.CharField()
-    email = forms.EmailField()
+    email = forms.EmailField(max_length=254)
+    full_name = forms.CharField()
     about_me = forms.CharField(max_length=1400, required=False,
             widget=forms.Textarea(attrs={'rows':6, 'cols':40}))
 
