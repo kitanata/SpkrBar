@@ -25,80 +25,7 @@
   %body
     .container-fluid
       .masthead
-        .row-fluid
-          .span3
-            %a{href:"/"}
-              %img.logo{src:"{{STATIC_URL}}img/logo.png"}
-          .span9
-            .row-fluid
-              .span12
-                .search.pull-right
-                  %form{method:"GET", action:"/search"}
-                    %input.search-query{name:"query", type:"text", placeholder:"Search"}
-                    %button.btn.btn-warning
-                      %i.icon-search
-            .row-fluid
-              .span12
-                %ul.nav.nav-pills.pull-right
-                  %li
-                    %a{href:"/talks"}
-                      %i.icon-comments-alt
-                      Talks
-                  %li
-                    %a{href:"/speakers"}
-                      %i.icon-group
-                      Speakers
-                  %li
-                    %a{href:"/events"}
-                      %i.icon-calendar
-                      Events
-
-                  - if not user.is_anonymous
-                    %li
-                      %a.add-talk{href:"#add-talk-popup"}
-                        %i.icon-plus
-                        Add Talk
-
-                  %li
-                    %a{href:"/blog"}
-                      %i.icon-file-text
-                      Blog
-
-                  - if user.is_anonymous
-                    %li
-                      %a{href:"/login"}
-                        %i.icon-signin
-                        Login
-                    %li
-                      %a{href:"/register"} Register
-                  - else
-                    %li.dropdown
-                      %a.dropdown-toggle{data-toggle:"dropdown", href:"#"}
-                        %i.icon-gear
-                        My Account
-                        %b.caret
-
-                      - if user.notification_set.all
-                        Notifications
-
-                      %ul.dropdown-menu
-                        %li
-                          %a{href:"{{user.get_absolute_url}}"}
-                            %i.icon-user
-                            My Profile
-                        %li
-                          %a{href:"/profile/invite"}
-                            %i.icon-mail-forward
-                            Send Invites
-                        - if user.is_superuser
-                          %li
-                            %a{href:"/admin"}
-                              %i.icon-gears
-                              Administration
-                        %li
-                          %a{href:"/logout"}
-                            %i.icon-signout
-                            Logout
+        #bbnavbar
 
       - block 'content-container'
         - block 'subnav-container' 
@@ -125,6 +52,9 @@
 
   - js_asset_tag 'js/script.js'
 
+  - include 'handlebars/navbar.haml'
+  - include 'talks/handlebars/talk_edit.haml'
+
   %script{type:"text/javascript"}
     - if user.is_authenticated
       var userId = {{ user.id }};
@@ -132,6 +62,9 @@
       user.fetch();
     - else
       user = null;
+
+    var navbar = new SpkrBar.Views.NavBar();
+    $('#bbnavbar').html(navbar.render().el);
 
     var $buoop = {vs:{i:9,f:20,o:11,s:5,n:9}} 
     $buoop.ol = window.onload; 

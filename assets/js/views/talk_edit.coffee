@@ -3,6 +3,12 @@ SpkrBar.Views.TalkEdit = Backbone.View.extend
     template: "#talk-edit-templ"
 
     initialize: (options) ->
+
+        unless @model
+            @editing = false
+            @model = new SpkrBar.Models.Talk()
+            @model.set 'speaker', user
+
         @listenTo(@model, "change", @render)
 
     render: ->
@@ -23,8 +29,10 @@ SpkrBar.Views.TalkEdit = Backbone.View.extend
             @onSaveTalk()
 
     onSaveTalk: ->
-        @model.set 'name', $('#talk-name').val()
-        @model.set 'abstract', $('#talk-abstract').val()
+        @model.set 'name', @$el.find('#talk-name').val()
+        @model.set 'abstract', @$el.find('#talk-abstract').val()
+
+        console.log @model
 
         @model.save null, 
             success: =>

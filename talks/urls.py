@@ -36,6 +36,8 @@ urlpatterns = patterns('',
     url(r'^rest/talk/(?P<talk_id>\d*)/comments$', TalkCommentList.as_view()),
     url(r'^rest/talk/(?P<pk>\d*)$', TalkDetail.as_view(
         actions={'get': 'retrieve', 'put': 'update', 'delete':'destroy'})),
+    url(r'^rest/talk$', TalkDetail.as_view(
+        actions={'post': 'create'})),
 
     url(r'^talk/new$', 'talks.views.talk_new'),
     url(r'^talk/(?P<talk_id>\d+)$', 'talks.views.talk_detail'),

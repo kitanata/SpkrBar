@@ -1,8 +1,6 @@
 SpkrBar.Models.Talk = Backbone.RelationalModel.extend
     defaults:
         speaker: null
-        created_at: ""
-        updated_at: ""
         name: ""
         abstract: ""
         published: false
