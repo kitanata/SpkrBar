@@ -5,11 +5,9 @@
     margin-bottom: 20px;
     padding: 10px;
 
-    span div {
-        display: inline-block;
-    }
+    .header {
+        position: relative;
 
-    .header, .header-s6, .header-s3 {
         .title {
             font-weight: 600;
             font-size: 20px;
@@ -29,32 +27,13 @@
             font-weight: bold;
         }
 
-        .grid1, .grid2 {
+        .grid1 {
             display: inline-block;
-        }
-    }
-
-    .header {
-        .grid1 {
-            width: 468px;
-        }
-
-        .grid2 {
-            margin-left: 20px;
-            width: 182px;
-            text-align: right;
-            vertical-align: top;
-        }
-    }
-
-    .header-s6 {
-        position: relative;
-
-        .grid1 {
             width: 80%;
         }
 
         .grid2 {
+            display: inline-block;
             position: absolute;
             top: 5px;
             right: 5px;
@@ -64,7 +43,6 @@
             top: 80px;
         }
     }
-
 
     .tag-cloud {
         margin-left: 4px;
@@ -101,46 +79,10 @@
             padding-top: 24px;
         }
     }
-
 }
 
 #talk {
     padding: 20px;
-
-    .talk-photo {
-        margin-top: 20px;
-
-        img {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        i {
-            display: block;
-            width: 180px;
-            margin-left: auto;
-            margin-right: auto;
-            font-size: 12em;
-            color: rgb(185, 185, 185);
-        }
-    }
-
-    .speakers {
-        list-style-type: none;
-        margin: 0px;
-
-        .speaker h4 { width: 100%; }
-
-        .speaker i { 
-            display: block;
-            width: 180px;
-            margin-left: auto;
-            margin-right: auto;
-            font-size: 12em;
-            color: rgb(185, 185, 185);
-        }
-    }
 
     .comments {
 
@@ -183,11 +125,6 @@
         margin-top: 16px;
     }
 
-    .photos img {
-        float: left;
-        padding: 10px;
-    }
-
     hr {
         margin-top: 0px;
     }
@@ -203,13 +140,6 @@
         min-height: 400px;
     }
 }
-
-.talk-header {
-    h2.short {
-        width: 540px;
-    }
-}
-
 
 .talk-list {
     display: flex;
