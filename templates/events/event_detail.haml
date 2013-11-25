@@ -27,7 +27,7 @@
 
       .row-fluid.buffer
         - for item in upcoming
-          - include 'engagements/_talk_event_span6_detail_partial.haml'
+          - include 'engagements/_engagement_detail_partial.haml'
 
     - if current
       .row-fluid
@@ -36,7 +36,7 @@
 
       .row-fluid.buffer
         - for item in current
-          - include 'engagements/_talk_event_span6_detail_partial.haml'
+          - include 'engagements/_engagement_detail_partial.haml'
 
     - if past
       .row-fluid
@@ -45,7 +45,7 @@
 
       .row-fluid.buffer
         - for item in past
-          - include 'engagements/_talk_event_span6_detail_partial.haml'
+          - include 'engagements/_engagement_detail_partial.haml'
 
 - block 'scripts'
   %script{type:"text/javascript"}
