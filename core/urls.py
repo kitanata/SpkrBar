@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, url
+from views import UserTagList
 from views import UserDetail, UserTagDetail, UserLinkDetail
 from views import NotificationDetail, NotificationList
 
@@ -8,12 +9,10 @@ urlpatterns = patterns('',
     url(r'^profile/edit/photo$', 'core.views.profile_edit_photo'),
     url(r'^profile/edit/link/new$', 'core.views.profile_link_new'),
     url(r'^profile/edit/link/(?P<link_id>\d+)/delete$', 'core.views.profile_link_delete'),
-    url(r'^profile/edit/tag/new$', 'core.views.profile_tag_new'),
-    url(r'^profile/edit/tag/(?P<tag_id>\d+)/delete$', 'core.views.profile_tag_delete'),
 
-    url(r'^profile/edit$', 'core.views.profile_edit'),
     url(r'^profile/(?P<id>\d+)$','core.views.profile_detail'),
 
+    url(r'^rest/user_tags$', UserTagList.as_view()),
     url(r'^rest/user_tag/(?P<pk>\d+)$', UserTagDetail.as_view(
         actions={'get': 'retrieve', 'put': 'update', 'delete':'destroy'})),
     url(r'^rest/user_tag$', UserTagDetail.as_view(

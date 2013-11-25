@@ -4,6 +4,9 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
     events:
         "click .profile-photo-upload": "onClickProfilePhotoUpload"
         "click #edit-profile": "onClickEditProfile"
+        "click #add-profile-tag": "onClickAddProfileTag"
+        "keypress #new-profile-tag-name": "onKeyAddProfileTag"
+        "click .delete-profile-tag": "onClickDeleteProfileTag"
 
     initialize: (options) ->
         @shouldRender = false
@@ -15,6 +18,9 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
         @listenTo(@model.get('following'), "change add remove reset", @invalidate)
         @listenTo(@model.get('talks'), "change add remove reset", @invalidate)
         @listenTo(@model.get('engagements'), "change add remove reset", @invalidate)
+
+        @allTags = new SpkrBar.Collections.UserTags()
+        @allTags.fetch()
 
         @model.fetchRelated('links')
         @model.fetchRelated('tags')
@@ -62,7 +68,7 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
     mapFollowUser: (follow) ->
         url: follow.get('url')
         name: follow.get('full_name')
-        first_name: follow.get('first_name')
+        first_name: _.str.words(follow.get('full_name'), ' ')[0]
         photo: follow.get('photo')
 
     mapEngagements: ->
@@ -107,23 +113,42 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
             html: editor.render().el
             width: "700px"
             height: "520px"
-        
+
+    onKeyAddProfileTag: (el) ->
+        if el.which == 13
+            @onClickAddProfileTag(el)
+
+            $('#new-profile-tag-name').val ''
+
+    onClickAddProfileTag: ->
+        tag_name = $('#new-profile-tag-name').val()
+
+        tag = @allTags.find (x) => x.get('name') == name
+
+        addTagToModel = (tag) =>
+            @model.get('tags').add tag
+            @model.save()
+
+        if tag
+            addTagToModel(tag)
+        else
+            newTag = new SpkrBar.Models.UserTag
+                name: tag_name
+
+            newTag.save null, 
+                success: =>
+                    addTagToModel(newTag)
+                    @allTags.add newTag
+
+
+    onClickDeleteProfileTag: (el) ->
+        tagId = $(el.currentTarget).data('id')
+        tag = @model.get('tags').find (x) => x.id == tagId
+        @model.get('tags').remove tag
+        @model.save()
+
+
     oldconst: ->
-        $('.expert-area li .delete-profile-tag').click (el) =>
-            itemId = $(el.currentTarget).data('id')
-            postTo = '/profile/edit/tag/' + itemId + '/delete'
-
-            $.post postTo, =>
-                $('.expert-area li[data-id=' + itemId + ']').remove()
-
-        $('.expert-area li .delete-profile-tag').click (el) =>
-            itemId = $(el.currentTarget).data('id')
-            postTo = '/profile/edit/tag/' + itemId + '/delete'
-
-            $.post postTo, =>
-                $('.expert-area li[data-id=' + itemId + ']').remove()
-
-
         $('.profile-link .delete-profile-link').click (el) =>
             itemId = $(el.currentTarget).data('id')
             postTo = '/profile/edit/link/' + itemId + '/delete'

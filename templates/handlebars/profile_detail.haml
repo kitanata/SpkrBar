@@ -66,8 +66,7 @@
                 .edit-tags
                   .span12
                     %input#new-profile-tag-name{name:"tag", type:"text", placeholder:"My Tag"}
-                    %button.add-profile-tag.btn.btn-warning
-                      Add Tag
+                    %input#add-profile-tag.btn.btn-warning{type:"submit", value:"Add Tag"}
             {{/if}}
 
             {{#if showLinks}}

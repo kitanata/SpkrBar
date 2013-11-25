@@ -214,7 +214,7 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         if tag
             addTagToModel(tag)
         else
-            newTags = new SpkrBar.Models.TalkTag
+            newTag = new SpkrBar.Models.TalkTag
                 name: name
 
             newTag.save null, 

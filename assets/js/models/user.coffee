@@ -42,10 +42,8 @@ SpkrBar.Models.User = Backbone.RelationalModel.extend
     urlRoot: "/rest/user"
 
     toJSON: ->
-        username: @get('username')
         email: @get('email')
-        first_name: @get('first_name')
-        last_name: @get('last_name')
+        full_name: @get('full_name')
         about_me: @get('about_me')
         following: @get('following').map (x) -> x.id
         followers: @get('followers').map (x) -> x.id
