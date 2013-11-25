@@ -6,7 +6,7 @@ from django.db.models import Q
 from engagements.models import Engagement
 from core.helpers import template
 
-@template('event_detail.haml')
+@template('events/event_detail.haml')
 def event_detail(request, slug):
     slugs = slug.split('-')
     name = ' '.join(map(lambda x: x.capitalize(), slugs))

@@ -4,15 +4,15 @@
   #talk-detail-container
 
 - block 'scripts'
-  - include 'talks/handlebars/engagement.haml'
-  - include 'talks/handlebars/create_engagement.haml'
-  - include 'talks/handlebars/talk_edit.haml'
+  - include 'handlebars/engagement.haml'
+  - include 'handlebars/create_engagement.haml'
+  - include 'handlebars/talk_edit.haml'
   - include 'talks/_popup_talk_delete_partial.haml'
   - include 'talks/_popup_talk_slides_new_partial.haml'
   - include 'talks/_popup_talk_video_new_partial.haml'
   - include 'handlebars/comment.haml'
 
-  - include 'talks/handlebars/talk_detail.haml'
+  - include 'handlebars/talk_detail.haml'
 
   %script{type:"text/javascript"}
     var talkModel = new SpkrBar.Models.Talk({id:"{{talk.id}}"});

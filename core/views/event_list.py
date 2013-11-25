@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from core.helpers import template, events_from_engagements
 from engagements.models import Engagement
 
-@template('event_list.haml')
+@template('events/event_list.haml')
 def event_list(request):
     start_date = datetime.today() - timedelta(days=14)
     end_date = datetime.today() + timedelta(days=14)

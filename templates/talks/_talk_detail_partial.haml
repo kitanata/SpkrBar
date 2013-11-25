@@ -22,16 +22,16 @@
             {{ item.name|truncatechars:38 }}
           %br by {{ item.speaker.get_full_name }}
 
-  .speaker-media
-    - if item.speaker.photo
-      %img{src:"{{MEDIA_URL}}{{ item.speaker.photo }}"}
-    - else
-      %i.icon-user
-
   .tag-cloud
     - if item.tags.all
      - for tag in item.tags.all|slice:":4"
         .label.label-info {{tag|title}}
 
   .description
+    .speaker-media
+      - if item.speaker.photo
+        %img{src:"{{MEDIA_URL}}{{ item.speaker.photo }}"}
+      - else
+        %i.icon-user
+
     .abstract {{ item.abstract|truncatechars:140 }}
