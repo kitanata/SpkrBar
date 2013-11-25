@@ -53,6 +53,7 @@
   - js_asset_tag 'js/script.js'
 
   - include 'handlebars/navbar.haml'
+  - include 'handlebars/notification.haml'
   - include 'talks/handlebars/talk_edit.haml'
 
   %script{type:"text/javascript"}
@@ -77,6 +78,3 @@
     } 
 
   - block 'scripts'
-
-  - include 'talks/_popup_talk_new_partial.haml'
-  - include 'handlebars/notification.haml'
