@@ -12,7 +12,12 @@ SpkrBar.Models.Event = Backbone.RelationalModel.extend
             type: Backbone.HasMany
             key: 'engagements'
             relatedModel: 'SpkrBar.Models.Engagement'
-        }
+        },
+        {
+            type: Backbone.HasMany
+            key: 'speakers'
+            relatedModel: 'SpkrBar.Models.User'
+        },
     ]
 
     initialize: ->

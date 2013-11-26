@@ -1,6 +1,8 @@
 SpkrBar.Models.User = Backbone.RelationalModel.extend
     defaults:
         full_name: ""
+        about_me: ""
+        photo: ""
         following: []
         followers: []
         tags: []
@@ -67,3 +69,6 @@ SpkrBar.Models.User = Backbone.RelationalModel.extend
 
         @set('first_name', words[0])
         @set('last_name', last)
+
+    userFollowingMe: ->
+        user != null and @get('followers').contains(user)
