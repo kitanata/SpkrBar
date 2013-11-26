@@ -89,6 +89,31 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
             'url': '/talk/' + x.get('id')
             'endorsed': x.userEndorsed()
 
+    mapLinks: ->
+        typemap =
+            "FAC": "My Facebook Profile"
+            "TWI": "My Twitter Stream"
+            "LIN": "My LinkedIn Profile"
+            "LAN": "My Lanyrd Page"
+            "GIT": "My Github Contributions"
+            "BLO": "My Blog"
+        
+        @model.get('links').map (x) ->
+            type = x.get('type_name')
+
+            if type == 'WEB'
+                return {
+                    'id': x.id,
+                    'name': x.get('other_name'),
+                    'url': x.get('url_target')
+                }
+            else
+                return {
+                    'id': x.id,
+                    'name': typemap[type],
+                    'url': x.get('url_target')
+                }
+
     context: ->
         name: @model.getFullName()
         about: markdown.toHTML(@model.get('about_me'))
@@ -97,7 +122,7 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
         showLinks: @showLinks()
         showTalks: @showTalks()
         tags: @model.get('tags').map (x) -> {'id': x.id, 'tag': x.get('name')}
-        links: @model.get('links').map (x) -> {'id': x.id, 'name': x.get('name'), 'url': x.get('url')}
+        links: @mapLinks()
         talks: @mapTalks()
         engagements: @mapEngagements()
         numFollowing: @model.get('following').length
@@ -184,15 +209,15 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
             link.set 'urlTarget', urlTarget
 
         url_map = 
-            "FAC": "facebook"
-            "GIT": "github"
-            "TWI": "twitter"
+            "FAC": "facebook.com/"
+            "GIT": "github.com/"
+            "TWI": "twitter.com/"
 
         parseShittyUrl = (text) ->
             if text[0..6] == 'http://'
                 text = text[7..]
 
-            if text[0..3] == 'www'
+            if text[0..2] == 'www'
                 text = text[4..]
 
             if text[0] == '.'
@@ -201,19 +226,20 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
             "http://www." + text
 
         if linkType in ["FAC", "GIT", "TWI"]
-            text = urlTarget
-
-            if text[0] == '@'
-                text = text[1..]
-                link.set 'url_target', "http://www." + url_map[linkType] + "/" + text
+            if urlTarget[0] == '@'
+                urlTarget = urlTarget[1..]
+                link.set 'url_target', "http://www." + url_map[linkType] + urlTarget
+            else if text[0..6] != 'http://'
+                link.set 'url_target', "http://www." + url_map[linkType] + urlTarget
             else
-                link.set 'url_target', parseShittyUrl(text)
+                link.set 'url_target', parseShittyUrl(urlTarget)
         else
-            link.set 'url_target', parseShittyUrl(text)
+            link.set 'url_target', parseShittyUrl(urlTarget)
 
-        link.save()
-        @model.get('links').add link
-        @model.save()
+        link.save null,
+            success: =>
+                @model.get('links').add link
+                @model.save()
 
 
     onClickDeleteProfileLink: (el) ->

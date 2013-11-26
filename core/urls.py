@@ -7,8 +7,6 @@ urlpatterns = patterns('',
     url(r'^profile/invite/thanks$', 'core.views.profile_invite_thanks'),
     url(r'^profile/invite$', 'core.views.profile_invite'),
     url(r'^profile/edit/photo$', 'core.views.profile_edit_photo'),
-    url(r'^profile/edit/link/new$', 'core.views.profile_link_new'),
-    url(r'^profile/edit/link/(?P<link_id>\d+)/delete$', 'core.views.profile_link_delete'),
 
     url(r'^profile/(?P<id>\d+)$','core.views.profile_detail'),
 

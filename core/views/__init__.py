@@ -8,8 +8,6 @@ from logout_user import logout_user
 
 from profile_detail import profile_detail
 from profile_edit_photo import profile_edit_photo
-from profile_link_new import profile_link_new
-from profile_link_delete import profile_link_delete
 from profile_invite import profile_invite
 from profile_invite_thanks import profile_invite_thanks
 
@@ -31,7 +29,6 @@ __all__ = [
     "index", "search",
     "register_user", "login_user", "logout_user",
     "profile_detail", "profile_edit", "profile_edit_photo",
-    "profile_link_new", "profile_link_delete",
     "profile_invite", "profile_invite_thanks",
     "speaker_list", "user_follow", "event_list", "event_detail",
     "UserDetail", "NotificationDetail", "NotificationList",

@@ -78,13 +78,20 @@
             {{#if links}}
               .row-fluid
                 .span12
-                  - for link in profile.links.all
-                    %p.profile-link{data-id:"{{link.id}}"}
-                      %a{href:"{{link.url_target}}", target:"_blank"}
-                        My {{ link.type_name }}
-                      {{#if userOwnsContent}}
-                        %i.delete-profile-link.icon-remove.pull-right{data-id:"{{link.id}}"}
-                      {{/if}}
+                  {{#if userOwnsContent}}
+                    {{#each links}}
+                      %p.profile-link{data-id:"{{id}}"}
+                        %a{href:"{{url}}", target:"_blank"}
+                          {{ name }}
+                        %i.delete-profile-link.icon-remove.pull-right{data-id:"{{id}}"}
+                    {{/each}}
+                  {{else}}
+                    {{#each links}}
+                      %p.profile-link{data-id:"{{id}}"}
+                        %a{href:"{{url}}", target:"_blank"}
+                          {{ name }}
+                    {{/each}}
+                  {{/if}}
             {{/if}}
 
             {{#if userOwnsContent}}
