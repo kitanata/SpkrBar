@@ -38,9 +38,7 @@ def search(request):
     events = events_from_engagements(events)
 
     speakers = SpkrbarUser.objects.filter(
-            reduce(operator.and_, (Q(username__icontains=x) for x in query)) |
-            reduce(operator.and_, (Q(first_name__icontains=x) for x in query)) |
-            reduce(operator.and_, (Q(last_name__icontains=x) for x in query)) |
+            reduce(operator.and_, (Q(full_name__icontains=x) for x in query)) |
             Q(tags__in=user_tags)
             ).distinct()
 

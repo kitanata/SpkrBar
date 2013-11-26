@@ -10,6 +10,24 @@ SpkrBar.Models.Engagement = Backbone.RelationalModel.extend
         talk: 0
         speaker: 0
 
+    relations: [
+        {
+            type: Backbone.HasOne
+            key: 'talk'
+            relatedModel: 'SpkrBar.Models.Talk'
+        },
+        {
+            type: Backbone.HasOne
+            key: 'speaker'
+            relatedModel: 'SpkrBar.Models.User'
+        },
+        {
+            type: Backbone.HasOne
+            key: 'location'
+            relatedModel: 'SpkrBar.Models.Location'
+        }
+    ]
+
     initialize: ->
 
     urlRoot: "/rest/engagement"

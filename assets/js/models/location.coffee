@@ -1,4 +1,4 @@
-SpkrBar.Models.Location = Backbone.Model.extend
+SpkrBar.Models.Location = Backbone.RelationalModel.extend
     defaults:
         name: ""
         address: ""

@@ -27,11 +27,11 @@
                     %i.icon-trash
               {{else}}
                 {{#unless userEndorsed}}
-                  %a.btn.btn-warning{href:"/talk/{{id}}/endorse"}
+                  %a#endorse-talk.btn.btn-warning
                     %i.icon-thumbs-up
                     Endorse
                 {{else}}
-                  %a.btn.disabled.btn-warning
+                  .btn.btn-warning.endorsed
                     %i.icon-thumbs-up
                     Endorsed
                 {{/unless}}

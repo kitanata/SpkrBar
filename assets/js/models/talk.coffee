@@ -15,6 +15,11 @@ SpkrBar.Models.Talk = Backbone.RelationalModel.extend
     relations: [
         {
             type: Backbone.HasMany
+            key: 'tags'
+            relatedModel: 'SpkrBar.Models.TalkTag'
+        },
+        {
+            type: Backbone.HasMany
             key: 'comments'
             relatedModel: 'SpkrBar.Models.TalkComment'
             collectionType: 'SpkrBar.Collections.TalkComments'
@@ -48,7 +53,7 @@ SpkrBar.Models.Talk = Backbone.RelationalModel.extend
         endorsements: @get('endorsements')
         engagements: @get('engagements')
         links: @get('links')
-        tags: @get('tags')
+        tags: @get('tags').map (x) -> x.id
         slides: @get('slides')
         videos: @get('videos')
         published: @get('published')

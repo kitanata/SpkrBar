@@ -171,27 +171,6 @@
                   %h2 My Talks
 
                   .talk-list{style:"padding-left:0px;margin-left:-10px;"}
-                    {{#each talks}}
-                      .talk_event
-                        .header
-                          .title
-                            .grid1
-                              %a{href:"{{url}}"}
-                                {{ name }}
-
-                            .grid2
-                              .btn-group
-                                {{#if endorsed}}
-                                  %a.btn.btn-warning{href:"{{url}}/endorse", data-original-title:"Endorse Talk", data-toggle:"tooltip"}
-                                    %i.icon-thumbs-up
-                                {{else}}
-                                  %a.btn.disabled.btn-warning
-                                    %i.icon-thumbs-up
-                                {{/if}}
-
-                        .description
-                          .abstract {{ abstract }}
-                    {{/each}}
             {{/if}}
 
       %div{style:'display:none'}

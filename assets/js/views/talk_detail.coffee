@@ -6,6 +6,7 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         "click .delete-talk-tag": 'onDeleteTalkTag'
         "click .add-talk-link": 'onAddTalkLink'
         "click .delete-talk-link": 'onDeleteTalkLink'
+        "click #endorse-talk": "onClickEndorseTalk"
         "click #add-slides": "onClickAddSlides"
         "click #add-videos": "onClickAddVideos"
         "click #add-photos": "onClickAddPhotos"
@@ -29,8 +30,6 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         @videos = new Backbone.Collection()
         @engagements = new Backbone.Collection()
 
-        @locations = new SpkrBar.Collections.Locations()
-
         @listenTo(@tags, "change add remove reset", @invalidate)
         @listenTo(@links, "change add remove", @invalidate)
         @listenTo(@slides, "change add remove", @invalidate)
@@ -40,10 +39,8 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         
         @model.fetchRelated('speaker')
 
-        @locations.fetch
-            success: =>
-                @fetchTalkTags => 
-                    @fetchTalkDetailModel()
+        @fetchTalkTags => 
+            @fetchTalkDetailModel()
 
     fetchTalkTags: (next) ->
         @allTags.fetch
@@ -156,7 +153,6 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
             newView = new SpkrBar.Views.Engagement
                 model: x
                 talk: @model
-                location: @locations.find (y) => y.id == x.get('location')
             @engagementViews.push(newView)
         @invalidate()
 
@@ -198,6 +194,10 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         @commentViews = _(@commentViews).without comView
         comView.model.destroy()
         @invalidate()
+
+    onClickEndorseTalk: ->
+        @model.get('endorsements').push user.id
+        @model.save()
 
     onAddTalkTag: ->
         name = $('#new-talk-tag-name').val()

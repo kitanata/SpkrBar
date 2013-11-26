@@ -1,11 +1,20 @@
-SpkrBar.Models.Event = Backbone.Model.extend
+SpkrBar.Models.Event = Backbone.RelationalModel.extend
     defaults:
-        owner: null
-        location: null
-        start_date: null
-        end_date: null
-        endorsements: null
+        name: ""
+        num_speakers: 0
+        num_engagements: 0
+        speakers: []
+        tags: []
+        engagements: []
+
+    relations: [
+        {
+            type: Backbone.HasMany
+            key: 'engagements'
+            relatedModel: 'SpkrBar.Models.Engagement'
+        }
+    ]
 
     initialize: ->
 
-    urlRoot: "/rest_event"
+    urlRoot: "/rest/event"

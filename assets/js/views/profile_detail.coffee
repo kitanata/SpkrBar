@@ -20,7 +20,7 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
         @listenTo(@model.get('tags'), "change add remove reset", @invalidate)
         @listenTo(@model.get('followers'), "change add remove reset", @invalidate)
         @listenTo(@model.get('following'), "change add remove reset", @invalidate)
-        @listenTo(@model.get('talks'), "change add remove reset", @invalidate)
+        @listenTo(@model.get('talks'), "add remove reset", @buildTalkViews)
         @listenTo(@model.get('engagements'), "change add remove reset", @invalidate)
 
         @allTags = new SpkrBar.Collections.UserTags()
@@ -30,8 +30,13 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
         @model.fetchRelated('tags')
         @model.fetchRelated('followers')
         @model.fetchRelated('following')
-        @model.fetchRelated('talks')
         @model.fetchRelated('engagements')
+
+        @model.fetchRelated 'talks', 
+            success: =>
+                @model.get('talks').trigger('add')
+
+        @talkViews = []
 
     render: ->
         console.log "Render"
@@ -56,6 +61,20 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
         console.log @model
 
     afterRender: ->
+        console.log "AfterRender"
+        _(@talkViews).each (talkView) =>
+            $('.talk-list').append talkView.render().el
+
+    buildTalkViews: ->
+        console.log "buildTalkViews"
+        @talkViews = []
+        $('.talk-list').html('')
+
+        @model.get('talks').each (x) =>
+            newView = new SpkrBar.Views.ProfileTalk
+                model: x
+            @talkViews.push(newView)
+        @invalidate()
 
     userOwnsContent: ->
         user != null and user.id == @model.id
@@ -81,13 +100,6 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
             'url': _.str.slugify(x.get('event_name'))
 
         _.uniq engs, false, (x) -> x.name
-
-    mapTalks: ->
-        @model.get('talks').map (x) ->
-            'name': x.get('name')
-            'abstract': _.str.stripTags(markdown.toHTML(x.get('abstract')))
-            'url': '/talk/' + x.get('id')
-            'endorsed': x.userEndorsed()
 
     mapLinks: ->
         typemap =
@@ -123,7 +135,6 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
         showTalks: @showTalks()
         tags: @model.get('tags').map (x) -> {'id': x.id, 'tag': x.get('name')}
         links: @mapLinks()
-        talks: @mapTalks()
         engagements: @mapEngagements()
         numFollowing: @model.get('following').length
         numFollowers: @model.get('followers').length

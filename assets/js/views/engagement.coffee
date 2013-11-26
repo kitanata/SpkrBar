@@ -6,7 +6,7 @@ SpkrBar.Views.Engagement = Backbone.View.extend
         "click #delete-engagement": "onDeleteEngagement"
 
     initialize: (options) ->
-        @location = options.location
+        @model.fetchRelated('location')
         @talk = options.talk
         @listenTo(@model, "change", @render)
 
@@ -35,9 +35,9 @@ SpkrBar.Views.Engagement = Backbone.View.extend
         room: @model.get('room')
         date: moment(@model.get('date')).format('LL')
         time: moment(@model.get('time'), "HH:mm:ss").format('hh:mm A')
-        location_name: @location.get('name')
-        address: @location.get('address')
-        city: @location.get('city')
-        state: @location.get('state')
-        zip_code: @location.get('zip_code')
+        location_name: @model.get('location').get('name')
+        address: @model.get('location').get('address')
+        city: @model.get('location').get('city')
+        state: @model.get('location').get('state')
+        zip_code: @model.get('location').get('zip_code')
         userOwned: @userOwned()

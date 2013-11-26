@@ -4,10 +4,10 @@
   #profile-detail-container
 
   - include 'handlebars/profile_edit.haml'
+  - include 'handlebars/profile_detail.haml'
+  - include 'handlebars/profile_talk.haml'
 
 - block 'scripts'
-  - include 'handlebars/profile_detail.haml'
-
   %script{type:"text/javascript"}
     var profileModel = SpkrBar.Models.User.find({id:"{{profile.id}}"});
 
