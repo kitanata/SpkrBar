@@ -28,8 +28,6 @@ def event_detail(request, slug):
 
     return {
         'name': name,
-        'num_engagements': len(engagements),
-        'num_speakers': len(speakers),
         'speakers': json.dumps([x.id for x in speakers]),
         'tags': json.dumps(tags),
         'talks': json.dumps([x.id for x in engagements]),

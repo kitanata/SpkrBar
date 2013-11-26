@@ -111,7 +111,7 @@ SpkrBar.Views.EventDetail = Backbone.View.extend
     context: ->
         id: @model.id
         name: @model.get('name')
-        num_speakers: @model.get('num_speakers')
-        num_engagements: @model.get('num_engagements')
+        num_speakers: @model.get('speakers').models.length
+        num_engagements: @model.get('engagements').models.length
         tags: _(@model.get('tags')).map (x) -> {count: x[0], name: x[1]}
         engagements: @mapEngagements()

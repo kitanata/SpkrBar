@@ -1,10 +1,8 @@
 SpkrBar.Models.Event = Backbone.RelationalModel.extend
     defaults:
         name: ""
-        num_speakers: 0
-        num_engagements: 0
-        speakers: []
         tags: []
+        speakers: []
         engagements: []
 
     relations: [
