@@ -1,7 +1,0 @@
-.btn-group
-  - if user not in item.talk.endorsements.all
-    %a.btn.btn-warning{href:"/talk/{{item.talk.id}}/endorse?last={{last}}", data-original-title:"Endorse Talk", data-toggle:"tooltip"}
-      %i.icon-thumbs-up
-  - else
-    %a.btn.disabled.btn-warning
-      %i.icon-thumbs-up
