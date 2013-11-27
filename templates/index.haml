@@ -1,16 +1,17 @@
 - extends 'base.haml'
 
-- block 'subnav-container'
+- block 'content-container'
+  #index-container
 
-- block 'content'
-  .best-way
-    ~~ The best way to share, manage, and discover awesome presentations online. ~~
+  - include 'handlebars/index.haml'
+  - include 'handlebars/talk_thumbnail.haml'
 
-  - if talks
-    .row-fluid
-      .section-title
-        %h2 Recently Updated Talks
+- block 'scripts'
+  %script{type:"text/javascript"}
+    talks = new SpkrBar.Collections.Talks({{talks|safe}})
 
-    .talk-list
-      - for item in talks
-        - include 'talks/_talk_detail_partial.haml'
+    var indexPage = new SpkrBar.Views.IndexPage({
+        collection: talks
+    });
+
+    $('#index-container').html(indexPage.render().el);
