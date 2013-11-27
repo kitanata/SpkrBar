@@ -1,0 +1,41 @@
+{% verbatim %}
+  %script#search-templ{type:"text/x-handlebars-template"}
+    {{#unless hasResults}}
+      .row-fluid
+        .section-title
+          %h2 Search Returned 0 Results
+    {{/unless}}
+
+    {{#if hasTalks}}
+      .row-fluid
+        .section-title
+          %h2 Talks
+      .row-fluid
+        .span12
+          .section
+            .row-fluid
+              .talk-list
+    {{/if}}
+
+    {{#if hasSpeakers}}
+      .row-fluid
+        .section-title
+          %h2 Speakers
+      .row-fluid
+        .span12
+          .section
+            .row-fluid
+              .speaker-list
+    {{/if}}
+
+    {{#if hasEvents}}
+      .row-fluid
+        .section-title
+          %h2 Events
+      .row-fluid
+        .span12
+          .section
+            .row-fluid{style:"margin-bottom:40px"}
+              .event-list
+    {{/if}}
+{% endverbatim %}

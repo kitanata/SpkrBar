@@ -1,0 +1,20 @@
+{% verbatim %}
+  %script#event-thumbnail-templ{type:"text/x-handlebars-template"}
+    .title
+      %a{href:"{{url}}"}
+        {{name}}
+        %i.icon-bullhorn.pull-right {{num_talks}}
+    .start-date
+      Starting On {{earliest_date}} at {{earliest_time}}
+    .end-date
+      Ending On {{latest_date}} at {{latest_time}}
+
+    .event-tag-area
+      {{#each tags}}
+        .label.label-info
+          %span.count
+            {{count}}
+          %span.name
+            {{name}}
+      {{/each}}
+{% endverbatim %}

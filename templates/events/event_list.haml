@@ -1,0 +1,15 @@
+- extends 'base.haml'
+
+- block 'content-container'
+  #event-list-container
+
+  - include 'handlebars/event_list.haml'
+  - include 'handlebars/event_thumbnail.haml'
+
+- block 'scripts'
+  %script{type:"text/javascript"}
+    var events = new Backbone.Collection({{events|safe}});
+
+    var eventListView = new SpkrBar.Views.EventList({collection: events});
+
+    $('#event-list-container').html(eventListView.render().el);

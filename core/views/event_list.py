@@ -1,3 +1,4 @@
+import json
 from datetime import datetime, timedelta
 
 from core.helpers import template, events_from_engagements
@@ -14,5 +15,5 @@ def event_list(request):
     events = events_from_engagements(engagements)
 
     return {
-        'events': events
+        'events': json.dumps(events)
     }

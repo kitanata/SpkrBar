@@ -96,10 +96,10 @@ def events_from_engagements(queryset):
         events.append({
             'name': name,
             'numtalks': len(engs),
-            'earliest_date': earliest_eng.date,
-            'earliest_time': earliest_eng.time,
-            'latest_date': latest_eng.date,
-            'latest_time': latest_eng.time,
+            'earliest_date': earliest_eng.date().isoformat(),
+            'earliest_time': earliest_eng.time().isoformat(),
+            'latest_date': latest_eng.date().isoformat(),
+            'latest_time': latest_eng.time().isoformat(),
             'tags': tags,
         })
 

@@ -1,68 +1,23 @@
 - extends 'base.haml'
 
-- block 'subnav-container' 
+- block 'content-container'
+  #search-container
 
-- block 'content'
-  - if not talks and not speakers and not events
-    .row-fluid
-      .section-title
-        %h2 Search Returned 0 Results
-
-  - if talks
-    .row-fluid
-      .section-title
-        %h2 Talks
-    .row-fluid
-      .span12
-        .section
-          .row-fluid
-            .talk-list
-              - for item in talks
-                - include 'talks/_talk_detail_partial.haml'
-
-  - if speakers
-    .row-fluid
-      .section-title
-        %h2 Speakers
-    .row-fluid
-      .span12
-        .section
-          .row-fluid
-            .speaker-list
-              - for profile in speakers
-                {% include '_speaker_detail_partial.haml' %}
-
-  - if events
-    .row-fluid
-      .section-title
-        %h2 Events
-    .row-fluid
-      .span12
-        .section
-          .row-fluid{style:"margin-bottom:40px"}
-            .event-list
-              - for event in events
-                - include 'events/_event_detail_partial.haml'
+  - include 'handlebars/search.haml'
+  - include 'handlebars/speaker_detail.haml'
+  - include 'handlebars/talk_thumbnail.haml'
+  - include 'handlebars/event_thumbnail.haml'
 
 - block 'scripts'
-  - if events
-    %script{type:"text/javascript"}
-      L.Icon.Default.imagePath = '{{STATIC_URL}}img/';
+  %script{type:"text/javascript"}
+    var talks = new SpkrBar.Collections.Talks({{talks|safe}});
+    var speakers = new SpkrBar.Collections.Speakers({{speakers|safe}});
+    var events = new Backbone.Collection({{events|safe}});
 
-      - for event in events
-        - with event.location as location
-            (function() {
-              var map = L.map('map{{event.id}}', {'zoomControl': false}).setView([39.95, -82.95], 6);
+    var searchPage = new SpkrBar.Views.SearchPage({
+        talks: talks,
+        speakers: speakers,
+        events: events
+    });
 
-              L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                  attribution: ''
-                  }).addTo(map);
-
-              var url = "http://nominatim.openstreetmap.org/search/{{location.geocode_querystring}}?format=json"
-              $.get(url, function(data) {
-                  if(data.length != 0) {
-                      L.marker([data[0].lat, data[0].lon]).addTo(map);
-                      map.setView([data[0].lat, data[0].lon], 14);
-                  }
-              });
-            }).call(this);
+    $('#search-container').html(searchPage.render().el);

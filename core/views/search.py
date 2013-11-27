@@ -1,5 +1,6 @@
 import random
 import operator
+import json
 from datetime import datetime
 from django.db.models import Q
 from django.shortcuts import redirect
@@ -7,8 +8,12 @@ from django.shortcuts import redirect
 from core.helpers import template, events_from_engagements
 
 from talks.models import Talk, TalkTag
+from talks.serializers import TalkSerializer
 from engagements.models import Engagement
+from engagements.serializers import EngagementSerializer
 from core.models import SpkrbarUser, UserTag
+from core.serializers import UserSerializer
+from rest_framework.renderers import JSONRenderer
 
 @template('search.haml')
 def search(request):
@@ -50,6 +55,10 @@ def search(request):
 
     if speakers.count() > 12:
         speakers = random.sample(speakers, 12)
+
+    talks = JSONRenderer().render(TalkSerializer(talks).data)
+    speakers = JSONRenderer().render(UserSerializer(speakers).data)
+    events = json.dumps(events)
 
     return {'talks': talks,
             'events': events,
