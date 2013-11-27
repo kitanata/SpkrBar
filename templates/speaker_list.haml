@@ -1,12 +1,14 @@
 - extends 'base.haml'
 
-- block 'title'
-  Featured Speakers
+- block 'content-container'
+  #speaker-list-container
 
-- block 'subnav'
+  - include 'handlebars/speaker_list.haml'
+  - include 'handlebars/speaker_detail.haml'
 
-- block 'content'
-  .row-fluid
-    .speaker-list
-        - for profile in speakers
-          {% include '_speaker_detail_partial.haml' %}
+- block 'scripts'
+  %script{type:"text/javascript"}
+    var speakers = new SpkrBar.Collections.Speakers({{speakers|safe}})
+
+    var speakerListView = new SpkrBar.Views.SpeakerList({collection:speakers});
+    $('#speaker-list-container').html(speakerListView.render().el);
