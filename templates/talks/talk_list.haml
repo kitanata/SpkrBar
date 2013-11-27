@@ -1,22 +1,19 @@
 - extends 'base.haml'
 
-- block 'subnav-container'
+- block 'content-container'
+  #talk-list-container
 
-- block 'content'
-  .row-fluid
-    .section-title
-      %h2 Upcoming Engagements
+  - include 'handlebars/talk_list.haml'
+  - include 'handlebars/engagement_detail.haml'
 
-  .row-fluid
-    .talk-list
-      - for item in upcoming
-        - include 'engagements/_engagement_detail_partial.haml'
+- block 'scripts'
+  %script{type:"text/javascript"}
+    var upcoming = new SpkrBar.Collections.Engagements({{upcoming|safe}})
+    var recent = new SpkrBar.Collections.Engagements({{upcoming|safe}})
 
-  .row-fluid
-    .section-title
-      %h2 Recent Engagements
+    var talkListView = new SpkrBar.Views.TalkList({
+      upcoming: upcoming,
+      recent: recent
+    });
 
-  .row-fluid
-    .talk-list
-      - for item in recent
-        - include 'engagements/_engagement_detail_partial.haml'
+    $('#talk-list-container').html(talkListView.render().el);
