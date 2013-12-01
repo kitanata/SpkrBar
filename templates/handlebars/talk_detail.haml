@@ -85,6 +85,7 @@
                   {{/if}}
 
                   {{#if userOwnsContent}}
+                    .edit-tags
                       %input#new-talk-tag-name{name:"tag", type:"text", placeholder:"My Tag"}
                       %input.add-talk-tag.btn.btn-warning{type:"submit", value:"Tag this talk"}
                   {{/if}}
