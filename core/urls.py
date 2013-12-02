@@ -6,7 +6,7 @@ from views import NotificationDetail, NotificationList
 urlpatterns = patterns('',
     url(r'^profile/invite/thanks$', 'core.views.profile_invite_thanks'),
     url(r'^profile/invite$', 'core.views.profile_invite'),
-    url(r'^profile/edit/photo$', 'core.views.profile_edit_photo'),
+    url(r'^profile/photo$', 'core.views.profile_photo'),
 
     url(r'^profile/(?P<id>\d+)$','core.views.profile_detail'),
 

@@ -2,7 +2,6 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
     template: "#profile-detail-templ"
 
     events:
-        "click .profile-photo-upload": "onClickProfilePhotoUpload"
         "click #edit-profile": "onClickEditProfile"
         "click #add-profile-tag": "onClickAddProfileTag"
         "keypress #new-profile-tag-name": "onKeyAddProfileTag"
@@ -135,15 +134,13 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
         showTalks: @showTalks()
         tags: @model.get('tags').map (x) -> {'id': x.id, 'tag': x.get('name')}
         links: @mapLinks()
+        csrf: csrftoken
         engagements: @mapEngagements()
         numFollowing: @model.get('following').length
         numFollowers: @model.get('followers').length
         followers: @model.get('followers').map @mapFollowUser
         following: @model.get('following').map @mapFollowUser
         userOwnsContent: @userOwnsContent()
-
-    onClickProfilePhotoUpload: ->
-        console.log "Upload the photo"
 
     onClickEditProfile: ->
         editor = new SpkrBar.Views.ProfileEdit

@@ -21,16 +21,18 @@
           .span3
             .well.picture
               {{#if photo}}
-                %img{src:"{{MEDIA_URL}}{{ profile.photo}}"}
+                %img{src:"{{ photo}}"}
               {{else}}
                 %i.icon-user
               {{/if}}
 
               {{#if userOwnsContent}}
                 .row-fluid
-                  %input.profile-photo-upload-file{type:"file"}
-                  %button.profile-photo-upload.btn.btn-warning
-                    Upload Photo
+                  %form{method:"POST", action:"/profile/photo", enctype:'multipart/form-data', style:"margin-top:40px;"}
+                    %input{type:"hidden", name:"csrfmiddlewaretoken", value:"{{csrf}}"}
+                    %input.profile-photo-upload-file{type:"file", name:'photo'}
+                    %button.profile-photo-upload.btn.btn-warning
+                      Upload Photo
               {{/if}}
           .span9
             {{{ about }}}
