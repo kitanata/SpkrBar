@@ -9,6 +9,7 @@ SpkrBar.Views.EngagementDetail = Backbone.View.extend
         @model.fetchRelated 'talk', 
             success: =>
                 @model.get('talk').fetchRelated('tags')
+                @model.get('talk').fetchRelated('endorsements')
 
         @model.fetchRelated('speaker')
         @model.fetchRelated('location')
@@ -16,6 +17,7 @@ SpkrBar.Views.EngagementDetail = Backbone.View.extend
         @listenTo(@model, "change", @invalidate)
         @listenTo(@model.get('talk'), "change", @invalidate)
         @listenTo(@model.get('talk').get('tags'), "change", @invalidate)
+        @listenTo(@model.get('talk').get('endorsements'), "add remove change reset", @invalidate)
 
     render: ->
         source = $(@template).html()
@@ -81,5 +83,9 @@ SpkrBar.Views.EngagementDetail = Backbone.View.extend
         userOwnsContent: @userOwnsContent()
 
     onClickEndorseTalk: (el) ->
-        @model.get('talk').get('endorsements').push user.id
-        @model.get('talk').save()
+        newEndorsement = new SpkrBar.Models.TalkEndorsement
+            talk: @model.get('talk')
+            user: user
+        newEndorsement.save null,
+            success: =>
+                @model.get('talk').get('endorsements').add newEndorsement

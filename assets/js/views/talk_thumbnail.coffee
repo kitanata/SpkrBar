@@ -8,10 +8,12 @@ SpkrBar.Views.TalkThumbnail = Backbone.View.extend
     initialize: (options) ->
         @model.fetchRelated('tags')
         @model.fetchRelated('speaker')
+        @model.fetchRelated('endorsements')
 
         @listenTo(@model, "change", @invalidate)
         @listenTo(@model.get('speaker'), "change", @invalidate)
         @listenTo(@model.get('tags'), "change", @invalidate)
+        @listenTo(@model.get('endorsements'), "add remove change reset", @invalidate)
 
     render: ->
         source = $(@template).html()
@@ -67,5 +69,9 @@ SpkrBar.Views.TalkThumbnail = Backbone.View.extend
         userOwnsContent: @userOwnsContent()
 
     onClickEndorseTalk: (el) ->
-        @model.get('endorsements').push user.id
-        @model.save()
+        newEndorsement = new SpkrBar.Models.TalkEndorsement
+            talk: @model
+            user: user
+        newEndorsement.save null,
+            success: =>
+                @model.get('endorsements').add newEndorsement

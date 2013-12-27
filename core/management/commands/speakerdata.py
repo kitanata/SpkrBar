@@ -147,6 +147,9 @@ def generate_speaker(username):
         Permission.objects.get(codename='change_talkvideo'),
         Permission.objects.get(codename='delete_talkvideo'),
 
+        Permission.objects.get(codename='add_talkendorsement'),
+        Permission.objects.get(codename='delete_talkendorsement'),
+
         Permission.objects.get(codename='change_spkrbaruser'),
     )
 

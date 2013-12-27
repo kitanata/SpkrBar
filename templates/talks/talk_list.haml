@@ -9,7 +9,7 @@
 - block 'scripts'
   %script{type:"text/javascript"}
     var upcoming = new SpkrBar.Collections.Engagements({{upcoming|safe}})
-    var recent = new SpkrBar.Collections.Engagements({{upcoming|safe}})
+    var recent = new SpkrBar.Collections.Engagements({{recent|safe}})
 
     var talkListView = new SpkrBar.Views.TalkList({
       upcoming: upcoming,

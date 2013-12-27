@@ -31,11 +31,6 @@ SpkrBar.Models.User = Backbone.RelationalModel.extend
         },
         {
             type: Backbone.HasMany
-            key: 'talks'
-            relatedModel: 'SpkrBar.Models.Talk'
-        },
-        {
-            type: Backbone.HasMany
             key: 'engagements'
             relatedModel: 'SpkrBar.Models.Engagement'
         }

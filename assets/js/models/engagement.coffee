@@ -6,9 +6,9 @@ SpkrBar.Models.Engagement = Backbone.RelationalModel.extend
         room: "Eliot Hall"
         date: "2014-10-09"
         time: "18:30:00"
-        location: 0
-        talk: 0
-        speaker: 0
+        location: null
+        talk: null
+        speaker: null
 
     relations: [
         {

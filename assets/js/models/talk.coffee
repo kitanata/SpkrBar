@@ -42,6 +42,11 @@ SpkrBar.Models.Talk = Backbone.RelationalModel.extend
             reverseRelation: {
                 key: 'talks'
             }
+        },
+        {
+            type: Backbone.HasMany
+            key: 'endorsements'
+            relatedModel: 'SpkrBar.Models.TalkEndorsement'
         }
     ]
 
@@ -51,7 +56,12 @@ SpkrBar.Models.Talk = Backbone.RelationalModel.extend
         if user == null
             return false
         else
-            user.id in @get('endorsements')
+            users_endorsed = @get('endorsements').map (x) -> 
+                if x.get('user')
+                    x.get('user').id
+                else
+                    null
+            _(users_endorsed).contains(user.id)
 
     toJSON: (options) ->
         speaker: @get('speaker').id

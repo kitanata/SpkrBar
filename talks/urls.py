@@ -3,6 +3,7 @@ from django.conf.urls import patterns, url
 from views import TalkDetail, TalkTagList, TalkTagDetail
 from views import TalkLinkList, TalkLinkDetail, TalkSlideDeckDetail
 from views import TalkVideoDetail, TalkCommentDetail, TalkCommentList
+from views import TalkEndorsementDetail
 
 urlpatterns = patterns('',
 
@@ -31,6 +32,11 @@ urlpatterns = patterns('',
     url(r'^rest/talk_comment/(?P<pk>\d+)$', TalkCommentDetail.as_view(
         actions={'get': 'retrieve', 'put': 'update', 'delete':'destroy'})),
     url(r'^rest/talk_comment$', TalkCommentDetail.as_view(
+        actions={'post': 'create'})),
+
+    url(r'^rest/talk_endorsement/(?P<pk>\d+)$', TalkEndorsementDetail.as_view(
+        actions={'get': 'retrieve', 'put': 'update', 'delete':'destroy'})),
+    url(r'^rest/talk_endorsement$', TalkEndorsementDetail.as_view(
         actions={'post': 'create'})),
 
     url(r'^rest/talk/(?P<talk_id>\d*)/comments$', TalkCommentList.as_view()),

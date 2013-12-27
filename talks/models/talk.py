@@ -14,9 +14,6 @@ class Talk(models.Model):
     tags = models.ManyToManyField(
         'talks.TalkTag', related_name='talks', blank=True)
 
-    endorsements = models.ManyToManyField(
-            'core.SpkrbarUser', related_name='endorsed_talks', blank=True)
-
     class Meta:
         app_label = 'talks'
 

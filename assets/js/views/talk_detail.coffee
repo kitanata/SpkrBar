@@ -31,16 +31,24 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
 
         @locations.fetch()
 
-        @listenTo(@model.get('tags'), "change add remove reset", @invalidate)
         @listenTo(@links, "change add remove", @invalidate)
         @listenTo(@slides, "change add remove", @invalidate)
         @listenTo(@videos, "change add remove", @invalidate)
         @listenTo(@model, "change", @invalidate)
-        @listenTo(@model.get('engagements'), "change add", @buildEngagementViews)
+        @listenTo(@model.get('endorsements'), "add change remove reset", @invalidate)
         
         @model.fetchRelated('speaker')
-        @model.fetchRelated('engagements')
-        @model.fetchRelated('tags')
+        @model.fetchRelated('endorsements')
+
+        @model.fetchRelated 'tags',
+            success: =>
+                @invalidate()
+                @listenTo(@model.get('tags'), "change add remove", @invalidate)
+
+        @model.fetchRelated 'engagements',
+            success: =>
+                @buildEngagementViews()
+                @listenTo(@model.get('engagements'), "change add remove", @buildEngagementViews)
 
         @fetchTalkTags => 
             @fetchTalkDetailModel()
@@ -188,8 +196,12 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         @invalidate()
 
     onClickEndorseTalk: ->
-        @model.get('endorsements').push user.id
-        @model.save()
+        newEndorsement = new SpkrBar.Models.TalkEndorsement
+            talk: @model
+            user: user
+        newEndorsement.save null,
+            success: =>
+                @model.get('endorsements').add newEndorsement
 
     onAddTalkTag: ->
         name = $('#new-talk-tag-name').val()

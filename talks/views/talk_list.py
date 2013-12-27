@@ -18,7 +18,7 @@ def talk_list(request):
     end_date = datetime.today() + timedelta(days=7)
     upcoming = Engagement.objects.filter(
         date__gte=start_date, date__lte=end_date
-        ).order_by('-date', '-time')
+        ).order_by('date', 'time')
 
     upcoming = JSONRenderer().render(EngagementSerializer(upcoming, many=True).data)
     recent = JSONRenderer().render(EngagementSerializer(recent, many=True).data)
