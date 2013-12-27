@@ -10,7 +10,7 @@ from talks.models.choices import *
 def talk_video_new(request, talk_id):
     talk = get_object_or_404(Talk, pk=talk_id)
 
-    if not request.user.has_perm('change_talk', talk):
+    if request.user != talk.speaker:
         return HttpResponseForbidden()
 
     if request.method == 'POST':
