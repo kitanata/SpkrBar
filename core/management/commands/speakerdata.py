@@ -2,10 +2,8 @@ import random
 from datetime import datetime, timedelta
 
 from django.core.management.base import BaseCommand, CommandError
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission
 from django.http import HttpResponseForbidden
-
-from guardian.shortcuts import assign_perm
 
 from core.models import SpkrbarUser, UserTag
 
@@ -115,6 +113,43 @@ def generate_speaker(username):
 
     user.full_name = ' '.join([first_name, last_name])
     user.about_me = user_description
+
+    user.user_permissions.add(
+        Permission.objects.get(codename='add_talk'),
+        Permission.objects.get(codename='change_talk'),
+        Permission.objects.get(codename='delete_talk'),
+
+        Permission.objects.get(codename='add_talkcomment'),
+        Permission.objects.get(codename='change_talkcomment'),
+        Permission.objects.get(codename='delete_talkcomment'),
+
+        Permission.objects.get(codename='add_engagement'),
+        Permission.objects.get(codename='change_engagement'),
+        Permission.objects.get(codename='delete_engagement'),
+
+        Permission.objects.get(codename='add_usertag'),
+        Permission.objects.get(codename='add_talktag'),
+        Permission.objects.get(codename='add_location'),
+
+        Permission.objects.get(codename='add_userlink'),
+        Permission.objects.get(codename='change_userlink'),
+        Permission.objects.get(codename='delete_userlink'),
+
+        Permission.objects.get(codename='add_talklink'),
+        Permission.objects.get(codename='change_talklink'),
+        Permission.objects.get(codename='delete_talklink'),
+
+        Permission.objects.get(codename='add_talkslidedeck'),
+        Permission.objects.get(codename='change_talkslidedeck'),
+        Permission.objects.get(codename='delete_talkslidedeck'),
+
+        Permission.objects.get(codename='add_talkvideo'),
+        Permission.objects.get(codename='change_talkvideo'),
+        Permission.objects.get(codename='delete_talkvideo'),
+
+        Permission.objects.get(codename='change_spkrbaruser'),
+    )
+
     user.save()
 
     build_tags_on_profile(user)
@@ -148,9 +183,6 @@ def generate_talk(speaker):
 
         if tag not in talk.tags.all():
             talk.tags.add(tag)
-
-    assign_perm('change_talk', speaker, talk)
-    assign_perm('delete_talk', speaker, talk)
 
     return talk
 

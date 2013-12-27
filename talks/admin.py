@@ -11,7 +11,7 @@ class TalkVideoAdmin(admin.ModelAdmin):
     list_display = ['talk_name', 'source', 'embed_data', 'aspect']
 
 class TalkCommentAdmin(admin.ModelAdmin):
-    list_display = ['talk', 'commenter', 'comment', 'updated_at', 'created_at']
+    list_display = ['talk', 'user', 'comment', 'updated_at', 'created_at']
 
 admin.site.register(Talk, TalkAdmin)
 admin.site.register(TalkComment, TalkCommentAdmin)

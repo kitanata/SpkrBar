@@ -27,16 +27,19 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         @links = new Backbone.Collection()
         @slides = new Backbone.Collection()
         @videos = new Backbone.Collection()
-        @engagements = new Backbone.Collection()
+        @locations = new SpkrBar.Collections.Locations()
+
+        @locations.fetch()
 
         @listenTo(@model.get('tags'), "change add remove reset", @invalidate)
         @listenTo(@links, "change add remove", @invalidate)
         @listenTo(@slides, "change add remove", @invalidate)
         @listenTo(@videos, "change add remove", @invalidate)
-        @listenTo(@engagements, "change add remove", @buildEngagementViews)
         @listenTo(@model, "change", @invalidate)
+        @listenTo(@model.get('engagements'), "change add", @buildEngagementViews)
         
         @model.fetchRelated('speaker')
+        @model.fetchRelated('engagements')
         @model.fetchRelated('tags')
 
         @fetchTalkTags => 
@@ -48,18 +51,10 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
                 next()
 
     fetchTalkDetailModel: ->
-        engagements = @model.get 'engagements'
         links = @model.get 'links'
         slides = @model.get 'slides'
         videos = @model.get 'videos'
         comments = @model.get 'comments'
-
-        _(engagements).each (x) =>
-            engagementModel = new SpkrBar.Models.Engagement
-                id: x
-            engagementModel.fetch
-                success: =>
-                    @engagements.add engagementModel
 
         _(links).each (x) =>
             linkModel = new SpkrBar.Models.TalkLink
@@ -146,7 +141,7 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         @engagementViews = []
         $('#engagement-list-region').html('')
 
-        @engagements.each (x) =>
+        @model.get('engagements').each (x) =>
             newView = new SpkrBar.Views.Engagement
                 model: x
                 talk: @model
@@ -310,7 +305,7 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         newComment = new SpkrBar.Models.TalkComment
             talk: @model
             parent: null
-            commenter: user
+            user: user
             comment: $('#comment-area').val()
 
         newComment.save null,

@@ -237,7 +237,7 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
             if urlTarget[0] == '@'
                 urlTarget = urlTarget[1..]
                 link.set 'url_target', "http://www." + url_map[linkType] + urlTarget
-            else if text[0..6] != 'http://'
+            else if urlTarget[0..6] != 'http://'
                 link.set 'url_target', "http://www." + url_map[linkType] + urlTarget
             else
                 link.set 'url_target', parseShittyUrl(urlTarget)

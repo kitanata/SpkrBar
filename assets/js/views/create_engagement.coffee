@@ -15,6 +15,8 @@ SpkrBar.Views.CreateEngagement = Backbone.View.extend
 
         @model = new SpkrBar.Models.Engagement()
 
+        @listenTo(@locations, "change", @render)
+
     render: ->
         source = $(@template).html()
         template = Handlebars.compile(source)
@@ -97,6 +99,7 @@ SpkrBar.Views.CreateEngagement = Backbone.View.extend
                 @showValidationAlert()
 
     validateAndSaveModel: ->
+        @model.set 'speaker', user
         if @model.isValid(true)
             @model.save null, 
                 success: =>

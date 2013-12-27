@@ -8,7 +8,7 @@ class TalkCommentSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'talk',
-            'commenter',
+            'user',
             'comment',
             'parent',
             'children',

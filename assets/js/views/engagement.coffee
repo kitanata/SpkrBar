@@ -10,7 +10,9 @@ SpkrBar.Views.Engagement = Backbone.View.extend
         @talk = options.talk
         @listenTo(@model, "change", @render)
 
-    onDeleteEngagement: () ->
+    onDeleteEngagement: ->
+        console.log "onDeleteEngagement"
+        @talk.get('engagements').remove(@model)
         @model.destroy
             success: =>
                 @remove()
@@ -21,6 +23,8 @@ SpkrBar.Views.Engagement = Backbone.View.extend
 
         @$el.html(template(@context()))
         @
+
+        @delegateEvents()
 
     userOwned: ->
         user != null and user.id == @talk.get('speaker').id

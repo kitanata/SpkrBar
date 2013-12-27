@@ -1,6 +1,6 @@
 SpkrBar.Models.TalkComment = Backbone.RelationalModel.extend
     defaults:
-        commenter: null
+        user: null
         talk: null
         comment: ""
         created_at: ""
@@ -13,7 +13,7 @@ SpkrBar.Models.TalkComment = Backbone.RelationalModel.extend
     relations: [
         {
             type: Backbone.HasOne
-            key: 'commenter'
+            key: 'user'
             relatedModel: 'SpkrBar.Models.User'
             reverseRelation: {
                 key: 'comment'
@@ -40,7 +40,7 @@ SpkrBar.Models.TalkComment = Backbone.RelationalModel.extend
         comment: @get('comment')
         created_at: @get('created_at')
         updated_at: @get('updated_at')
-        commenter: @get('commenter').id
+        user: @get('user').id
         talk: @get('talk').id
         parent: @getParentId()
         children: @get('children').map (x) -> x.id

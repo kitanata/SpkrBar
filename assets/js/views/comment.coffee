@@ -15,7 +15,7 @@ SpkrBar.Views.Comment = Backbone.View.extend
         @childComments = []
 
         @listenTo(@model, "change", @render)
-        @listenTo(@model.get('commenter'), "change", @render)
+        @listenTo(@model.get('user'), "change", @render)
 
     render: ->
         source = $(@template).html()
@@ -36,14 +36,14 @@ SpkrBar.Views.Comment = Backbone.View.extend
         user != null
 
     userOwnsComment: ->
-        user.id == @model.get('commenter').id
+        user.id == @model.get('user').id
 
     context: ->
         userLoggedIn: @userLoggedIn()
         userOwnsComment: @userOwnsComment()
         id: @model.id
         created_at: _.str.capitalize(moment(@model.get('created_at')).fromNow())
-        commenter: @model.get('commenter').get('full_name')
+        commenter: @model.get('user').get('full_name')
         comment: @model.get('comment')
 
     onClickReply: (el) ->
@@ -107,7 +107,7 @@ SpkrBar.Views.Comment = Backbone.View.extend
             newComment = new SpkrBar.Models.TalkComment
                 talk: @talk
                 parent: @model
-                commenter: user
+                user: user
                 comment: @$el.find('.comment-area[data-id=' + @model.id + ']').val()
 
             newComment.save null, 
@@ -116,7 +116,7 @@ SpkrBar.Views.Comment = Backbone.View.extend
                         parent: @
                         talk: @talk
                         model: newComment
-                        commenter: user
+                        user: user
                     @childComments.push commentView
                     @render()
 

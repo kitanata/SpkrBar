@@ -20,6 +20,14 @@ SpkrBar.Models.Talk = Backbone.RelationalModel.extend
         },
         {
             type: Backbone.HasMany
+            key: 'engagements'
+            relatedModel: 'SpkrBar.Models.Engagement'
+            reverseRelation: {
+                key: 'talk'
+            }
+        },
+        {
+            type: Backbone.HasMany
             key: 'comments'
             relatedModel: 'SpkrBar.Models.TalkComment'
             collectionType: 'SpkrBar.Collections.TalkComments'

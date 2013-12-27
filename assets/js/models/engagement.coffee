@@ -13,11 +13,6 @@ SpkrBar.Models.Engagement = Backbone.RelationalModel.extend
     relations: [
         {
             type: Backbone.HasOne
-            key: 'talk'
-            relatedModel: 'SpkrBar.Models.Talk'
-        },
-        {
-            type: Backbone.HasOne
             key: 'speaker'
             relatedModel: 'SpkrBar.Models.User'
         },
@@ -41,3 +36,14 @@ SpkrBar.Models.Engagement = Backbone.RelationalModel.extend
             required: true
         time:
             required: true
+
+    toJSON: ->
+        updated_at: @get('updated_at')
+        created_at: @get('created_at')
+        event_name: @get('event_name')
+        room: @get('room')
+        date: @get('date')
+        time: @get('time')
+        location: @get('location').id
+        talk: @get('talk').id
+        speaker: @get('speaker').id
