@@ -7,6 +7,9 @@ SpkrBar.Views.ProfileTalk = Backbone.View.extend
 
     initialize: (options) ->
         @listenTo(@model, "change", @render)
+        @listenTo(@model.get('endorsements'), "add remove change reset", @render)
+
+        @model.fetchRelated('endorsements')
 
     render: ->
         source = $(@template).html()
@@ -32,5 +35,9 @@ SpkrBar.Views.ProfileTalk = Backbone.View.extend
         userOwnsContent: @userOwnsContent()
 
     onClickEndorseTalk: (el) ->
-        @model.get('endorsements').push user.id
-        @model.save()
+        newEndorsement = new SpkrBar.Models.TalkEndorsement
+            talk: @model
+            user: user
+        newEndorsement.save null,
+            success: =>
+                @model.get('endorsements').add newEndorsement
