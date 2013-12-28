@@ -10,6 +10,8 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
         "change #new-profile-link-type": "onChangeProfileLinkType"
         "click .add-profile-link": "onClickAddProfileLink"
         "click .delete-profile-link": "onClickDeleteProfileLink"
+        "click .follow-user": "onClickFollowUser"
+        "click .unfollow-user": "onClickUnfollowUser"
 
     initialize: (options) ->
         @shouldRender = false
@@ -27,8 +29,19 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
 
         @model.fetchRelated('links')
         @model.fetchRelated('tags')
-        @model.fetchRelated('followers')
-        @model.fetchRelated('following')
+
+        @model.fetchRelated 'followers',
+            success: (x) =>
+                x.fetchRelated 'user',
+                    success: =>
+                        @invalidate()
+
+        @model.fetchRelated 'following',
+            success: (x) =>
+                x.fetchRelated 'following',
+                    success: =>
+                        @invalidate()
+
         @model.fetchRelated('engagements')
 
         @model.fetchRelated 'talks', 
@@ -87,11 +100,29 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
     showTalks: ->
         @model.get('talks').length != 0 or @userOwnsContent()
 
-    mapFollowUser: (follow) ->
-        url: follow.get('url')
-        name: follow.get('full_name')
-        first_name: _.str.words(follow.get('full_name'), ' ')[0]
-        photo: follow.get('photo')
+    mapFollowingUser: (follow) ->
+        if follow.get('user') != null
+            url: follow.get('user').get('url')
+            name: follow.get('user').get('full_name')
+            first_name: _.str.words(follow.get('user').get('full_name'), ' ')[0]
+            photo: follow.get('user').get('photo')
+        else
+            url: ""
+            name: ""
+            first_name: ""
+            photo: ""
+
+    mapFollowedUser: (follow) ->
+        if follow.get('following') != null
+            url: follow.get('following').get('url')
+            name: follow.get('following').get('full_name')
+            first_name: _.str.words(follow.get('following').get('full_name'), ' ')[0]
+            photo: follow.get('following').get('photo')
+        else
+            url: ""
+            name: ""
+            first_name: ""
+            photo: ""
 
     mapEngagements: ->
         engs = @model.get('engagements').map (x) -> 
@@ -125,6 +156,9 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
                     'url': x.get('url_target')
                 }
 
+    userLoggedIn: ->
+        user != null
+
     context: ->
         name: @model.getFullName()
         about: markdown.toHTML(@model.get('about_me'))
@@ -138,9 +172,11 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
         engagements: @mapEngagements()
         numFollowing: @model.get('following').length
         numFollowers: @model.get('followers').length
-        followers: @model.get('followers').map @mapFollowUser
-        following: @model.get('following').map @mapFollowUser
+        followers: @model.get('followers').map @mapFollowingUser
+        following: @model.get('following').map @mapFollowedUser
         userOwnsContent: @userOwnsContent()
+        followedByUser: @model.userFollowingMe()
+        userLoggedIn: @userLoggedIn()
 
     onClickEditProfile: ->
         editor = new SpkrBar.Views.ProfileEdit
@@ -257,31 +293,19 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
         link.destroy()
         @model.save()
 
-
-    oldconst: ->
-        @noteViews = []
-        @showNotes = true
-
-        @notifications = new SpkrBar.Collections.Notifications
-            user_id: user.id
-        @notifications.fetch
+    onClickFollowUser: ->
+        following = new SpkrBar.Models.UserFollowing
+            user: user
+            following: @model
+        following.save null,
             success: =>
-                @notifications.each (x) =>
-                    newNote = new SpkrBar.Views.Notification
-                        model: x
-                    @noteViews.push newNote
+                @model.get('followers').add following
+        @invalidate()
 
-                    $('#notifications').append(newNote.render().el)
+    onClickUnfollowUser: ->
+        following = @model.get('followers').find (x) => 
+            x.get('user').id == user.id
+        @model.get('followers').remove following
 
-                    if not x.get('dismissed')
-                        newNote.show()
-
-        $('#show-notifications').click =>
-            if @showNotes
-                _(@noteViews).each (view) ->
-                    view.show()
-            else
-                _(@noteViews).each (view) ->
-                    view.hide()
-
-            @showNotes = !@showNotes
+        following.destroy()
+        @invalidate()

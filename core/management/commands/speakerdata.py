@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth.models import User, Permission
 from django.http import HttpResponseForbidden
 
-from core.models import SpkrbarUser, UserTag
+from core.models import SpkrbarUser, UserTag, UserFollowing
 
 from locations.models import Location
 from talks.models import Talk, TalkTag
@@ -150,6 +150,9 @@ def generate_speaker(username):
         Permission.objects.get(codename='add_talkendorsement'),
         Permission.objects.get(codename='delete_talkendorsement'),
 
+        Permission.objects.get(codename='add_userfollowing'),
+        Permission.objects.get(codename='delete_userfollowing'),
+
         Permission.objects.get(codename='change_spkrbaruser'),
     )
 
@@ -275,10 +278,16 @@ class Command(BaseCommand):
         users = SpkrbarUser.objects.all()
 
         for user in users:
+            followers = []
+
             for i in range(0, random.choice(range(5,17))):
                 follower = random.choice(users)
 
-                if follower not in user.followers.all():
-                    user.followers.add(follower)
+                if follower not in followers:
+                    following = UserFollowing()
+                    following.user = follower
+                    following.following = user
+                    following.save()
+                    followers.append(follower)
 
         self.stdout.write('Successfully loaded test data.')

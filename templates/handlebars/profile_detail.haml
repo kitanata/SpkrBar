@@ -10,6 +10,15 @@
               %a#edit-profile.btn.btn-warning{data-toggle:"tooltip", data-original-title:"Edit Profile"}
                 %i.icon-pencil
                 Edit
+            {{else}}
+              {{#if userLoggedIn}}
+                .follow
+                  {{#if followedByUser}}
+                    %a.unfollow-user.btn.btn-danger Abandon
+                  {{else}}
+                    %a.follow-user.btn.btn-warning Follow
+                  {{/if}}
+              {{/if}}
             {{/if}}
 
     .content-container

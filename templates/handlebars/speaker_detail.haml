@@ -22,11 +22,13 @@
       .about {{ about }}
 
     {{#unless userOwnsContent}}
-      .follow
-        {{#if followedByUser}}
-          %a.unfollow-user.btn.btn-danger Abandon
-        {{else}}
-          %a.follow-user.btn.btn-warning Follow
-        {{/if}}
+      {{#if userLoggedIn}}
+        .follow
+          {{#if followedByUser}}
+            %a.unfollow-user.btn.btn-danger Abandon
+          {{else}}
+            %a.follow-user.btn.btn-warning Follow
+          {{/if}}
+      {{/if}}
     {{/unless}}
 {% endverbatim %}

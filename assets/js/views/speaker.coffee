@@ -11,6 +11,9 @@ SpkrBar.Views.Speaker = Backbone.View.extend
 
         @listenTo(@model, "change", @invalidate)
         @listenTo(@model.get('tags'), "change", @invalidate)
+        @listenTo(@model.get('followers'), "add change remove reset", @invalidate)
+
+        @model.fetchRelated('followers')
 
     render: ->
         source = $(@template).html()
@@ -60,11 +63,18 @@ SpkrBar.Views.Speaker = Backbone.View.extend
         userOwnsContent: @userOwnsContent()
 
     onClickFollowUser: ->
-        @model.get('followers').add user
-        @model.save()
+        following = new SpkrBar.Models.UserFollowing
+            user: user
+            following: @model
+        following.save null,
+            success: =>
+                @model.get('followers').add following
         @invalidate()
 
     onClickUnfollowUser: ->
-        @model.get('followers').remove user
-        @model.save()
+        following = @model.get('followers').find (x) => 
+            x.get('user').id == user.id
+        @model.get('followers').remove following
+
+        following.destroy()
         @invalidate()

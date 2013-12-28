@@ -3,8 +3,6 @@ SpkrBar.Models.User = Backbone.RelationalModel.extend
         full_name: ""
         about_me: ""
         photo: ""
-        following: []
-        followers: []
         tags: []
         links: []
 
@@ -18,16 +16,6 @@ SpkrBar.Models.User = Backbone.RelationalModel.extend
             type: Backbone.HasMany
             key: 'links'
             relatedModel: 'SpkrBar.Models.UserLink'
-        },
-        {
-            type: Backbone.HasMany
-            key: 'followers'
-            relatedModel: 'SpkrBar.Models.User'
-        },
-        {
-            type: Backbone.HasMany
-            key: 'following'
-            relatedModel: 'SpkrBar.Models.User'
         },
         {
             type: Backbone.HasMany
@@ -66,4 +54,9 @@ SpkrBar.Models.User = Backbone.RelationalModel.extend
         @set('last_name', last)
 
     userFollowingMe: ->
-        user != null and @get('followers').contains(user)
+        followerIds = @get('followers').map (x) ->
+            if x.get('user')
+                x.get('user').id
+            else
+                null
+        user != null and _(followerIds).contains(user.id)
