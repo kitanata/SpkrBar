@@ -31,7 +31,6 @@ SpkrBar.Models.TalkComment = Backbone.RelationalModel.extend
 
     getParentId: ->
         if @get('parent') != null
-            console.log @get('parent').id
             return @get('parent').id
         else
             return null

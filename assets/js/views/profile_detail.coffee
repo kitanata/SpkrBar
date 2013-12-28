@@ -51,7 +51,6 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
         @talkViews = []
 
     render: ->
-        console.log "Render"
         source = $(@template).html()
         template = Handlebars.compile(source)
 
@@ -59,7 +58,6 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
         @
 
     invalidate: ->
-        console.log "Invalidate"
         if not @shouldRender
             setTimeout =>
                 @beforeRender()
@@ -70,15 +68,12 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
             @shouldRender = true
 
     beforeRender: ->
-        console.log @model
 
     afterRender: ->
-        console.log "AfterRender"
         _(@talkViews).each (talkView) =>
             $('.talk-list').append talkView.render().el
 
     buildTalkViews: ->
-        console.log "buildTalkViews"
         @talkViews = []
         $('.talk-list').html('')
 

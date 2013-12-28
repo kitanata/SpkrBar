@@ -9,7 +9,6 @@ SpkrBar.Views.NavBar = Backbone.View.extend
             @listenTo(user, 'change', @render)
 
     render: ->
-        console.log "Render"
         source = $(@template).html()
         template = Handlebars.compile(source)
 
@@ -17,7 +16,6 @@ SpkrBar.Views.NavBar = Backbone.View.extend
         @
 
     invalidate: ->
-        console.log "Invalidate"
         if not @shouldRender
             setTimeout =>
                 @beforeRender()

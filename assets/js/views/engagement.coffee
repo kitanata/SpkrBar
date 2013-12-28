@@ -11,7 +11,6 @@ SpkrBar.Views.Engagement = Backbone.View.extend
         @listenTo(@model, "change", @render)
 
     onDeleteEngagement: ->
-        console.log "onDeleteEngagement"
         @talk.get('engagements').remove(@model)
         @model.destroy
             success: =>

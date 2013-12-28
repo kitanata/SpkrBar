@@ -116,7 +116,6 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
                             comments.push comment
 
     render: ->
-        console.log "Render"
         source = $(@template).html()
         template = Handlebars.compile(source)
 
@@ -124,7 +123,6 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         @
 
     invalidate: ->
-        console.log "Invalidate"
         if not @shouldRender
             setTimeout =>
                 @beforeRender()
@@ -137,7 +135,6 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
     beforeRender: ->
 
     afterRender: ->
-        console.log "AfterRender"
         _(@engagementViews).each (enView) =>
             $('#engagement-list-region').append enView.render().el
 
@@ -145,7 +142,6 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
             $('.root-comment-list').append comView.render().el
 
     buildEngagementViews: ->
-        console.log "buildEngagementViews"
         @engagementViews = []
         $('#engagement-list-region').html('')
 
