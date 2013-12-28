@@ -29,10 +29,10 @@ SpkrBar.Views.TalkEdit = Backbone.View.extend
             @onSaveTalk()
 
     onSaveTalk: ->
-        @model.set 'name', @$el.find('#talk-name').val()
-        @model.set 'abstract', @$el.find('#talk-abstract').val()
-
-        console.log @model
+        name = @$el.find('#talk-name').val()
+        about = @$el.find('#talk-abstract').val()
+        @model.set 'name', name
+        @model.set 'abstract', about
 
         @model.save null, 
             success: =>
