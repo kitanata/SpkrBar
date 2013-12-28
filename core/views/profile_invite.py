@@ -21,7 +21,7 @@ def profile_invite(request):
             """Hi $name,
             <p>$message</p>
             
-            <p>It's absolutely free!</p>
+            <p>It's also, absolutely free!</p>
 
             <a class="btn" href="http://www.spkrbar.com/register">Signup Here</a>
 
@@ -52,17 +52,12 @@ def profile_invite(request):
         send_mass_html_mail(messages, fail_silently=False)
         return redirect('/profile/invite/thanks')
     else:
-        template_string =  "I just joined spkrbar.com. Spkrbar is a cool new "\
-            "website for people who speaker at conferences. SpkrBar give speakers "\
-            "to upload all the information about their talks in one place, get "\
-            "feedback and ratings on speaking engagements and promote themselves "\
-            "online. SpkrBar helps speakers understand themselves and get better "\
-            "at speaking"
-
-        invite_template = StringTemplate(template_string)
-
-        message = invite_template.substitute(
-                other_part=speaker_message,
-                user_name=request.user.get_full_name())
+        message =  "I just joined spkrbar.com. SpkrBar is a cool, new online "\
+            "community for speakers who want to promote themselves and, their "\
+            "talks online. SpkrBar lets speakers upload or link to all the "\
+            "information about their talks across the web, so that people can easily "\
+            "find all that information in one place in the future. SpkrBar also "\
+            "helps speakers engage their audience for feedback and to answer any "\
+            "questions attendees may have."
 
         return { 'invite_message': message }
