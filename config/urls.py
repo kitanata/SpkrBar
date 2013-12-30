@@ -22,6 +22,7 @@ urlpatterns = patterns('',
     url(r'^', include('core.urls')),
     url(r'^', include('locations.urls')),
     url(r'^', include('blog.urls')),
+    url(r'^feedback/', include('feedback.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     #url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

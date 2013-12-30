@@ -183,7 +183,8 @@ INSTALLED_APPS = (
     'talks',
     'engagements',
     'blog',
-    'mobile'
+    'mobile',
+    'feedback'
 )
 
 if DEBUG:

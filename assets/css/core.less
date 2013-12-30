@@ -348,3 +348,36 @@ form#register {
 form.invite, .preview-container {
     padding: 40px;
 }
+
+#feedback_popup {
+    width: 400px;
+    height: 320px;
+    z-index: 3;
+
+    form label {
+        font-size: 18px;
+        line-height: 28px;
+    }
+
+    input:not(:first-child) {
+        margin-top: 14px;
+    }
+}
+
+#feedback_button {
+    height: 150px;
+    width: 40px;
+    background: whitesmoke;
+    border: 3px solid black;
+
+    div {
+        margin-top: 28px;
+        font-size: 28px;
+        color: @orange;
+        -moz-transform: rotate(90deg);
+        -webkit-transform: rotate(90deg);
+        -o-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+        transform: rotate(90deg);
+    }
+}
