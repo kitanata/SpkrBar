@@ -23,8 +23,13 @@ def event_detail(request, slug):
     tags = list(reduce(lambda x, y : x | y, map(lambda z: z.talk.tags.all(), engagements)))
     tags = sorted([(tags.count(x), x.name) for x in set(tags)], key=lambda x: -x[0])
     tag_vals = [t[0] for t in tags]
-    tag_median = tag_vals[max(len(tag_vals) / 2 - 1, 0)]
-    tags = [t for t in tags if t[0] >= tag_median]
+
+    if tag_vals:
+        tag_median = tag_vals[max(len(tag_vals) / 2 - 1, 0)]
+        tags = [t for t in tags if t[0] >= tag_median]
+    else:
+        tag_median = 0
+        tags = []
 
     return {
         'name': name,
