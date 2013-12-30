@@ -55,4 +55,4 @@ SpkrBar.Views.TalkList = Backbone.View.extend
         user != null
 
     context: ->
-        {}
+        hasUpcoming: @upcomingViews.length != 0

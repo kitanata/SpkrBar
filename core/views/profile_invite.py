@@ -53,7 +53,7 @@ def profile_invite(request):
         return redirect('/profile/invite/thanks')
     else:
         message =  "I just joined spkrbar.com. SpkrBar is a cool, new online "\
-            "community for speakers who want to promote themselves and, their "\
+            "community for speakers who want to promote themselves and their "\
             "talks online. SpkrBar lets speakers upload or link to all the "\
             "information about their talks across the web, so that people can easily "\
             "find all that information in one place in the future. SpkrBar also "\

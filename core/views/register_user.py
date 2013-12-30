@@ -1,5 +1,5 @@
 from django.shortcuts import redirect
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission
 from django.contrib.auth import authenticate, login
 from django.forms.util import ErrorList
 from django.template import loader, Context
@@ -43,6 +43,48 @@ def register_user(request):
 
             if 'about_me' in form.cleaned_data:
                 user.about_me = form.cleaned_data['about_me']
+
+            user.user_permissions.add(
+                Permission.objects.get(codename='add_talk'),
+                Permission.objects.get(codename='change_talk'),
+                Permission.objects.get(codename='delete_talk'),
+
+                Permission.objects.get(codename='add_talkcomment'),
+                Permission.objects.get(codename='change_talkcomment'),
+                Permission.objects.get(codename='delete_talkcomment'),
+
+                Permission.objects.get(codename='add_engagement'),
+                Permission.objects.get(codename='change_engagement'),
+                Permission.objects.get(codename='delete_engagement'),
+
+                Permission.objects.get(codename='add_usertag'),
+                Permission.objects.get(codename='add_talktag'),
+                Permission.objects.get(codename='add_location'),
+
+                Permission.objects.get(codename='add_userlink'),
+                Permission.objects.get(codename='change_userlink'),
+                Permission.objects.get(codename='delete_userlink'),
+
+                Permission.objects.get(codename='add_talklink'),
+                Permission.objects.get(codename='change_talklink'),
+                Permission.objects.get(codename='delete_talklink'),
+
+                Permission.objects.get(codename='add_talkslidedeck'),
+                Permission.objects.get(codename='change_talkslidedeck'),
+                Permission.objects.get(codename='delete_talkslidedeck'),
+
+                Permission.objects.get(codename='add_talkvideo'),
+                Permission.objects.get(codename='change_talkvideo'),
+                Permission.objects.get(codename='delete_talkvideo'),
+
+                Permission.objects.get(codename='add_talkendorsement'),
+                Permission.objects.get(codename='delete_talkendorsement'),
+
+                Permission.objects.get(codename='add_userfollowing'),
+                Permission.objects.get(codename='delete_userfollowing'),
+
+                Permission.objects.get(codename='change_spkrbaruser'),
+            )
 
             user.save()
 
