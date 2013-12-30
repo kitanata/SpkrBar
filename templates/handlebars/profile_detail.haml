@@ -1,0 +1,194 @@
+{% verbatim %}
+  %script#profile-detail-templ{type:"text/x-handlebars-template"}
+    .subnav
+      .row-fluid
+        .span6
+          %h2 {{ name }}
+        .span6{style:"position: relative;"}
+          .nav.btn-group.pull-right
+            {{#if userOwnsContent }}
+              %a#edit-profile.btn.btn-warning{data-toggle:"tooltip", data-original-title:"Edit Profile"}
+                %i.icon-pencil
+                Edit
+            {{else}}
+              {{#if userLoggedIn}}
+                .follow
+                  {{#if followedByUser}}
+                    %a.unfollow-user.btn.btn-danger Abandon
+                  {{else}}
+                    %a.follow-user.btn.btn-warning Follow
+                  {{/if}}
+              {{/if}}
+            {{/if}}
+
+    .content-container
+      #profile
+        .row-fluid
+          .span3
+            .well.picture
+              {{#if photo}}
+                %img{src:"{{ photo}}"}
+              {{else}}
+                %i.icon-user
+              {{/if}}
+
+              {{#if userOwnsContent}}
+                .row-fluid
+                  %form{method:"POST", action:"/profile/photo", enctype:'multipart/form-data', style:"margin-top:40px;"}
+                    %input{type:"hidden", name:"csrfmiddlewaretoken", value:"{{csrf}}"}
+                    %input.profile-photo-upload-file{type:"file", name:'photo'}
+                    %button.profile-photo-upload.btn.btn-warning
+                      Upload Photo
+              {{/if}}
+          .span9
+            {{{ about }}}
+
+        .row-fluid
+          .span3
+            {{#if showTags}}
+              .row-fluid
+                .span12
+                  %h2 Known for
+            {{/if}}
+
+            {{#if tags}}
+              .row-fluid
+                .span12
+                  %ul.expert-area
+                    {{#if userOwnsContent}}
+                      {{#each tags}}
+                        %li.tag.label.label-info{data-id:"{{id}}"}
+                          {{tag}}
+                          %i.delete-profile-tag.icon-remove.pull-right{data-id:"{{id}}"}
+                      {{/each}}
+                    {{else}}
+                      {{#each tags}}
+                        %li.tag.label.label-info{data-id:"{{id}}"}
+                          {{tag}}
+                      {{/each}}
+                    {{/if}}
+            {{/if}}
+
+            {{#if userOwnsContent}}
+              .row-fluid
+                .edit-tags
+                  .span12
+                    %input#new-profile-tag-name{name:"tag", type:"text", placeholder:"My Tag"}
+                    %input#add-profile-tag.btn.btn-warning{type:"submit", value:"Add Tag"}
+            {{/if}}
+
+            {{#if showLinks}}
+              .row-fluid
+                .span12
+                  %h2{style:"margin-top:40px"} Links
+            {{/if}}
+
+            {{#if links}}
+              .row-fluid
+                .span12
+                  {{#if userOwnsContent}}
+                    {{#each links}}
+                      %p.profile-link{data-id:"{{id}}"}
+                        %a{href:"{{url}}", target:"_blank"}
+                          {{ name }}
+                        %i.delete-profile-link.icon-remove.pull-right{data-id:"{{id}}"}
+                    {{/each}}
+                  {{else}}
+                    {{#each links}}
+                      %p.profile-link{data-id:"{{id}}"}
+                        %a{href:"{{url}}", target:"_blank"}
+                          {{ name }}
+                    {{/each}}
+                  {{/if}}
+            {{/if}}
+
+            {{#if userOwnsContent}}
+              .row-fluid
+                .edit-links
+                  .span12
+                    %select#new-profile-link-type{type:"text"}
+                      %option{value:"FAC"} Facebook
+                      %option{value:"TWI"} Twitter
+                      %option{value:"LIN"} LinkedIn
+                      %option{value:"LAN"} Lanyrd
+                      %option{value:"GIT"} Github
+                      %option{value:"BLO"} Blog
+                      %option{value:"WEB"} Other Website
+                    %input#new-profile-link-other{type:"text", placeholder:"Link Name", style:"display:none;"}
+                    %input#new-profile-link-url{type:"text", placeholder:"Username or URL"}
+                    %button.add-profile-link.btn.btn-warning
+                      Add New Link
+            {{/if}}
+
+            .row-fluid
+              .span12{style:"margin-top: 40px"}
+                .follow_users
+                  %h2 Followers ({{numFollowers}})
+                  {{#if followers}}
+                    .user-list-partial
+                      {{#each followers}}
+                        %a{href:"{{url}}", data-toggle:"tooltip", data-original-title:"{{name}}"}
+                          {{#if photo}}
+                            %img{src:"{{MEDIA_URL}}{{photo}}"}
+                            %span {{ first_name }}
+                          {{else}}
+                            %i.icon-user
+                            {{ first_name }}
+                          {{/if}}
+                      {{/each}}
+                  {{else}}
+                    No Followers
+                  {{/if}}
+
+            .row-fluid
+              .span12{style:"margin-top: 40px"}
+                .follow_users
+                  %h2 Following ({{numFollowing}})
+                  {{#if following}}
+                    .user-list-partial
+                      {{#each following}}
+                        %a{href:"{{url}}", data-toggle:"tooltip", data-original-title:"{{name}}"}
+                          {{#if photo}}
+                            %img{src:"{{MEDIA_URL}}{{photo}}"}
+                            %span {{first_name}}
+                          {{else}}
+                            %i.icon-user
+                            {{first_name}}
+                          {{/if}}
+                      {{/each}}
+                  {{else}}
+                    Not Following Anyone
+                  {{/if}}
+
+            {{#if engagements}}
+              .row-fluid
+                .span12{style:"margin-top: 40px"}
+                  %h2 Engagements
+                  %ul.expert-area
+                    {{#each engagements}}
+                      %li.tag.label.label-info
+                        %a{href:"/event/{{url}}"}
+                          {{ name }}
+                    {{/each}}
+            {{/if}}
+
+          .span9
+            {{#if showTalks}}
+              .row-fluid
+                .span12
+                  %h2 My Talks
+
+                  .talk-list{style:"padding-left:0px;margin-left:-10px;"}
+            {{/if}}
+
+      %div{style:'display:none'}
+        #delete-talk-popup{style:"background-color:white; padding: 40px;"}
+          %h2.delete-talk-name
+          %div{style:"font-size: 18px;"}
+            %p Are you sure you want to delete this talk?
+            %p
+              %b This operation cannot be undone.
+
+          %a.delete-confirm-link.btn.btn-danger{href:"#", style:"margin-top: 20px;"} Yes. Delete this talk
+
+{% endverbatim %}

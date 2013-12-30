@@ -9,9 +9,9 @@ def login_user(request):
     if request.method == "GET":
         return render_to(request, 'auth/login.haml')
     else:
-        username = request.POST['username']
+        email = request.POST['email']
         password = request.POST['password']
-        user = authenticate(username=username, password=password)
+        user = authenticate(email=email, password=password)
 
         if user is not None:
             if user.is_active:
@@ -20,6 +20,6 @@ def login_user(request):
             else:
                 error = "This account has been disabled."
         else:
-            error = "Username or password is incorrect."
+            error = "Could not find the email or the password is incorrect."
 
         return render_to(request, 'auth/login.haml', context={'error': error})

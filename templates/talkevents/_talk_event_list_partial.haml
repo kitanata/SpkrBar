@@ -1,5 +1,0 @@
-%ul.past-talks
-  - for item in talk_events
-    %li
-      %a{href:"{{talk_event.event.get_absolute_url}}"}
-        {{ talk_event.talk.name|truncatechars:30 }}

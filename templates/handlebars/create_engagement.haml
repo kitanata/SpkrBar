@@ -1,0 +1,44 @@
+{% verbatim %}
+  %script#create-engagement-templ{type:"text/x-handlebars-template"}
+    .colorbox-content
+        %h3 Create a new Engagement
+
+        #req-alert.alert.alert-danger{style:"display:none;"}
+
+        %hr
+
+        .fieldset-left
+            %label{for:"event-name"} Event Name:
+            %input#event-name{type:"text"}
+
+            %label{for:"room"} Room:
+            %input#room{type:"text"}
+
+            %label{for:"date"} Date:
+            %input#date{type:"text"}
+
+            %label{for:"time"} Time:
+            %input#time{type:"text"}
+
+        .fieldset-right
+            .location-search
+                %label{for:"loc-name"} Location Name:
+                %input#loc-name{type:"text", data-provide:'typeahead'}
+                %span#loc-reset.search.btn.addon
+                  %i.icon-remove
+
+            %label{for:"loc-address"} Location Address:
+            %input#loc-address{type:"text"}
+
+            %label{for:"loc-city"} Location City:
+            %input#loc-city{type:"text"}
+
+            %label{for:"loc-state"} Location State:
+            %input#loc-state{type:"text"}
+
+            %label{for:"loc-zip"} Location Zip:
+            %input#loc-zip{type:"text"}
+
+        .clearfix
+        %button#submit-engagement.btn.btn-warning{type:"submit"} Submit
+{% endverbatim %}

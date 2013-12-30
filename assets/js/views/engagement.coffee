@@ -5,10 +5,13 @@ SpkrBar.Views.Engagement = Backbone.View.extend
     events:
         "click #delete-engagement": "onDeleteEngagement"
 
-    initialize: ->
+    initialize: (options) ->
+        @model.fetchRelated('location')
+        @talk = options.talk
         @listenTo(@model, "change", @render)
 
-    onDeleteEngagement: () ->
+    onDeleteEngagement: ->
+        @talk.get('engagements').remove(@model)
         @model.destroy
             success: =>
                 @remove()
@@ -18,42 +21,26 @@ SpkrBar.Views.Engagement = Backbone.View.extend
         template = Handlebars.compile(source)
 
         @$el.html(template(@context()))
-        if not @model.get('confirmed')
-            @$el.addClass('muted')
         @
 
-    userAttending: ->
-        user.id in @model.get('attendees')
+        @delegateEvents()
 
-    userEndorsed: ->
-        user.id in @model.get('endorsements')
+    userOwned: ->
+        user != null and user.id == @talk.get('speaker').id
 
-    userIsEventPlanner: ->
-        user.get('is_event_planner')
-
-    userOwnsEngagement: ->
-        user.id == @model.get('user_id')
-
-    willShowButtons: ->
-        @userOwnsEngagement() or @userAttending() or not @userIsEventPlanner()
+    eventUrl: ->
+        "/event/" + _.str.slugify(@model.get('event_name'))
 
     context: ->
         id: @model.id
-        talk_id: @model.get('talk')
-        talk_url: @model.get('talk_url')
-        talk_name: @model.get('talk_name')
-        speaker_name: @model.get('speaker_name')
-        event_url: @model.get('event_url')
         event_name: @model.get('event_name')
-        city: @model.get('city')
-        state: @model.get('state')
-        date: @model.get('formatted_date')
-        time: @model.get('formatted_time')
-        tags: _(@model.get('tags')).map (x) -> {'name': x}
-        abstract: @model.get('abstract')
-        confirmed: @model.get('confirmed')
-        user_attending: @userAttending()
-        user_endorsed: @userEndorsed()
-        user_event_planner: @userIsEventPlanner()
-        user_owned: @userOwnsEngagement()
-        show_buttons: @willShowButtons()
+        event_url: @eventUrl()
+        room: @model.get('room')
+        date: moment(@model.get('date')).format('LL')
+        time: moment(@model.get('time'), "HH:mm:ss").format('hh:mm A')
+        location_name: @model.get('location').get('name')
+        address: @model.get('location').get('address')
+        city: @model.get('location').get('city')
+        state: @model.get('location').get('state')
+        zip_code: @model.get('location').get('zip_code')
+        userOwned: @userOwned()

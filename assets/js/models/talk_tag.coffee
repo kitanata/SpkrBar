@@ -1,5 +1,4 @@
-SpkrBar.Models.TalkTag = Backbone.Model.extend
+SpkrBar.Models.TalkTag = Backbone.RelationalModel.extend
     defaults:
         name: ""
-
-    urlRoot: -> "/rest_talk/" + @get('talk') + "/tag"
+    urlRoot: "/rest/talk_tag"

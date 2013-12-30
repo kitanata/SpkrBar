@@ -3,6 +3,7 @@ import os
 import random
 from datetime import datetime
 from functools import wraps
+from itertools import groupby
 
 from config.settings import MEDIA_ROOT, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, DEFAULT_FROM_EMAIL
 
@@ -10,6 +11,7 @@ from django.core.mail import get_connection, EmailMultiAlternatives
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
+from django.db.models import Count
 
 def save_photo_with_uuid(photo):
     photo_ext = photo.name.split('.')[-1]
@@ -79,3 +81,28 @@ def send_html_mail(subject, text, html, recipient, from_email=None):
     message = EmailMultiAlternatives(subject, text, from_email, recipient)
     message.attach_alternative(html, 'text/html')
     message.send()
+
+
+def events_from_engagements(queryset):
+    engagements = queryset.order_by('event_name')
+
+    events = list()
+    for name, engs in groupby(engagements, key=lambda x: x.event_name):
+        engs = list(engs)
+        earliest_eng = min(map(lambda x: datetime.combine(x.date, x.time), engs))
+        latest_eng = max(map(lambda x: datetime.combine(x.date, x.time), engs))
+        tags = list(reduce(lambda x, y : x | y, map(lambda z: z.talk.tags.all(), engs)))
+        tags = sorted([(tags.count(x), x.name) for x in set(tags)], key=lambda x: -x[0])
+        events.append({
+            'name': name,
+            'numtalks': len(engs),
+            'earliest_date': earliest_eng.date().isoformat(),
+            'earliest_time': earliest_eng.time().isoformat(),
+            'latest_date': latest_eng.date().isoformat(),
+            'latest_time': latest_eng.time().isoformat(),
+            'tags': tags,
+        })
+
+    events.sort(key=lambda x: -x['numtalks'])
+
+    return events

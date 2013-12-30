@@ -6,17 +6,45 @@
 - block 'subnav'
 
 - block 'content'
-  #login
-    - if error
-      .alert.alert-error {{error}}
+  .span6
+    #login
+      - if error
+        .alert.alert-error {{error}}
 
-    %form{action:"/login", method:"POST"}
-      - csrf_token
-      %label{for:"username"} Username:
-      %input{id:"username", name:"username", type:"text"}
-      %label{for:"password"} Password:
-      %input{id:"password", name:"password", type:"password"}
-      %br
-      %input.btn.btn-warning{type:"submit", value:"Login"}
+      %form{action:"/login", method:"POST"}
+        - csrf_token
+        %label{for:"email"} Email Address:
+        %input{id:"email", name:"email", type:"text"}
+        %label{for:"password"} Password:
+        %input{id:"password", name:"password", type:"password"}
+        %br
+        %input.btn.btn-warning{type:"submit", value:"Login"}
 
-    %a{href:"/forgot"} Forgot your password?
+      %a{href:"/forgot"} Forgot your password?
+
+  .span6
+    %h3 Don't have an account yet?
+
+    .promo
+      .item
+        %i.icon-ok-circle
+        Quickly, level up your speaking skills
+      .item
+        %i.icon-ok-circle
+        More speaking gigs, less work
+      .item
+        %i.icon-ok-circle
+        Collect detailed feedback, effortlessly
+      .item
+        %i.icon-ok-circle 
+        Promote yourself, and your talks online
+      .item
+        %i.icon-ok-circle
+        Your talks, one resource
+      .item
+        %i.icon-ok-circle
+        Network with excellent speakers
+
+    .reg{style:"margin-top:20px"}
+      %a.btn.btn-warning.btn-large{href:"/register"} Register for free
+

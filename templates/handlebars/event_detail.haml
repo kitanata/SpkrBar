@@ -1,0 +1,47 @@
+{% verbatim %}
+  %script#event-detail-templ{type:"text/x-handlebars-template"}
+    .subnav
+      .row-fluid
+        .span12
+          %h2 {{ name }}
+
+    .content-container
+      #event-header
+        .row-fluid
+          .span4
+            %h4 
+              .label.label-info {{ num_speakers }}
+              .desc Speakers
+            %h4
+              .label.label-info {{ num_engagements }}
+              .desc Engagements
+
+            .event-tag-area
+              {{#each tags}}
+                .label.label-info
+                  %span.count
+                    {{count}}
+                  %span.name
+                    {{name}}
+              {{/each}}
+          .span8
+            %p
+              #map
+
+      .row-fluid
+        .section-title
+          %h2 Speakers
+
+      .row-fluid
+        .speaker-list
+        
+      {{#each engagements}}
+        .row-fluid
+          .section-title
+            %h2 {{name}}
+
+        .row-fluid
+          .talk-list{class:"talk-list-{{year}}"}
+      {{/each}}
+
+{% endverbatim %}

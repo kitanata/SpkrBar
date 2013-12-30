@@ -12,24 +12,22 @@ urlpatterns = patterns('',
     url(r'^search$', 'core.views.search'),
     url(r'^mobile', include('mobile.urls')),
 
-    url(r'^', include('events.urls')),
+    #url(r'^', include('events.urls')),
     url(r'^', include('talks.urls')),
 
-    url(r'^talks$', 'talkevents.views.talk_event_list'),
+    url(r'^talks$', 'talks.views.talk_list'),
     url(r'^speakers$', 'core.views.speaker_list'),
 
-    url(r'^', include('talkevents.urls')),
+    url(r'^', include('engagements.urls')),
     url(r'^', include('core.urls')),
-
-    url(r'^location/new$', 'locations.views.location_new'),
-
+    url(r'^', include('locations.urls')),
     url(r'^', include('blog.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     #url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    url(r'^admin', include(admin.site.urls)),
+    url(r'^admin/', include(admin.site.urls)),
     url(r'^grappelli/', include('grappelli.urls')),
     url('^markdown/', include( 'django_markdown.urls')),
 )

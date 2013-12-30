@@ -1,0 +1,18 @@
+{% verbatim %}
+  %script#talk-list-templ{type:"text/x-handlebars-template"}
+    {{#if hasUpcoming}}
+      .row-fluid
+        .section-title
+          %h2 Upcoming Engagements
+
+      .row-fluid
+        .talk-list.upcoming
+    {{/if}}
+
+    .row-fluid
+      .section-title
+        %h2 Recent Engagements
+
+    .row-fluid
+      .talk-list.recent
+{% endverbatim %}

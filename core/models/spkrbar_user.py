@@ -1,20 +1,47 @@
-from django.contrib.auth.models import AbstractBaseUser, UserManager, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 from django.db import models
 
-class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
-    USER_TYPE_ATTENDEE = 'ATTENDEE'
-    USER_TYPE_SPEAKER = 'SPEAKER'
-    USER_TYPE_EVENT = 'EVENT'
-    USER_TYPES = (
-            (USER_TYPE_ATTENDEE, 'Attendee'),
-            (USER_TYPE_SPEAKER, 'Speaker'),
-            (USER_TYPE_EVENT, 'Event'),
-        )
+class SpkrbarUserManager(BaseUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        """
+        Creates and saves a User with the given email and password.
+        """
+        now = timezone.now()
 
-    username = models.CharField(max_length=30, unique=True)
-    email = models.EmailField()
+        if not email:
+            raise ValueError('The given email must be set')
+
+        email = SpkrbarUserManager.normalize_email(email)
+
+        user = self.model(email=email,
+                          is_staff=False, is_active=True, is_superuser=False,
+                          last_login=now, date_joined=now, **extra_fields)
+
+        user.set_password(password)
+        user.save(using=self._db)
+
+        return user
+
+    def create_superuser(self, email, password, **extra_fields):
+        u = self.create_user(email, password, **extra_fields)
+        u.is_staff = True
+        u.is_active = True
+        u.is_superuser = True
+        u.save(using=self._db)
+        return u
+
+
+class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
+    email = models.EmailField(max_length=254, unique=True)
+    full_name = models.CharField(max_length=300)
+
+    about_me = models.CharField(max_length=4000, blank=True)
+
+    photo = models.ImageField(upload_to="photo", blank=True)
+
+    tags = models.ManyToManyField('core.UserTag', blank=True)
 
     is_staff = models.BooleanField(_('staff status'), default=False,
         help_text=_('Designates whether the user can log into this admin '
@@ -24,77 +51,22 @@ class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
                     'active. Unselect this instead of deleting accounts.'))
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
 
-    user_type = models.CharField(
-            max_length=10, choices=USER_TYPES, default=USER_TYPE_SPEAKER)
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
 
-    following = models.ManyToManyField('self', 
-            related_name="followers", symmetrical=False)
-
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email', 'user_type']
-
-    objects = UserManager()
-
-
-    def unicode(self):
-        return unicode(self.username)
-
-
-    def is_speaker(self):
-        return self.user_type == SpkrbarUser.USER_TYPE_SPEAKER
-
-    def is_event_planner(self):
-        return self.user_type == SpkrbarUser.USER_TYPE_EVENT
-
-    def is_attendee(self):
-        return self.user_type == SpkrbarUser.USER_TYPE_ATTENDEE
+    objects = SpkrbarUserManager()
 
     def get_full_name(self):
-        profile = self.get_profile()
-
-        if self.user_type == SpkrbarUser.USER_TYPE_SPEAKER:
-            return u' '.join([unicode(profile.first_name), unicode(profile.last_name)])
-        elif self.user_type == SpkrbarUser.USER_TYPE_ATTENDEE:
-            return u' '.join([unicode(profile.first_name), unicode(profile.last_name)])
-        elif self.user_type == SpkrbarUser.USER_TYPE_EVENT:
-            return unicode(profile.name)
-        else:
-            return u'Error: Not a user'
-
+        return unicode(self.full_name)
 
     def get_short_name(self):
-        profile = self.get_profile()
+        return unicode(self.full_name)
 
-        if self.user_type == SpkrbarUser.USER_TYPE_SPEAKER:
-            return unicode(profile.first_name)
-        elif self.user_type == SpkrbarUser.USER_TYPE_ATTENDEE:
-            return unicode(profile.first_name)
-        elif self.user_type == SpkrbarUser.USER_TYPE_EVENT:
-            return unicode(profile.name)
-        else:
-            return 'NOT_A_USER'
-
-
-    def get_profile(self):
-        if self.user_type == SpkrbarUser.USER_TYPE_SPEAKER:
-            return self.speakerprofile
-        elif self.user_type == SpkrbarUser.USER_TYPE_ATTENDEE:
-            return self.attendeeprofile
-        elif self.user_type == SpkrbarUser.USER_TYPE_EVENT:
-            return self.eventprofile
-        else:
-            return None
-
-    
     def get_absolute_url(self):
-        if self.user_type == SpkrbarUser.USER_TYPE_SPEAKER:
-            return self.speakerprofile.get_absolute_url()
-        elif self.user_type == SpkrbarUser.USER_TYPE_ATTENDEE:
-            return self.attendeeprofile.get_absolute_url()
-        elif self.user_type == SpkrbarUser.USER_TYPE_EVENT:
-            return self.eventprofile.get_absolute_url()
-        else:
-            return "/"
+        return "/profile/" + str(self.pk)
+
+    def __unicode__(self):
+        return self.get_full_name()
 
     class Meta:
         app_label = 'core'

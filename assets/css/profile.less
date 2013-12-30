@@ -1,5 +1,5 @@
 #profile {
-    margin-top: 20px;
+    padding: 20px;
 
     .picture {
 
@@ -14,177 +14,14 @@
             color: rgb(185, 185, 185);
         }
     }
-
-    .past-talks {
-        list-style-type: none;
-
-        margin: 0px;
-        font-size: 14px;
-        line-height: 18px;
-
-        li {
-            padding: 2px 0px;
-        }
-    }
-
-    .edit-buttons {
-        margin-top: 20px;
-        float: right;
-
-        .label {
-            padding: 10px;
-        }
-    }
-
-    .talk {
-        .picture {
-            display: inline-block;
-            width: 140px;
-
-            i {
-                width: auto;
-                margin-left: auto;
-                margin-right: auto;
-                font-size: 10em;
-                color: rgb(185, 185, 185);
-            }
-        }
-
-        .description {
-            vertical-align: top;
-            display: inline-block;
-            margin-left: 20px;
-            width: 476px;
-
-            .tag-cloud {
-                width: 120px;
-            }
-        }
-
-        .header {
-            .title {
-                display: inline-block;
-                width: 400px;
-            }
-
-            .buttons {
-                display: inline-block;
-                width: 120px;
-                float: right;
-
-                .btn-group {
-                    float: right;
-                }
-            }
-        }
-    }
-
-    .features h2 {
-        border-bottom: 1px solid #eee;
-    }
 }
 
-.profile-form {
-    min-height: 240px;
-}
-
-.profile-photo-form {
+.edit-links, .edit-tags {
     margin-top: 20px;
-    margin-bottom: 5px;
-    min-height: 70px;
-}
 
-.profile-form, .profile-photo-form {
-    position: relative;
-
-    .picture {
-        padding: 10px;
-
-        i {
-            font-size: 18em;
-            color: rgb(185, 185, 185);
-        }
+    input, button {
+        display: block;
     }
-
-    #id_name {
-        width: 608px;
-    }
-
-    #id_about_me {
-        width: 608px;
-        height: 100%;
-    }
-
-    #id_photo {
-        font-size: 16px;
-        line-height: 0px;
-    }
-
-    label {
-        display: inline;
-    }
-
-    input[type=submit] {
-        margin-top: 40px;
-        position: absolute;
-        bottom: 0px;
-        right: 0px;
-    }
-}
-
-.profile-link-form {
-    position: relative;
-    min-height: 110px;
-
-    select {
-        width: 100%;
-    }
-
-    input {
-        width: 208px;
-    }
-
-    input[type=submit] {
-        width: 120px;
-        margin-top: 40px;
-        position: absolute;
-        bottom: 0px;
-        right: 0px;
-    }
-}
-
-.profile-tag-form {
-    position: relative;
-    min-height: 70px;
-    margin-top: 10px;
-
-    select {
-        width: 100%;
-    }
-
-    input {
-        width: 208px;
-    }
-
-    input[type=submit] {
-        width: 120px;
-        margin-top: 10px;
-        position: absolute;
-        bottom: 0px;
-        right: 0px;
-    }
-}
-
-.edit-links {
-    .link-list {
-        height: 230px;
-        border-left: 1px solid lighten(gray, 20%);
-        padding-left: 10px;
-    }
-}
-
-.edit-tags {
-    height: 100px;
 }
 
 .profile-link, .talk-link {
@@ -200,5 +37,12 @@
         &:hover {
             color: #bd362f;
         }
+    }
+}
+
+#edit-profile-popup {
+    #about-me{
+        height: 155px;
+        resize: none;
     }
 }

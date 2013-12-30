@@ -10,7 +10,7 @@ from talks.models.choices import *
 def talk_slides_new(request, talk_id):
     talk = get_object_or_404(Talk, pk=talk_id)
 
-    if not request.user.has_perm('change_talk', talk):
+    if request.user != talk.speaker:
         return HttpResponseForbidden()
 
     if request.method == 'POST':
@@ -29,12 +29,12 @@ def talk_slides_new(request, talk_id):
             deck.source = form.cleaned_data['source']
 
             if deck.source == SLIDESHARE:
-                deck.data = embed['src']
+                deck.embed_data = embed['src']
                 w = embed['width']
                 h = embed['height']
                 deck.aspect = int(w) / float(h) if float(h) != 0 else 0
             elif deck.source == SPEAKERDECK:
-                deck.data = embed['data-id']
+                deck.embed_data = embed['data-id']
                 deck.aspect = float(embed['data-ratio'])
             else:
                 return HttpResponseNotFound()

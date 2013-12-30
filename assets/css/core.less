@@ -4,36 +4,10 @@
 
 body {
     padding-top: 0px;
-    padding-bottom: 80px;
-    background-color: rgb(230, 190, 160);
-
-    .callout {
-        position: relative;
-        height: 80px;
-        margin: 0px 0px 40px 0px;
-        padding: 40px 20px 150px 0px;
-
-        background-image: url('../img/audi_callout.png');
-        color: white;
-        text-align: left;
-
-        h3 {
-            width: 348px;
-            padding: 5px 20px 8px 20px;
-            border-radius: 0px 10px 10px 0px;
-            font-weight: normal;
-        }
-
-        a {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-        }
-    }
+    padding-bottom: 0px;
 
     .masthead {
-        padding: 6px 20px 0px 20px;
-        border-bottom: 1px solid #eee;
+        border-bottom: 5px solid @orange;
 
         .nav {
             margin: 10px 0px 0px 0px;
@@ -42,7 +16,8 @@ body {
         }
 
         .search {
-            margin-top: 6px;
+            margin-top: 16px;
+            margin-right: 12px;
             form {
                 margin-bottom: 0px;
             }
@@ -51,10 +26,13 @@ body {
         .logo {
             max-width: 128px;
         }
+
+        #add-talk-navbar {
+            cursor: pointer;
+        }
     }
 
     .subnav {
-        margin-bottom: 20px;
         background-color: @orange;
         padding: 0px 20px;
         color: #eee;
@@ -64,13 +42,8 @@ body {
         }
     }
 
-    .content-container {
-        margin-left: 20px;
-    }
-
-    .container-narrow {
-        margin: 0 auto;
-        max-width: 980px;
+    .container-fluid {
+        padding: 0px;
         background-color: white;
 
         border-left: 2px solid @bodyBorderColor;
@@ -81,60 +54,9 @@ body {
         box-shadow: 0px 3px 5px 2px @bodyBorderColor;
     }
 
-    .container-narrow > hr {
-        margin: 30px 0;
-    }
-
     .footer {
         margin: 20px 20px 0px 20px;
     }
-}
-
-
-/* Main marketing message and sign up button */
-.jumbotron {
-    margin: 60px 0;
-    text-align: center;
-}
-.jumbotron .btn {
-    font-size: 21px;
-    padding: 14px 24px;
-}
-
-/* Supporting marketing content */
-.marketing {
-    margin: 60px 0;
-}
-.marketing p + h4 {
-    margin-top: 28px;
-}
-
-.red-placeholder {
-    width: 100%;
-    height: 100%;
-    background-color: red;
-}
-
-.blue-placeholder {
-    width: 100%;
-    height: 100%;
-    background-color: blue;
-}
-
-.green-placeholder {
-    width: 100%;
-    height: 100%;
-    background-color: green;
-}
-
-.yellow-placeholder {
-    width: 100%;
-    height: 100%;
-    background-color: yellow;
-}
-
-.login-picture {
-    border-radius: 10px;
 }
 
 i.photo-placeholder { 
@@ -158,42 +80,6 @@ i.photo-placeholder-large {
 
 #login {
     margin-top: 20px;
-}
-
-.register-options {
-    margin-top: 40px;
-
-    a {
-        display: block;
-        text-align: center;
-        font-size: 4em;
-        line-height: 1.2em;
-
-        &:hover {
-            color: @orange;
-            text-decoration: none;
-        }
-    }
-
-    i {
-        display: block;
-        font-size: 4em;
-        color: #005580;
-        text-align: center;
-
-        &:hover {
-            color: @orange;
-        }
-    }
-}
-
-ul.basic-item-list {
-    margin: 0px;
-    list-style-type: none;
-
-    li {
-        
-    }
 }
 
 .section-title {
@@ -245,6 +131,10 @@ ul.basic-item-list {
 
         &:hover {
             background-color: lighten(#3a87ad, 10%);
+        }
+
+        a {
+            color: white;
         }
     }
 
@@ -301,27 +191,19 @@ ul.basic-item-list {
     }
 }
 
-#index {
-    h2 {
-        border-bottom: 1px solid #eee;
+.promo {
+
+    i {
+        color: #D46961;
+        font-size: 1.4em;
+        padding-right: 10px;
+        vertical-align: middle;
     }
 
-    .promo {
-
-        i {
-            color: #D46961;
-            font-size: 1.4em;
-            padding-right: 10px;
-            vertical-align: middle;
-        }
-
-        .item {
-            width: 260px;
-            margin-bottom: 20px;
-            font-size: 16px;
-            line-height: 26px;
-            height: 60px;
-        }
+    .item {
+        margin-bottom: 20px;
+        font-size: 18px;
+        line-height: 27px;
     }
 }
 
@@ -430,4 +312,39 @@ form#register {
             color: white;
         }
     }
+}
+
+.colorbox-content {
+    padding: 20px;
+
+    .fieldset-left {
+        float: left;
+    }
+
+    .fieldset-right {
+        float: left;
+        margin-left: 10px;
+        padding-left: 10px;
+        border-left: 1px dotted #eee;
+    }
+}
+
+.location-search {
+    input {
+        width: 178px;
+    }
+
+    .search {
+        display: inline-block;
+        vertical-align: top;
+        margin-left: -7px;
+        border: 1px solid #ccc;
+        border-left: none;
+        padding: 4px 8px 4px 10px;
+        border-radius: 0px 3px 3px 0px;
+    }
+}
+
+form.invite, .preview-container {
+    padding: 40px;
 }

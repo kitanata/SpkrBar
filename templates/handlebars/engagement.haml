@@ -1,0 +1,22 @@
+{% verbatim %}
+    %script#engagement-templ{type:"text/x-handlebars-template"}
+        .content-buttons
+            %a{href:"{{event_url}}"}
+                {{ event_name }}
+            %br
+            %b {{date}}
+
+            %br
+            %b {{room}} at {{ time }}
+
+            %p
+                {{location_name}}
+                %br {{address}}
+                {{city}}, {{state}} {{zip_code}}
+        .buttons
+            {{#if userOwned }}
+                %button#delete-engagement.btn.btn-danger
+                    .icon-remove
+            {{/if}}
+
+{% endverbatim %}

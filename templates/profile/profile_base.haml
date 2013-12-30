@@ -1,0 +1,23 @@
+- extends 'base.haml'
+
+- block 'content-container'
+  #profile-detail-container
+
+  - include 'handlebars/profile_edit.haml'
+  - include 'handlebars/profile_detail.haml'
+  - include 'handlebars/profile_talk.haml'
+
+- block 'scripts'
+  %script{type:"text/javascript"}
+    var profileModel = SpkrBar.Models.User.find({id:"{{profile.id}}"});
+
+    if(profileModel === null) {
+      profileModel = new SpkrBar.Models.User({id:"{{profile.id}}"});
+    }
+
+    profileModel.fetch({
+      success: function(model){
+        var profileView = new SpkrBar.Views.ProfileDetail({model: model});
+        $('#profile-detail-container').html(profileView.render().el);
+      }
+    });

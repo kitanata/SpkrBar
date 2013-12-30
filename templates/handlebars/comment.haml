@@ -1,0 +1,20 @@
+{% verbatim %}
+  %script#comment-templ{type:"text/x-handlebars-template"}
+    %li
+      %h4 {{created_at}} {{commenter}} said...
+      %p {{comment}}
+      .edit-reply-area{data-id:"{{id}}", style:"display:none;"}
+        %textarea.comment-area{data-id:"{{id}}", placeholder:"Add your comment..."}
+        %button.submit-comment.btn.btn-warning{data-id:"{{id}}"}
+          Submit Comment
+      .buttons
+        {{#if userLoggedIn}}
+          %a.reply-comment{data-id:"{{id}}"} Reply
+          {{#if userOwnsComment}}
+            %a.edit-comment{data-id:"{{id}}"} Edit
+            %a.delete-comment{data-id:"{{id}}"} Delete
+          {{/if}}
+        {{/if}}
+      %ul
+        .comment-list{data-id:"{{id}}"}
+{% endverbatim %}

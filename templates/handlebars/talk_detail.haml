@@ -1,0 +1,212 @@
+{% verbatim %}
+  %script#talk-detail-templ{type:"text/x-handlebars-template"}
+    .subnav
+      .row-fluid
+        .span10
+          %h2
+            {{#if numEndorsements }}
+            {{ numEndorsements }} <i class="icon-thumbs-up"></i>
+            {{/if}}
+            {{ name }}
+        .span2
+          .nav.btn-group.pull-right
+            {{#if userLoggedIn}}
+              {{#if userOwnsContent}}
+                {{#if published }}
+                  %button#publish-talk.btn.btn-warning{data-toggle:"tooltip", data-original-title:"Hide Talk"}
+                    %i.icon-eye-close
+                {{else}}
+                  %button#publish-talk.btn.btn-warning{data-toggle:"tooltip", data-original-title:"Publish Talk"}
+                    %i.icon-eye-open
+                {{/if}}
+                  %button#create-engagement.btn.btn-warning{data-toggle:"tooltip", data-original-title:"Create Engagement"}
+                    %i.icon-bullhorn
+                  %button#edit-talk.btn.btn-warning{data-toggle:"tooltip", data-original-title:"Edit Talk"}
+                    %i.icon-pencil
+                  %button#delete-talk.btn.btn-warning{data-toggle:"tooltip", data-original-title:"Delete Talk"}
+                    %i.icon-trash
+              {{else}}
+                {{#unless userEndorsed}}
+                  %a#endorse-talk.btn.btn-warning
+                    %i.icon-thumbs-up
+                    Endorse
+                {{else}}
+                  .btn.btn-warning.endorsed
+                    %i.icon-thumbs-up
+                    Endorsed
+                {{/unless}}
+              {{/if}}
+            {{/if}}
+
+    .content-container
+      #talk
+        .talk-header
+          .row-fluid
+            .span3
+              .picture.well
+                {{#if photo}}
+                  %img{src:"{{photo}}"}
+                {{else}}
+                  %i.icon-user.photo-placeholder-large
+                {{/if}}
+
+                .about
+                  %h4
+                    %a{href:"{{speakerUrl}}"}
+                      {{ speakerName }}
+
+            .span9
+              .talk-detail
+                %p {{{ abstract }}}
+
+        .row-fluid
+          .span3
+            .row-fluid
+              .span12
+                #talk-tags
+                  {{#if showTags}}
+                    %h3 Topics
+                  {{/if}}
+
+                  {{#if tags}}
+                    %ul.expert-area
+                      {{#if userOwnsContent}}
+                        {{#each tags}}
+                          %li.tag.label.label-info{data-id:"{{id}}"}
+                            {{tag}}
+                            %i.delete-talk-tag.icon-remove.pull-right{data-id:"{{id}}"}
+                        {{/each}}
+                      {{else}}
+                        {{#each tags}}
+                          %li.tag.label.label-info{data-id:"{{id}}"}
+                            {{tag}}
+                        {{/each}}
+                      {{/if}}
+                  {{/if}}
+
+                  {{#if userOwnsContent}}
+                    .edit-tags
+                      %input#new-talk-tag-name{name:"tag", type:"text", placeholder:"My Tag"}
+                      %input.add-talk-tag.btn.btn-warning{type:"submit", value:"Tag this talk"}
+                  {{/if}}
+
+            .row-fluid
+              .span12
+                #talk-links
+                  {{#if showLinks}}
+                    %h3 Links
+                  {{/if}}
+
+                  {{#if userOwnsContent}}
+                    {{#each links}}
+                      %p.talk-link{data-id:"{{id}}"}
+                        %a{href:"{{url}}", target:"_blank"}
+                          My {{ name }}
+                        %i.delete-talk-link.icon-remove.pull-right{data-id:"{{id}}"}
+                    {{/each}}
+                  {{else}}
+                    {{#each links}}
+                      %p.talk-link{data-id:"{{id}}"}
+                        %a{href:"{{url}}", target:"_blank"}
+                          My {{ name }}
+                    {{/each}}
+                  {{/if}}
+
+                  {{#if userOwnsContent}}
+                    .edit-links
+                      %input#new-talk-link-name{type:"text", placeholder:"Link Name"}
+                      %input#new-talk-link-url{type:"text", placeholder:"http://"}
+                      %input.add-talk-link.btn.btn-warning{type:"submit", value:"Add New Link"}
+                  {{/if}}
+
+          .span9
+            .row-fluid
+              .span6
+                .row-fluid
+                  .span9
+                    %h3 Slides
+
+                  {{#if userOwnsContent}}
+                    .span3
+                      %button#add-slides.btn.btn-warning.link-slides.pull-right Add Slides
+                  {{/if}}
+
+                .row-fluid
+                  .span12
+                    %hr
+
+                .row-fluid
+                  {{#if slides}}
+                    {{#each slides}}
+                      .span12
+                        .media-container
+                          .media-header
+                            %button.btn.pull-right.delete-slide{data-id:"{{id}}"}
+                              %i.icon-remove
+                          .media-embed
+                            {{{embed_code}}}
+                    {{/each}}
+                  {{else}}
+                    .span12
+                      No slides available.
+                  {{/if}}
+
+              .span6
+                .row-fluid
+                  .span9
+                    %h3 Videos
+
+                  {{#if userOwnsContent}}
+                    .span3
+                      %button#add-videos.btn.btn-warning.link-video.pull-right Add Videos
+                  {{/if}}
+
+                .row-fluid
+                  .span12
+                    %hr
+                
+                .row-fluid
+                  {{#if videos}}
+                    {{#each videos}}
+                      .span12
+                        .media-container
+                          .media-header
+                            %button.btn.pull-right.delete-video{data-id:"{{id}}"}
+                              %i.icon-remove
+                          .media-embed
+                            {{{embed_code}}}
+                    {{/each}}
+                  {{else}}
+                    .span12
+                      No videos available.
+                  {{/if}}
+
+            .row-fluid{style:"margin-top:40px"}
+              .span12
+                %h3 Speaking Engagements
+                %hr
+
+            .row-fluid
+              .span12
+                #engagement-list-region
+
+            .row-fluid{style:"margin-top:40px"}
+              .span12
+                .comments
+                  %h3 Comments
+                  %hr
+
+                  {{#if userLoggedIn }}
+                    %textarea#comment-area{placeholder:"Add your comment..."}
+                    %button#submit-comment.btn.btn-warning
+                      Submit Comment
+                  {{/if}}
+
+                  %ul
+                    .root-comment-list
+
+                  {{#unless userLoggedIn}}
+                    .login-to-comment{style:"margin-top:20px;"}
+                      %a.btn.btn-warning{href:"/login"} Login to comment
+                  {{/unless}}
+{% endverbatim %}

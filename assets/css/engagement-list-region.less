@@ -1,37 +1,19 @@
 #engagement-list-region {
-    display: block;
-    border-spacing: 20px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
 
     .engagement {
+        position: relative;
+        flex: 1 0 300px;
+        margin: 10px;
         border: 1px solid #eee;
         padding: 10px;
-        margin-bottom: 20px;
-        width: 318px;
-        min-height: 120px;
         display: inline-block;
-
-        &:nth-child(odd) {
-            margin-right: 20px;
-        }
-
-        &.muted {
-            background: #eee;
-        }
-
-        .tag-cloud {
-            width: 254px;
-            height: 20px;
-            overflow: scroll;
-        }
 
         .content-buttons {
             display: inline-block;
             vertical-align: top;
-            width: 254px;
-        }
-
-        .content {
-            width: 100%;
         }
 
         a {
@@ -40,9 +22,9 @@
         }
 
         .buttons {
-            display: inline-block;
-            vertical-align: top;
-            width: 40px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
         }
     }
 }

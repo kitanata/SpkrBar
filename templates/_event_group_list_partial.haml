@@ -1,7 +1,0 @@
-%ul.past-talks
-  - for group in event_groups
-    %h4 {{ group.date }}
-    - for event in group.events
-      %li
-        %a{href:"/event/{{event.id}}"}
-          {{ event.talk.name|truncatechars:30 }}

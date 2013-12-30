@@ -2,18 +2,14 @@ import random
 from datetime import datetime, timedelta
 
 from django.core.management.base import BaseCommand, CommandError
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission
 from django.http import HttpResponseForbidden
 
-from guardian.shortcuts import assign_perm
-
-from core.models import SpkrbarUser, ProfileTag
-from core.models import SpeakerProfile, EventProfile, AttendeeProfile
+from core.models import SpkrbarUser, UserTag, UserFollowing
 
 from locations.models import Location
-from events.models import Event
 from talks.models import Talk, TalkTag
-from talkevents.models import TalkEvent
+from engagements.models import Engagement
 from blog.models import BlogPost
 
 random.seed(datetime.now())
@@ -76,6 +72,10 @@ profile_tags = ["Game Design", "Python", "Ruby", "JavaScript",
         "Java", "Delphi", "Oracle", "SQL", "MongoDB", "Django", "Rails",
         "Foreign Languages"]
 
+room_names = ['Woodward Hall', 'Jefferson Room', 'Cartoon 1', 'Cartoon 2',
+    'Adams Room', 'Creek Hall', 'The Guild Hall', 'Smith Adams', 'Wilson Room',
+    'Eliot Hall', 'Fitzgerald Hall', 'Hawking Room', 'Rothschild Hall']
+
 user_description = "Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro. De carne lumbering animata corpora quaeritis. Summus brains sit morbo vel maleficia? De apocalypsi gorger omero undead survivor dictum mauris. Hi mindless mortuis soulless creaturas, imo evil stalking monstra adventus resi dentevil vultus comedat cerebella viventium. Qui animated corpse, cricket bat max brucks terribilem incessu zomby. The voodoo sacerdos flesh eater, suscitat mortuos comedere carnem virus."
 talk_description = user_description
 
@@ -91,7 +91,7 @@ def generate_datetime():
 
 def generate_profile_tags():
     for tag in profile_tags:
-        new_tag = ProfileTag()
+        new_tag = UserTag()
         new_tag.name = tag
         new_tag.save()
 
@@ -105,53 +105,67 @@ def generate_talk_tags():
 
 def generate_speaker(username):
     user = SpkrbarUser.objects.create_user(
-            username,
-            'test@spkrbar.com',
+            username + '@spkrbar.com',
             'abcd1234')
-    user.user_type = SpkrbarUser.USER_TYPE_SPEAKER
-    user.save()
 
     first_name = random.choice(user_first_names)
     last_name = random.choice(user_last_names)
 
-    profile = SpeakerProfile()
-    profile.user = user
-    profile.first_name = first_name
-    profile.last_name = last_name
-    profile.about_me = user_description
-    profile.save()
+    user.full_name = ' '.join([first_name, last_name])
+    user.about_me = user_description
 
-    build_tags_on_profile(profile)
+    user.user_permissions.add(
+        Permission.objects.get(codename='add_talk'),
+        Permission.objects.get(codename='change_talk'),
+        Permission.objects.get(codename='delete_talk'),
 
-    return profile
+        Permission.objects.get(codename='add_talkcomment'),
+        Permission.objects.get(codename='change_talkcomment'),
+        Permission.objects.get(codename='delete_talkcomment'),
 
+        Permission.objects.get(codename='add_engagement'),
+        Permission.objects.get(codename='change_engagement'),
+        Permission.objects.get(codename='delete_engagement'),
 
-def generate_attendee(username):
-    user = SpkrbarUser.objects.create_user(
-            username,
-            'testattendee@spkrbar.com',
-            'abcd1234')
-    user.user_type = SpkrbarUser.USER_TYPE_ATTENDEE
+        Permission.objects.get(codename='add_usertag'),
+        Permission.objects.get(codename='add_talktag'),
+        Permission.objects.get(codename='add_location'),
+
+        Permission.objects.get(codename='add_userlink'),
+        Permission.objects.get(codename='change_userlink'),
+        Permission.objects.get(codename='delete_userlink'),
+
+        Permission.objects.get(codename='add_talklink'),
+        Permission.objects.get(codename='change_talklink'),
+        Permission.objects.get(codename='delete_talklink'),
+
+        Permission.objects.get(codename='add_talkslidedeck'),
+        Permission.objects.get(codename='change_talkslidedeck'),
+        Permission.objects.get(codename='delete_talkslidedeck'),
+
+        Permission.objects.get(codename='add_talkvideo'),
+        Permission.objects.get(codename='change_talkvideo'),
+        Permission.objects.get(codename='delete_talkvideo'),
+
+        Permission.objects.get(codename='add_talkendorsement'),
+        Permission.objects.get(codename='delete_talkendorsement'),
+
+        Permission.objects.get(codename='add_userfollowing'),
+        Permission.objects.get(codename='delete_userfollowing'),
+
+        Permission.objects.get(codename='change_spkrbaruser'),
+    )
+
     user.save()
 
-    first_name = random.choice(user_first_names)
-    last_name = random.choice(user_last_names)
+    build_tags_on_profile(user)
 
-    profile = AttendeeProfile()
-    profile.user = user
-    profile.first_name = first_name
-    profile.last_name = last_name
-    profile.about_me = user_description
-    profile.save()
-
-    build_tags_on_profile(profile)
-
-    return profile
+    return user
 
 
 def build_tags_on_profile(profile):
     for i in range(0, random.choice(range(2,7))):
-        tag = ProfileTag.objects.get(name=random.choice(profile_tags))
+        tag = UserTag.objects.get(name=random.choice(profile_tags))
 
         if tag not in profile.tags.all():
             profile.tags.add(tag)
@@ -176,64 +190,33 @@ def generate_talk(speaker):
         if tag not in talk.tags.all():
             talk.tags.add(tag)
 
-    assign_perm('change_talk', speaker.user, talk)
-    assign_perm('delete_talk', speaker.user, talk)
-
     return talk
 
 
-def generate_event(username, location):
-    user = SpkrbarUser.objects.create_superuser(
-            username,
-            'testevent@spkrbar.com',
-            'abcd1234')
-    user.user_type = SpkrbarUser.USER_TYPE_EVENT
-    user.save()
+def generate_engagement(talk, location):
+    engagement = Engagement()
+    engagement.talk = talk
+    engagement.speaker = talk.speaker
+    engagement.location = location
+    engagement.event_name = random.choice(event_names)
+    engagement.date = generate_datetime().date()
+    engagement.time = generate_datetime().time()
+    engagement.room = random.choice(room_names)
+    engagement.save()
 
-    event_profile = EventProfile()
-    event_profile.user = user
-    event_profile.name = random.choice(event_names)
-    event_profile.description = user_description
-    event_profile.save()
-
-    event = Event()
-    event.owner = event_profile
-    event.location = location
-    event.accept_submissions = (random.choice(range(0, 10)) % 2 == 0)
-    event.start_date = generate_datetime()
-    event.end_date = event.start_date + timedelta(days=3)
-    event.save()
-
-    return event
-
-
-def generate_talk_event(talk, event):
-    talk_event = TalkEvent()
-    talk_event.talk = talk
-    talk_event.event = event
-    delta = timedelta(days=random.choice([1,2]), hours=random.choice(range(1, 10)))
-    talk_event.date = event.start_date + delta
-    talk_event.save()
-
-    return talk_event
+    return engagement
 
 
 def generate_admin_user():
     user = SpkrbarUser.objects.create_superuser(
-            'raymond',
             'raymondchandleriii@gmail.com',
             'abcd1234')
-    user.user_type = SpkrbarUser.USER_TYPE_SPEAKER
+
+    user.full_name = "Raymond Chandler III"
+    user.about_me = "I'm a little teapot, short and stout!"
     user.save()
 
-    speaker = SpeakerProfile()
-    speaker.user = user
-    speaker.first_name = "Raymond"
-    speaker.last_name = "Chandler III"
-    speaker.about_me = "I'm a little teapot, short and stout!"
-    speaker.save()
-
-    return speaker
+    return user
 
 
 def generate_blog_post():
@@ -265,10 +248,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         speaker = generate_admin_user()
 
-        anon_profile = SpkrbarUser.objects.get(username="AnonymousUser")
-        anon_profile.published = False
-        anon_profile.save()
-
         print "Generating Speaker Tags"
         generate_profile_tags()
         generate_talk_tags()
@@ -288,45 +267,27 @@ class Command(BaseCommand):
                 print "Generating Speaker " + un
                 speaker = generate_speaker(un)
 
-            if i % 17 == 0 or i == 0:
-                un = "event" + str(i / 10)
-                print "Generating Event " + un
-                event = generate_event(un, location)
-
             print "Generating Talk"
             talk = generate_talk(speaker)
 
-            print "Generating Attendee"
-            un = 'attendee' + str(i)
-            attendee = generate_attendee(un)
-
-            print "Generating Talk Event"
-            talk_event = generate_talk_event(talk, event)
+            for j in range(0, random.choice(range(3, 8))):
+                print "Generating Engagement"
+                engagement = generate_engagement(talk, location)
 
         print "Generating Followers For Users"
         users = SpkrbarUser.objects.all()
 
         for user in users:
+            followers = []
+
             for i in range(0, random.choice(range(5,17))):
                 follower = random.choice(users)
 
-                if follower not in user.followers.all():
-                    user.followers.add(follower)
-
-        print "Generating Talk Event Attendees"
-        talkevents = TalkEvent.objects.all()
-
-        for t in talkevents:
-            for i in range(0, random.choice(range(3,11))):
-                attendee = random.choice(users)
-
-                if attendee not in t.attendees.all():
-                    t.attendees.add(attendee)
-
-        print "Generating Talk Endorsements"
-        for t in talkevents:
-            for attendee in t.attendees.all():
-                if random.choice([True, False]):
-                    t.talk.endorsements.add(attendee)
+                if follower not in followers:
+                    following = UserFollowing()
+                    following.user = follower
+                    following.following = user
+                    following.save()
+                    followers.append(follower)
 
         self.stdout.write('Successfully loaded test data.')

@@ -1,0 +1,77 @@
+{% verbatim %}
+    %script#navbar-templ{type:"text/x-handlebars-template"}
+      .row-fluid
+        .span3
+          %a{href:"/"}
+            %img.logo{src:"/static/img/logo.png"}
+        .span9
+          .row-fluid
+            .span12
+              .search.pull-right
+                %form{method:"GET", action:"/search"}
+                  %input.search-query{name:"query", type:"text", placeholder:"Search"}
+                  %button.btn.btn-warning
+                    %i.icon-search
+          .row-fluid
+            .span12
+              %ul.nav.nav-pills.pull-right
+                %li
+                  %a{href:"/talks"}
+                    %i.icon-comments-alt
+                    Talks
+                %li
+                  %a{href:"/speakers"}
+                    %i.icon-group
+                    Speakers
+                %li
+                  %a{href:"/events"}
+                    %i.icon-calendar
+                    Events
+
+                {{#if userLoggedIn}}
+                  %li
+                    %a#add-talk-navbar
+                      %i.icon-plus
+                      Add Talk
+                {{/if}}
+
+                %li
+                  %a{href:"/blog"}
+                    %i.icon-file-text
+                    Blog
+
+                {{#unless userLoggedIn}}
+                  %li
+                    %a{href:"/login"}
+                      %i.icon-signin
+                      Login
+                  %li
+                    %a{href:"/register"} Register
+                {{else}}
+                  %li.dropdown
+                    %a.dropdown-toggle{data-toggle:"dropdown", href:"#"}
+                      %i.icon-gear
+                      My Account
+                      %b.caret
+
+                    %ul.dropdown-menu
+                      %li
+                        %a{href:"{{profileLink}}"}
+                          %i.icon-user
+                          My Profile
+                      %li
+                        %a{href:"/profile/invite"}
+                          %i.icon-mail-forward
+                          Send Invites
+                      {{#if userIsStaff}}
+                        %li
+                          %a{href:"/admin"}
+                            %i.icon-gears
+                            Administration
+                      {{/if}}
+                      %li
+                        %a{href:"/logout"}
+                          %i.icon-signout
+                          Logout
+                {{/unless}}
+{% endverbatim %}

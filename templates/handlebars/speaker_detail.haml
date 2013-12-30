@@ -1,0 +1,34 @@
+{% verbatim %}
+  %script#speaker-detail-templ{type:"text/x-handlebars-template"}
+    .picture
+      {{#if photo}}
+        %img.pull-left{src:"{{photo}}"}
+      {{else}}
+        %i.pull-left.icon-user.photo-placeholder
+      {{/if}}
+
+    .description
+      %h4
+        %a{href:"{{ url}}"}
+          {{ name }}
+
+      {{#if tags}}
+        Expert In:
+        {{#each tags}}
+          .label.label-info {{name}}
+        {{/each}}
+      {{/if}}
+
+      .about {{ about }}
+
+    {{#unless userOwnsContent}}
+      {{#if userLoggedIn}}
+        .follow
+          {{#if followedByUser}}
+            %a.unfollow-user.btn.btn-danger Abandon
+          {{else}}
+            %a.follow-user.btn.btn-warning Follow
+          {{/if}}
+      {{/if}}
+    {{/unless}}
+{% endverbatim %}

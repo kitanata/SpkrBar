@@ -1,158 +1,64 @@
-#event-detail {
-    h2.date {
-        width: 460px;
-    }
+.event-list {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    padding: 20px;
 
-    .talk-photo {
-        margin-top: 20px;
+    .event {
+        flex: 1 0 600px;
+        margin: 10px;
 
-        img {
+        border: 1px solid #eee;
+        padding: 10px;
+        min-height: 160px;
+
+        .title a {
             display: block;
-            margin-left: auto;
-            margin-right: auto;
+            font-size: 20px;
+            line-height: 24px;
+            font-weight: 600;
+
+            &:hover {text-decoration: none;}
         }
 
-        i {
-            display: block;
-            width: 180px;
-            margin-left: auto;
-            margin-right: auto;
-            font-size: 12em;
-            color: rgb(185, 185, 185);
+        .start-date {
+            margin-top: 10px;
         }
-    }
 
-    .speakers {
-        list-style-type: none;
-        margin: 0px;
-
-        .speaker h4 { width: 100%; }
-
-        .speaker i { 
-            display: block;
-            width: 180px;
-            margin-left: auto;
-            margin-right: auto;
-            font-size: 12em;
-            color: rgb(185, 185, 185);
+        .details {
+            display: inline-block;
+            vertical-align: top;
+            width: 240px;
+            margin-left: 20px;
         }
-    }
-
-    .add-comment-form {
-
-        textarea {
-            width: 680px;
-            height: 120px;
-        }
-    }
-
-    #event-map {
-        width: 220px;
-        height: 220px;
     }
 }
 
 #event-header {
-    margin-top: 20px;
+    padding: 20px;
+
+    .label {
+        padding: 5px;
+    }
+
+    .desc {
+        display: inline;
+        vertical-align: middle;
+    }
 
     #map {
         height: 300px;
     }
 }
 
-#event-new {
-    .addon {
-        display: inline-block;
-        vertical-align: top;
-        height: 24px;
-        margin-left: -6px;
-        padding: 4px 6px 0px 6px;
-        border: 1px solid rgb(204, 204, 204);
-        border-radius: 0px 5px 5px 0px;
-    }
+.event-tag-area {
+    margin: 10px 0px 10px 0px;
 
-    #id_location {
-        border-right: 0px;
-    }
-
-    #map {
-        height: 400px;
-    }
-
-    #add-location {
-        margin-top: -10px;
-    }
-}
-
-.event-thumb {
-    margin-bottom: 20px;
-    border: 1px solid #eee;
-    padding: 10px;
-
-    .title {
-        font-weight: 600;
-        font-size: 20px;
+    .count {
+        font-size: 16px;
         line-height: 24px;
-
-        .location, .time {
-            margin-top: 20px;
-            font-size: 14px;
-            line-height: 16px;
-        }
     }
-
-    .photo {
-        position: relative;
-        margin-top: 20px;
-        min-height: 128px;
-
-        img {
-            position: absolute;
-            margin: auto;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-        }
+    .label {
+        margin-top: 5px;
     }
-}
-
-.event-list .event {
-    border: 1px solid #eee;
-    padding: 10px;
-    margin: 20px 0px 20px 0px;
-
-    .map {
-        display: inline-block;
-        width: 140px;
-        height: 140px;
-    }
-
-    .details {
-        display: inline-block;
-        vertical-align: top;
-        width: 240px;
-        margin-left: 20px;
-    }
-}
-
-#event-list-detail {
-    #map {
-        height: 260px;
-    }
-}
-
-#submit-talk-popup {
-    background-color: white;
-    padding: 20px;
-
-    form {
-        font-size: 18px;
-
-        button {
-            margin-top: 20px;
-            display: block;
-        }
-    }
-
 }

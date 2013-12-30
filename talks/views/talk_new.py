@@ -2,8 +2,6 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotFound
 
-from guardian.shortcuts import assign
-
 from talks.models import Talk
 from talks.forms import TalkForm
 
@@ -17,12 +15,9 @@ def talk_new(request):
             talk = Talk()
             talk.name = talk_form.cleaned_data['name']
             talk.abstract = talk_form.cleaned_data['abstract']
-            talk.speaker = request.user.get_profile()
+            talk.speaker = request.user
 
             talk.save()
-
-            assign('change_talk', request.user, talk)
-            assign('delete_talk', request.user, talk)
 
             return redirect('/talk/' + str(talk.id))
 

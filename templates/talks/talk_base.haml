@@ -1,16 +1,25 @@
 - extends 'base.haml'
 
+- block 'content-container'
+  #talk-detail-container
+
 - block 'scripts'
-  - include 'talks/handlebars/engagement.haml'
-  - include 'talks/handlebars/tags.haml'
-  - include 'talks/handlebars/links.haml'
-  - include 'talks/_popup_talk_edit_partial.haml'
+  - include 'handlebars/engagement.haml'
+  - include 'handlebars/create_engagement.haml'
+  - include 'handlebars/talk_edit.haml'
   - include 'talks/_popup_talk_delete_partial.haml'
-  - include 'talks/_popup_talk_submit_event_partial.haml'
-  - include 'talks/_popup_talk_rate_partial.haml'
-  - include 'talks/_popup_talk_photo_new_partial.haml'
   - include 'talks/_popup_talk_slides_new_partial.haml'
   - include 'talks/_popup_talk_video_new_partial.haml'
+  - include 'handlebars/comment.haml'
+
+  - include 'handlebars/talk_detail.haml'
 
   %script{type:"text/javascript"}
-    var talkView = new SpkrBar.Views.TalkDetail("{{talk.id}}");
+    var talkModel = new SpkrBar.Models.Talk({id:"{{talk.id}}"});
+
+    talkModel.fetch({
+      success: function(model){
+        var talkView = new SpkrBar.Views.TalkDetail({model: model});
+        $('#talk-detail-container').html(talkView.render().el);
+      }
+    });

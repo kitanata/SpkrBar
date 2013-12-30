@@ -1,0 +1,41 @@
+{% verbatim %}
+  %script#talk-thumbnail-templ{type:"text/x-handlebars-template"}
+    .header
+      .title
+        {{#if userLoggedIn}}
+          .grid1
+            %a{href:"{{url}}"}
+              {{ name}}
+            %br by {{ speaker_name }}
+
+          .grid2
+            .btn-group
+              {{#if userEndorsed}}
+                %a.btn.btn-warning.disabled.endorsed
+                  %i.icon-thumbs-up
+              {{else}}
+                %a.endorse-talk.btn.btn-warning{data-original-title:"Endorse Talk", data-toggle:"tooltip"}
+                  %i.icon-thumbs-up
+              {{/if}}
+        {{else}}
+          %div
+            %a{href:"{{url}}"}
+              {{ name }}
+            %br by {{ speaker_name }}
+        {{/if}}
+
+    .tag-cloud
+      {{#each tags}}
+        .label.label-info {{name}}
+      {{/each}}
+
+    .description
+      .speaker-media
+        {{#if speaker_photo}}
+          %img{src:"{{speaker_photo}}"}
+        {{else}}
+          %i.icon-user
+        {{/if}}
+
+      .abstract {{ abstract }}
+{% endverbatim %}

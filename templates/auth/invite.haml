@@ -4,16 +4,16 @@
 
 - block 'subnav-container' 
   .subnav
-    .row
+    .row-fluid
       .span12
         %h2
           Invite your friends and colleagues to SpkrBar
 
 - block 'content'
   #invite-friends
-    .row
+    .row-fluid
       .span6
-        %form{method:"POST", action:"/profile/invite"}
+        %form.invite{method:"POST", action:"/profile/invite"}
           - csrf_token
           %label{for:"contact_list"} To:
           %textarea#contact_list{name:"contacts"}
@@ -43,7 +43,7 @@
               %p.message-preview
                 = invite_message
               
-              %p It's free for speakers and attendees!
+              %p It's also, absolutely free!
 
               %a.btn.btn-warning{href:"http://www.spkrbar.com/register"} Signup Here
 

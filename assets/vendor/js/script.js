@@ -1,7 +1,12 @@
 //= require jquery-1.9.1.min
 //= require underscore
+//= require underscore.string.min
 //= require backbone
+//= require backbone-validation
+//= require backbone-relational
 //= require handlebars
+//= require moment.min
+//= require markdown.min
 //= require leaflet
 //= require bootstrap-tooltip
 //= require bootstrap-typeahead
@@ -9,4 +14,5 @@
 //= require bootstrap-timepicker.min
 //= require bootstrap-datepicker
 //= require jquery.colorbox-min
+//= require jquery.markitup
 //= require django-csrf

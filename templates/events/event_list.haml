@@ -1,37 +1,15 @@
 - extends 'base.haml'
 
-- block 'subnav-container'
+- block 'content-container'
+  #event-list-container
 
-- block 'content'
-  - for group in event_groups
-    - if group.1
-      .row
-        .section-title
-          %h2 {{group.0}}
-
-      .event-list.row{style:"margin-bottom:40px"}
-        - for event in group.1
-          - include 'events/_event_span6_detail_partial.haml'
+  - include 'handlebars/event_list.haml'
+  - include 'handlebars/event_thumbnail.haml'
 
 - block 'scripts'
   %script{type:"text/javascript"}
-    L.Icon.Default.imagePath = '{{STATIC_URL}}img/';
+    var events = new Backbone.Collection({{events|safe}});
 
-    - for group in event_groups
-      - for event in group.1
-        - with event.location as location
-            (function() {
-              var map = L.map('map{{event.id}}', {'zoomControl': false}).setView([39.95, -82.95], 6);
+    var eventListView = new SpkrBar.Views.EventList({collection: events});
 
-              L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                  attribution: ''
-                  }).addTo(map);
-
-              var url = "http://nominatim.openstreetmap.org/search/{{location.geocode_querystring}}?format=json"
-              $.get(url, function(data) {
-                  if(data.length != 0) {
-                      L.marker([data[0].lat, data[0].lon]).addTo(map);
-                      map.setView([data[0].lat, data[0].lon], 14);
-                  }
-              });
-            }).call(this);
+    $('#event-list-container').html(eventListView.render().el);

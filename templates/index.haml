@@ -1,82 +1,17 @@
 - extends 'base.haml'
 
-- block 'callout'
-  .jumbotron.callout
-    - if user.is_anonymous
-      %h3.btn-warning Conferences are social again.
-      %a.btn.btn-large.btn-warning{href:"/register"} <b>Register Now.</b>
-    - else
-      %h3.btn-warning Conferences are social again.
-      %a.add-talk.btn.btn-large.btn-warning{href:"#add-talk-popup"} Add your talk.
+- block 'content-container'
+  #index-container
 
-- block 'subnav-container'
+  - include 'handlebars/index.haml'
+  - include 'handlebars/talk_thumbnail.haml'
 
-- block 'content'
-  #index.row
-    .span4
-      %h2 Speakers
-      .promo
-        .item
-          %i.icon-ok-circle
-          Get more speaking gigs, and level up your speaking skills.
-        .item
-          %i.icon-ok-circle
-          Host all the information for your presentations all in one place.
-        .item
-          %i.icon-ok-circle
-          Get great feedback on your talks by those who attend them.
-        .item
-          %i.icon-ok-circle
-          Meet other great speakers and network with event planners.
+- block 'scripts'
+  %script{type:"text/javascript"}
+    talks = new SpkrBar.Collections.Talks({{talks|safe}})
 
-    .span4 
-      %h2 Attendees
-      .promo
-        .item
-          %i.icon-ok-circle
-          Find and follow your favorite speakers and events.
-        .item
-          %i.icon-ok-circle
-          Stay in contact with the people you meet at conferences.
-        .item
-          %i.icon-ok-circle
-          Endorse and share your favorite talks with friends.
-        .item
-          %i.icon-ok-circle
-          Quickly find engageing talks that interest you in your area.
+    var indexPage = new SpkrBar.Views.IndexPage({
+        collection: talks
+    });
 
-    .span4
-      %h2 Event Planners
-      .promo
-        .item
-          %i.icon-ok-circle
-          Find and recruit great speakers to speak at your events.
-        .item
-          %i.icon-ok-circle
-          Persist data about your event from year to year.
-        .item
-          %i.icon-ok-circle
-          Promote your event through speakers and attendees.
-        .item
-          %i.icon-ok-circle
-          Absolutely Free!
-
-  - if upcoming
-    .row
-      .section-title
-        %h2 Upcoming Speaking Engagements
-
-    .row
-      .talk-list
-        - for item in upcoming
-          - include 'talkevents/_talk_event_span6_detail_partial.haml'
-
-  - elif past
-    .row
-      .section-title
-        %h2 Previous Speaking Engagements
-
-    .row
-      .talk-list
-        - for item in past
-          - include 'talkevents/_talk_event_span6_detail_partial.haml'
+    $('#index-container').html(indexPage.render().el);

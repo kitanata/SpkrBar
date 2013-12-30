@@ -16,7 +16,6 @@ from django.utils.encoding import force_unicode
 from django.forms.widgets import ClearableFileInput, Input, CheckboxInput
 
 from models.choices import *
-from models import TalkRating
 
 class CustomClearableFileInput(ClearableFileInput):
 
@@ -66,22 +65,7 @@ class TalkForm(forms.ModelForm):
             'abstract': forms.Textarea(attrs={'cols': 80, 'rows': 5}),
             'photo': CustomClearableFileInput()
         }
-        exclude = ('speaker', 'media', 'published', 'tags', 'attendees', 'endorsements')
-
-
-class TalkRatingForm(forms.ModelForm):
-    class Meta:
-        model = TalkRating
-
-        widgets = {
-                'engagement': forms.RadioSelect(),
-                'knowledge': forms.RadioSelect(),
-                'professionalism': forms.RadioSelect(),
-                'resources': forms.RadioSelect(),
-                'discussion': forms.RadioSelect()
-                }
-
-        exclude = ('talk', 'rater', 'datetime')
+        exclude = ('speaker', 'media', 'published', 'tags', 'links', 'endorsements')
 
 
 class TalkLinkForm(forms.Form):

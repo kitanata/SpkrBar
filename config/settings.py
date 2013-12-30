@@ -43,10 +43,7 @@ AUTH_USER_MODEL = 'core.SpkrbarUser'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend', # this is default
-    'guardian.backends.ObjectPermissionBackend',
 )
-
-ANONYMOUS_USER_ID = -1
 
 LOGIN_URL = '/login'
 
@@ -174,7 +171,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'guardian',
     'django_markdown',
     'grappelli',
     'django.contrib.admin',
@@ -185,8 +181,7 @@ INSTALLED_APPS = (
     'core',
     'locations',
     'talks',
-    'events',
-    'talkevents',
+    'engagements',
     'blog',
     'mobile'
 )
@@ -296,3 +291,5 @@ GEARS_PUBLIC_ASSETS = (
     r'^js/script\.js$',
     r'^vendor/js/script\.js$',
 )
+
+GEARS_FINGERPRINTING = False

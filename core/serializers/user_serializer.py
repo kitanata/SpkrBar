@@ -4,21 +4,21 @@ from core.models import SpkrbarUser, Notification
 from notification_serializer import NotificationSerializer
 
 class UserSerializer(serializers.ModelSerializer):
-    full_name = serializers.Field(source='get_full_name')
-    is_speaker = serializers.Field(source='is_speaker')
-    is_attendee = serializers.Field(source='is_attendee')
-    is_event_planner = serializers.Field(source='is_event_planner')
+    url = serializers.Field(source='get_absolute_url')
 
     class Meta:
         model = SpkrbarUser
         fields = (
                 'id', 
-                'username', 
+                'is_staff',
                 'full_name',
-                'email', 
+                'about_me',
+                'url',
+                'photo',
                 'following', 
                 'followers',
-                'is_speaker',
-                'is_attendee',
-                'is_event_planner',
+                'tags',
+                'links',
+                'talks',
+                'engagements'
                 )
