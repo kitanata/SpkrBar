@@ -3,7 +3,7 @@ from core.helpers import template
 
 @template('blog/blog_list.haml')
 def blog_list(request):
-    posts = BlogPost.objects.filter(published=True).order_by('date')
+    posts = BlogPost.objects.filter(published=True).order_by('-date')
 
     history = [{
         'month': item.date.strftime("%B"),
