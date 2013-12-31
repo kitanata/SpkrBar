@@ -135,19 +135,3 @@ div.hiding {
     z-index:10;
     cursor:pointer;
 }
-
-/** form stuff **/
-label {
-    font-size:.8em;
-    color:#555;
-    display:block;
-}
-
-textarea {
-    min-height:70px;
-    width:221px;
-}
-
-input {
-    width:223px;
-}
