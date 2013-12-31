@@ -155,14 +155,34 @@
 }
 
 .talk-list {
+    display: -webkit-flex;     /* NEW - Chrome */
     display: flex;
+    -webkit-flex-flow: row wrap;
     flex-flow: row wrap;
     justify-content: space-around;
+    -webkit-justify-content: space-around;
     padding: 20px;
 
     .talk_event {
         flex: 1 0 300px;
+        -webkit-flex: 1 0 300px;
         margin: 10px;
+    }
+
+}
+
+@supports not (flex-wrap: wrap) {
+    .talk-list {
+        display: block;
+        
+        & .talk_event {
+          display: inline-block;
+          vertical-align: top;
+          width: 420px;
+          height: 380px;
+          float: left;
+          overflow: scroll;
+        }
     }
 }
 

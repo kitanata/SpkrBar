@@ -30,13 +30,32 @@
 }
 
 .speaker-list {
+    display: -webkit-flex;     /* NEW - Chrome */
     display: flex;
+    -webkit-flex-flow: row wrap;
     flex-flow: row wrap;
+    -webkit-justify-content: space-around;
     justify-content: space-around;
     padding: 20px;
 
     .speaker {
+        -webkit-flex: 1 0 600px;
         flex: 1 0 600px;
         margin: 10px;
+    }
+}
+
+@supports not (flex-wrap: wrap) {
+    .speaker-list {
+        display: block;
+        
+        & .speaker {
+          display: inline-block;
+          vertical-align: top;
+          width: 400px;
+          height: 220px;
+          float: left;
+          overflow: scroll;
+        }
     }
 }
