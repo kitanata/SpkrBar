@@ -84,6 +84,7 @@ def register_user(request):
                 Permission.objects.get(codename='delete_userfollowing'),
 
                 Permission.objects.get(codename='change_spkrbaruser'),
+                Permission.objects.get(codename='add_feedback'),
             )
 
             user.save()
