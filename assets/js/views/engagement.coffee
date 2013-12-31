@@ -32,15 +32,24 @@ SpkrBar.Views.Engagement = Backbone.View.extend
         "/event/" + _.str.slugify(@model.get('event_name'))
 
     context: ->
-        id: @model.id
-        event_name: @model.get('event_name')
-        event_url: @eventUrl()
-        room: @model.get('room')
-        date: moment(@model.get('date')).format('LL')
-        time: moment(@model.get('time'), "HH:mm:ss").format('hh:mm A')
-        location_name: @model.get('location').get('name')
-        address: @model.get('location').get('address')
-        city: @model.get('location').get('city')
-        state: @model.get('location').get('state')
-        zip_code: @model.get('location').get('zip_code')
-        userOwned: @userOwned()
+        if @model.get('location') != null
+            id: @model.id
+            event_name: @model.get('event_name')
+            event_url: @eventUrl()
+            room: @model.get('room')
+            date: moment(@model.get('date')).format('LL')
+            time: moment(@model.get('time'), "HH:mm:ss").format('hh:mm A')
+            location_name: @model.get('location').get('name')
+            address: @model.get('location').get('address')
+            city: @model.get('location').get('city')
+            state: @model.get('location').get('state')
+            zip_code: @model.get('location').get('zip_code')
+            userOwned: @userOwned()
+        else
+            id: @model.id
+            event_name: @model.get('event_name')
+            event_url: @eventUrl()
+            room: @model.get('room')
+            date: moment(@model.get('date')).format('LL')
+            time: moment(@model.get('time'), "HH:mm:ss").format('hh:mm A')
+            userOwned: @userOwned()

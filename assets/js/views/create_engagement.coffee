@@ -90,10 +90,10 @@ SpkrBar.Views.CreateEngagement = Backbone.View.extend
 
             if newLocation.isValid(true)
                 newLocation.save null,
-                    success: ->
+                    success: =>
                         @curLocation = newLocation
                         @locations.add @curLocation
-                        @model.set 'location', @curLocation.id
+                        @model.set 'location', @curLocation
                         @validateAndSaveModel()
             else
                 @showValidationAlert()
@@ -104,7 +104,7 @@ SpkrBar.Views.CreateEngagement = Backbone.View.extend
             @model.save null, 
                 success: =>
                     $.colorbox.close()
-                    @parent.engagements.add @model
+                    @talk.get('engagements').add @model
         else
             @showValidationAlert()
 
