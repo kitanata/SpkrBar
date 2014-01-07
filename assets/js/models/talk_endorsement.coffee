@@ -18,8 +18,14 @@ SpkrBar.Models.TalkEndorsement = Backbone.RelationalModel.extend
         }
     ]
 
+    getUserId: ->
+        if @get('user') != null
+            return @get('user').id
+        else
+            return null
+
     toJSON: (options) ->
         created_at: @get('created_at')
         updated_at: @get('updated_at')
-        user: @get('user').id
+        user: @getUserId()
         talk: @get('talk').id

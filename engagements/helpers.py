@@ -22,8 +22,8 @@ def talk_event_groups(sample_size=0):
             start_date = end_date
             end_date = start_date + timedelta(days=group[1])
 
-        result = talk_events.filter(event__start_date__gt=start_date,
-                event__start_date__lt=end_date)
+        result = talk_events.filter(date__gt=start_date,
+                date__lt=end_date)
 
         if sample_size and len(result) > sample_size:
             result = random.sample(result, sample_size)

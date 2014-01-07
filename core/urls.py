@@ -38,6 +38,7 @@ urlpatterns = patterns('',
     url(r'^events$', 'core.views.event_list'),
     url(r'^event/(?P<slug>[\w+-]*)$', 'core.views.event_detail'),
 
+    url(r'^signup$', 'core.views.signup'),
     url(r'^login$', 'core.views.login_user'),
     url(r'^logout$', 'core.views.logout_user'),
     url(r'^register$', 'core.views.register_user'),

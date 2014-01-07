@@ -35,11 +35,17 @@ SpkrBar.Models.TalkComment = Backbone.RelationalModel.extend
         else
             return null
 
+    getUserId: ->
+        if @get('user') != null
+            return @get('user').id
+        else
+            return null
+
     toJSON: (options) ->
         comment: @get('comment')
         created_at: @get('created_at')
         updated_at: @get('updated_at')
-        user: @get('user').id
+        user: @getUserId()
         talk: @get('talk').id
         parent: @getParentId()
         children: @get('children').map (x) -> x.id

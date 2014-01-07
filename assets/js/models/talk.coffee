@@ -67,8 +67,8 @@ SpkrBar.Models.Talk = Backbone.RelationalModel.extend
         speaker: @get('speaker').id
         name: @get('name')
         abstract: @get('abstract')
-        comments: @get('comments')
-        endorsements: @get('endorsements')
+        comments: @get('comments').map (x) -> x.id
+        endorsements: @get('endorsements').map (x) -> x.id
         engagements: @get('engagements').map (x) -> x.id
         links: @get('links')
         tags: @get('tags').map (x) -> x.id

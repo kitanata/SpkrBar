@@ -11,6 +11,6 @@ from rest_framework.renderers import JSONRenderer
 @template('index.haml')
 def index(request):
     talks = Talk.objects.filter(published=True).order_by('updated_at')[:12]
-    talks = JSONRenderer().render(TalkSerializer(talks).data)
+    talks = JSONRenderer().render(TalkSerializer(talks, many=True).data)
 
     return {'talks': talks}

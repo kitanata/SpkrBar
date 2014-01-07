@@ -1,4 +1,5 @@
 from index import index
+from signup import signup
 from search import search
 
 from register_user import register_user
@@ -26,7 +27,7 @@ from rest_user_tag_detail import UserTagDetail
 from rest_user_following_detail import UserFollowingDetail
 
 __all__ = [
-    "index", "search",
+    "index", "search", "signup",
     "register_user", "login_user", "logout_user",
     "profile_detail", "profile_edit", "profile_photo",
     "profile_invite", "profile_invite_thanks",

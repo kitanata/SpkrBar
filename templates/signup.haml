@@ -1,0 +1,120 @@
+- extends 'base.haml'
+
+- block 'subnav-container' 
+  .subnav
+    .row-fluid
+      .span12
+        %h2 Introducing: The best way to archive your event content online.
+
+- block 'content'
+  .row-fluid
+    #signup{style:"padding:20px;"}
+      .span9
+        %h1.onepage
+          One event page to rule them all!
+          %i.icon-long-arrow-right
+
+        .block
+          %img.speaker-img{src:"/static/img/speaker/256.png"}
+          .blurb
+            .speaker-blurb
+              %h2 A profile for every speaker...
+            .talk-blurb
+              %h2 A page for every talk...
+          %img.talk-img{src:"/static/img/talk/256.png"}
+
+        .longblock 
+          %h2 Every session has a home, all organized, in one place.
+
+        .features
+          .feature
+            %img.img-thumbnail{src:"/static/img/topics.png"}
+            .desc
+              %span Categorize session content into topics.
+          .feature
+            %img.img-thumbnail{src:"/static/img/links.png"}
+            .desc
+              %span Link social resources to each session.
+          .feature
+            %img.img-thumbnail{src:"/static/img/videos.png"}
+            .desc
+              %span Embed videos from Youtube and Vimeo.
+          .feature
+            %img.img-thumbnail{src:"/static/img/slides.png"}
+            .desc
+              %span Embed slide decks from SlideShare and SpeakerDeck.
+          .feature
+            %img.img-thumbnail{src:"/static/img/comments.png"}
+            .desc
+              %span Participate in the discussion around your attendees' favorite talks.
+
+        .testimonials
+          .quote
+            %i.icon-quote-left
+            SpkrBar.com is the greatest thing ever.
+            .attrib &mdash; Awesome Person
+          .quote
+            %i.icon-quote-left
+            SpkrBar.com is the greatest thing ever.
+            .attrib &mdash; Awesome Person
+          .quote
+            %i.icon-quote-left
+            SpkrBar.com is the greatest thing ever.
+            .attrib &mdash; Awesome Person
+          .quote
+            %i.icon-quote-left
+            SpkrBar.com is the greatest thing ever.
+            .attrib &mdash; Awesome Person
+          .quote
+            %i.icon-quote-left
+            SpkrBar.com is the greatest thing ever.
+            .attrib &mdash; Awesome Person
+          .quote
+            %i.icon-quote-left
+            SpkrBar.com is the greatest thing ever.
+            .attrib &mdash; Awesome Person
+
+        %h1.title Join us today! It's as easy as 1-2-3.
+      .span3
+        %a{href:"http://columbus-code-camp.spkrbar.com"}
+          %img.event{src:"/static/img/event/256.png"}
+
+
+    .row-fluid
+      .span12
+        #options-container
+          .options
+            .option
+              %h3.title The Yearly Plan
+              %ul
+                %li Store content for up to 1 year.
+                %li 1 conference or event.
+                %li Import content from Excel or CSV.
+                %li Crowdsourced content management.
+              %button.btn.btn-warning
+                <sup>&Dagger;</sup> 50.00 / month
+              .footnote <sup>&Dagger;</sup> Billed every year at $600.00
+            .option.primary
+              %h3.title The Forever Plan
+              %ul
+                %li Store conference content <b>forever</b>.
+                %li <b>Unlimited</b> conferences and events.
+                %li Import content from Excel or CSV.
+                %li Speaker powered, crowdsourced content management.
+                %li Living, breathing, 24/7 Support.
+                %li Questions? Call us at 407-590-1416.
+              %button.btn.btn-warning
+                <sup>&dagger;</sup> $40.00 / month
+              .footnote <sup>&dagger;</sup> Billed once at $2400.00. ($40.00/mo over 5 years)
+            .option.last
+              %h3.title The Free Plan
+              %ul
+                %li Invite speakers for FREE!
+                %li No support.
+                %li No event page.
+                %li No talk profiles.
+                %li No easy import.
+              %button.btn.btn-warning
+                <sup>*</sup> Absolutely Free!
+              .footnote <sup>*</sup> Seriously, free. No ads. No emails. No strings.
+
