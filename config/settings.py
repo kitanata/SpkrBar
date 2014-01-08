@@ -174,7 +174,6 @@ INSTALLED_APPS = (
     'django_markdown',
     'grappelli',
     'django.contrib.admin',
-    'django.contrib.markup',
     'django_gears',
     'south',
     'rest_framework',

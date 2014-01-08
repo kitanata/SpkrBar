@@ -1,16 +1,8 @@
-import json
-import random
-from datetime import datetime, timedelta
-
 from core.helpers import template
-
-from talks.models import Talk
-from talks.serializers import TalkSerializer
-from rest_framework.renderers import JSONRenderer
+from django.shortcuts import redirect
 
 @template('index.haml')
 def index(request):
-    talks = Talk.objects.filter(published=True).order_by('updated_at')[:12]
-    talks = JSONRenderer().render(TalkSerializer(talks, many=True).data)
-
-    return {'talks': talks}
+    if not request.user.is_anonymous():
+        return redirect(request.user.get_absolute_url())
+    return {}
