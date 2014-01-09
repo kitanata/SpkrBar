@@ -502,24 +502,21 @@ form.invite, .preview-container {
                 height: 128px;
             }
 
+            i {
+                color: @orange;
+                font-size: 64px;
+            }
+
             .desc {
                 display: inline-block;
                 position: relative;
                 vertical-align: bottom;
                 margin-left: 20px;
                 margin-right: 40px;
-                height: 128px;
                 -webkit-flex: 1 0 40px;
                 flex: 1 0 40px;
-
-                span {
-                    position: absolute;
-                    color: #666;
-                    top: 0px;
-                    left: 0px;
-                    font-size: 20px;
-                    line-height: 24px; /*Weird, I know. Browser issue?*/
-                }
+                font-size: 20px;
+                line-height: 24px; /*Weird, I know. Browser issue?*/
             }
         }
 
@@ -857,13 +854,8 @@ form.invite, .preview-container {
         .features {
             margin-top: 40px;
             .feature {
-                img {
-                    width: 64px;
-                    height: 64px;
-                }
-
-                .desc {
-                    height: 64px;
+                i {
+                    font-size: 32px;
                 }
             }
         }
@@ -891,21 +883,9 @@ form.invite, .preview-container {
             display: block;
 
             .feature {
-                display: block;
-                width: auto;
 
-                .desc {
-                    display: block;
-                    height: auto;
-                    margin-right: auto;
-                    margin-left: auto;
-                    height: auto;
-
-                    span {
-                        display: block;
-                        position: relative;
-                        width: auto;
-                    }
+                i {
+                    font-size: 32px;
                 }
             }
         }
