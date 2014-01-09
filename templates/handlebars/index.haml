@@ -3,17 +3,44 @@
     .best-way
       ~~ The best way for conferences to archive, manage, and share their session content online. ~~
 
-    .row-fluid
-      #signup{style:"padding:20px;"}
-        .span3
-          %a{href:"http://columbus-code-camp.spkrbar.com"}
-            %img.event{src:"/static/img/event/256.png"}
-
-        .span9
+    #signup.under600
+      .row-fluid
+        .span12
           %h1.onepage
-            %i.icon-long-arrow-left
             %span One event page to rule them all!
+        .span12
+            %a{href:"http://columbus-code-camp.spkrbar.com"}
+              %img.event{src:"/static/img/event/512.png"}
+        .span12
+          .features
+            .feature
+              .desc
+                %span Categorize session content into topics.
+            .feature
+              .desc
+                %span Link social resources to each session.
+            .feature
+              .desc
+                %span Embed videos from Youtube and Vimeo...
+            .feature
+              .desc
+                %span Slide decks from SlideShare and SpeakerDeck.
+            .feature
+              .desc
+                %span Participate in the discussion around your attendees' favorite sessions.
+        .span12
+          .longblock 
+            %h2 Every session has a home, all organized, in one place.
 
+    #signup.under800
+      .row-fluid
+        .span12
+          %h1.onepage
+            %span One event page to rule them all!
+        .span12
+            %a{href:"http://columbus-code-camp.spkrbar.com"}
+              %img.event{src:"/static/img/event/512.png"}
+        .span12              
           .features
             .feature
               %img.img-thumbnail{src:"/static/img/topics.png"}
@@ -34,34 +61,113 @@
             .feature
               %img.img-thumbnail{src:"/static/img/comments.png"}
               .desc
-                %span Participate in the discussion around your attendees' favorite talks.
+                %span Participate in the discussion around your attendees' favorite sessions.
+        .span12
+          .longblock 
+            %h2 Every session has a home, all organized, in one place.
 
-          .view-over1024
-            .longblock 
-              %h2 Every session has a home, all organized, in one place.
+    #signup.under1000
+      .row-fluid
+        .span12
+          %h1.onepage
+            %span One event page to rule them all!
+        .span12
+            %a{href:"http://columbus-code-camp.spkrbar.com"}
+              %img.event{src:"/static/img/event/512.png"}
+        .span12              
+          .features
+            .feature
+              %img.img-thumbnail{src:"/static/img/topics.png"}
+              .desc
+                %span Categorize session content into topics.
+            .feature
+              %img.img-thumbnail{src:"/static/img/links.png"}
+              .desc
+                %span Link social resources to each session.
+            .feature
+              %img.img-thumbnail{src:"/static/img/videos.png"}
+              .desc
+                %span Embed videos from Youtube and Vimeo...
+            .feature
+              %img.img-thumbnail{src:"/static/img/slides.png"}
+              .desc
+                %span Slide decks from SlideShare and SpeakerDeck.
+            .feature
+              %img.img-thumbnail{src:"/static/img/comments.png"}
+              .desc
+                %span Participate in the discussion around your attendees' favorite sessions.
+        .span12
+          .longblock 
+            %h2 Every session has a home, all organized, in one place.
 
-            .block
-              %img.speaker-img{src:"/static/img/speaker/256.png"}
-              .blurb
-                .speaker-blurb
-                  %h2 A profile for every speaker...
-                .talk-blurb
-                  %h2 A page for every talk...
-              %img.talk-img{src:"/static/img/talk/256.png"}
+    #signup.over1000
+      .row-fluid
+        .span3
+          .event-img-container
+            %a{href:"http://columbus-code-camp.spkrbar.com"}
+              %img.event{src:"/static/img/event/512.png"}
+
+        .span9
+          .row-fluid
+            .span-12
+              %h1.onepage
+                %span One event page to rule them all!
+
+            .span12              
+              .features
+                .feature
+                  %img.img-thumbnail{src:"/static/img/topics.png"}
+                  .desc
+                    %span Categorize session content into topics.
+                .feature
+                  %img.img-thumbnail{src:"/static/img/links.png"}
+                  .desc
+                    %span Link social resources to each session.
+                .feature
+                  %img.img-thumbnail{src:"/static/img/videos.png"}
+                  .desc
+                    %span Embed videos from Youtube and Vimeo...
+                .feature
+                  %img.img-thumbnail{src:"/static/img/slides.png"}
+                  .desc
+                    %span Slide decks from SlideShare and SpeakerDeck.
+                .feature
+                  %img.img-thumbnail{src:"/static/img/comments.png"}
+                  .desc
+                    %span Participate in the discussion around your attendees' favorite sessions.
+
+            .span12
+              .longblock 
+                %h2 Every session has a home, all organized, in one place.
 
     .row-fluid
-      .view-under1024
-        .longblock 
-          %h2 Every session has a home, all organized, in one place.
+      .section-title{style:"margin-top:80px;"}
+        %h2 Importing your content is easy. It only takes 3 steps, and you only have to do it <u>once</u>.
 
-        .block
-          %img.speaker-img{src:"/static/img/speaker/256.png"}
-          .blurb
-            .speaker-blurb
-              %h2 A profile for every speaker...
-            .talk-blurb
-              %h2 A page for every talk...
-          %img.talk-img{src:"/static/img/talk/256.png"}
+    .row-fluid        
+      .import-section
+        .span12
+          .row-fluid
+            .span2
+              .num 1
+            .span10
+              .description
+                %h1 Download the template.
+                %p Download the CSV or Excel template. It will have columns for all the information we need to build your event page, session pages, and speaker profiles.
+          .row-fluid
+            .span2
+              .num 2
+            .span10
+              .description
+                %h1 Edit the spreadsheet.
+                %p The spreadsheet is already in a format you are familiar with. You don't have to fill out everything but the more information you give us, the more complete the picture we can paint for your event.
+          .row-fluid
+            .span2
+              .num 3
+            .span10
+              .description
+                %h1 Upload it.
+                %p After uploading the spreadsheet, we will create profiles for every speaker, and session. Then we will automatically link all these resources together. We will create an account for each of your speakers, so they can make sure their sessions stay up to date, and answer any questions your attendees may have about their sessions.
 
     .row-fluid
       .section-title{style:"margin-top:80px;"}
@@ -96,7 +202,7 @@
             .attrib &mdash; Awesome Person
 
     .row-fluid
-      .section-title{style:"margin-top:40px;"}
+      .section-title.get-started{style:"margin-top:40px;"}
         %h2 Getting started is easy. Let us show you how.
 
     .row-fluid
@@ -113,8 +219,8 @@
             .option
               %h3.title The Yearly Plan
               %ul
-                %li Store content for up to 1 year.
-                %li 1 conference or event.
+                %li Store your content <b>forever</b>.
+                %li 1 year of content.
                 %li Easy Import from Excel or CSV.
                 %li Crowdsourced, content management.
               %button.btn.btn-warning
@@ -123,10 +229,11 @@
             .option.primary
               %h3.title The Forever Plan
               %ul
-                %li Store conference content <b>forever</b>.
-                %li <b>Unlimited</b> conferences and events.
+                %li Store your content <b>forever</b>.
+                %li <b>Unlimited</b> years of content.
                 %li Easy Import from Excel or CSV.
                 %li Crowdsourced, content management.
+                %li Custom Domain: <b>mycon.spkrbar.com</b>
                 %li Living, Breathing, 24/7 Support.
                 %li Questions? Call us at 407-590-1416.
               %button.btn.btn-warning
