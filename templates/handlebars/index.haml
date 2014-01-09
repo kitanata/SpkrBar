@@ -1,17 +1,16 @@
 {% verbatim %}
   %script#index-templ{type:"text/x-handlebars-template"}
-    .best-way
-      ~~ The best way for conferences to archive, manage, and share their session content online. ~~
-
     #signup.under600
       .row-fluid
         .span12
           %h1.onepage
-            %span One event page to rule them all!
+            %span Your event's content, given life, online, <b>forever.</b>
         .span12
             %a{href:"http://columbus-code-camp.spkrbar.com"}
               %img.event{src:"/static/img/event/512.png"}
         .span12
+          %h2.withus
+            %span With SpkrBar you can...
           .features
             .feature
               .desc
@@ -36,11 +35,14 @@
       .row-fluid
         .span12
           %h1.onepage
-            %span One event page to rule them all!
-        .span12
+            %span Your event's content, given life, online, <b>forever.</b>
+      .row-fluid
+        .span3
             %a{href:"http://columbus-code-camp.spkrbar.com"}
               %img.event{src:"/static/img/event/512.png"}
-        .span12              
+        .span9
+          %h2.withus
+            %span With SpkrBar you can...
           .features
             .feature
               %img.img-thumbnail{src:"/static/img/topics.png"}
@@ -62,19 +64,28 @@
               %img.img-thumbnail{src:"/static/img/comments.png"}
               .desc
                 %span Participate in the discussion around your attendees' favorite sessions.
-        .span12
+        .span9
           .longblock 
             %h2 Every session has a home, all organized, in one place.
+            
+      .row-fluid  
+        .span12
+          .import-title
+            %h1 Importing your content is <b>easy</b>.
+            %h2 It only takes 3 steps, and you only have to do it <u>once</u>.
 
     #signup.under1000
       .row-fluid
         .span12
           %h1.onepage
-            %span One event page to rule them all!
-        .span12
+            %span Your event's content, given life, online, <b>forever.</b>
+      .row-fluid
+        .span4
             %a{href:"http://columbus-code-camp.spkrbar.com"}
               %img.event{src:"/static/img/event/512.png"}
-        .span12              
+        .span8              
+          %h2.withus
+            %span With SpkrBar you can...
           .features
             .feature
               %img.img-thumbnail{src:"/static/img/topics.png"}
@@ -96,9 +107,14 @@
               %img.img-thumbnail{src:"/static/img/comments.png"}
               .desc
                 %span Participate in the discussion around your attendees' favorite sessions.
-        .span12
+        .span8
           .longblock 
             %h2 Every session has a home, all organized, in one place.
+
+        .span8
+          .import-title
+            %h1 Importing your content is <b>easy</b>.
+            %h2 It only takes 3 steps, and you only have to do it <u>once</u>.
 
     #signup.over1000
       .row-fluid
@@ -111,9 +127,11 @@
           .row-fluid
             .span-12
               %h1.onepage
-                %span One event page to rule them all!
+                %span The content from your event, given life, online, <b>forever.</b>
 
             .span12              
+              %h2.withus
+                %span With SpkrBar you can...
               .features
                 .feature
                   %img.img-thumbnail{src:"/static/img/topics.png"}
@@ -138,11 +156,16 @@
 
             .span12
               .longblock 
-                %h2 Every session has a home, all organized, in one place.
+                %h2 Every session has a home, all organized, in one place online.
+
+            .span12
+              .import-title
+                %h1 Importing your content is <b>easy</b>.
+                %h2 It only takes a few steps, and you only have to do it <b>once</b>.
 
     .row-fluid
-      .section-title{style:"margin-top:80px;"}
-        %h2 Importing your content is easy. It only takes 3 steps, and you only have to do it <u>once</u>.
+      .section-title
+        %h1 How does it work?
 
     .row-fluid        
       .import-section
@@ -152,26 +175,33 @@
               .num 1
             .span10
               .description
-                %h1 Download the template.
-                %p Download the CSV or Excel template. It will have columns for all the information we need to build your event page, session pages, and speaker profiles.
+                %h1 Create an Account.
+                %p Creating an account with us takes about 30 seconds. There is absolutely zero obligiation. We won't bill you until after you upload your data.
           .row-fluid
             .span2
               .num 2
+            .span10
+              .description
+                %h1 Download the template.
+                %p Once you sign up with us, we'll give you a Excel or CSV template to download. It will have columns for all the information we need to build your event page, session pages, and speaker profiles.
+          .row-fluid
+            .span2
+              .num 3
             .span10
               .description
                 %h1 Edit the spreadsheet.
                 %p The spreadsheet is already in a format you are familiar with. You don't have to fill out everything but the more information you give us, the more complete the picture we can paint for your event.
           .row-fluid
             .span2
-              .num 3
+              .num 4
             .span10
               .description
                 %h1 Upload it.
-                %p After uploading the spreadsheet, we will create profiles for every speaker, and session. Then we will automatically link all these resources together. We will create an account for each of your speakers, so they can make sure their sessions stay up to date, and answer any questions your attendees may have about their sessions.
+                %p After uploading the spreadsheet, we will create profiles for every speaker, and session. Then we will automatically link all these resources together. We will create an account for each of your speakers. Your speakers will have the power to make sure their sessions stay up to date, and answer any questions your attendees may have about their talks.
 
     .row-fluid
       .section-title{style:"margin-top:80px;"}
-        %h2 Here is what our customers think about SpkrBar.
+        %h2 Here are some of the things our customers are saying about SpkrBar.
 
     .row-fluid
       .span12
@@ -225,7 +255,7 @@
                 %li Crowdsourced, content management.
               %button.btn.btn-warning
                 <sup>&Dagger;</sup> 50.00 / month
-              .footnote <sup>&Dagger;</sup> Billed every year at $600.00
+              .footnote <sup>&Dagger;</sup> Billed once at $600.00
             .option.primary
               %h3.title The Forever Plan
               %ul

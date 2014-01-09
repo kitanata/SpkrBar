@@ -409,7 +409,6 @@ form.invite, .preview-container {
         padding: 0px 20px 0px 0px;
         margin-left: 20px;
         line-height: 80px;
-        border-top: 5px solid @orange;
         border-bottom: 5px solid @orange;
 
         i {
@@ -418,6 +417,15 @@ form.invite, .preview-container {
             color: @orange;
             font-size: 2em;
         }
+
+        b {
+            font-size: 1.8em;
+        }
+    }
+
+    h2.withus {
+        margin-top: 80px;
+        color: #666;
     }
 
     h1.title {
@@ -437,8 +445,8 @@ form.invite, .preview-container {
 
         h2 {
             display: inline-block;
-            border-right: 5px solid #ccc;
-            border-left: 5px solid #ccc;
+            border-right: 5px solid @orange;
+            border-left: 5px solid @orange;
             padding: 20px;
             text-align:center;
             width: 100%;
@@ -446,8 +454,33 @@ form.invite, .preview-container {
         }
     }
 
+    .import-title {
+        color: #666;
+
+        h1 {
+            margin-top: 80px;
+            line-height: 64px;
+
+            b {
+                display: inline-table;
+                font-size: 3em;
+                border-bottom: 5px solid @orange;
+            }
+        }
+
+        h2 {
+            margin-top: 40px;
+
+            b {
+                display: inline-table;
+                border-bottom: 2px solid @orange;
+                line-height: 10px;
+            }
+        }
+    }
+
     .features {
-        margin-top: 100px;
+        margin-top: 40px;
         list-style-type: none;
         display: -webkit-flex;     /* NEW - Chrome */
         display: flex;
@@ -757,7 +790,7 @@ form.invite, .preview-container {
     }
 }
 
-@media (min-width:1001px) {
+@media (min-width:1051px) {
     #signup.over1000 {
         display: block;
 
@@ -771,7 +804,7 @@ form.invite, .preview-container {
     }
 }
 
-@media (max-width:1000px) {
+@media (max-width:1050px) {
     #signup.under1000 {
         display: block;
 
@@ -784,33 +817,13 @@ form.invite, .preview-container {
             border: none;
         }
 
+        .withus {
+            margin-top: 0px;
+        }
+
         img.event {
             margin-right: auto;
             margin-left: 0px;
-        }
-
-        .features {
-
-            .feature {
-                -webkit-flex: 1 0 260px;
-                flex: 1 0 260px;
-                margin-left: 0px;
-                width: auto;
-
-                .desc {
-                    display: block;
-                    height: auto;
-                    margin-right: auto;
-                    margin-left: 20px;
-                    height: auto;
-
-                    span {
-                        display: block;
-                        position: relative;
-                        width: auto;
-                    }
-                }
-            }
         }
     }
 
@@ -835,6 +848,10 @@ form.invite, .preview-container {
         .onepage {
             margin: 40px 0px 20px 0px;
             border: none;
+        }
+        
+        .withus {
+            margin-top: 0px;
         }
 
         .features {
