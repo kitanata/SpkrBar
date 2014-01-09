@@ -1,49 +1,7 @@
 {% verbatim %}
   %script#index-templ{type:"text/x-handlebars-template"}
     .best-way
-      ~~ The best way to archive, manage, and share your event's session content online. ~~
-
-    .row-fluid
-      .span12
-        #options-container
-          .options
-            .option
-              %h3.title The Yearly Plan
-              %ul
-                %li Store content for up to 1 year.
-                %li 1 conference or event.
-                %li Import content from Excel or CSV.
-                %li Crowdsourced content management.
-              %button.btn.btn-warning
-                <sup>&Dagger;</sup> 50.00 / month
-              .footnote <sup>&Dagger;</sup> Billed every year at $600.00
-            .option.primary
-              %h3.title The Forever Plan
-              %ul
-                %li Store conference content <b>forever</b>.
-                %li <b>Unlimited</b> conferences and events.
-                %li Import content from Excel or CSV.
-                %li Speaker powered, crowdsourced content management.
-                %li Living, breathing, 24/7 Support.
-                %li Questions? Call us at 407-590-1416.
-              %button.btn.btn-warning
-                <sup>&dagger;</sup> $40.00 / month
-              .footnote <sup>&dagger;</sup> Billed once at $2400.00. ($40.00/mo over 5 years)
-            .option.last
-              %h3.title The Free Plan
-              %ul
-                %li Invite speakers for FREE!
-                %li No support.
-                %li No event page.
-                %li No talk profiles.
-                %li No easy import.
-              %button.btn.btn-warning
-                <sup>*</sup> Absolutely Free!
-              .footnote <sup>*</sup> Seriously, free. No ads. No emails. No strings.
-
-    .row-fluid
-      .section-title
-        %h2 Scroll down to learn more...
+      ~~ The best way for conferences to archive, manage, and share their session content online. ~~
 
     .row-fluid
       #signup{style:"padding:20px;"}
@@ -78,20 +36,35 @@
               .desc
                 %span Participate in the discussion around your attendees' favorite talks.
 
-          .longblock 
-            %h2 Every session has a home, all organized, in one place.
+          .view-over1024
+            .longblock 
+              %h2 Every session has a home, all organized, in one place.
 
-          .block
-            %img.speaker-img{src:"/static/img/speaker/256.png"}
-            .blurb
-              .speaker-blurb
-                %h2 A profile for every speaker...
-              .talk-blurb
-                %h2 A page for every talk...
-            %img.talk-img{src:"/static/img/talk/256.png"}
+            .block
+              %img.speaker-img{src:"/static/img/speaker/256.png"}
+              .blurb
+                .speaker-blurb
+                  %h2 A profile for every speaker...
+                .talk-blurb
+                  %h2 A page for every talk...
+              %img.talk-img{src:"/static/img/talk/256.png"}
 
     .row-fluid
-      .section-title{style:"margin-top:40px;"}
+      .view-under1024
+        .longblock 
+          %h2 Every session has a home, all organized, in one place.
+
+        .block
+          %img.speaker-img{src:"/static/img/speaker/256.png"}
+          .blurb
+            .speaker-blurb
+              %h2 A profile for every speaker...
+            .talk-blurb
+              %h2 A page for every talk...
+          %img.talk-img{src:"/static/img/talk/256.png"}
+
+    .row-fluid
+      .section-title{style:"margin-top:80px;"}
         %h2 Here is what our customers think about SpkrBar.
 
     .row-fluid
@@ -122,24 +95,28 @@
             SpkrBar.com is the greatest thing ever.
             .attrib &mdash; Awesome Person
 
-    .easy-way
-      ~~ The best way to archive, manage, and share your event's session content online. ~~
-
     .row-fluid
-      .section-title
+      .section-title{style:"margin-top:40px;"}
         %h2 Getting started is easy. Let us show you how.
 
     .row-fluid
       .span12
         #options-container
+          .ribbon-wrapper-green
+            %a{href:"/register"}
+              .ribbon-green
+                100% FREE for Speakers
+                %br
+                Sign up here!
+
           .options
             .option
               %h3.title The Yearly Plan
               %ul
                 %li Store content for up to 1 year.
                 %li 1 conference or event.
-                %li Import content from Excel or CSV.
-                %li Crowdsourced content management.
+                %li Easy Import from Excel or CSV.
+                %li Crowdsourced, content management.
               %button.btn.btn-warning
                 <sup>&Dagger;</sup> 50.00 / month
               .footnote <sup>&Dagger;</sup> Billed every year at $600.00
@@ -148,9 +125,9 @@
               %ul
                 %li Store conference content <b>forever</b>.
                 %li <b>Unlimited</b> conferences and events.
-                %li Import content from Excel or CSV.
-                %li Speaker powered, crowdsourced content management.
-                %li Living, breathing, 24/7 Support.
+                %li Easy Import from Excel or CSV.
+                %li Crowdsourced, content management.
+                %li Living, Breathing, 24/7 Support.
                 %li Questions? Call us at 407-590-1416.
               %button.btn.btn-warning
                 <sup>&dagger;</sup> $40.00 / month
@@ -158,15 +135,15 @@
             .option.last
               %h3.title The Free Plan
               %ul
-                %li Invite speakers for FREE!
-                %li No support.
-                %li No event page.
-                %li No talk profiles.
-                %li No easy import.
+                %li Invite your Speakers
+                %li Crowdsourced, content management.
+                %li No Easy Import.
+                %li No Support
               %button.btn.btn-warning
                 <sup>*</sup> Absolutely Free!
               .footnote <sup>*</sup> Seriously, free. No ads. No emails. No strings.
+
     .row-fluid
       .section-title
-        %h1 &nbsp;
+        %h2 &nbsp;
 {% endverbatim %}
