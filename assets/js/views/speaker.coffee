@@ -48,8 +48,9 @@ SpkrBar.Views.Speaker = Backbone.View.extend
             _.str.stripTags(
                 markdown.toHTML(
                     @model.get('about_me')
-                )
-            ), 300)
+                ).replace('&#39;', "'")
+            )
+        , 300)
 
     context: ->
         id: @model.id

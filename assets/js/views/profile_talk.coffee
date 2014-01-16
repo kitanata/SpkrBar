@@ -25,10 +25,19 @@ SpkrBar.Views.ProfileTalk = Backbone.View.extend
         speaker = @model.get('speaker')
         user != null and speaker != null and user.id == speaker.id
 
+    mapAbstract: ->
+        _.str.truncate(
+            _.str.stripTags(
+                markdown.toHTML(
+                    @model.get('abstract')
+                ).replace('&#39;', "'")
+            )
+        , 300)
+
     context: ->
         id: @model.id
         name: @model.get('name')
-        abstract: _.str.stripTags(markdown.toHTML(@model.get('abstract')))
+        abstract: @mapAbstract()
         url: '/talk/' + @model.get('id')
         endorsed: @model.userEndorsed()
         userLoggedIn: @userLoggedIn()

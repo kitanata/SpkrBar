@@ -57,8 +57,9 @@ SpkrBar.Views.EngagementDetail = Backbone.View.extend
             _.str.stripTags(
                 markdown.toHTML(
                     @model.get('talk').get('abstract')
-                )
-            ), 300)
+                ).replace('&#39;', "'")
+            )
+        , 300)
 
     context: ->
         id: @model.id

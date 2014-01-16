@@ -6,7 +6,7 @@
 //= require backbone-relational
 //= require handlebars
 //= require moment.min
-//= require markdown.min
+//= require markdown
 //= require leaflet
 //= require bootstrap-tooltip
 //= require bootstrap-typeahead
