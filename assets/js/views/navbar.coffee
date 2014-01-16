@@ -3,6 +3,7 @@ SpkrBar.Views.NavBar = Backbone.View.extend
 
     events:
         "click #add-talk-navbar": "onClickAddTalk"
+        "click #register-user-navbar": "onClickRegisterUser"
 
     initialize: (options) ->
         if user
@@ -57,3 +58,14 @@ SpkrBar.Views.NavBar = Backbone.View.extend
             html: editor.render().el
             width: "700px"
             height: "520px"
+
+    onClickRegisterUser: ->
+        regModel = new SpkrBar.Models.Register()
+
+        editor = new SpkrBar.Views.RegisterUser
+            model: regModel
+
+        $.colorbox
+            html: editor.render().el
+            width: "500px"
+            height: "440px"

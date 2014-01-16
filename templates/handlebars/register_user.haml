@@ -1,0 +1,35 @@
+{% verbatim %}
+  %script#register-user-templ{type:"text/x-handlebars-template"}
+    .row-fluid
+      .span12
+        %h1 Register a new account
+
+    .row-fluid
+      .form-area
+        .span6
+          %label{for:"email"} Your Email:
+          #email-error.error
+          %input#email{type:"email", name:"email", value:"{{email}}"}
+
+          %label{for:"password"} Password:
+          #password-error.error
+          %input#password{type:"password", name:"password", value:"{{password}}"}
+
+          %label{for:"confirm"} Confirm:
+          #confirm-error.error
+          %input#confirm{type:"password", name:"confirm", value:"{{confirm}}"}
+
+        .span6
+          %label{for:"full_name"} Your Full Name:
+          #full_name-error.error
+          %input#full_name{type:"text", name:"full_name", value:"{{full_name}}"}
+
+          %label{for:"about_me"} About Me:
+          #about_me-error.error
+          %textarea#about_me{name:"about_me", rows:6, cols:40}
+            {{about_me}}
+
+    .row-fluid
+      .span12
+        %input#register-submit.btn.btn-warning{type:"submit", value:"Register"}
+{% endverbatim %}

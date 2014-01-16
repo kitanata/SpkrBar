@@ -53,9 +53,8 @@ SpkrBar.Views.TalkThumbnail = Backbone.View.extend
             _.str.stripTags(
                 markdown.toHTML(
                     @model.get('abstract')
-                ).replace('&#39;', "'")
-            )
-        , 300)
+                )
+            ), 300)
 
     context: ->
         id: @model.id

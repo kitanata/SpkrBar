@@ -27,7 +27,7 @@ body {
             max-width: 128px;
         }
 
-        #add-talk-navbar {
+        #add-talk-navbar, #register-user-navbar {
             cursor: pointer;
         }
     }
@@ -207,43 +207,15 @@ i.photo-placeholder-large {
     }
 }
 
-form#register {
+.register-user {
+    padding: 20px;
 
-    .field {
-        margin-bottom: 10px;
-        display: table;
-        width: 94.5%;
+    .form-area {
+        margin-top: 40px;
+    }
 
-        .input {
-            display: table-cell;
-
-            label {
-                font-size: 14px;
-                font-weight: 600;
-            }
-
-            input {
-                width: 300px;
-            }
-            
-            textarea {
-                width: 300px;
-            }
-        }
-
-        .error {    
-            position: relative;
-            display: table-cell;
-            width: 400px;
-
-            ul.errorlist {
-                font-weight: 600;
-                list-style-type: none;
-                position: absolute;
-                bottom: 0;
-            }
-        }
-
+    .error {
+        font-size: 10px;
     }
 }
 
@@ -476,6 +448,29 @@ form.invite, .preview-container {
                 border-bottom: 2px solid @orange;
                 line-height: 10px;
             }
+        }
+    }
+
+    .crowdsourced {
+        margin-top: 120px;
+        margin-bottom: 40px;
+        color: #666;
+
+        i {
+            color: @orange;
+            float: left;
+            font-size: 140px;
+            margin-right: 40px;
+        }
+
+        h1 b {
+            color: @orange;
+        }
+
+        h3 b {
+            display: inline-table;
+            border-bottom: 2px solid @orange;
+            line-height: 10px;
         }
     }
 
@@ -789,8 +784,8 @@ form.invite, .preview-container {
     }
 }
 
-@media (min-width:1051px) {
-    #signup.over1000 {
+@media (min-width:1201px) {
+    #signup.over1200 {
         display: block;
 
         .longblock {
@@ -798,7 +793,25 @@ form.invite, .preview-container {
         }
     }
 
-    #signup.under600, #signup.under800, #signup.under1000 {
+    #signup.under600, #signup.under800, #signup.under1000, #signup.under1200{
+        display: none;
+    }
+}
+
+@media (max-width:1200px) {
+    #signup.under1200 {
+        display: block;
+
+        .longblock {
+            margin: 40px 16px 20px 0px;
+        }
+
+        .crowdsourced {
+            margin-top: 100px;
+        }
+    }
+
+    #signup.under600, #signup.under800, #signup.under1000, #signup.over1200 {
         display: none;
     }
 }
@@ -826,7 +839,7 @@ form.invite, .preview-container {
         }
     }
 
-    #signup.under600, #signup.under800, #signup.over1000 {
+    #signup.under600, #signup.under800, #signup.under1200, #signup.over1200 {
         display: none;
     }
 }
@@ -863,7 +876,7 @@ form.invite, .preview-container {
         }
     }
 
-    #signup.under600, #signup.under1000, #signup.over1000 {
+    #signup.under600, #signup.under1000, #signup.under1200, #signup.over1200 {
         display: none;
     }
 }
@@ -893,7 +906,7 @@ form.invite, .preview-container {
         }
     }
 
-    #signup.under800, #signup.under1000, #signup.over1000 {
+    #signup.under800, #signup.under1000, #signup.under1200, #signup.over1200 {
         display: none;
     }
 }
