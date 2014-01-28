@@ -6,6 +6,7 @@ SpkrBar.Views.RegisterUser = Backbone.View.extend
         "click #register-submit": "onRegisterSubmit"
 
     initialize: (options) ->
+        @alertTempl = Handlebars.compile($('#register-alert-templ').html())
         @listenTo(@model, "change", @render)
 
     render: ->
@@ -31,17 +32,31 @@ SpkrBar.Views.RegisterUser = Backbone.View.extend
             invalid: (view, attr, error) =>
                 @$el.find('#' + attr + '-error').text '(' + error + ')'
                 $.colorbox.resize()
+        $.colorbox.resize()
 
     onRegisterSubmit: ->
-        @model.set 'email', @$el.find('#email').val()
-        @model.set 'password', @$el.find('#password').val()
-        @model.set 'confirm', @$el.find('#confirm').val()
-        @model.set 'full_name', @$el.find('#full_name').val()
-        @model.set 'about_me', @$el.find('#about_me').val()
+        @model.set
+            email: @$el.find('#email').val()
+            password: @$el.find('#password').val()
+            confirm: @$el.find('#confirm').val()
+            full_name: @$el.find('#full_name').val()
+            about_me: @$el.find('#about_me').val()
 
         console.log @model.isValid(true)
 
         if @model.isValid(true)
             @model.save null,
                 success: =>
-                    $.colorbox.close()
+                    window.location = '/'
+                error: (model, xhr, options) =>
+                    error = JSON.parse(xhr.responseText)
+                    if error.error == "email_taken"
+                        html = @alertTempl({error: "An account with that email has already been registered."})
+                        $('#alert-area').show()
+                        $('#alert-area').append html
+                        $.colorbox.resize()
+                    else if error.error == "password_match"
+                        html = @alertTempl({error: "Your passwords do not match."})
+                        $('#alert-area').show()
+                        $('#alert-area').append html
+                        $.colorbox.resize()

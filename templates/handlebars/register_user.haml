@@ -5,6 +5,10 @@
         %h1 Register a new account
 
     .row-fluid
+      .span12
+        #alert-area{style:"display:none"}
+
+    .row-fluid
       .form-area
         .span6
           %label{for:"email"} Your Email:
@@ -26,10 +30,14 @@
 
           %label{for:"about_me"} About Me:
           #about_me-error.error
-          %textarea#about_me{name:"about_me", rows:6, cols:40}
-            {{about_me}}
+          <textarea id="about_me" name="about_me" rows=6 cols=40>{{about_me}}</textarea>
 
     .row-fluid
       .span12
         %input#register-submit.btn.btn-warning{type:"submit", value:"Register"}
+
+  %script#register-alert-templ{type:"text/x-handlebars-template"}
+    .alert.alert-error
+      %button.close{type:"button", data-dismiss:"alert"} &times;
+      {{error}}
 {% endverbatim %}
