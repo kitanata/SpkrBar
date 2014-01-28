@@ -1,6 +1,12 @@
 SpkrBar.Views.IndexPage = Backbone.View.extend
     template: "#index-templ"
 
+    events:
+        "click .invite-register": "onClickInviteRegister"
+        "click .yearly-register": "onClickYearlyRegister"
+        "click .forever-register": "onClickForeverRegister"
+        "click .speaker-register": "onClickSpeakerRegister"
+
     initialize: (options) ->
         @shouldRender = false
 
@@ -43,3 +49,23 @@ SpkrBar.Views.IndexPage = Backbone.View.extend
 
     context: ->
         {}
+
+    onClickInviteRegister: ->
+        console.log "Invite Register"
+
+    onClickYearlyRegister: ->
+        console.log "Yearly Register"
+
+    onClickForeverRegister: ->
+        console.log "Forever Register"
+
+    onClickSpeakerRegister: ->
+        regModel = new SpkrBar.Models.Register()
+
+        editor = new SpkrBar.Views.RegisterUser
+            model: regModel
+
+        $.colorbox
+            html: editor.render().el
+            width: "500px"
+            height: "440px"
