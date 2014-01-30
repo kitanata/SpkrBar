@@ -51,6 +51,9 @@ class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
                     'active. Unselect this instead of deleting accounts.'))
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
 
+    is_event_manager = models.BooleanField(default=False)
+    plan_name = models.CharField(default="speaker", max_length=30)
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 

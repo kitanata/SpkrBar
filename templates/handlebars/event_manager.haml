@@ -1,0 +1,83 @@
+{% verbatim %}
+  %script#event-manager-templ{type:"text/x-handlebars-template"}
+    .row-fluid
+      .section-title
+        %h1 Welcome to the next evolution in conference content management.
+
+    .event-manager
+      .row-fluid
+        .span12
+          .buttons-bar
+            .buttons.pull-right
+              %button#billing-btn.btn Billing
+              %button#invite-btn.btn Invite Speakers
+            .clearfix
+
+      .row-fluid
+        .span12
+          .dashboard-container
+            .dashboard-nav
+              .item
+                %h2
+                  PyOhio 2010
+                  %i.icon-chevron-right.pull-right
+              .item
+                %h2
+                  PyOhio 2011
+                  %i.icon-chevron-right.pull-right
+              .item
+                %h2
+                  PyOhio 2012
+                  %i.icon-chevron-right.pull-right
+              .item
+                %h2
+                  PyOhio 2013
+                  %i.icon-chevron-right.pull-right
+              .item
+                %h2
+                  %i.icon-plus-sign
+                  New Import
+            .dashboard
+
+  %script#create-event-import-templ{type:"text/x-handlebars-template"}
+    Create a New Event
+    %p Some Form Here
+    %button.btn.cancel Cancel
+    %button.btn.create Create
+
+  %script#download-template-templ{type:"text/x-handlebars-template"}
+    1. Download Template
+    %button.btn.to-upload Next
+
+  %script#upload-template-templ{type:"text/x-handlebars-template"}
+    2. Upload Template
+    %button.btn.start-upload Start
+
+  %script#uploading-templ{type:"text/x-handlebars-template"}
+    Uploading...
+
+  %script#validation-failed-templ{type:"text/x-handlebars-template"}
+    2. Validation Failed
+    %p Here is why.
+    %button.btn.to-upload Try again
+
+  %script#upload-preview-templ{type:"text/x-handlebars-template"}
+    3. Preview and Confirm Final Upload
+    %p Here is the preview.
+    %button.btn.confirm-upload Confirm
+
+  %script#confirm-billing-templ{type:"text/x-handlebars-template"}
+    3. Confirm Billing
+    %p You will be billing $xxx.xx
+    %button.btn.confirm-upload Back
+    %button.btn.confirm-billing Confirm
+
+  %script#import-started-templ{type:"text/x-handlebars-template"}
+    Import Started...
+
+  %script#import-finished-templ{type:"text/x-handlebars-template"}
+    Upload is finished.
+    %p Here are some stats.
+    %button.btn.to-event View Event
+
+{% endverbatim %}

@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'core.views.index'),
     url(r'^search$', 'core.views.search'),
+    url(r'^manager$', 'core.views.event_manager'),
     url(r'^mobile', include('mobile.urls')),
 
     #url(r'^', include('events.urls')),

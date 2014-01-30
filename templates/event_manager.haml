@@ -1,0 +1,14 @@
+- extends 'base.haml'
+
+- block 'content-container'
+  #event-manager-container
+
+  - include 'handlebars/event_manager.haml'
+
+- block 'scripts'
+  %script{type:"text/javascript"}
+    /talks = new SpkrBar.Collections.Talks({{talks|safe}})
+
+    var eventManagerPage = new SpkrBar.Views.EventManagerPage();
+
+    $('#event-manager-container').html(eventManagerPage.render().el);
