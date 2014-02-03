@@ -3,12 +3,19 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
     className: "event-manager"
 
     events:
+        "click .new-import": "onClickNewImport"
         "click .item": "onClickEventUploadItem"
+        "click .cancel": "onClickCancel"
         "click .create": "onClickCreateEventUpload"
+        "click .to-download": "onClickToDownload"
         "click .to-upload": "onClickToUpload"
         "click .start-upload": "onClickStartUpload"
         "click .confirm-upload": "onClickConfirmUpload"
         "click .confirm-billing": "onClickConfirmBilling"
+        "click #invite-btn": "onClickInviteSpeakers"
+        "click #billing-btn": "onClickBillingDetails"
+        "click #loc-reset": "onClickLocationReset"
+        "change #loc-name": "onChangedLocationName"
 
     initialize: (options) ->
         @shouldRender = false
@@ -25,6 +32,14 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
         @importStartedTemplate = Handlebars.compile($("#import-started-templ").html())
         @importFinishedTemplate = Handlebars.compile($("#import-finished-templ").html())
 
+        @locations = new SpkrBar.Collections.Locations()
+        @locations.fetch()
+
+        @eventImports = new SpkrBar.Collections.EventImports()
+        @eventImports.fetch()
+
+        @listenTo(@eventImports, "add remove change reset", @invalidate)
+
         @invalidate()
 
     render: ->
@@ -34,14 +49,94 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
         @$el.html(template(@context()))
         @
 
-    onClickEventUploadItem: ->
+    beforeRender: ->
+
+    afterRender: ->
+        @updateDashboard()
+
+    updateDashboard: ->
+        if @model
+            state = @model.get('state')
+            console.log state
+
+            if state == "AT_REST"
+                @$el.find('.dashboard').html @downloadTemplateTemplate({})
+            else if state == "TEMPLATE_DOWNLOADED"
+                @$el.find('.dashboard').html @uploadTemplateTemplate({})
+
+    validateAndSaveModel: ->
+        if @model.isValid(true)
+            @model.save null, 
+                success: =>
+                    @eventImports.add @model
+                    @$el.find('.dashboard').html @downloadTemplateTemplate({})
+        else
+            @showValidationAlert()
+
+    onClickNewImport: ->
         @$el.find('.dashboard').html @createEventImportTemplate({})
 
+        @$el.find("#loc-name").typeahead
+            source: @locations.map (x) -> x.get('name')
+            updater: (item) =>
+                @curLocation = @locations.find (x) -> x.get('name') == item
+                if @curLocation
+                    @$el.find('#loc-address').val(@curLocation.get('address'))
+                    @$el.find('#loc-city').val(@curLocation.get('city'))
+                    @$el.find('#loc-state').val(@curLocation.get('state'))
+                    @$el.find('#loc-zip').val(@curLocation.get('zip_code'))
+                item
+
+    onClickEventUploadItem: (el) ->
+        itemId = $(el.currentTarget).data 'id'
+
+        $('.item').removeClass('active')
+        $(el.currentTarget).addClass('active')
+
+        @model = @eventImports.find (x) => x.id == itemId
+        @updateDashboard()
+
+    onClickCancel: ->
+        @$el.find('.dashboard').html ""
+
     onClickCreateEventUpload: ->
-        @$el.find('.dashboard').html @downloadTemplateTemplate({})
+        @model = new SpkrBar.Models.EventImport()
+
+        @model.set 'user', user 
+        @model.set 'name', @$el.find('#event-name').val()
+
+        if @curLocation
+            @model.set 'location', @curLocation.id
+            @validateAndSaveModel()
+        else
+            newLocation = new SpkrBar.Models.Location
+                name: @$el.find('#loc-name').val();
+                address: @$el.find('#loc-address').val();
+                city: @$el.find('#loc-city').val();
+                state: @$el.find('#loc-state').val();
+                zip_code: @$el.find('#loc-zip').val();
+
+            if newLocation.isValid(true)
+                newLocation.save null,
+                    success: =>
+                        @curLocation = newLocation
+                        @locations.add @curLocation
+                        @model.set 'location', @curLocation
+                        @validateAndSaveModel()
+            else
+                @showValidationAlert()
+
+    onClickToDownload: ->
+        @model.set 'state', 'AT_REST'
+        @model.save null,
+            success: =>
+                @$el.find('.dashboard').html @downloadTemplateTemplate({})
 
     onClickToUpload: ->
-        @$el.find('.dashboard').html @uploadTemplateTemplate({})
+        @model.set 'state', 'TEMPLATE_DOWNLOADED'
+        @model.save null,
+            success: =>
+                @$el.find('.dashboard').html @uploadTemplateTemplate({})
 
     onClickStartUpload: ->
         @$el.find('.dashboard').html @uploadPreviewTemplate({})
@@ -51,6 +146,12 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
 
     onClickConfirmBilling: ->
         @$el.find('.dashboard').html @importFinishedTemplate({})
+
+    onClickBillingDetails: ->
+        console.log "Billing Details"
+
+    onClickInviteSpeakers: ->
+        console.log "Invite Speakers"
 
     invalidate: ->
         if not @shouldRender
@@ -62,36 +163,36 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
             , 500
             @shouldRender = true
 
-    beforeRender: ->
+    onClickLocationReset: ->
+        @$el.find('#loc-name').val('')
+        @resetFields()
 
-    afterRender: ->
-        $('.talk-list').html ""
+    onChangedLocationName: (el) ->
+        text = $(el.currentTarget).val()
+        location = @locations.find (x) => 
+            x.get('name') == text
 
-        _(@talkViews).each (view) =>
-            $('.talk-list').append view.render().el
+        unless location
+            @resetFields()
+
+    resetFields: ->
+            @$el.find('#loc-address').val('');
+            @$el.find('#loc-city').val('');
+            @$el.find('#loc-state').val('');
+            @$el.find('#loc-zip').val('');
 
     userLoggedIn: ->
         user != null
 
+    planName: ->
+        if user.get('plan_name') == 'yearly'
+            "The Yearly Plan"
+        else if user.get('plan_name') == 'forever'
+            "The Forever Plan"
+
     context: ->
-        {}
+        imports: @eventImports.map (x) -> 
+            id: x.id
+            name: x.get('name')
+        plan_name: @planName()
 
-    onClickInviteRegister: ->
-        console.log "Invite Register"
-
-    onClickYearlyRegister: ->
-        console.log "Yearly Register"
-
-    onClickForeverRegister: ->
-        console.log "Forever Register"
-
-    onClickSpeakerRegister: ->
-        regModel = new SpkrBar.Models.Register()
-
-        editor = new SpkrBar.Views.RegisterUser
-            model: regModel
-
-        $.colorbox
-            html: editor.render().el
-            width: "500px"
-            height: "440px"

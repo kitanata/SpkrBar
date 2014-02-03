@@ -3,7 +3,7 @@ from django.contrib.auth.models import Permission
 from django.contrib.auth import authenticate, login
 from django.template import loader, Context
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse
 from rest_framework.renderers import JSONRenderer
 
 from core.helpers import send_html_mail
@@ -30,13 +30,15 @@ def register_user(request):
         try:
             user = SpkrbarUser.objects.create_user(email, password)
             user.save()
-        except IntegrityError as e:
+        except IntegrityError:
             return HttpResponse(
                 json.dumps({'error': "email_taken"}),
                 content_type="application/json", status=400)
 
         user.full_name = full_name
         user.about_me = serializer.data['about_me']
+        user.is_event_manager = serializer.data['is_event_planner']
+        user.plan_name = serializer.data['plan_name']
 
         user.user_permissions.add(
             Permission.objects.get(codename='add_talk'),

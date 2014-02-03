@@ -2,6 +2,7 @@ from django.conf.urls import patterns, url
 from views import UserTagList, UserFollowingDetail
 from views import UserDetail, UserTagDetail, UserLinkDetail
 from views import NotificationDetail, NotificationList
+from views import EventUploadDetail, EventUploadList
 
 urlpatterns = patterns('',
     url(r'^profile/invite/thanks$', 'core.views.profile_invite_thanks'),
@@ -34,6 +35,12 @@ urlpatterns = patterns('',
 
     url(r'^rest/user/(?P<pk>\d+)$', UserDetail.as_view(
         actions={'get': 'retrieve', 'put': 'update', 'delete':'destroy'})),
+
+    url(r'^rest/imports$', EventUploadList.as_view()),
+    url(r'^rest/import/(?P<pk>\d+)$', EventUploadDetail.as_view(
+        actions={'get': 'retrieve', 'put': 'update', 'delete':'destroy'})),
+    url(r'^rest/import$', EventUploadDetail.as_view(
+        actions={'post': 'create'})),
 
     url(r'^events$', 'core.views.event_list'),
     url(r'^event/(?P<slug>[\w+-]*)$', 'core.views.event_detail'),

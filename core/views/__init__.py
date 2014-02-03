@@ -27,6 +27,9 @@ from rest_user_link_detail import UserLinkDetail
 from rest_user_tag_detail import UserTagDetail
 from rest_user_following_detail import UserFollowingDetail
 
+from event_upload_list import EventUploadList
+from event_upload_detail import EventUploadDetail
+
 __all__ = [
     "index", "search", "signup", "event_manager",
     "register_user", "login_user", "logout_user",
@@ -35,5 +38,5 @@ __all__ = [
     "speaker_list", "event_list", "event_detail",
     "UserDetail", "NotificationDetail", "NotificationList",
     "UserLinkDetail", "UserTagList", "UserTagDetail",
-    "UserFollowingDetail"
+    "UserFollowingDetail", "EventUploadList", "EventUploadDetail"
 ]

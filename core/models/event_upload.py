@@ -1,4 +1,5 @@
 from django.db import models
+from locations.models import Location
 
 class EventUpload(models.Model):
     AT_REST = 'AT_REST'                               #Nothing has happened
@@ -18,6 +19,7 @@ class EventUpload(models.Model):
     )
 
     name = models.CharField(max_length=140)
+    location = models.ForeignKey(Location, related_name='location')
     user = models.ForeignKey('core.SpkrbarUser', related_name='uploads')
     speakers = models.ManyToManyField('core.SpkrbarUser', related_name='event_imports')
     import_file = models.FileField(upload_to='event_imports')

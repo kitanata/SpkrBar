@@ -11,6 +11,8 @@ class UserSerializer(serializers.ModelSerializer):
         fields = (
                 'id', 
                 'is_staff',
+                'is_event_manager',
+                'plan_name',
                 'full_name',
                 'about_me',
                 'url',

@@ -9,6 +9,14 @@ SpkrBar.Views.RegisterUser = Backbone.View.extend
         @alertTempl = Handlebars.compile($('#register-alert-templ').html())
         @listenTo(@model, "change", @render)
 
+        if options.plan == 'forever'
+            @model.set 'plan_name', "forever"
+            @model.set 'is_event_planner', true
+        else if options.plan == 'yearly'
+            @model.set 'plan_name', 'yearly'
+            @model.set 'is_event_planner', true
+
+
     render: ->
         source = $(@template).html()
         template = Handlebars.compile(source)
@@ -18,6 +26,9 @@ SpkrBar.Views.RegisterUser = Backbone.View.extend
         @
 
     context: ->
+        forever_plan: (@model.get('plan_name') == 'forever')
+        yearly_plan: (@model.get('plan_name') == 'yearly')
+        is_event_planner: @model.get 'is_event_planner'
         email: @model.get 'email'
         password: @model.get 'password'
         confirm: @model.get 'confirm'

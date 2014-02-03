@@ -8,50 +8,99 @@
       .row-fluid
         .span12
           .buttons-bar
-            .buttons.pull-right
+            .plan-name
+              {{plan_name}}
+            .buttons
               %button#billing-btn.btn Billing
               %button#invite-btn.btn Invite Speakers
-            .clearfix
 
       .row-fluid
         .span12
           .dashboard-container
             .dashboard-nav
-              .item
+              {{#each imports}}
+              .item{data-id:"{{id}}"}
                 %h2
-                  PyOhio 2010
+                  {{name}}
                   %i.icon-chevron-right.pull-right
-              .item
-                %h2
-                  PyOhio 2011
-                  %i.icon-chevron-right.pull-right
-              .item
-                %h2
-                  PyOhio 2012
-                  %i.icon-chevron-right.pull-right
-              .item
-                %h2
-                  PyOhio 2013
-                  %i.icon-chevron-right.pull-right
-              .item
+              {{/each}}
+              .item.new-import
                 %h2
                   %i.icon-plus-sign
                   New Import
             .dashboard
 
   %script#create-event-import-templ{type:"text/x-handlebars-template"}
-    Create a New Event
-    %p Some Form Here
-    %button.btn.cancel Cancel
-    %button.btn.create Create
+    .slide
+      %h1 Create A New Event Import
+      %p
+        %label{for:"event-name"} Event Name:
+        %input#event-name{type:"text"}
+
+        .location-search
+            %label{for:"loc-name"} Location Name:
+            %input#loc-name{type:"text", data-provide:'typeahead'}
+            %span#loc-reset.search.btn.addon
+              %i.icon-remove
+
+        %label{for:"loc-address"} Location Address:
+        %input#loc-address{type:"text"}
+
+        %label{for:"loc-city"} Location City:
+        %input#loc-city{type:"text"}
+
+        %label{for:"loc-state"} Location State:
+        %input#loc-state{type:"text"}
+
+        %label{for:"loc-zip"} Location Zip:
+        %input#loc-zip{type:"text"}
+
+      %button.btn.cancel Cancel
+      %button.btn.btn-primary.create Create
 
   %script#download-template-templ{type:"text/x-handlebars-template"}
-    1. Download Template
-    %button.btn.to-upload Next
+    .slide
+      .slide-title
+        .num 1
+        .description 
+          %h1 Download Template
+          %p Download the Microsoft Excel, Open Document Foundation, or CSV templates below.
+          %p Fill out each column in the template from your speaker and session spreadsheets.
+          %p We recommend that you export this data from your conference management software and do some copy and pasteing in excel to make your data fit our template.
+          %p For most organizations this process shouldn't take very long. If you spend more than 10 minutes on this call us at 407-590-1416 and we'll get you rolling as quickly as possible.
+
+          .btn-group
+            %a.btn.btn-success{href:"/static/files/spkrbar-import-template.xlsx", target:"_blank"} 
+              %i.icon-download-alt
+              Excel Template
+            %a.btn.btn-success{href:"/static/files/spkrbar-import-template.ods", target:"_blank"}
+              %i.icon-download-alt
+              Open Document Template
+            %a.btn.btn-success{href:"/static/files/spkrbar-import-template.csv", target:"_blank"}
+              %i.icon-download-alt
+              CSV Template
+            %button.btn.btn-primary.to-upload
+              Next Step
+              %i.icon-chevron-right
 
   %script#upload-template-templ{type:"text/x-handlebars-template"}
-    2. Upload Template
-    %button.btn.start-upload Start
+    .slide
+      .slide-title
+        .num 2
+        .description
+          %h1 Upload Template
+          %p Click "Upload File" and select the template that you filled out then click "Start". Our system will evaluate the template and if no errors are found we'll take you to a review page to get an idea of what will be created when you finish your upload.
+
+          .btn-group
+            %button.btn.to-download
+              %i.icon-chevron-left
+              Previous Step
+            %button.btn.btn-success
+              %i.icon-upload-alt
+              Upload File
+            %button.btn.btn-primary.start-upload
+              Start
+              %i.icon-chevron-right
 
   %script#uploading-templ{type:"text/x-handlebars-template"}
     Uploading...
@@ -62,22 +111,41 @@
     %button.btn.to-upload Try again
 
   %script#upload-preview-templ{type:"text/x-handlebars-template"}
-    3. Preview and Confirm Final Upload
-    %p Here is the preview.
-    %button.btn.confirm-upload Confirm
+    .slide
+      .slide-title
+        .num 3
+        .description
+          %h1 Upload Preview
+          %p Below is a summary of what will be created once you confirm the upload. If you have The Forever Plan you will only be billed the first time you upload, and each additional upload is free. If you have The Yearly Plan you will be billed for every upload.
+      .upload-preview
+        %p Here is the preview.
+
+        %button.btn.btn-primary.confirm-upload Confirm
 
   %script#confirm-billing-templ{type:"text/x-handlebars-template"}
-    3. Confirm Billing
-    %p You will be billing $xxx.xx
-    %button.btn.confirm-upload Back
-    %button.btn.confirm-billing Confirm
+    .slide
+      .slide-title
+        .num 3
+        .description
+          %h1 Confirm your billing information below
+          %p If you selected "The Forever Plan" you will be billed $2400.00 once on your first upload. Each additional upload is free.
+          %p If you selected "The Yearly Plan" you will be billed $600.00 once each time you upload.
+
+          .btn-group
+            %button.btn.confirm-upload Back
+            %button.btn.btn-primary.confirm-billing Confirm
 
   %script#import-started-templ{type:"text/x-handlebars-template"}
     Import Started...
 
   %script#import-finished-templ{type:"text/x-handlebars-template"}
-    Upload is finished.
-    %p Here are some stats.
-    %button.btn.to-event View Event
+    .slide
+      .slide-title
+        .num !
+        .description
+          %h1 Your Upload Has Finished!
+          %p Congratulations! Now your event will live forever online. Here are some stats.
+
+          %button.btn.to-event View Event Page
 
 {% endverbatim %}

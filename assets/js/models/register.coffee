@@ -5,6 +5,7 @@ SpkrBar.Models.Register = Backbone.Model.extend
         about_me: ""
         password: ""
         confirm: ""
+        plan_name: "speaker"
         is_event_planner: false
 
     initialize: ->

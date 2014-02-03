@@ -2,10 +2,24 @@
 
 .event-manager {
     .buttons-bar {
+        padding: 20px;
         background: @orange;
+        display: -webkit-flex;     /* NEW - Chrome */
+        display: flex;
+        -webkit-flex-flow: row wrap;
+        flex-flow: row wrap;
+        -webkit-justify-content: space-around;
+        justify-content: space-around;
 
         .buttons {
-            padding: 20px;
+            flex: 0 0 200px;
+        }
+
+        .plan-name {
+            flex: 10 0 200px;
+            font-size: 24px;
+            font-weight: 600;
+            color: #eee;
         }
     }
 
@@ -42,6 +56,14 @@
                 i.pull-right {
                     margin-top: 6px;
                 }
+
+                &.active {
+                    background: darken(whitesmoke, 10%);
+
+                    i {
+                        color: @orange;
+                    }
+                }
             }
         }
 
@@ -54,6 +76,58 @@
             border: 1px solid #aaa;
             -webkit-box-shadow: 0 2px 2px 1px #aaaaaa;
             box-shadow: 0 2px 2px 1px #aaaaaa;
+
+            .slide {
+                padding: 20px;
+
+                .slide-title {
+                    margin-left: 20px;
+                    display: -webkit-flex;     /* NEW - Chrome */
+                    display: flex;
+                    -webkit-flex-flow: row wrap;
+                    flex-flow: row wrap;
+                    -webkit-justify-content: space-around;
+                    justify-content: space-around;
+                    
+                    .num {
+                        -webkit-flex: 0 0 120px;
+                        flex: 0 0 120px;
+                        margin-top: 80px;
+                        font-size: 80px;
+                        line-height: 120px;
+                        color: white;
+                        background: @orange;
+                        width: 120px;
+                        height: 120px;
+                        border-radius: 80px;
+                        text-align: center;
+                        margin-left: auto;
+                        margin-right: auto;
+                    }
+
+                    .description {
+                        -webkit-flex: 6 0 120px;
+                        flex: 6 0 120px;
+                        margin-top: 80px;
+                        margin-left: 40px;
+
+                        h1 {
+                        }
+
+                        p {
+                            font-size: 16px;
+                            line-height: 22px;
+                            width: 80%;
+                            color: #666;
+                        }
+                    }
+                }
+
+                .slide-buttons {
+                    margin-top: 40px;
+                    margin-left: 186px;
+                }
+            }
         }
     }
 }

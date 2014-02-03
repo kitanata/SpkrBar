@@ -2,7 +2,24 @@
   %script#register-user-templ{type:"text/x-handlebars-template"}
     .row-fluid
       .span12
-        %h1 Register a new account
+        %h1 Welcome to SpkrBar.
+
+    {{#if is_event_planner}}
+      {{#if forever_plan}}
+        .row-fluid
+          .span12
+            %h4 The forever plan.
+            %h5 Store every year of your conferences content forever.
+            %small (You can upgrade, downgrade, or cancel later on)
+      {{/if}}
+      {{#if yearly_plan}}
+        .row-fluid
+          .span12
+            %h4 The yearly plan.
+            %h5 Store 1 year of your conferences content forever.
+            %small (You can upgrade, downgrade, or cancel later on)
+      {{/if}}
+    {{/if}}
 
     .row-fluid
       .span12

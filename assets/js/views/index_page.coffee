@@ -54,10 +54,28 @@ SpkrBar.Views.IndexPage = Backbone.View.extend
         console.log "Invite Register"
 
     onClickYearlyRegister: ->
-        console.log "Yearly Register"
+        regModel = new SpkrBar.Models.Register()
+
+        editor = new SpkrBar.Views.RegisterUser
+            model: regModel
+            plan: "yearly"
+
+        $.colorbox
+            html: editor.render().el
+            width: "500px"
+            height: "540px"
 
     onClickForeverRegister: ->
-        console.log "Forever Register"
+        regModel = new SpkrBar.Models.Register()
+
+        editor = new SpkrBar.Views.RegisterUser
+            model: regModel
+            plan: "forever"
+
+        $.colorbox
+            html: editor.render().el
+            width: "500px"
+            height: "540px"
 
     onClickSpeakerRegister: ->
         regModel = new SpkrBar.Models.Register()
