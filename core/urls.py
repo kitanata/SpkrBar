@@ -42,6 +42,8 @@ urlpatterns = patterns('',
     url(r'^rest/import$', EventUploadDetail.as_view(
         actions={'post': 'create'})),
 
+    url(r'^event-file-upload$', 'core.views.event_file_upload'),
+
     url(r'^events$', 'core.views.event_list'),
     url(r'^event/(?P<slug>[\w+-]*)$', 'core.views.event_detail'),
 

@@ -2,6 +2,7 @@ from index import index
 from signup import signup
 from search import search
 from event_manager import event_manager
+from event_file_upload import event_file_upload
 
 from register_user import register_user
 
@@ -31,7 +32,7 @@ from event_upload_list import EventUploadList
 from event_upload_detail import EventUploadDetail
 
 __all__ = [
-    "index", "search", "signup", "event_manager",
+    "index", "search", "signup", "event_manager", "event_file_upload",
     "register_user", "login_user", "logout_user",
     "profile_detail", "profile_edit", "profile_photo",
     "profile_invite", "profile_invite_thanks",

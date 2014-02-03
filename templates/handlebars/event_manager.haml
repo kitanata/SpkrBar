@@ -95,12 +95,18 @@
             %button.btn.to-download
               %i.icon-chevron-left
               Previous Step
-            %button.btn.btn-success
+            %button.btn.btn-success.do-upload
               %i.icon-upload-alt
               Upload File
             %button.btn.btn-primary.start-upload
               Start
               %i.icon-chevron-right
+          %form#post-file{action:"/event-file-upload", method:"POST", target:"post-frame", enctype:"multipart/form-data"}
+            %input#file-choice{type:"file"}
+            %input{type:"hidden", name:"csrfmiddlewaretoken", value:"{{csrf_token}}"}
+            %input{type:"hidden", name:"upload_id", value:"{{upload_id}}"}
+            %input#submit-upload{type:"submit"}
+          %iframe#post-frame
 
   %script#uploading-templ{type:"text/x-handlebars-template"}
     Uploading...

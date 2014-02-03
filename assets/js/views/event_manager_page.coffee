@@ -9,6 +9,7 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
         "click .create": "onClickCreateEventUpload"
         "click .to-download": "onClickToDownload"
         "click .to-upload": "onClickToUpload"
+        "click .do-upload": "onClickDoUpload"
         "click .start-upload": "onClickStartUpload"
         "click .confirm-upload": "onClickConfirmUpload"
         "click .confirm-billing": "onClickConfirmBilling"
@@ -62,7 +63,14 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
             if state == "AT_REST"
                 @$el.find('.dashboard').html @downloadTemplateTemplate({})
             else if state == "TEMPLATE_DOWNLOADED"
-                @$el.find('.dashboard').html @uploadTemplateTemplate({})
+                @renderUploadTemplate()
+
+    renderUploadTemplate: ->
+        html = @uploadTemplateTemplate
+            csrf_token: csrftoken
+            upload_id: @model.id
+
+        @$el.find('.dashboard').html html
 
     validateAndSaveModel: ->
         if @model.isValid(true)
@@ -136,10 +144,29 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
         @model.set 'state', 'TEMPLATE_DOWNLOADED'
         @model.save null,
             success: =>
-                @$el.find('.dashboard').html @uploadTemplateTemplate({})
+                @renderUploadTemplate()
+
+    onClickDoUpload: ->
+        $('#file-choice').click()
 
     onClickStartUpload: ->
-        @$el.find('.dashboard').html @uploadPreviewTemplate({})
+        logPostFrame = =>
+            done = $('#post-frame').contents().find('.check-done').text()
+            if _.str.trim(done) == "SUCCESS"
+                $('#post-frame').attr('src', 'about:blank')
+                @model.fetch
+                    success: =>
+                        @$el.find('.dashboard').html @uploadPreviewTemplate({})
+            else if _.str.trim(done) == "FAILED"
+                $('#post-frame').attr('src', 'about:blank')
+                @model.fetch
+                    success: =>
+                        @$el.find('.dashboard').html @validationFailedTemplate({})
+            else
+                setTimeout logPostFrame, 500
+        logPostFrame()
+
+        $('#submit-upload').click()
 
     onClickConfirmUpload: ->
         @$el.find('.dashboard').html @confirmBillingTemplate({})
