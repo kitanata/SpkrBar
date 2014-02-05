@@ -11,5 +11,6 @@ class EventUploadSerializer(serializers.ModelSerializer):
                 'location',
                 'user',
                 'state',
+                'errors',
                 'user_billed'
                 )

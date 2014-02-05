@@ -1,6 +1,5 @@
 import uuid
 import os
-import random
 from datetime import datetime
 from functools import wraps
 from itertools import groupby
@@ -10,21 +9,25 @@ from config.settings import MEDIA_ROOT, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, DE
 from django.core.mail import get_connection, EmailMultiAlternatives
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.http import HttpResponse, HttpResponseRedirect
-from django.db.models import Count
+from django.http import HttpResponseRedirect
 
 def save_photo_with_uuid(photo):
-    photo_ext = photo.name.split('.')[-1]
-    photo_root_name = str(uuid.uuid4()) + '.' + photo_ext
-    photo_name = os.path.join('photo', photo_root_name)
-    photo_storage = os.path.join(MEDIA_ROOT, 'photo', photo_root_name)
+    return save_data_with_uuid(photo, 'photo')
 
-    with open(photo_storage, 'wb+') as destination:
-        for chunk in photo.chunks():
+def save_file_with_uuid(file_item):
+    return save_data_with_uuid(file_item, 'files')
+
+def save_data_with_uuid(item, folder_name):
+    file_ext = item.name.split('.')[-1]
+    file_root_name = str(uuid.uuid4()) + '.' + file_ext
+    file_name = os.path.join(folder_name, file_root_name)
+    file_storage = os.path.join(MEDIA_ROOT, folder_name, file_root_name)
+
+    with open(file_storage, 'wb+') as destination:
+        for chunk in item.chunks():
             destination.write(chunk)
 
-    return photo_name
-
+    return file_name
 
 def render_to(request, template, js=None, context=None):
 

@@ -11,6 +11,7 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
         "click .to-upload": "onClickToUpload"
         "click .do-upload": "onClickDoUpload"
         "click .start-upload": "onClickStartUpload"
+        "click .to-preview": "onClickToPreview"
         "click .confirm-upload": "onClickConfirmUpload"
         "click .confirm-billing": "onClickConfirmBilling"
         "click #invite-btn": "onClickInviteSpeakers"
@@ -32,6 +33,7 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
         @confirmBillingTemplate = Handlebars.compile($("#confirm-billing-templ").html())
         @importStartedTemplate = Handlebars.compile($("#import-started-templ").html())
         @importFinishedTemplate = Handlebars.compile($("#import-finished-templ").html())
+        @billingDetailsTemplate = Handlebars.compile($("#billing-details-templ").html())
 
         @locations = new SpkrBar.Collections.Locations()
         @locations.fetch()
@@ -39,7 +41,7 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
         @eventImports = new SpkrBar.Collections.EventImports()
         @eventImports.fetch()
 
-        @listenTo(@eventImports, "add remove change reset", @invalidate)
+        @listenTo(@eventImports, "add remove reset", @invalidate)
 
         @invalidate()
 
@@ -168,6 +170,9 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
 
         $('#submit-upload').click()
 
+    onClickToPreview: ->
+        @$el.find('.dashboard').html @uploadPreviewTemplate({})
+
     onClickConfirmUpload: ->
         @$el.find('.dashboard').html @confirmBillingTemplate({})
 
@@ -175,7 +180,21 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
         @$el.find('.dashboard').html @importFinishedTemplate({})
 
     onClickBillingDetails: ->
-        console.log "Billing Details"
+        num_payments = (@eventImports.filter (x) -> x.get('billed')).length
+        billed = num_payments != 0
+        upgrade_offer = 2400 - Math.min((num_payments * 400), 1200)
+        offer_savings = (3000 - upgrade_offer)
+
+        billingDetails = @billingDetailsTemplate
+            forever_plan: (user.get('plan_name') == "forever")
+            yearly_plan: (user.get('plan_name') == "yearly")
+            billed: billed
+            upgrade_offer: upgrade_offer
+            offer_savings: offer_savings
+
+        console.log billingDetails
+
+        @$el.find('.dashboard').html billingDetails
 
     onClickInviteSpeakers: ->
         console.log "Invite Speakers"

@@ -2,14 +2,14 @@
   %script#event-manager-templ{type:"text/x-handlebars-template"}
     .row-fluid
       .section-title
-        %h1 Welcome to the next evolution in conference content management.
+        %h1 Event Management Dashboard.
 
     .event-manager
       .row-fluid
         .span12
           .buttons-bar
             .plan-name
-              {{plan_name}}
+              You Have {{plan_name}}
             .buttons
               %button#billing-btn.btn Billing
               %button#invite-btn.btn Invite Speakers
@@ -89,7 +89,8 @@
         .num 2
         .description
           %h1 Upload Template
-          %p Click "Upload File" and select the template that you filled out then click "Start". Our system will evaluate the template and if no errors are found we'll take you to a review page to get an idea of what will be created when you finish your upload.
+          %p Click "Upload File" and select the spreadsheet template that you filled with session and speaker information. After you click "Start" our robot-powered spreadsheet experts will look it over for potential errors.
+          %p We'll show you a preview on the next page of what will be imported, then you can confirm and finalize the import.
 
           .btn-group
             %button.btn.to-download
@@ -102,9 +103,9 @@
               Start
               %i.icon-chevron-right
           %form#post-file{action:"/event-file-upload", method:"POST", target:"post-frame", enctype:"multipart/form-data"}
-            %input#file-choice{type:"file"}
             %input{type:"hidden", name:"csrfmiddlewaretoken", value:"{{csrf_token}}"}
             %input{type:"hidden", name:"upload_id", value:"{{upload_id}}"}
+            %input#file-choice{type:"file", name:"file"}
             %input#submit-upload{type:"submit"}
           %iframe#post-frame
 
@@ -112,21 +113,35 @@
     Uploading...
 
   %script#validation-failed-templ{type:"text/x-handlebars-template"}
-    2. Validation Failed
-    %p Here is why.
-    %button.btn.to-upload Try again
+    .slide
+      .slide-title
+        .num 2
+        .description
+          %h1 Uh, Oh. Our robots got confused.
+          %p We're sorry. Our robots got confused by a few things in your spreadsheet.
+          %p Here are the things that are throwing them for a loop:
+          %ul.validation-summarry
+            %li On row 15, the required field FIELD_NAME is missing.
+            %li On row 26, the field EMAIL appears to be a URL.
+          %p Please take a look at these rows, and try again.
+          %button.btn.to-upload Try again
 
   %script#upload-preview-templ{type:"text/x-handlebars-template"}
     .slide
       .slide-title
         .num 3
         .description
-          %h1 Upload Preview
-          %p Below is a summary of what will be created once you confirm the upload. If you have The Forever Plan you will only be billed the first time you upload, and each additional upload is free. If you have The Yearly Plan you will be billed for every upload.
-      .upload-preview
-        %p Here is the preview.
-
-        %button.btn.btn-primary.confirm-upload Confirm
+          %h1 Big Success! Here's a preview.
+          %p Your data hasn't been imported yet. We have validated it and everything looks good. Here is a summary of what will be imported:
+          %ul.import-summary
+            %li 512 Sessions
+            %li 62 Speakers
+            %li 415 Tags
+            %li 614 Links
+            %li 96 Videos
+            %li 324 Slides
+          %p Click "Confirm" to finalize the import and build your event page.
+          %button.btn.btn-primary.confirm-upload Confirm
 
   %script#confirm-billing-templ{type:"text/x-handlebars-template"}
     .slide
@@ -138,7 +153,7 @@
           %p If you selected "The Yearly Plan" you will be billed $600.00 once each time you upload.
 
           .btn-group
-            %button.btn.confirm-upload Back
+            %button.btn.to-preview Back
             %button.btn.btn-primary.confirm-billing Confirm
 
   %script#import-started-templ{type:"text/x-handlebars-template"}
@@ -153,5 +168,22 @@
           %p Congratulations! Now your event will live forever online. Here are some stats.
 
           %button.btn.to-event View Event Page
+
+  %script#billing-details-templ{type:"text/x-handlebars-template"}
+    .slide
+      .slide-title
+        {{#if yearly_plan}}
+        %h1 You have The Yearly Plan.
+        %p Upgrade to The Forever Plan for ${{upgrade_offer}} and save ${{offer_savings}} over the next 5 years.
+        {{/if}}
+        {{#if forever_plan}}
+        {{#if billed}}
+        %p You have The Forever Plan but you haven't imported anything.
+        %p Downgrade to the yearly plan, and try us for one year for $600.
+        {{else}}
+        %p You have The Forever Plan, and you have been billed once and will never be billed again.
+        %p Here is a reminder of all the awesome stuff you get for being a forever plan member.
+        {{/if}}
+        {{/if}}
 
 {% endverbatim %}

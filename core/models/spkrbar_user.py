@@ -53,6 +53,7 @@ class SpkrbarUser(AbstractBaseUser, PermissionsMixin):
 
     is_event_manager = models.BooleanField(default=False)
     plan_name = models.CharField(default="speaker", max_length=30)
+    profile_public = models.BooleanField(default=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

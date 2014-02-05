@@ -51,7 +51,7 @@ SpkrBar.Views.IndexPage = Backbone.View.extend
         {}
 
     onClickInviteRegister: ->
-        console.log "Invite Register"
+        window.location = "/profile/invite"
 
     onClickYearlyRegister: ->
         regModel = new SpkrBar.Models.Register()
