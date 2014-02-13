@@ -87,16 +87,12 @@ class EventUploadError(models.Model):
         app_label = 'core'
         #states are 
 
-    def __init__(self, import_model, row, column):
-        self.event_upload = import_model
-        self.row = row
-        self.column = column.field_type
-
-        return self
-
     @classmethod
     def requirement_error(cls, import_model, row, column):
-        error = cls(import_model, row, column)
+        error = cls()
+        error.event_upload = import_model
+        error.row = row
+        error.column = column.field_type
         error.error_type = EventUploadTypes.ET_FIELD_REQUIRED
         error.expected_data_type = EventUploadTypes.DT_TEXT
         error.percieved_data_type = EventUploadTypes.DT_TEXT
@@ -105,8 +101,11 @@ class EventUploadError(models.Model):
 
     @classmethod
     def validation_error(cls, import_model, row, column):
-        error = cls(import_model, row, column)
-        error.error_type = EventUploadTypes.ET_FIELD_REQUIRED
+        error = cls()
+        error.event_upload = import_model
+        error.row = row
+        error.column = column.field_type
+        error.error_type = EventUploadTypes.ET_FIELD_PARSE_ERROR
         error.expected_data_type = column.data_type
         error.percieved_data_type = EventUploadTypes.DT_TEXT
 
@@ -142,10 +141,10 @@ class EventUploadError(models.Model):
         return field_name_map[str(field)]
 
     def __str__(self):
-        if self.error_type == EventUploadError.ET_FIELD_REQUIRED:
-            return "On row %d, the column %s is required." % int(self.row), self.name_for_column()
-        elif self.error_type == EventUploadError.ET_FIELD_PARSE_ERROR:
-            return "On row %d, the column %s should be a %s but it looks like a %s" % int(self.row), self.name_for_column(), self.name_for_expected_data_type(), self.name_for_percieved_data_type()
+        if self.error_type == EventUploadTypes.ET_FIELD_REQUIRED:
+            return "On row {0}, the column {1} is required.".format(int(self.row), self.name_for_column())
+        elif self.error_type == EventUploadTypes.ET_FIELD_PARSE_ERROR:
+            return "On row {0}, the column {1} should be a {2} but it looks like a {3}".format(int(self.row), self.name_for_column(), self.name_for_expected_data_type(), self.name_for_percieved_data_type())
         else:
             return "Bummer. You aren't supposed to see this. You found a bug. Contact us at 407-590-1416 immediately."
         return self.name

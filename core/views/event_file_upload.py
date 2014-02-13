@@ -6,7 +6,7 @@ from dateutil.parser import parse as dtparse
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render_to_response, get_object_or_404
 from django.conf import settings
-from django.core.validators import RegexValidator, URLValidator, validate_email
+from django.core.validators import RegexValidator, URLValidator, validate_email, ValidationError
 
 from core.models import EventUpload, EventUploadError, EventUploadTypes
 from core.helpers import save_file_with_uuid
@@ -76,11 +76,13 @@ validators = {
 }
 
 class Row(_Row):
+    def __new__(cls, row_num, *fields):
+        return super(Row, cls).__new__(cls, *fields)
+
     def __init__(self, row_num, *fields):
+        super(Row, self).__init__(*fields)
         self.valid = False
         self.row_num = row_num
-        return super(Row, self).__init__(*fields)
-
 
     def is_valid(self, import_model):
         self.valid = True
@@ -88,13 +90,17 @@ class Row(_Row):
             field_value = getattr(self, field.field_name)
 
             #Test if it is required
-            if field.requred and not field_value:
+            if field.required and not field_value:
                 self.valid = False
                 error = EventUploadError.requirement_error(import_model, self.row_num, field)
                 error.save()
 
             #Test if the data type validates (DT_TEXT will always validate)
-            valid = validators[field.data_type](field)
+            try:
+                valid = validators[field.data_type](field_value)
+            except ValidationError:
+                valid = False
+
             if not valid:
                 self.valid = False
                 error = EventUploadError.validation_error(import_model, self.row_num, field)
@@ -128,7 +134,7 @@ def event_file_upload(request):
     rows = good_rows + rows[5:]
 
     #Remove all the old errors
-    [e.delete() for e in import_model.errors]
+    [e.delete() for e in import_model.errors.all()]
 
     #Generate new ones based on validation
     data_valid = True
@@ -136,6 +142,7 @@ def event_file_upload(request):
         if not row.is_valid(import_model):
             data_valid = False
 
+    import pdb; pdb.set_trace()
     if data_valid:
         return render_to_response('upload_success.haml')
     else:
