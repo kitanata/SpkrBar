@@ -32,6 +32,7 @@ from event_upload_list import EventUploadList
 from event_upload_detail import EventUploadDetail
 
 from event_upload_error_list import EventUploadErrorList
+from event_upload_summary_list import EventUploadSummaryList
 
 __all__ = [
     "index", "search", "signup", "event_manager", "event_file_upload",
@@ -42,5 +43,5 @@ __all__ = [
     "UserDetail", "NotificationDetail", "NotificationList",
     "UserLinkDetail", "UserTagList", "UserTagDetail",
     "UserFollowingDetail", "EventUploadList", "EventUploadDetail",
-    "EventUploadErrorList"
+    "EventUploadErrorList", "EventUploadSummaryList"
 ]

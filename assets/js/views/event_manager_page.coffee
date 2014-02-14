@@ -68,6 +68,8 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
                 @renderUploadTemplate()
             else if state == "VALIDATION_FAILED"
                 @renderFailedValidation()
+            else if state == "VALIDATION_SUCCESSFUL"
+                @renderUploadPreview()
 
     renderUploadTemplate: ->
         html = @uploadTemplateTemplate
@@ -85,6 +87,19 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
                 html = @validationFailedTemplate
                     errors: importErrors.map (x) -> x.get('description')
                 @$el.find('.dashboard').html html
+
+    renderUploadPreview: ->
+        importSummary = new SpkrBar.Collections.EventImportSummary
+            import: @model
+
+        importSummary.fetch
+            success: =>
+                html = @uploadPreviewTemplate
+                    summary: importSummary.map (x) ->
+                        name: x.get('name')
+                        description: x.get('description')
+                @$el.find('.dashboard').html html
+
 
     validateAndSaveModel: ->
         if @model.isValid(true)
@@ -170,7 +185,7 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
                 $('#post-frame').attr('src', 'about:blank')
                 @model.fetch
                     success: =>
-                        @$el.find('.dashboard').html @uploadPreviewTemplate({})
+                        @renderUploadPreview()
             else if _.str.trim(done) == "FAILED"
                 $('#post-frame').attr('src', 'about:blank')
                 @model.fetch
@@ -183,7 +198,7 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
         $('#submit-upload').click()
 
     onClickToPreview: ->
-        @$el.find('.dashboard').html @uploadPreviewTemplate({})
+        @renderUploadPreview()
 
     onClickConfirmUpload: ->
         @$el.find('.dashboard').html @confirmBillingTemplate({})

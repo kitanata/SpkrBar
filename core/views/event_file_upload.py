@@ -8,7 +8,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.conf import settings
 from django.core.validators import RegexValidator, URLValidator, validate_email, ValidationError
 
-from core.models import EventUpload, EventUploadError, EventUploadTypes
+from core.models import EventUpload, EventUploadError, EventUploadSummary, EventUploadTypes, SpkrbarUser
 from core.helpers import save_file_with_uuid
 
 validate_url = URLValidator()
@@ -119,6 +119,71 @@ class Row(_Row):
         return self.valid
 
 
+def build_summary(import_model, rows):
+    num_sessions = len(rows)
+    speaker_emails = set([row.speaker_email for row in rows])
+
+    num_existing_speakers = 0
+    num_new_speakers = 0
+
+    for email in speaker_emails:
+        if SpkrbarUser.objects.filter(email=email).exists():
+            num_existing_speakers += 1
+        else:
+            num_new_speakers += 1
+
+    tags = [row.session_tags.split(',') + row.speaker_tags.split(',') for row in rows]
+    tags = reduce(lambda x, y: x + y, tags)
+    num_tags = len(tags)
+    num_unique_tags = len(set(tags))
+
+    links = []
+    for row in rows:
+        links += row.session_links.split(',')
+
+        if row.speaker_website:
+            links += [row.speaker_website]
+
+        if row.speaker_twitter:
+            links += [row.speaker_twitter]
+
+        if row.speaker_facebook:
+            links += [row.speaker_facebook]
+
+        if row.speaker_linkedin:
+            links += [row.speaker_linkedin]
+
+    links = reduce(lambda x, y: x + y, links)
+
+    num_links = len(links)
+    num_unique_links = len(set(links))
+
+    videos = [row.session_video for row in rows if row.session_video]
+    slides = [row.session_slide for row in rows if row.session_slide]
+
+    num_videos = len(videos)
+    num_slides = len(slides)
+
+    existing_sum = EventUploadSummary.objects.filter(event_upload=import_model)
+    [o.delete() for o in existing_sum]
+
+    EventUploadSummary.create(import_model, "Total Sessions",
+        '{0} total sessions'.format(num_sessions)).save()
+    EventUploadSummary.create(import_model, "Speakers",
+        '{0} total speakers. {1} of them are new to SpkrBar!'.format(
+            num_existing_speakers + num_new_speakers, num_new_speakers)).save()
+    EventUploadSummary.create(import_model, "Tags and Topics",
+        '{0} unique tags and topics. {1} total.'.format(
+            num_unique_tags, num_tags)).save()
+    EventUploadSummary.create(import_model, "Links to resources.",
+        '{0} unique links to resources. {1} total.'.format(
+            num_unique_links, num_links)).save()
+    EventUploadSummary.create(import_model, "Videos",
+        '{0} new videos.'.format(num_videos)).save()
+    EventUploadSummary.create(import_model, "Slides",
+        '{0} new slides.'.format(num_slides)).save()
+
+
 def event_file_upload(request):
     if request.method != "POST" or not request.FILES:
         return HttpResponseBadRequest()
@@ -153,6 +218,7 @@ def event_file_upload(request):
             data_valid = False
 
     if data_valid:
+        build_summary(import_model, rows)
         import_model.state = EventUpload.VALIDATION_SUCCESSFUL
         import_model.save()
         return render_to_response('upload_success.haml')

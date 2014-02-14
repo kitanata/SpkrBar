@@ -3,7 +3,7 @@ from views import UserTagList, UserFollowingDetail
 from views import UserDetail, UserTagDetail, UserLinkDetail
 from views import NotificationDetail, NotificationList
 from views import EventUploadDetail, EventUploadList
-from views import EventUploadErrorList
+from views import EventUploadErrorList, EventUploadSummaryList
 
 urlpatterns = patterns('',
     url(r'^profile/invite/thanks$', 'core.views.profile_invite_thanks'),
@@ -44,6 +44,7 @@ urlpatterns = patterns('',
         actions={'post': 'create'})),
 
     url(r'^rest/import/(?P<pk>\d+)/errors$', EventUploadErrorList.as_view()),
+    url(r'^rest/import/(?P<pk>\d+)/summary$', EventUploadSummaryList.as_view()),
 
     url(r'^event-file-upload$', 'core.views.event_file_upload'),
 

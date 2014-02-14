@@ -135,14 +135,15 @@
           %h1 Big Success! Here's a preview.
           %p Your data hasn't been imported yet. We have validated it and everything looks good. Here is a summary of what will be imported:
           %ul.import-summary
-            %li 512 Sessions
-            %li 62 Speakers
-            %li 415 Tags
-            %li 614 Links
-            %li 96 Videos
-            %li 324 Slides
+            {{#each summary}}
+            %li {{description}}
+            {{/each}}
           %p Click "Confirm" to finalize the import and build your event page.
-          %button.btn.btn-primary.confirm-upload Confirm
+          .btn-group
+            %button.btn.to-upload
+              %i.icon-chevron-left
+              Go Back
+            %button.btn.btn-primary.confirm-upload Confirm
 
   %script#confirm-billing-templ{type:"text/x-handlebars-template"}
     .slide
