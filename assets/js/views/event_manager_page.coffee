@@ -66,6 +66,8 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
                 @$el.find('.dashboard').html @downloadTemplateTemplate({})
             else if state == "TEMPLATE_DOWNLOADED"
                 @renderUploadTemplate()
+            else if state == "VALIDATION_FAILED"
+                @renderFailedValidation()
 
     renderUploadTemplate: ->
         html = @uploadTemplateTemplate
@@ -73,6 +75,16 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
             upload_id: @model.id
 
         @$el.find('.dashboard').html html
+
+    renderFailedValidation: ->
+        importErrors = new SpkrBar.Collections.EventImportErrors
+            import: @model
+
+        importErrors.fetch
+            success: =>
+                html = @validationFailedTemplate
+                    errors: importErrors.map (x) -> x.get('description')
+                @$el.find('.dashboard').html html
 
     validateAndSaveModel: ->
         if @model.isValid(true)
@@ -163,7 +175,7 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
                 $('#post-frame').attr('src', 'about:blank')
                 @model.fetch
                     success: =>
-                        @$el.find('.dashboard').html @validationFailedTemplate({})
+                        @renderFailedValidation()
             else
                 setTimeout logPostFrame, 500
         logPostFrame()

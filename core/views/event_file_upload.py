@@ -16,25 +16,27 @@ validate_url = URLValidator()
 validate_at_handle = RegexValidator(r'^@\w*$')
 
 def validate_video_url(value):
-    return validate_url(value) and ('youtube' in value or 'vimeo' in value)
+    if not ('youtube' in value or 'vimeo' in value):
+        raise ValidationError
+
+    validate_url(value)
 
 def validate_slide_url(value):
-    return validate_url(value) and ('slideshare' in value or 'speakerdeck' in value)
+    if not ('slideshare' in value or 'speakerdeck' in value):
+        raise ValidationError
+
+    validate_url(value)
 
 def validate_url_list(value):
     items = value.split(',')
     for item in items:
-        if not validate_url(item):
-            return False
-
-    return True
+        validate_url(item)
 
 def validate_date_or_time(value):
     try:
         dtparse(value)
-        return True
     except:
-        return False
+        raise ValidationError
 
 UploadColumnDefinition = namedtuple('UploadColumnDefinition', [
     'field_type', 'field_name', 'data_type', 'required'])
@@ -62,17 +64,27 @@ row_fields = [
 
 _Row = namedtuple('_Row', [x.field_name for x in row_fields])
 
+def validate_at_handle_or_url(value):
+    try:
+        validate_at_handle(value)
+        return
+    except ValidationError:
+        pass
+
+    validate_url(value)
+
+
 validators = {
     EventUploadTypes.DT_TEXT: lambda x: True,
-    EventUploadTypes.DT_EMAIL: lambda x: validate_email(x),
-    EventUploadTypes.DT_AT_HANDLE_OR_URL: lambda x: validate_url(x) or validate_at_handle(x),
+    EventUploadTypes.DT_EMAIL: validate_email,
+    EventUploadTypes.DT_AT_HANDLE_OR_URL: validate_at_handle_or_url,
     EventUploadTypes.DT_LIST_OF_TEXT: lambda x: True,
-    EventUploadTypes.DT_URL: lambda x: validate_url(x),
-    EventUploadTypes.DT_URL_VIDEO: lambda x: validate_video_url(x),
-    EventUploadTypes.DT_URL_SLIDE: lambda x: validate_slide_url(x),
-    EventUploadTypes.DT_LIST_OF_URLS: lambda x: validate_url_list(x),
-    EventUploadTypes.DT_DATE: lambda x: validate_date_or_time(x),
-    EventUploadTypes.DT_TIME: lambda x: validate_date_or_time(x),
+    EventUploadTypes.DT_URL: validate_url,
+    EventUploadTypes.DT_URL_VIDEO: validate_video_url,
+    EventUploadTypes.DT_URL_SLIDE: validate_slide_url,
+    EventUploadTypes.DT_LIST_OF_URLS: validate_url_list,
+    EventUploadTypes.DT_DATE: validate_date_or_time,
+    EventUploadTypes.DT_TIME: validate_date_or_time,
 }
 
 class Row(_Row):
@@ -96,15 +108,13 @@ class Row(_Row):
                 error.save()
 
             #Test if the data type validates (DT_TEXT will always validate)
-            try:
-                valid = validators[field.data_type](field_value)
-            except ValidationError:
-                valid = False
-
-            if not valid:
-                self.valid = False
-                error = EventUploadError.validation_error(import_model, self.row_num, field)
-                error.save()
+            if field_value:
+                try:
+                    validators[field.data_type](field_value)
+                except ValidationError as e:
+                    self.valid = False
+                    error = EventUploadError.validation_error(import_model, self.row_num, field)
+                    error.save()
 
         return self.valid
 
@@ -142,8 +152,11 @@ def event_file_upload(request):
         if not row.is_valid(import_model):
             data_valid = False
 
-    import pdb; pdb.set_trace()
     if data_valid:
+        import_model.state = EventUpload.VALIDATION_SUCCESSFUL
+        import_model.save()
         return render_to_response('upload_success.haml')
     else:
+        import_model.state = EventUpload.VALIDATION_FAILED
+        import_model.save()
         return render_to_response('upload_failed.haml')

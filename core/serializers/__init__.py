@@ -5,6 +5,7 @@ from user_tag_serializer import UserTagSerializer
 from user_following_serializer import UserFollowingSerializer
 from notification_serializer import NotificationSerializer
 from event_upload_serializer import EventUploadSerializer
+from event_upload_error_serializer import EventUploadErrorSerializer
 
 __all__ = [
     'RegisterUserSerializer',
@@ -13,5 +14,6 @@ __all__ = [
     'UserTagSerializer',
     'UserFollowingSerializer',
     'NotificationSerializer',
-    'EventUploadSerializer'
+    'EventUploadSerializer',
+    'EventUploadErrorSerializer'
 ]

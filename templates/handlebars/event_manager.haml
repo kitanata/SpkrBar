@@ -120,9 +120,10 @@
           %h1 Uh, Oh. Our robots got confused.
           %p We're sorry. Our robots got confused by a few things in your spreadsheet.
           %p Here are the things that are throwing them for a loop:
-          %ul.validation-summarry
-            %li On row 15, the required field FIELD_NAME is missing.
-            %li On row 26, the field EMAIL appears to be a URL.
+          %ul.validation-summary
+            {{#each errors}}
+            %li {{this}}.
+            {{/each}}
           %p Please take a look at these rows, and try again.
           %button.btn.to-upload Try again
 

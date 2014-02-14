@@ -31,6 +31,8 @@ from rest_user_following_detail import UserFollowingDetail
 from event_upload_list import EventUploadList
 from event_upload_detail import EventUploadDetail
 
+from event_upload_error_list import EventUploadErrorList
+
 __all__ = [
     "index", "search", "signup", "event_manager", "event_file_upload",
     "register_user", "login_user", "logout_user",
@@ -39,5 +41,6 @@ __all__ = [
     "speaker_list", "event_list", "event_detail",
     "UserDetail", "NotificationDetail", "NotificationList",
     "UserLinkDetail", "UserTagList", "UserTagDetail",
-    "UserFollowingDetail", "EventUploadList", "EventUploadDetail"
+    "UserFollowingDetail", "EventUploadList", "EventUploadDetail",
+    "EventUploadErrorList"
 ]

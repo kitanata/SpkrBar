@@ -142,9 +142,9 @@ class EventUploadError(models.Model):
 
     def __str__(self):
         if self.error_type == EventUploadTypes.ET_FIELD_REQUIRED:
-            return "On row {0}, the column {1} is required.".format(int(self.row), self.name_for_column())
+            return "On row {0}, the column {1} is required.".format(int(self.row) + 1, self.name_for_column())
         elif self.error_type == EventUploadTypes.ET_FIELD_PARSE_ERROR:
-            return "On row {0}, the column {1} should be a {2} but it looks like a {3}".format(int(self.row), self.name_for_column(), self.name_for_expected_data_type(), self.name_for_percieved_data_type())
+            return "On row {0}, the column {1} should be a {2} but it looks like a {3}".format(int(self.row) + 1, self.name_for_column(), self.name_for_expected_data_type(), self.name_for_percieved_data_type())
         else:
             return "Bummer. You aren't supposed to see this. You found a bug. Contact us at 407-590-1416 immediately."
         return self.name

@@ -30,7 +30,9 @@ class IsOwner(permissions.BasePermission):
     """
 
     def has_object_permission(self, request, view, obj):
-        if hasattr(obj, 'speaker'):
+        if hasattr(obj, 'event_upload'):
+            return obj.event_upload.user == request.user
+        elif hasattr(obj, 'speaker'):
             return obj.speaker == request.user
         elif hasattr(obj, 'user'):
             return obj.user == request.user
