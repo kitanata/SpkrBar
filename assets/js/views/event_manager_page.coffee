@@ -28,17 +28,7 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
             image: '/static/img/logo.png'
             token: (token, args) =>
                 console.log "Submit the token"
-                confirmRequest = $.post '/rest/import/' + @model.id + '/confirm', {'token': token.id}
-
-                confirmRequest.done =>
-                    @model.fetch 
-                        success: =>
-                            @$el.find('.dashboard').html @importFinishedTemplate({})
-
-                confirmRequest.fail ->
-                    $.colorbox
-                        html: "<h1 class='alert alert-error' style='margin:20px; width:300px'>Sorry. We couldn't charge your card. Please try again.</h1>"
-                    $.colorbox.resize()
+                @finalizeImport(token.id)
 
         @createEventImportTemplate = Handlebars.compile($("#create-event-import-templ").html())
         @downloadTemplateTemplate = Handlebars.compile($("#download-template-templ").html())
@@ -124,6 +114,19 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
                     @$el.find('.dashboard').html @downloadTemplateTemplate({})
         else
             @showValidationAlert()
+
+    finalizeImport: (token) ->
+        confirmRequest = $.post '/rest/import/' + @model.id + '/confirm', {'token': token}
+
+        confirmRequest.done =>
+            @model.fetch 
+                success: =>
+                    @$el.find('.dashboard').html @importFinishedTemplate({})
+
+        confirmRequest.fail ->
+            $.colorbox
+                html: "<h1 class='alert alert-error' style='margin:20px; width:300px'>Sorry. We couldn't charge your card. Please try again.</h1>"
+            $.colorbox.resize()
 
     onClickNewImport: ->
         @$el.find('.dashboard').html @createEventImportTemplate({})
@@ -248,7 +251,7 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
 
             if billed
                 $('.confirm-billing').on 'click', (ev) =>
-                    #Already paid in full: Do the import.
+                    @finalizeImport(0)
             else
                 $('.confirm-billing').on 'click', (ev) =>
                     amount = upgrade_offer * 100
@@ -264,7 +267,7 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
 
             if billed
                 $('.confirm-billing').on 'click', (ev) =>
-                    #Already paid in full: Do the import.
+                    @finalizeImport(0)
             else
                 $('.confirm-billing').on 'click', (ev) =>
                     @stripeHandler.open
@@ -301,15 +304,6 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
             @$el.find('#loc-city').val('');
             @$el.find('#loc-state').val('');
             @$el.find('#loc-zip').val('');
-
-    userLoggedIn: ->
-        user != null
-
-    planName: ->
-        if user.get('plan_name') == 'yearly'
-            "The Yearly Plan"
-        else if user.get('plan_name') == 'forever'
-            "The Forever Plan"
 
     context: ->
         imports: @eventImports.map (x) -> 
