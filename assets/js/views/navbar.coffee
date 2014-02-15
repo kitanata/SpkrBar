@@ -69,3 +69,4 @@ SpkrBar.Views.NavBar = Backbone.View.extend
             html: editor.render().el
             width: "500px"
             height: "440px"
+        $.colorbox.resize()

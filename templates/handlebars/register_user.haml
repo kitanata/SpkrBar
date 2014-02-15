@@ -49,7 +49,22 @@
           #about_me-error.error
           <textarea id="about_me" name="about_me" rows=6 cols=40>{{about_me}}</textarea>
 
-    .row-fluid
+    {{#unless is_event_planner}}
+      .row-fluid
+        .span12
+          %h4 Are you a speaker or an event planner?
+          %label.radio
+            %input#user-type-speaker{type:"radio", name:"plan_name", checked:"true"}
+            I'm primarily a speaker. (free plan)
+          %label.radio
+            %input#user-type-yearly{type:"radio", name:"plan_name"}
+            I plan a couple of events. (yearly plan)
+          %label.radio
+            %input#user-type-forever{type:"radio", name:"plan_name"}
+            I plan a lot of events. (forever plan)
+    {{/unless}}
+
+    .row-fluid{style:"margin-top:20px"}
       .span12
         %input#register-submit.btn.btn-warning{type:"submit", value:"Register"}
 

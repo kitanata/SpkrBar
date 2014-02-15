@@ -6,6 +6,7 @@
   - include 'handlebars/event_manager.haml'
 
 - block 'scripts'
+  %script{src:"https://checkout.stripe.com/checkout.js"}
   %script{type:"text/javascript"}
     /talks = new SpkrBar.Collections.Talks({{talks|safe}})
 

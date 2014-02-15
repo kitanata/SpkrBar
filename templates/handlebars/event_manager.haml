@@ -2,18 +2,13 @@
   %script#event-manager-templ{type:"text/x-handlebars-template"}
     .row-fluid
       .section-title
-        %h1 Event Management Dashboard.
+        {{#if forever}}
+          %h1 Event Management Dashboard. (Forever a VIP)
+        {{else}}
+          %h1 Event Management Dashboard.
+        {{/if}}
 
     .event-manager
-      .row-fluid
-        .span12
-          .buttons-bar
-            .plan-name
-              You Have {{plan_name}}
-            .buttons
-              %button#billing-btn.btn Billing
-              %button#invite-btn.btn Invite Speakers
-
       .row-fluid
         .span12
           .dashboard-container
@@ -28,6 +23,11 @@
                 %h2
                   %i.icon-plus-sign
                   New Import
+              .item.invite-speakers
+                %h3
+                  %a{href:"/profile/invite", target:"_blank"}
+                    %i.icon-group
+                    Invite Speakers
             .dashboard
 
   %script#create-event-import-templ{type:"text/x-handlebars-template"}
@@ -150,13 +150,31 @@
       .slide-title
         .num 3
         .description
-          %h1 Confirm your billing information below
-          %p If you selected "The Forever Plan" you will be billed $2400.00 once on your first upload. Each additional upload is free.
-          %p If you selected "The Yearly Plan" you will be billed $600.00 once each time you upload.
+          %h1 Confirm your upload.
+          %p We're almost done. You'll have a fantastic event page with speaker and session information in a few seconds. We just need to take a minute to go over some billing details.
 
+          {{#if yearly_plan}}
+          %p Click "Pay With Card" below to be billed $600.00 on The Yearly Plan and finalize the import.
+          %p.alert.alert-info
+            If you upgrade to The Forever Plan for ${{upgrade_offer}} you'll save ${{offer_savings}} over the next 5 years and get a custom subdomain for your event.
+            %button.btn.upgrade-plan{style:"display:block;margin-top:20px;"} Upgrade
           .btn-group
-            %button.btn.to-preview Back
-            %button.btn.btn-primary.confirm-billing Confirm
+            %button.btn.to-preview Go Back
+            %button.btn.btn-primary.confirm-billing Pay With Card (Yearly)
+          {{else}}
+          {{#if forever_billed}}
+          %p Thank you for being a Forever Member. You will not be billed again, just click "Confirm" below and we'll finalize this import for your event.
+          .btn-group
+            %button.btn.to-preview Go Back
+            %button.btn.btn-primary.confirm-billing Finalize Upload
+          {{else}}
+          %p Thank you for choosing The Forever Plan. Click "Pay with Card" below to be billed ${{upgrade_offer}} and finalize the import.
+          .btn-group
+            %button.btn.to-preview Go Back
+            %button.btn.downgrade-plan Downgrade
+            %button.btn.btn-primary.confirm-billing Pay With Card (Forever)
+          {{/if}}
+          {{/if}}
 
   %script#import-started-templ{type:"text/x-handlebars-template"}
     Import Started...
@@ -170,22 +188,5 @@
           %p Congratulations! Now your event will live forever online. Here are some stats.
 
           %button.btn.to-event View Event Page
-
-  %script#billing-details-templ{type:"text/x-handlebars-template"}
-    .slide
-      .slide-title
-        {{#if yearly_plan}}
-        %h1 You have The Yearly Plan.
-        %p Upgrade to The Forever Plan for ${{upgrade_offer}} and save ${{offer_savings}} over the next 5 years.
-        {{/if}}
-        {{#if forever_plan}}
-        {{#if billed}}
-        %p You have The Forever Plan but you haven't imported anything.
-        %p Downgrade to the yearly plan, and try us for one year for $600.
-        {{else}}
-        %p You have The Forever Plan, and you have been billed once and will never be billed again.
-        %p Here is a reminder of all the awesome stuff you get for being a forever plan member.
-        {{/if}}
-        {{/if}}
 
 {% endverbatim %}

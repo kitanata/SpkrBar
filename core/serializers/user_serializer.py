@@ -13,6 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
                 'is_staff',
                 'is_event_manager',
                 'plan_name',
+                'billed_forever',
                 'profile_public',
                 'full_name',
                 'about_me',

@@ -3,18 +3,20 @@ SpkrBar.Views.RegisterUser = Backbone.View.extend
     template: "#register-user-templ"
 
     events:
+        "click #user-type-speaker": "onClickSpeaker"
+        "click #user-type-yearly": "onClickYearly"
+        "click #user-type-forever": "onClickForever"
         "click #register-submit": "onRegisterSubmit"
 
     initialize: (options) ->
         @alertTempl = Handlebars.compile($('#register-alert-templ').html())
         @listenTo(@model, "change", @render)
 
-        if options.plan == 'forever'
-            @model.set 'plan_name', "forever"
-            @model.set 'is_event_planner', true
-        else if options.plan == 'yearly'
-            @model.set 'plan_name', 'yearly'
-            @model.set 'is_event_planner', true
+        @mode = "prereg"
+        @plan = "speaker"
+
+        if options.plan == 'forever' or options.plan == 'yearly'
+            @plan = options.plan
 
 
     render: ->
@@ -26,9 +28,9 @@ SpkrBar.Views.RegisterUser = Backbone.View.extend
         @
 
     context: ->
-        forever_plan: (@model.get('plan_name') == 'forever')
-        yearly_plan: (@model.get('plan_name') == 'yearly')
-        is_event_planner: @model.get 'is_event_planner'
+        forever_plan: (@plan == 'forever')
+        yearly_plan: (@plan == 'yearly')
+        is_event_planner: (@plan == 'forever' or @plan == 'yearly')
         email: @model.get 'email'
         password: @model.get 'password'
         confirm: @model.get 'confirm'
@@ -45,6 +47,15 @@ SpkrBar.Views.RegisterUser = Backbone.View.extend
                 $.colorbox.resize()
         $.colorbox.resize()
 
+    onClickSpeaker: ->    
+        @plan = 'speaker'
+
+    onClickYearly: ->
+        @plan = 'yearly'
+
+    onClickForever: ->
+        @plan = 'forever'
+
     onRegisterSubmit: ->
         @model.set
             email: @$el.find('#email').val()
@@ -52,8 +63,14 @@ SpkrBar.Views.RegisterUser = Backbone.View.extend
             confirm: @$el.find('#confirm').val()
             full_name: @$el.find('#full_name').val()
             about_me: @$el.find('#about_me').val()
+            plan_name: @plan
 
-        console.log @model.isValid(true)
+        console.log @plan
+
+        if @plan == "speaker"
+            @model.set 'is_event_planner', false
+        else
+            @model.set 'is_event_planner', true
 
         if @model.isValid(true)
             @model.save null,

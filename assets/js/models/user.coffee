@@ -5,6 +5,8 @@ SpkrBar.Models.User = Backbone.RelationalModel.extend
         photo: ""
         tags: []
         links: []
+        plan_name: "speaker"
+        is_event_manager: false
 
     relations: [
         {
@@ -29,6 +31,8 @@ SpkrBar.Models.User = Backbone.RelationalModel.extend
     toJSON: ->
         email: @get('email')
         full_name: @get('full_name')
+        plan_name: @get('plan_name')
+        is_event_manager: @get('is_event_manager')
         about_me: @get('about_me')
         following: @get('following').map (x) -> x.id
         followers: @get('followers').map (x) -> x.id

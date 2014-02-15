@@ -13,9 +13,8 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
         "click .start-upload": "onClickStartUpload"
         "click .to-preview": "onClickToPreview"
         "click .confirm-upload": "onClickConfirmUpload"
-        "click .confirm-billing": "onClickConfirmBilling"
-        "click #invite-btn": "onClickInviteSpeakers"
-        "click #billing-btn": "onClickBillingDetails"
+        "click .upgrade-plan": "onClickUpgradePlan"
+        "click .downgrade-plan": "onClickDowngradePlan"
         "click #loc-reset": "onClickLocationReset"
         "change #loc-name": "onChangedLocationName"
 
@@ -23,6 +22,23 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
         @shouldRender = false
 
         @talkViews = []
+
+        @stripeHandler = StripeCheckout.configure
+            key: 'pk_test_6pRNASCoBOKtIshFeQd4XMUh'
+            image: '/static/img/logo.png'
+            token: (token, args) =>
+                console.log "Submit the token"
+                confirmRequest = $.post '/rest/import/' + @model.id + '/confirm', {'token': token.id}
+
+                confirmRequest.done =>
+                    @model.fetch 
+                        success: =>
+                            @$el.find('.dashboard').html @importFinishedTemplate({})
+
+                confirmRequest.fail ->
+                    $.colorbox
+                        html: "<h1 class='alert alert-error' style='margin:20px; width:300px'>Sorry. We couldn't charge your card. Please try again.</h1>"
+                    $.colorbox.resize()
 
         @createEventImportTemplate = Handlebars.compile($("#create-event-import-templ").html())
         @downloadTemplateTemplate = Handlebars.compile($("#download-template-templ").html())
@@ -33,7 +49,6 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
         @confirmBillingTemplate = Handlebars.compile($("#confirm-billing-templ").html())
         @importStartedTemplate = Handlebars.compile($("#import-started-templ").html())
         @importFinishedTemplate = Handlebars.compile($("#import-finished-templ").html())
-        @billingDetailsTemplate = Handlebars.compile($("#billing-details-templ").html())
 
         @locations = new SpkrBar.Collections.Locations()
         @locations.fetch()
@@ -200,31 +215,64 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
     onClickToPreview: ->
         @renderUploadPreview()
 
+    onClickUpgradePlan: ->
+        user.set 'plan_name', 'forever'
+        user.save null,
+            success: =>
+                @onClickConfirmUpload()
+
+    onClickDowngradePlan: ->
+        user.set 'plan_name', 'yearly'
+        user.save null,
+            success: =>
+                @onClickConfirmUpload()
+
     onClickConfirmUpload: ->
-        @$el.find('.dashboard').html @confirmBillingTemplate({})
-
-    onClickConfirmBilling: ->
-        @$el.find('.dashboard').html @importFinishedTemplate({})
-
-    onClickBillingDetails: ->
         num_payments = (@eventImports.filter (x) -> x.get('billed')).length
         billed = num_payments != 0
         upgrade_offer = 2400 - Math.min((num_payments * 400), 1200)
         offer_savings = (3000 - upgrade_offer)
 
-        billingDetails = @billingDetailsTemplate
+        html = @confirmBillingTemplate
             forever_plan: (user.get('plan_name') == "forever")
             yearly_plan: (user.get('plan_name') == "yearly")
             billed: billed
             upgrade_offer: upgrade_offer
             offer_savings: offer_savings
 
-        console.log billingDetails
+        @$el.find('.dashboard').html html
 
-        @$el.find('.dashboard').html billingDetails
+        $('.confirm-billing').off 'click', null
+        if user.get('plan_name') == "forever"
+            billed = user.get('billed_forever')
 
-    onClickInviteSpeakers: ->
-        console.log "Invite Speakers"
+            if billed
+                $('.confirm-billing').on 'click', (ev) =>
+                    #Already paid in full: Do the import.
+            else
+                $('.confirm-billing').on 'click', (ev) =>
+                    amount = upgrade_offer * 100
+                    description = 'The Forever Plan ($' + upgrade_offer + '.00)'
+                    @stripeHandler.open
+                        name: 'SpkrBar.com'
+                        description: description
+                        amount: amount
+
+                    ev.preventDefault()
+        else if user.get('plan_name') == "yearly"
+            billed = @model.get('user_billed')
+
+            if billed
+                $('.confirm-billing').on 'click', (ev) =>
+                    #Already paid in full: Do the import.
+            else
+                $('.confirm-billing').on 'click', (ev) =>
+                    @stripeHandler.open
+                        name: 'SpkrBar.com'
+                        description: 'The Yearly Plan ($600.00)'
+                        amount: 60000
+
+                    ev.preventDefault()
 
     invalidate: ->
         if not @shouldRender
@@ -267,5 +315,4 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
         imports: @eventImports.map (x) -> 
             id: x.id
             name: x.get('name')
-        plan_name: @planName()
-
+        forever: user.get('forever_access')
