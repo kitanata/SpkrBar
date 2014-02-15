@@ -39,6 +39,9 @@ SpkrBar.Views.NavBar = Backbone.View.extend
     userOwnsContent: ->
         user != null and user.id == @model.get('speaker').id
 
+    userIsEventPlanner: ->
+        user != null and user.get('is_event_manager')
+
     userProfileLink: ->
         if user == null
             ""
@@ -48,6 +51,7 @@ SpkrBar.Views.NavBar = Backbone.View.extend
     context: ->
         userLoggedIn: @userLoggedIn()
         userIsStaff: @userIsStaff()
+        userIsEventPlanner: @userIsEventPlanner()
         profileLink: @userProfileLink()
 
     onClickAddTalk: ->

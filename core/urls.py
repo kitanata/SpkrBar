@@ -45,6 +45,7 @@ urlpatterns = patterns('',
 
     url(r'^rest/import/(?P<pk>\d+)/errors$', EventUploadErrorList.as_view()),
     url(r'^rest/import/(?P<pk>\d+)/summary$', EventUploadSummaryList.as_view()),
+    url(r'^rest/import/(?P<pk>\d+)/confirm$', 'core.views.event_upload_confirm'),
 
     url(r'^event-file-upload$', 'core.views.event_file_upload'),
 

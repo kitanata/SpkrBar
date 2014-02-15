@@ -3,6 +3,7 @@ from signup import signup
 from search import search
 from event_manager import event_manager
 from event_file_upload import event_file_upload
+from event_upload_confirm import event_upload_confirm
 
 from register_user import register_user
 

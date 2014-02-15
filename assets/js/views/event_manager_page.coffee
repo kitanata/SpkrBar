@@ -115,19 +115,6 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
         else
             @showValidationAlert()
 
-    finalizeImport: (token) ->
-        confirmRequest = $.post '/rest/import/' + @model.id + '/confirm', {'token': token}
-
-        confirmRequest.done =>
-            @model.fetch 
-                success: =>
-                    @$el.find('.dashboard').html @importFinishedTemplate({})
-
-        confirmRequest.fail ->
-            $.colorbox
-                html: "<h1 class='alert alert-error' style='margin:20px; width:300px'>Sorry. We couldn't charge your card. Please try again.</h1>"
-            $.colorbox.resize()
-
     onClickNewImport: ->
         @$el.find('.dashboard').html @createEventImportTemplate({})
 
@@ -276,6 +263,19 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
                         amount: 60000
 
                     ev.preventDefault()
+
+    finalizeImport: (token) ->
+        confirmRequest = $.post '/rest/import/' + @model.id + '/confirm', {'token': token}
+
+        confirmRequest.done =>
+            @model.fetch 
+                success: =>
+                    @$el.find('.dashboard').html @importFinishedTemplate({})
+
+        confirmRequest.fail ->
+            $.colorbox
+                html: "<h1 class='alert alert-error' style='margin:20px; width:300px'>Sorry. We couldn't charge your card. Please try again.</h1>"
+            $.colorbox.resize()
 
     invalidate: ->
         if not @shouldRender
