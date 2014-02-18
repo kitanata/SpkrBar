@@ -1,3 +1,4 @@
+import markdown2
 from django.db import models
 
 # Create your models here.
@@ -15,3 +16,6 @@ class BlogPost(models.Model):
 
     def get_absolute_url(self):
         return "/blog/" + str(self.pk)
+
+    def markup_content(self):
+        return markdown2.markdown(self.content, safe_mode=True)

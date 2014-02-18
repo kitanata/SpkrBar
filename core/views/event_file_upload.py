@@ -1,5 +1,6 @@
 import os
 import csv
+import xlrd
 import json
 import stripe
 
@@ -206,7 +207,26 @@ def event_file_upload(request):
     import_model = get_object_or_404(EventUpload, pk=upload_id)
 
     the_file = request.FILES['file']
+    file_ext = the_file.name.split('.')[-1]
+
+    if file_ext not in ['xls', 'xlsx', 'csv']:
+        return HttpResponseBadRequest()
+
     file_name = save_file_with_uuid(the_file)
+
+    if file_ext in ['xls', 'xlsx']:
+        wb = xlrd.open_workbook(file_name)
+        sh = wb.sheet_by_index(0)
+        filename_root = file_name.split('.')[0]
+        file_name = '.'.join([filename_root, 'csv'])
+        csv_file = open(file_name, 'wb')
+        wr = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
+
+        for rownum in xrange(sh.nrows):
+            wr.writerow(sh.row_values(rownum))
+
+        csv_file.close()
+
     full_file_name = os.path.join(settings.MEDIA_ROOT, file_name)
 
     import_model.import_file = File(open(full_file_name, "rb"))

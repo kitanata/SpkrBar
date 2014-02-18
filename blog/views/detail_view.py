@@ -12,9 +12,12 @@ def blog_details(request, post_id):
     history = [{
         'month': item.date.strftime("%B"),
         'year': item.date.strftime("%Y"),
-        'post': item } for item in posts]
+        'post': item,
+        'content': item.markup_content() 
+        } for item in posts]
 
     return {
         'post': post,
+        'content': post.markup_content(),
         'history': history,
         }

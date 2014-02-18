@@ -1,9 +1,8 @@
 - extends 'blog/blog_base.haml'
-- load markup
 
 - block 'blog_content'
   .well.post
     .name {{ post.name }}
     .date {{ post.date.date }}
     .time {{ post.date.time }}
-    .content {{ post.content|markdown }}
+    .content {{ content|safe }}

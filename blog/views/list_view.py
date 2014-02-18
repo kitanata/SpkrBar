@@ -8,9 +8,13 @@ def blog_list(request):
     history = [{
         'month': item.date.strftime("%B"),
         'year': item.date.strftime("%Y"),
-        'post': item } for item in posts]
+        'post': item,
+        'content': item.markup_content() 
+        } for item in posts]
+
+    recent = [{'post': p, 'content': p.markup_content()} for p in posts[:5]]
 
     return {
-        'recent_posts': posts[:5],
+        'recent_posts': recent,
         'history': history,
         }
