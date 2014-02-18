@@ -16,3 +16,26 @@ class TalkVideo(models.Model):
 
     def build_embed_code(self):
         return "<iframe width='100%%' height='400px' src='%s' frameborder='0' webkitAllowFullScreen, mozallowfullscreen, allowfullscreen></iframe>" % (self.embed_data,)
+
+    @classmethod
+    def from_embed(cls, talk, text):
+        video = TalkVideo()
+        video.talk = talk
+
+        embed = text
+        embed = embed.split(' ')
+        embed = [x.split('=') for x in embed]
+        embed = [x for x in embed if len(x) == 2]
+        embed = {x[0]: x[1].strip(""" "'""") for x in embed}
+
+        video.source = form.cleaned_data['source']
+
+        if video.source == YOUTUBE or video.source == VIMEO:
+            video.embed_data = embed['src']
+            w = embed['width']
+            h = embed['height']
+            video.aspect = int(h) / float(w) if float(w) != 0 else 0
+        else:
+            return None
+
+        return video

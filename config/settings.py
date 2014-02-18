@@ -189,9 +189,11 @@ INSTALLED_APPS = (
 if DEBUG:
     LOG_ROOT = '/Users/raymond/Projects/SpkrBar/SpkrBar/'
     TEMPLATE_DIRS = ('/Users/raymond/Projects/SpkrBar/SpkrBar/templates',)
+    STRIPE_KEY = "sk_test_4BRi0zeFjSm2svpVWFyI3EFw"
 else:
     LOG_ROOT = '/home/spkrbar/SpkrBar/'
     TEMPLATE_DIRS = ('/home/spkrbar/SpkrBar/templates',)
+    STRIPE_KEY = 'sk_live_H8Ubq4wnCJRPr73opWbusRYS'
 
 LOGGING = {
     'version': 1,

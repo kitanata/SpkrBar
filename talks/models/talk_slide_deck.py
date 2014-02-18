@@ -23,3 +23,35 @@ class TalkSlideDeck(models.Model):
         elif self.source == "SPEAKERDECK":
             return "<script async class='speakerdeck-embed' data-id='%s' data-ratio='%f' src='//speakerdeck.com/assets/embed.js'></script>" % (self.embed_data, self.aspect)
         return ""
+
+    @classmethod
+    def from_embed(cls, talk, text, source=None):
+        deck = TalkSlideDeck()
+        deck.talk = talk
+
+        embed = text
+        embed = embed.split(' ')
+        embed = [x.split('=') for x in embed]
+        embed = [x for x in embed if len(x) == 2]
+        embed = {x[0]: x[1].strip(""" "'""") for x in embed}
+
+        if not source:
+            if 'slideshare' in text.lower():
+                deck.source = SLIDESHARE
+            else:
+                deck.source = SPEAKERDECK
+        else:
+            deck.source = source
+
+        if deck.source == SLIDESHARE:
+            deck.embed_data = embed['src']
+            w = embed['width']
+            h = embed['height']
+            deck.aspect = int(w) / float(h) if float(h) != 0 else 0
+        elif deck.source == SPEAKERDECK:
+            deck.embed_data = embed['data-id']
+            deck.aspect = float(embed['data-ratio'])
+        else:
+            return None
+
+        return deck

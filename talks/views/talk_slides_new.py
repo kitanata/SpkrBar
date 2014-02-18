@@ -17,30 +17,13 @@ def talk_slides_new(request, talk_id):
         form = TalkSlideDeckForm(request.POST)
 
         if form.is_valid():
-            deck = TalkSlideDeck()
-            deck.talk = talk
+            deck = TalkSlideDeck.from_embed(talk, form.cleaned_data['embed'], form.cleaned_data['source'])
 
-            embed = form.cleaned_data['embed']
-            embed = embed.split(' ')
-            embed = [x.split('=') for x in embed]
-            embed = [x for x in embed if len(x) == 2]
-            embed = {x[0]: x[1].strip(""" "'""") for x in embed}
-
-            deck.source = form.cleaned_data['source']
-
-            if deck.source == SLIDESHARE:
-                deck.embed_data = embed['src']
-                w = embed['width']
-                h = embed['height']
-                deck.aspect = int(w) / float(h) if float(h) != 0 else 0
-            elif deck.source == SPEAKERDECK:
-                deck.embed_data = embed['data-id']
-                deck.aspect = float(embed['data-ratio'])
+            if deck:
+                deck.save()
+                return redirect(talk)
             else:
                 return HttpResponseNotFound()
 
-            deck.save()
-
-            return redirect(talk)
 
     return HttpResponseNotFound()

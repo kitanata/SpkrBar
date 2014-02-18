@@ -143,7 +143,9 @@
             %button.btn.to-upload
               %i.icon-chevron-left
               Go Back
-            %button.btn.btn-primary.confirm-upload Confirm
+            %button.btn.btn-primary.confirm-upload
+              Confirm
+              %i.icon-thumbs-up-alt
 
   %script#confirm-billing-templ{type:"text/x-handlebars-template"}
     .slide
@@ -154,25 +156,52 @@
           %p We're almost done. You'll have a fantastic event page with speaker and session information in a few seconds. We just need to take a minute to go over some billing details.
 
           {{#if yearly_plan}}
-          %p Click "Pay With Card" below to be billed $600.00 on The Yearly Plan and finalize the import.
-          %p.alert.alert-info
-            If you upgrade to The Forever Plan for ${{upgrade_offer}} you'll save ${{offer_savings}} over the next 5 years and get a custom subdomain for your event.
-            %button.btn.upgrade-plan{style:"display:block;margin-top:20px;"} Upgrade
-          .btn-group
-            %button.btn.to-preview Go Back
-            %button.btn.btn-primary.confirm-billing Pay With Card (Yearly)
+          {{#if billed}}
+            %p It appears that you've already been billed on The Yearly Plan for this import and are updating the data you imported. Thanks for being awesome! Click "Continue" to continue with the update.
+            .btn-group
+              %button.btn.to-preview
+                %i.icon-chevron-left
+                Go Back
+              %button.btn.btn-primary.confirm-billing
+                %i.icon-chevron-right
+                Continue
+          {{else}}
+            %p Click "Pay With Card" below to be billed $600.00 on The Yearly Plan and finalize the import.
+            %p.alert.alert-info
+              If you upgrade to The Forever Plan for ${{upgrade_offer}} you'll save ${{offer_savings}} over the next 5 years and get a custom subdomain for your event.
+              %button.btn.upgrade-plan{style:"display:block;margin-top:20px;"}
+                %i.icon-circle-arrow-up
+                Upgrade
+            .btn-group
+              %button.btn.to-preview
+                %i.icon-chevron-left
+                Go Back
+              %button.btn.btn-primary.confirm-billing
+                Pay With Card (Yearly)
+                %i.icon-chevron-right
+          {{/if}}
           {{else}}
           {{#if forever_billed}}
-          %p Thank you for being a Forever Member. You will not be billed again, just click "Confirm" below and we'll finalize this import for your event.
+          %p Thank you for being a Forever Member. You will not be billed again, just click "Continue" below and we'll finalize this import for your event.
           .btn-group
-            %button.btn.to-preview Go Back
-            %button.btn.btn-primary.confirm-billing Finalize Upload
+            %button.btn.to-preview
+              %i.icon-chevron-left
+              Go Back
+            %button.btn.btn-primary.confirm-billing
+              Continue
+              %i.icon-chevron-right
           {{else}}
           %p Thank you for choosing The Forever Plan. Click "Pay with Card" below to be billed ${{upgrade_offer}} and finalize the import.
           .btn-group
-            %button.btn.to-preview Go Back
-            %button.btn.downgrade-plan Downgrade
-            %button.btn.btn-primary.confirm-billing Pay With Card (Forever)
+            %button.btn.to-preview
+              %i.icon-chevron-left
+              Go Back
+            %button.btn.downgrade-plan
+              %i.icon-circle-arrow-down
+              Downgrade
+            %button.btn.btn-primary.confirm-billing
+              Pay With Card (Forever)
+              %i.icon-chevron-right
           {{/if}}
           {{/if}}
 
@@ -182,11 +211,16 @@
   %script#import-finished-templ{type:"text/x-handlebars-template"}
     .slide
       .slide-title
-        .num !
+        .num
+          %i.icon-thumbs-up
         .description
           %h1 Your Upload Has Finished!
-          %p Congratulations! Now your event will live forever online. Here are some stats.
+          %p From this point on your speakers will take over managing their sessions and profiles. We'll start sending emails out to your speakers right away telling them how.
 
-          %button.btn.to-event View Event Page
+          .btn-group
+            %button.btn.to-upload
+              %i.icon-chevron-left
+              Update Import
+            %a.btn.btn-warning.to-event{href:"{{link}}", target:"_blank"} Take Me To My Event Page
 
 {% endverbatim %}

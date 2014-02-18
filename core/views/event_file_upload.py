@@ -1,15 +1,25 @@
 import os
 import csv
+import json
+import stripe
+
 from collections import namedtuple
 from dateutil.parser import parse as dtparse
 
-from django.http import HttpResponseBadRequest
+from django.core.files import File
+from django.http import HttpResponseBadRequest, HttpResponseNotFound, HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.conf import settings
 from django.core.validators import RegexValidator, URLValidator, validate_email, ValidationError
 
-from core.models import EventUpload, EventUploadError, EventUploadSummary, EventUploadTypes, SpkrbarUser
+from core.models import EventUpload, EventUploadError, EventUploadSummary, EventUploadTypes
+from core.models import SpkrbarUser, UserTag, UserLink
 from core.helpers import save_file_with_uuid
+
+from talks.models import Talk, TalkTag, TalkLink, TalkSlideDeck, TalkVideo
+from engagements.models import Engagement
+
+stripe.api_key = settings.STRIPE_KEY
 
 validate_url = URLValidator()
 
@@ -133,7 +143,9 @@ def build_summary(import_model, rows):
             num_new_speakers += 1
 
     tags = [row.session_tags.split(',') + row.speaker_tags.split(',') for row in rows]
-    tags = reduce(lambda x, y: x + y, tags)
+
+    if tags:
+        tags = reduce(lambda x, y: x + y, tags)
     num_tags = len(tags)
     num_unique_tags = len(set(tags))
 
@@ -153,7 +165,8 @@ def build_summary(import_model, rows):
         if row.speaker_linkedin:
             links += [row.speaker_linkedin]
 
-    links = reduce(lambda x, y: x + y, links)
+    if links:
+        links = reduce(lambda x, y: x + y, links)
 
     num_links = len(links)
     num_unique_links = len(set(links))
@@ -195,10 +208,12 @@ def event_file_upload(request):
     file_name = save_file_with_uuid(the_file)
     full_file_name = os.path.join(settings.MEDIA_ROOT, file_name)
 
-    rows = []
-    with open(full_file_name, "rb") as f:
-        csv_reader = csv.reader(f)
-        rows = [r for r in csv_reader]
+    import_model.import_file = File(open(full_file_name, "rb"))
+    import_model.save()
+
+    csv_reader = csv.reader(import_model.import_file)
+    rows = [r for r in csv_reader]
+    import_model.import_file.close()
 
     rows = [Row(num, *r) for num, r in enumerate(rows)]
 
@@ -226,3 +241,176 @@ def event_file_upload(request):
         import_model.state = EventUpload.VALIDATION_FAILED
         import_model.save()
         return render_to_response('upload_failed.haml')
+
+
+def event_upload_confirm(request, pk):
+    if request.method == "POST":
+        token = request.POST['token']
+
+        upload = get_object_or_404(request.user.uploads, pk=pk)
+
+        if request.user.billed_forever:
+            upload.user_billed = True
+            upload.save()
+            return process_event_upload(upload)
+
+        if request.user.plan_name == 'yearly':
+            if not upload.user_billed:
+                try:
+                    charge = stripe.Charge.create(
+                        amount=60000,
+                        currency="usd",
+                        card=token,
+                        description=request.user.email
+                    )
+                    upload.user_billed = True
+                    upload.save()
+                except stripe.CardError, e:
+                    # The card has been declined
+                    return HttpResponseBadRequest()
+            return process_event_upload(upload)
+
+        elif request.user.plan_name == 'forever':
+            uploads = request.user.uploads.filter(user_billed=True)
+            num_paid = len(uploads)
+            forever_offer = 2400 - min((num_paid * 400), 1200)
+
+            try:
+                charge = stripe.Charge.create(
+                    amount=forever_offer * 100,
+                    currency="usd",
+                    card=token,
+                    description=request.user.email
+                )
+                request.user.billed_forever = True
+                request.user.save()
+                upload.user_billed = True
+                upload.save()
+                return process_event_upload(upload)
+            except stripe.CardError, e:
+                # The card has been declined
+                return HttpResponseBadRequest()
+
+    return HttpResponseNotFound()
+
+
+def process_event_upload_speaker_link(speaker, type_name, url_target):
+    if url_target and not speaker.links.filter(type_name=type_name, url_target=url_target).exists():
+        link = UserLink()
+        link.user = speaker
+        link.type_name = type_name
+        link.url_target = url_target
+        link.save()
+
+
+def process_event_upload_tags(model, klass, tag_string):
+    tags = [t.strip() for t in tag_string.split(',')]
+
+    for tag in tags:
+        try:
+            tag_instance = klass.objects.get(name=tag)
+        except:
+            tag_instance = klass()
+            tag_instance.name = tag
+            tag_instance.save()
+
+        if tag_instance not in model.tags.all():
+            model.tags.add(tag_instance)
+
+
+def process_event_upload(upload):
+    upload.state = EventUpload.IMPORT_STARTED
+    upload.save()
+
+    csv_reader = csv.reader(upload.import_file)
+    rows = [r for r in csv_reader]
+    upload.import_file.close()
+
+    rows = [Row(num, *r) for num, r in enumerate(rows)]
+
+    #Test if they deleted any of the example lines 1 through 5
+    test_rows = rows[:5]
+    bad_session_titles = ("Session Title", "Text", "REQUIRED", "", "Super Advanced Python")
+    good_rows = [r for r in test_rows if r.session_title not in bad_session_titles]
+    rows = good_rows + rows[5:]
+
+    for row in rows:
+        try:
+            speaker = SpkrbarUser.objects.get(email=row.speaker_email)
+        except:
+            password = SpkrbarUser.objects.make_random_password()
+            speaker = SpkrbarUser.objects.create_user(row.speaker_email, password=password)
+            speaker.save()
+
+        if not speaker.full_name:
+            speaker.full_name = row.speaker_name
+
+        if not speaker.about_me:
+            speaker.about_me = row.speaker_bio
+
+        process_event_upload_tags(speaker, UserTag, row.speaker_tags)
+
+        process_event_upload_speaker_link(speaker, 'LIN', row.speaker_linkedin)
+        process_event_upload_speaker_link(speaker, 'TWI', row.speaker_twitter)
+        process_event_upload_speaker_link(speaker, 'FAC', row.speaker_facebook)
+        process_event_upload_speaker_link(speaker, 'WEB', row.speaker_website)
+
+        speaker.save()
+
+        try:
+            talk = speaker.talks.get(name=row.session_title)
+        except:
+            talk = Talk()
+            talk.speaker = speaker
+            talk.name = row.session_title
+
+        if not talk.abstract:
+            talk.abstract = row.session_abstract
+
+        talk.save()
+
+        process_event_upload_tags(talk, TalkTag, row.session_tags)
+
+        if row.session_video and talk.videos.count() == 0:
+            video = TalkVideo.from_embed(talk, row.session_video)
+            if video:
+                video.save()
+
+        if row.session_slide and talk.slides.count() == 0:
+            deck = TalkSlideDeck.from_embed(talk, row.session_slide)
+            if deck:
+                deck.save()
+
+        links = row.session_links.split(',')
+
+        for l in links:
+            if l and not talk.links.filter(url=l).exists():
+                link = TalkLink()
+                link.talk = talk
+                link.name = "Session Resource"
+                link.url = l
+                link.save()
+
+        start_date = dtparse(row.session_date)
+        start_time = dtparse(row.session_start_time)
+
+        eng = talk.engagements.filter(
+            event_name=upload.name,
+            date=start_date,
+            time=start_time).exists()
+
+        if not eng:
+            en = Engagement()
+            en.talk = talk
+            en.speaker = speaker
+            en.event_name = upload.name
+            en.location = upload.location
+            en.date = start_date
+            en.time = start_time
+            en.room = row.session_room_name
+            en.save()
+
+    upload.state = EventUpload.IMPORT_FINISHED
+    upload.save()
+
+    return HttpResponse(json.dumps({'success': True}), content_type="application/json")

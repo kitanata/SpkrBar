@@ -24,7 +24,7 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
         @talkViews = []
 
         @stripeHandler = StripeCheckout.configure
-            key: 'pk_test_6pRNASCoBOKtIshFeQd4XMUh'
+            key: 'pk_test_XuZFBi6ffYp4PwK5VhX4Zz5K'
             image: '/static/img/logo.png'
             token: (token, args) =>
                 console.log "Submit the token"
@@ -75,6 +75,10 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
                 @renderFailedValidation()
             else if state == "VALIDATION_SUCCESSFUL"
                 @renderUploadPreview()
+            else if state == "IMPORT_STARTED"
+                @renderImportStarted()
+            else if state == "IMPORT_FINISHED"
+                @renderImportFinished()
 
     renderUploadTemplate: ->
         html = @uploadTemplateTemplate
@@ -105,6 +109,18 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
                         description: x.get('description')
                 @$el.find('.dashboard').html html
 
+    renderImportStarted: ->
+        @$el.find('.dashboard').html @importStartedTemplate({})
+
+    renderImportFinished: ->
+        link_slug = _.str.slugify(@model.get('name'))
+
+        if user.get('plan_name') == 'yearly'
+            event_link = '/event/' + link_slug
+        else if user.get('plan_name') == 'forever'
+            event_link = 'https://' + link_slug + '.spkrbar.com'
+
+        @$el.find('.dashboard').html @importFinishedTemplate({link: event_link})
 
     validateAndSaveModel: ->
         if @model.isValid(true)
@@ -169,23 +185,34 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
                 @showValidationAlert()
 
     onClickToDownload: ->
-        @model.set 'state', 'AT_REST'
-        @model.save null,
-            success: =>
-                @$el.find('.dashboard').html @downloadTemplateTemplate({})
+        if @model.get('state') == 'IMPORT_FINISHED'
+            @$el.find('.dashboard').html @downloadTemplateTemplate({})
+        else
+            @model.set 'state', 'AT_REST'
+            @model.save null,
+                success: =>
+                    @$el.find('.dashboard').html @downloadTemplateTemplate({})
 
     onClickToUpload: ->
-        @model.set 'state', 'TEMPLATE_DOWNLOADED'
-        @model.save null,
-            success: =>
-                @renderUploadTemplate()
+        if @model.get('state') == 'IMPORT_FINISHED'
+            @renderUploadTemplate()
+        else
+            @model.set 'state', 'TEMPLATE_DOWNLOADED'
+            @model.save null,
+                success: =>
+                    @renderUploadTemplate()
 
     onClickDoUpload: ->
         $('#file-choice').click()
 
     onClickStartUpload: ->
+        if not $('#file-choice').val()
+            $('#file-choice').click()
+            return 
+
         logPostFrame = =>
             done = $('#post-frame').contents().find('.check-done').text()
+            console.log done
             if _.str.trim(done) == "SUCCESS"
                 $('#post-frame').attr('src', 'about:blank')
                 @model.fetch
@@ -223,10 +250,12 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
         upgrade_offer = 2400 - Math.min((num_payments * 400), 1200)
         offer_savings = (3000 - upgrade_offer)
 
+        console.log @model
+
         html = @confirmBillingTemplate
             forever_plan: (user.get('plan_name') == "forever")
             yearly_plan: (user.get('plan_name') == "yearly")
-            billed: billed
+            billed: @model.get('billed')
             upgrade_offer: upgrade_offer
             offer_savings: offer_savings
 
@@ -234,7 +263,7 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
 
         $('.confirm-billing').off 'click', null
         if user.get('plan_name') == "forever"
-            billed = user.get('billed_forever')
+            billed = user.get('billed')
 
             if billed
                 $('.confirm-billing').on 'click', (ev) =>
@@ -250,7 +279,7 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
 
                     ev.preventDefault()
         else if user.get('plan_name') == "yearly"
-            billed = @model.get('user_billed')
+            billed = @model.get('billed')
 
             if billed
                 $('.confirm-billing').on 'click', (ev) =>
@@ -270,7 +299,7 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
         confirmRequest.done =>
             @model.fetch 
                 success: =>
-                    @$el.find('.dashboard').html @importFinishedTemplate({})
+                    @renderImportFinished()
 
         confirmRequest.fail ->
             $.colorbox
