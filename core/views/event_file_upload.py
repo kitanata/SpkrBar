@@ -11,6 +11,7 @@ from django.http import HttpResponseBadRequest, HttpResponseNotFound, HttpRespon
 from django.shortcuts import render_to_response, get_object_or_404
 from django.conf import settings
 from django.core.validators import RegexValidator, URLValidator, validate_email, ValidationError
+from django.utils.html import strip_tags
 
 from core.models import EventUpload, EventUploadError, EventUploadSummary, EventUploadTypes
 from core.models import SpkrbarUser, UserTag, UserLink
@@ -307,6 +308,9 @@ def process_event_upload_tags(model, klass, tag_string):
     tags = [t.strip() for t in tag_string.split(',')]
 
     for tag in tags:
+        if len(tag) == 0:
+            continue;
+
         try:
             tag_instance = klass.objects.get(name=tag)
         except:
@@ -343,12 +347,12 @@ def process_event_upload(upload):
             speaker.save()
 
         if not speaker.full_name:
-            speaker.full_name = row.speaker_name
+            speaker.full_name = strip_tags(row.speaker_name)
 
         if not speaker.about_me:
-            speaker.about_me = row.speaker_bio
+            speaker.about_me = strip_tags(row.speaker_bio)
 
-        process_event_upload_tags(speaker, UserTag, row.speaker_tags)
+        process_event_upload_tags(speaker, UserTag, strip_tags(row.speaker_tags))
 
         process_event_upload_speaker_link(speaker, 'LIN', row.speaker_linkedin)
         process_event_upload_speaker_link(speaker, 'TWI', row.speaker_twitter)
@@ -362,14 +366,14 @@ def process_event_upload(upload):
         except:
             talk = Talk()
             talk.speaker = speaker
-            talk.name = row.session_title
+            talk.name = strip_tags(row.session_title)
 
         if not talk.abstract:
-            talk.abstract = row.session_abstract
+            talk.abstract = strip_tags(row.session_abstract)
 
         talk.save()
 
-        process_event_upload_tags(talk, TalkTag, row.session_tags)
+        process_event_upload_tags(talk, TalkTag, strip_tags(row.session_tags))
 
         if row.session_video and talk.videos.count() == 0:
             video = TalkVideo.from_embed(talk, row.session_video)
@@ -381,7 +385,7 @@ def process_event_upload(upload):
             if deck:
                 deck.save()
 
-        links = row.session_links.split(',')
+        links = strip_tags(row.session_links).split(',')
 
         for l in links:
             if l and not talk.links.filter(url=l).exists():
@@ -391,8 +395,8 @@ def process_event_upload(upload):
                 link.url = l
                 link.save()
 
-        start_date = dtparse(row.session_date)
-        start_time = dtparse(row.session_start_time)
+        start_date = dtparse(strip_tags(row.session_date))
+        start_time = dtparse(strip_tags(row.session_start_time))
 
         eng = talk.engagements.filter(
             event_name=upload.name,
@@ -407,7 +411,7 @@ def process_event_upload(upload):
             en.location = upload.location
             en.date = start_date
             en.time = start_time
-            en.room = row.session_room_name
+            en.room = strip_tags(row.session_room_name)
             en.save()
 
     upload.state = EventUpload.IMPORT_FINISHED
