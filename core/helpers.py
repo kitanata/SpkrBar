@@ -11,6 +11,8 @@ from django.core.mail import get_connection, EmailMultiAlternatives
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
+from django.utils.html_parser import HTMLParser, HTMLParseError
+from django.utils.encoding import force_unicode
 
 def save_photo_with_uuid(photo):
     return save_data_with_uuid(photo, 'photo')
@@ -156,3 +158,28 @@ def assign_basic_permissions(user):
         Permission.objects.get(codename='change_spkrbaruser'),
         Permission.objects.get(codename='add_feedback'),
     )
+
+class MLStripper(HTMLParser):
+    def __init__(self):
+        HTMLParser.__init__(self)
+        self.reset()
+        self.fed = []
+    def handle_data(self, d):
+        self.fed.append(d)
+    def handle_entityref(self, name):
+        self.fed.append('&%s;' % name)
+    def handle_charref(self, name):
+        self.fed.append('&#%s;' % name)
+    def get_data(self):
+        return u''.join([force_unicode(s) for s in self.fed])
+
+def strip_tags(value):
+    """Returns the given HTML with all tags stripped."""
+    s = MLStripper()
+    try:
+        s.feed(value)
+        s.close()
+    except HTMLParseError:
+        return value
+    else:
+        return s.get_data()

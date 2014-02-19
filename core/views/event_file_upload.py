@@ -13,11 +13,10 @@ from django.http import HttpResponseBadRequest, HttpResponseNotFound, HttpRespon
 from django.shortcuts import render_to_response, get_object_or_404
 from django.conf import settings
 from django.core.validators import RegexValidator, URLValidator, validate_email, ValidationError
-from django.utils.html import strip_tags
 
 from core.models import EventUpload, EventUploadError, EventUploadSummary, EventUploadTypes
 from core.models import SpkrbarUser, UserTag, UserLink
-from core.helpers import save_file_with_uuid, assign_basic_permissions, send_html_mail
+from core.helpers import save_file_with_uuid, assign_basic_permissions, send_html_mail, strip_tags
 
 from talks.models import Talk, TalkTag, TalkLink, TalkSlideDeck, TalkVideo
 from engagements.models import Engagement
@@ -328,11 +327,14 @@ def process_event_upload_speaker_link(speaker, type_name, url_target):
 
 
 def process_event_upload_tags(model, klass, tag_string):
+    if not tag_string:
+        return
+
     tags = [t.strip() for t in tag_string.split(',')]
 
     for tag in tags:
         if len(tag) == 0:
-            continue;
+            continue
 
         try:
             tag_instance = klass.objects.get(name=tag)
