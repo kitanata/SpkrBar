@@ -1,0 +1,20 @@
+- extends 'base.haml'
+
+- block 'title'
+  Claim your profile
+
+- block 'subnav'
+
+- block 'content'
+  #login
+    - if error
+      .alert.alert-error {{error}}
+
+    %h4 Enter your email below and we will send you a link to reset your password and claim your profile.
+    %p After you reset your password we'll log you in and you'll be ready to start building your speaker profile.
+
+    %form{action:"/forgot", method:"POST"}
+      - csrf_token
+      = form.as_p
+
+      %input.btn.btn-warning{type:"submit", value:"Claim My Profile"}

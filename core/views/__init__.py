@@ -1,5 +1,5 @@
 from index import index
-from signup import signup
+from email_sent import email_sent
 from search import search
 from event_manager import event_manager
 from event_file_upload import event_file_upload
@@ -36,7 +36,7 @@ from event_upload_error_list import EventUploadErrorList
 from event_upload_summary_list import EventUploadSummaryList
 
 __all__ = [
-    "index", "search", "signup", "event_manager", "event_file_upload",
+    "index", "search", "email_sent", "event_manager", "event_file_upload",
     "register_user", "login_user", "logout_user",
     "profile_detail", "profile_edit", "profile_photo",
     "profile_invite", "profile_invite_thanks",

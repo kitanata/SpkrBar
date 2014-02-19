@@ -6,6 +6,7 @@ from itertools import groupby
 
 from config.settings import MEDIA_ROOT, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, DEFAULT_FROM_EMAIL
 
+from django.contrib.auth.models import Permission
 from django.core.mail import get_connection, EmailMultiAlternatives
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -109,3 +110,49 @@ def events_from_engagements(queryset):
     events.sort(key=lambda x: -x['numtalks'])
 
     return events
+
+
+def assign_basic_permissions(user):
+
+    user.user_permissions.add(
+        Permission.objects.get(codename='add_talk'),
+        Permission.objects.get(codename='change_talk'),
+        Permission.objects.get(codename='delete_talk'),
+
+        Permission.objects.get(codename='add_talkcomment'),
+        Permission.objects.get(codename='change_talkcomment'),
+        Permission.objects.get(codename='delete_talkcomment'),
+
+        Permission.objects.get(codename='add_engagement'),
+        Permission.objects.get(codename='change_engagement'),
+        Permission.objects.get(codename='delete_engagement'),
+
+        Permission.objects.get(codename='add_usertag'),
+        Permission.objects.get(codename='add_talktag'),
+        Permission.objects.get(codename='add_location'),
+
+        Permission.objects.get(codename='add_userlink'),
+        Permission.objects.get(codename='change_userlink'),
+        Permission.objects.get(codename='delete_userlink'),
+
+        Permission.objects.get(codename='add_talklink'),
+        Permission.objects.get(codename='change_talklink'),
+        Permission.objects.get(codename='delete_talklink'),
+
+        Permission.objects.get(codename='add_talkslidedeck'),
+        Permission.objects.get(codename='change_talkslidedeck'),
+        Permission.objects.get(codename='delete_talkslidedeck'),
+
+        Permission.objects.get(codename='add_talkvideo'),
+        Permission.objects.get(codename='change_talkvideo'),
+        Permission.objects.get(codename='delete_talkvideo'),
+
+        Permission.objects.get(codename='add_talkendorsement'),
+        Permission.objects.get(codename='delete_talkendorsement'),
+
+        Permission.objects.get(codename='add_userfollowing'),
+        Permission.objects.get(codename='delete_userfollowing'),
+
+        Permission.objects.get(codename='change_spkrbaruser'),
+        Permission.objects.get(codename='add_feedback'),
+    )

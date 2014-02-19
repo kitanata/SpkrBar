@@ -52,15 +52,21 @@ urlpatterns = patterns('',
     url(r'^events$', 'core.views.event_list'),
     url(r'^event/(?P<slug>[\w+-]*)$', 'core.views.event_detail'),
 
-    url(r'^signup$', 'core.views.signup'),
+    url(r'^email-sent$', 'core.views.email_sent'),
+
     url(r'^login$', 'core.views.login_user'),
     url(r'^logout$', 'core.views.logout_user'),
     url(r'^register$', 'core.views.register_user'),
+    url(r'^claim$', 'django.contrib.auth.views.password_reset', {
+        'template_name': "auth/claim_profile.haml",
+        'email_template_name': "mail/claim_profile_reset.html",
+        'subject_template_name': "mail/claim_profile_reset_subject.txt",
+        'post_reset_redirect': '/email-sent' }),
     url(r'^forgot$', 'django.contrib.auth.views.password_reset', {
         'template_name': "auth/password_reset.haml",
         'email_template_name': "mail/password_reset.html",
         'subject_template_name': "mail/password_reset_subject.txt",
-        'post_reset_redirect': '/' }),
+        'post_reset_redirect': '/email-sent' }),
     url(r'^forgot-confirm/(?P<uidb36>\w+)/(?P<token>[\d\w-]+)$', 
             'django.contrib.auth.views.password_reset_confirm', {
                 'template_name': "auth/password_reset_confirm.haml",

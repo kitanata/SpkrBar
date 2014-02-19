@@ -8,6 +8,7 @@ from collections import namedtuple
 from dateutil.parser import parse as dtparse
 
 from django.core.files import File
+from django.template import loader, Context
 from django.http import HttpResponseBadRequest, HttpResponseNotFound, HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.conf import settings
@@ -16,7 +17,7 @@ from django.utils.html import strip_tags
 
 from core.models import EventUpload, EventUploadError, EventUploadSummary, EventUploadTypes
 from core.models import SpkrbarUser, UserTag, UserLink
-from core.helpers import save_file_with_uuid
+from core.helpers import save_file_with_uuid, assign_basic_permissions, send_html_mail
 
 from talks.models import Talk, TalkTag, TalkLink, TalkSlideDeck, TalkVideo
 from engagements.models import Engagement
@@ -26,6 +27,8 @@ stripe.api_key = settings.STRIPE_KEY
 validate_url = URLValidator()
 
 validate_at_handle = RegexValidator(r'^@\w*$')
+
+email_template = loader.get_template('mail/claim_profile.html')
 
 def validate_video_url(value):
     if not ('youtube' in value or 'vimeo' in value):
@@ -358,6 +361,7 @@ def process_event_upload(upload):
     good_rows = [r for r in test_rows if r.session_title not in bad_session_titles]
     rows = good_rows + rows[5:]
 
+    new_speakers = []
     for row in rows:
         try:
             speaker = SpkrbarUser.objects.get(email=row.speaker_email)
@@ -365,6 +369,7 @@ def process_event_upload(upload):
             password = SpkrbarUser.objects.make_random_password()
             speaker = SpkrbarUser.objects.create_user(row.speaker_email, password=password)
             speaker.save()
+            new_speakers.append(speaker)
 
         if not speaker.full_name:
             speaker.full_name = strip_tags(row.speaker_name)
@@ -436,5 +441,12 @@ def process_event_upload(upload):
 
     upload.state = EventUpload.IMPORT_FINISHED
     upload.save()
+
+    #Notify every new speaker
+    for speaker in new_speakers:
+        assign_basic_permissions(speaker)
+
+        mes = email_template.render(Context({'name': speaker.full_name, 'event': upload.name}))
+        send_html_mail("Claim your profile on SpkrBar", strip_tags(mes), mes, [speaker.email])
 
     return HttpResponse(json.dumps({'success': True}), content_type="application/json")
