@@ -25,9 +25,8 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
 
         @stripeHandler = StripeCheckout.configure
             key: 'pk_test_XuZFBi6ffYp4PwK5VhX4Zz5K'
-            image: '/static/img/logo.png'
+            image: 'https://www.spkrbar.com/static/img/logo.png'
             token: (token, args) =>
-                console.log "Submit the token"
                 @finalizeImport(token.id)
 
         @createEventImportTemplate = Handlebars.compile($("#create-event-import-templ").html())
@@ -65,7 +64,6 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
     updateDashboard: ->
         if @model
             state = @model.get('state')
-            console.log state
 
             if state == "AT_REST"
                 @$el.find('.dashboard').html @downloadTemplateTemplate({})
@@ -212,7 +210,6 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
 
         logPostFrame = =>
             done = $('#post-frame').contents().find('.check-done').text()
-            console.log done
             if _.str.trim(done) == "SUCCESS"
                 $('#post-frame').attr('src', 'about:blank')
                 @model.fetch
@@ -249,8 +246,6 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
         billed = num_payments != 0
         upgrade_offer = 2400 - Math.min((num_payments * 400), 1200)
         offer_savings = (3000 - upgrade_offer)
-
-        console.log @model
 
         html = @confirmBillingTemplate
             forever_plan: (user.get('plan_name') == "forever")
