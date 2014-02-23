@@ -37,7 +37,9 @@
                   %form{method:"POST", action:"/profile/photo", enctype:'multipart/form-data', style:"margin-top:40px;"}
                     %input{type:"hidden", name:"csrfmiddlewaretoken", value:"{{csrf}}"}
                     %input.profile-photo-upload-file{type:"file", name:'photo'}
+                    %input.submit-photo-upload{type:"submit"}
                     %button.profile-photo-upload.btn.btn-warning
+                      %i.icon-upload-alt
                       Upload Photo
               {{/if}}
           .span9
@@ -74,7 +76,9 @@
                 .edit-tags
                   .span12
                     %input#new-profile-tag-name{name:"tag", type:"text", placeholder:"My Tag"}
-                    %input#add-profile-tag.btn.btn-warning{type:"submit", value:"Add Tag"}
+                    %button#add-profile-tag.btn.btn-warning{type:"submit"}
+                      %i.icon-tag
+                      Add Tag
             {{/if}}
 
             {{#if showLinks}}
@@ -117,6 +121,7 @@
                     %input#new-profile-link-other{type:"text", placeholder:"Link Name", style:"display:none;"}
                     %input#new-profile-link-url{type:"text", placeholder:"Username or URL"}
                     %button.add-profile-link.btn.btn-warning
+                      %i.icon-link
                       Add New Link
             {{/if}}
 
@@ -177,6 +182,9 @@
               .row-fluid
                 .span12
                   %h2 My Talks
+                  %a.btn.btn-warning.add-talk
+                    %i.icon-plus
+                    Add Talk
 
                   .talk-list{style:"padding-left:0px;margin-left:-10px;"}
             {{/if}}

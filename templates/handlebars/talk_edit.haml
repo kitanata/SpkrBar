@@ -1,7 +1,7 @@
 {% verbatim %}
     %script#talk-edit-templ{type:"text/x-handlebars-template"}
         #edit-talk-popup{style:"background-color: white; padding: 20px;"}
-            %h2 Edit Talk
+            %h2 {{label}}
 
             %label{for:"talk-name"} Name:
             %input#talk-name{name:"name", type:"text", placeholder:"Awesome talk of awesome!", value:"{{name}}"}

@@ -4,10 +4,13 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
     events:
         "click #edit-profile": "onClickEditProfile"
         "click #add-profile-tag": "onClickAddProfileTag"
+        "click .profile-photo-upload": "onClickUploadPhoto"
+        "change .profile-photo-upload-file": "onChangePhotoUploadFile"
         "keypress #new-profile-tag-name": "onKeyAddProfileTag"
         "click .delete-profile-tag": "onClickDeleteProfileTag"
         "keypress #new-profile-link-url": "onKeyAddProfileLink"
         "change #new-profile-link-type": "onChangeProfileLinkType"
+        "click .add-talk": "onClickAddTalk"
         "click .add-profile-link": "onClickAddProfileLink"
         "click .delete-profile-link": "onClickDeleteProfileLink"
         "click .follow-user": "onClickFollowUser"
@@ -92,8 +95,11 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
     showLinks: ->
         @model.get('links').length != 0 or @userOwnsContent()
 
+    hasTalks: ->
+        @model.get('talks').length != 0
+
     showTalks: ->
-        @model.get('talks').length != 0 or @userOwnsContent()
+        @hasTalks() or @userOwnsContent()
 
     mapFollowingUser: (follow) ->
         if follow.get('user') != null
@@ -161,6 +167,7 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
         showTags: @showTags()
         showLinks: @showLinks()
         showTalks: @showTalks()
+        hasTalks: @hasTalks()
         tags: @model.get('tags').map (x) -> {'id': x.id, 'tag': x.get('name')}
         links: @mapLinks()
         csrf: csrftoken
@@ -181,6 +188,23 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
             html: editor.render().el
             width: "700px"
             height: "520px"
+
+    onClickAddTalk: ->
+        $('#add-talk-navbar').click()
+
+    onClickUploadPhoto: (ev) ->
+        $('.profile-photo-upload-file').val ""
+        $('.profile-photo-upload-file').click()
+
+        ev.preventDefault()
+
+    onChangePhotoUploadFile: (ev) ->
+        filename = $('.profile-photo-upload-file').val()
+
+        if filename
+            $('.submit-photo-upload').click()
+            
+        ev.preventDefault()
 
     onKeyAddProfileTag: (el) ->
         if el.which == 13
