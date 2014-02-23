@@ -77,6 +77,26 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
                 @renderImportStarted()
             else if state == "IMPORT_FINISHED"
                 @renderImportFinished()
+            else
+                @renderNewImportTemplate()
+        else
+            @renderNewImportTemplate()
+
+    renderNewImportTemplate: ->
+        @$el.find('.dashboard').html @createEventImportTemplate({})
+
+        @$el.find("#loc-name").typeahead
+            source: @locations.map (x) -> x.get('name')
+            updater: (item) =>
+                @curLocation = @locations.find (x) -> x.get('name') == item
+                if @curLocation
+                    @$el.find('#loc-address').val(@curLocation.get('address'))
+                    @$el.find('#loc-city').val(@curLocation.get('city'))
+                    @$el.find('#loc-state').val(@curLocation.get('state'))
+                    @$el.find('#loc-zip').val(@curLocation.get('zip_code'))
+                item
+
+        @$el.find('.new-import').addClass('active')
 
     renderUploadTemplate: ->
         html = @uploadTemplateTemplate
@@ -130,26 +150,19 @@ SpkrBar.Views.EventManagerPage = Backbone.View.extend
             @showValidationAlert()
 
     onClickNewImport: ->
-        @$el.find('.dashboard').html @createEventImportTemplate({})
-
-        @$el.find("#loc-name").typeahead
-            source: @locations.map (x) -> x.get('name')
-            updater: (item) =>
-                @curLocation = @locations.find (x) -> x.get('name') == item
-                if @curLocation
-                    @$el.find('#loc-address').val(@curLocation.get('address'))
-                    @$el.find('#loc-city').val(@curLocation.get('city'))
-                    @$el.find('#loc-state').val(@curLocation.get('state'))
-                    @$el.find('#loc-zip').val(@curLocation.get('zip_code'))
-                item
+        @renderNewImportTemplate()
 
     onClickEventUploadItem: (el) ->
-        itemId = $(el.currentTarget).data 'id'
-
         $('.item').removeClass('active')
         $(el.currentTarget).addClass('active')
 
-        @model = @eventImports.find (x) => x.id == itemId
+        itemId = $(el.currentTarget).data 'id'
+
+        if itemId != undefined
+            @model = @eventImports.find (x) => x.id == itemId
+        else
+            @model = null
+
         @updateDashboard()
 
     onClickCancel: ->

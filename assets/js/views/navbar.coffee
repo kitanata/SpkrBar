@@ -34,7 +34,7 @@ SpkrBar.Views.NavBar = Backbone.View.extend
         user != null
 
     userIsStaff: ->
-        user != null and user.is_staff == true
+        user != null and user.get('is_staff') == true
 
     userOwnsContent: ->
         user != null and user.id == @model.get('speaker').id

@@ -59,21 +59,19 @@
                         %a{href:"{{profileLink}}"}
                           %i.icon-user
                           My Profile
-                      {{#if userIsEventPlanner}}
-                        %li
-                          %a{href:"/manager"}
-                            %i.icon-gears
-                            Imports
-                      {{/if}}
+                      %li
+                        %a{href:"/manager"}
+                          %i.icon-gears
+                          Imports
                       %li
                         %a{href:"/profile/invite"}
                           %i.icon-mail-forward
                           Invites
                       {{#if userIsStaff}}
                         %li
-                          %a{href:"/admin"}
+                          %a{href:"/admin/"}
                             %i.icon-gears
-                            Administration
+                            Admin
                       {{/if}}
                       %li
                         %a{href:"/logout"}

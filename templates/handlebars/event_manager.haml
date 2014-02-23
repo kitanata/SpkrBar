@@ -32,31 +32,37 @@
 
   %script#create-event-import-templ{type:"text/x-handlebars-template"}
     .slide
-      %h1 Create A New Event Import
-      %p
-        %label{for:"event-name"} Event Name:
-        %input#event-name{type:"text"}
+      .slide-title
+        .num 1
+        .description
+          %h1 Hi there, planner extraordinaire!
+          %p Welcome to the event management dashboard. You can use this dashboard to import all the session information from your event. To get started enter the name and location for a new event below. We'll take you through a simple 4-step process and have a content repository set up for your conference in no time.
+          %p
+            %label{for:"event-name"} Event Name:
+            %input#event-name{type:"text"}
 
-        .location-search
-            %label{for:"loc-name"} Location Name:
-            %input#loc-name{type:"text", data-provide:'typeahead'}
-            %span#loc-reset.search.btn.addon
-              %i.icon-remove
+            .location-search
+                %label{for:"loc-name"} Location Name:
+                %input#loc-name{type:"text", data-provide:'typeahead'}
+                %span#loc-reset.search.btn.addon
+                  %i.icon-remove
 
-        %label{for:"loc-address"} Location Address:
-        %input#loc-address{type:"text"}
+            %label{for:"loc-address"} Location Address:
+            %input#loc-address{type:"text"}
 
-        %label{for:"loc-city"} Location City:
-        %input#loc-city{type:"text"}
+            %label{for:"loc-city"} Location City:
+            %input#loc-city{type:"text"}
 
-        %label{for:"loc-state"} Location State:
-        %input#loc-state{type:"text"}
+            %label{for:"loc-state"} Location State:
+            %input#loc-state{type:"text"}
 
-        %label{for:"loc-zip"} Location Zip:
-        %input#loc-zip{type:"text"}
+            %label{for:"loc-zip"} Location Zip:
+            %input#loc-zip{type:"text"}
 
-      %button.btn.cancel Cancel
-      %button.btn.btn-primary.create Create
+          %p
+            .btn-group
+              %button.btn.cancel Cancel
+              %button.btn.btn-primary.create Create
 
   %script#download-template-templ{type:"text/x-handlebars-template"}
     .slide
