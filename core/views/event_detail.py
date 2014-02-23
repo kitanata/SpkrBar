@@ -2,10 +2,22 @@ import json
 from datetime import datetime, timedelta
 from itertools import groupby, chain
 
-from django.db.models import Q
+from django.db.models import Q, Count
 
 from engagements.models import Engagement
 from core.helpers import template
+from core.models import SpkrbarUser
+
+def rank_engagement(engagement):
+    points = 0
+    if engagement.speaker.photo:
+        points += 250
+    points += engagement.speaker.tags.count() * 10
+    points += engagement.speaker.links.count() * 25
+    points += engagement.talk.tags.count() * 20
+    points += engagement.talk.links.count() * 30
+
+    return points
 
 @template('events/event_base.haml')
 def event_detail(request, slug):
@@ -15,10 +27,14 @@ def event_detail(request, slug):
         reduce(lambda x, y: x & y, [Q(event_name__icontains=x) for x in slugs]),
         )
 
-    engagements = sorted(list(engagements), key=lambda x: x.date.year)
+    engagements = sorted(list(engagements), key=rank_engagement, reverse=True)
     #talks = {k: list(v) for k, v in groupby(engagements, key=lambda x: x.date.year)}
 
-    speakers = set([e.talk.speaker for e in engagements])
+    talk_ids = set([e.talk.pk for e in engagements])
+    speakers = SpkrbarUser.objects.filter(talks__pk__in=talk_ids).annotate(
+            num_tags=Count('tags'),
+            num_links=Count('links')).order_by(
+                    '-photo', '-about_me', '-num_tags', '-num_links')
 
     tags = []
     if engagements:
