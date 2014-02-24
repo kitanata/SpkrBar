@@ -1,0 +1,13 @@
+Hi,
+
+SpkrBot here. Someone is trying to claim your profile on SpkrBar. If this was you then please follow the link below to reset your password and log into your account.
+
+{{ protocol}}://{{ domain }}{% url 'django.contrib.auth.views.password_reset_confirm' uidb64=uid token=token %}
+
+If you didn't request your password to be reset then someone might be trying to claim your account without your permission. If you think this is the case then please let me know by responding to this email.
+
+Thank you again for joining the greatest speaker community in the world.
+
+Sincerely,
+The SpkrBar.com Team
+SpkrBot @ SpkrBar.com
