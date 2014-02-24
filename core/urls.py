@@ -67,7 +67,7 @@ urlpatterns = patterns('',
         'email_template_name': "mail/password_reset.html",
         'subject_template_name': "mail/password_reset_subject.txt",
         'post_reset_redirect': '/email-sent' }),
-    url(r'^forgot-confirm/(?P<uidb36>\w+)/(?P<token>[\d\w-]+)$', 
+    url(r'^forgot-confirm/(?P<uidb64>\w+)/(?P<token>[\d\w-]+)$', 
             'django.contrib.auth.views.password_reset_confirm', {
                 'template_name': "auth/password_reset_confirm.haml",
                 'post_reset_redirect': '/login'
