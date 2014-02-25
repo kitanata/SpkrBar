@@ -55,13 +55,10 @@
           %h4 Are you a speaker or an event planner?
           %label.radio
             %input#user-type-speaker{type:"radio", name:"plan_name", checked:"true"}
-            I'm primarily a speaker. (free plan)
+            I'm primarily a speaker.
           %label.radio
             %input#user-type-yearly{type:"radio", name:"plan_name"}
-            I plan a couple of events. (yearly plan)
-          %label.radio
-            %input#user-type-forever{type:"radio", name:"plan_name"}
-            I plan a lot of events. (forever plan)
+            I'm primarily an event planner.
     {{/unless}}
 
     .row-fluid{style:"margin-top:20px"}

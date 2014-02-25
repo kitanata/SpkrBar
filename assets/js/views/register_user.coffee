@@ -5,7 +5,6 @@ SpkrBar.Views.RegisterUser = Backbone.View.extend
     events:
         "click #user-type-speaker": "onClickSpeaker"
         "click #user-type-yearly": "onClickYearly"
-        "click #user-type-forever": "onClickForever"
         "click #register-submit": "onRegisterSubmit"
 
     initialize: (options) ->
@@ -52,9 +51,6 @@ SpkrBar.Views.RegisterUser = Backbone.View.extend
 
     onClickYearly: ->
         @plan = 'yearly'
-
-    onClickForever: ->
-        @plan = 'forever'
 
     onRegisterSubmit: ->
         @model.set
