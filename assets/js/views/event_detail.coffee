@@ -43,6 +43,8 @@ SpkrBar.Views.EventDetail = Backbone.View.extend
     beforeRender: ->
 
     afterRender: ->
+        addthis.toolbox('.addthis_toolbox')
+        
         _(@engagementViews).each (enView) =>
             year = moment(enView.model.get('date')).year()
             $('.talk-list-' + year).html("")

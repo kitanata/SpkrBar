@@ -141,6 +141,8 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         _(@commentViews).each (comView) =>
             $('.root-comment-list').append comView.render().el
 
+        addthis.toolbox('.addthis_toolbox')
+
     buildEngagementViews: ->
         @engagementViews = []
         $('#engagement-list-region').html('')

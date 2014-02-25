@@ -9,4 +9,5 @@ def profile_detail(request, id):
 
     return {
         'profile': profile,
+        'title': profile.full_name + "'s Profile"
         }

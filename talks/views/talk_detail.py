@@ -1,11 +1,4 @@
-from datetime import datetime
-
 from django.shortcuts import get_object_or_404
-from django.core.exceptions import ObjectDoesNotExist
-
-from django.db.models import Q
-
-from core.models import SpkrbarUser
 from core.helpers import template
 
 from talks.models import Talk
@@ -21,4 +14,5 @@ def talk_detail(request, talk_id):
         'last': talk.get_absolute_url(),
         'talk': talk,
         'link_form': link_form,
+        'title': talk.name
         }

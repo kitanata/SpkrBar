@@ -12,6 +12,7 @@
                   %input.search-query{name:"query", type:"text", placeholder:"Search"}
                   %button.btn.btn-warning
                     %i.icon-search
+
           .row-fluid
             .span12
               %ul.nav.nav-pills.pull-right
@@ -35,6 +36,10 @@
                       Add Talk
                 {{/if}}
 
+                %li
+                  %a.twitter-follow-button{href:"https://twitter.com/SpkrBar", target:"_blank"}
+                    %i.icon-twitter
+                    Follow Us
                 %li
                   %a{href:"/blog"}
                     %i.icon-file-text

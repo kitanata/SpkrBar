@@ -5,21 +5,30 @@
         .span6
           %h2 {{ name }}
         .span6{style:"position: relative;"}
-          .nav.btn-group.pull-right
-            {{#if userOwnsContent }}
-              %a#edit-profile.btn.btn-warning{data-toggle:"tooltip", data-original-title:"Edit Profile"}
-                %i.icon-pencil
-                Edit
-            {{else}}
-              {{#if userLoggedIn}}
-                .follow
-                  {{#if followedByUser}}
-                    %a.unfollow-user.btn.btn-danger Abandon
-                  {{else}}
-                    %a.follow-user.btn.btn-warning Follow
-                  {{/if}}
+          .pull-right
+            .nav.btn-group
+              {{#if userOwnsContent }}
+                %a#edit-profile.btn.btn-warning{data-toggle:"tooltip", data-original-title:"Edit Profile"}
+                  %i.icon-pencil
+                  Edit
+              {{else}}
+                {{#if userLoggedIn}}
+                  .follow
+                    {{#if followedByUser}}
+                      %a.unfollow-user.btn.btn-danger Abandon
+                    {{else}}
+                      %a.follow-user.btn.btn-warning Follow
+                    {{/if}}
+                {{/if}}
               {{/if}}
-            {{/if}}
+            .addthis_container
+              .addthis_toolbox.addthis_default_style.addthis_32x32_style
+                %a.addthis_button_preferred_1
+                %a.addthis_button_preferred_2
+                %a.addthis_button_preferred_3
+                %a.addthis_button_preferred_4
+                %a.addthis_button_compact
+                %a.addthis_counter.addthis_bubble_style
 
     .content-container
       #profile

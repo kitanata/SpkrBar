@@ -76,6 +76,8 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
         _(@talkViews).each (talkView) =>
             $('.talk-list').append talkView.render().el
 
+        addthis.toolbox('.addthis_toolbox')
+
     buildTalkViews: ->
         @talkViews = []
         $('.talk-list').html('')

@@ -11,5 +11,6 @@ def event_list(request):
     events = events_from_engagements(engagements)
 
     return {
-        'events': json.dumps(events)
+        'events': json.dumps(events),
+        'title': "Featured Events"
     }

@@ -15,6 +15,11 @@
   - include 'handlebars/talk_detail.haml'
 
   %script{type:"text/javascript"}
+    var addthis_config = {"data_track_addressbar":false};
+
+  %script{type:"text/javascript", src:"//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-530d0cef2f66caf3"}
+  
+  %script{type:"text/javascript"}
     var talkModel = new SpkrBar.Models.Talk({id:"{{talk.id}}"});
 
     talkModel.fetch({

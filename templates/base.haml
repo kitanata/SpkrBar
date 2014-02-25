@@ -4,10 +4,14 @@
 %html{lang:"en"}
   %head
     %meta{charset:"utf-8"}
-    %title SpkrBar.com - Helping good speakers become great speakers.
+    {% if title %}
+      %title SpkrBar.com | {{title}}
+    {% else %}
+      %title SpkrBar.com | The world's first post-event content management platform.
+    {% endif %}
     %meta{name:"viewport", content:"width=device-width, initial-scale=1.0"}
-    %meta{name:"description", content:""}
-    %meta{name:"author", content:""}
+    %meta{name:"description", content:"What happens to the content from your event after its over? Did you know you could use it to attract new attendees and monitor trends? Click here to learn more."}
+    %meta{name:"author", content:"Agile Hog LLC"}
 
     - css_asset_tag 'vendor/css/style.css'
     - css_asset_tag 'css/style.css'
@@ -85,4 +89,5 @@
     e.setAttribute("src", "http://browser-update.org/update.js"); 
     document.body.appendChild(e); 
 
+    /!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
   - block 'scripts'

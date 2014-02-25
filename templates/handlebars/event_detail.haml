@@ -2,8 +2,17 @@
   %script#event-detail-templ{type:"text/x-handlebars-template"}
     .subnav
       .row-fluid
-        .span12
+        .span9
           %h2 {{ name }}
+        .span3
+          .addthis_container.pull-right
+            .addthis_toolbox.addthis_default_style.addthis_32x32_style
+              %a.addthis_button_preferred_1
+              %a.addthis_button_preferred_2
+              %a.addthis_button_preferred_3
+              %a.addthis_button_preferred_4
+              %a.addthis_button_compact
+              %a.addthis_counter.addthis_bubble_style
 
     .content-container
       #event-header

@@ -16,4 +16,4 @@ def speaker_list(request):
 
     speakers = JSONRenderer().render(UserSerializer(speakers, many=True).data)
     
-    return {'speakers': speakers}
+    return {'speakers': speakers, 'title': "Featured Speakers"}

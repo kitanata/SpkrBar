@@ -55,4 +55,5 @@ def event_detail(request, slug):
         'speakers': json.dumps([x.id for x in speakers]),
         'tags': json.dumps(tags),
         'talks': json.dumps([x.id for x in engagements]),
+        'title': name,
     }

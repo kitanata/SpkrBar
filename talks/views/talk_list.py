@@ -23,4 +23,4 @@ def talk_list(request):
     upcoming = JSONRenderer().render(EngagementSerializer(upcoming, many=True).data)
     recent = JSONRenderer().render(EngagementSerializer(recent, many=True).data)
 
-    return {'upcoming': upcoming, 'recent': recent}
+    return {'upcoming': upcoming, 'recent': recent, 'title': "Recent Engagements"}
