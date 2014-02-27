@@ -163,7 +163,7 @@ SpkrBar.Views.ProfileDetail = Backbone.View.extend
         user != null
 
     context: ->
-        name: @model.getFullName()
+        name: @model.get('full_name')
         about: markdown.toHTML(@model.get('about_me'))
         photo: @model.get('photo')
         showTags: @showTags()

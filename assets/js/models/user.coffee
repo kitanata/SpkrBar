@@ -41,22 +41,6 @@ SpkrBar.Models.User = Backbone.RelationalModel.extend
         talks: @get('talks').map (x) -> x.id
         engagements: @get('engagements').map (x) -> x.id
 
-    getFullName: ->
-        return @get('full_name')
-
-    setFullName: (fullName) ->
-        words = _.str.words(fullName)
-
-        last = ""
-        if words.length >= 2
-            last = words[1]
-
-            if words.length > 2
-                [last = last + " " + w for w in words[2...]]
-
-        @set('first_name', words[0])
-        @set('last_name', last)
-
     userFollowingMe: ->
         followerIds = @get('followers').map (x) ->
             if x.get('user')

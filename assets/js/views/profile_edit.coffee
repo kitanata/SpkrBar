@@ -14,7 +14,7 @@ SpkrBar.Views.ProfileEdit = Backbone.View.extend
         @
 
     context: ->
-        name: @model.getFullName()
+        name: @model.get('full_name')
         about: @model.get('about_me')
 
     afterRender: ->
@@ -25,7 +25,7 @@ SpkrBar.Views.ProfileEdit = Backbone.View.extend
     onSaveProfile: ->
         name = @$el.find('#profile-name').val()
         about = @$el.find('#about-me').val()
-        @model.setFullName name
+        @model.set 'full_name', name
         @model.set 'about_me', about
 
         @model.save null, 

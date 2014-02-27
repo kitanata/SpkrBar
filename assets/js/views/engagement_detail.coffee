@@ -65,7 +65,7 @@ SpkrBar.Views.EngagementDetail = Backbone.View.extend
         name: _.str.truncate(@model.get('talk').get('name'), 38)
         event_name: @model.get('event_name')
         event_url: "/event/" + _.str.slugify(@model.get('event_name'))
-        speaker_name: @model.get('speaker').getFullName()
+        speaker_name: @model.get('speaker').get('full_name')
         speaker_photo: @model.get('speaker').get('photo')
         abstract: @mapTalkAbstract()
         tags: @mapTalkTags()

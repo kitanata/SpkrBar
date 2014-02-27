@@ -59,7 +59,7 @@ SpkrBar.Views.TalkThumbnail = Backbone.View.extend
     context: ->
         id: @model.id
         name: _.str.truncate(@model.get('name'), 38)
-        speaker_name: @model.get('speaker').getFullName()
+        speaker_name: @model.get('speaker').get('full_name')
         speaker_photo: @model.get('speaker').get('photo')
         abstract: @mapTalkAbstract()
         tags: @mapTalkTags()

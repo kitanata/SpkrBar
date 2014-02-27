@@ -176,7 +176,7 @@ SpkrBar.Views.TalkDetail = Backbone.View.extend
         userEndorsed: @model.userEndorsed()
         numEndorsements: @model.get('endorsements').length
         published: @model.get('published')
-        speakerName: @model.get('speaker').getFullName()
+        speakerName: @model.get('speaker').get('full_name')
         speakerUrl: @model.get('speaker').get('url')
         name: @model.get('name')
         abstract: markdown.toHTML(@model.get('abstract'))
