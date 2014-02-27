@@ -61,8 +61,6 @@ SpkrBar.Views.RegisterUser = Backbone.View.extend
             about_me: @$el.find('#about_me').val()
             plan_name: @plan
 
-        console.log @plan
-
         if @plan == "speaker"
             @model.set 'is_event_planner', false
         else

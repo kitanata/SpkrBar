@@ -83,11 +83,22 @@
     ga('create', 'UA-43959611-1', 'spkrbar.com');
     ga('send', 'pageview');
 
-    window.buoop = {vs:{i:9,f:20,o:11,s:5,n:9}} 
-    var e = document.createElement("script"); 
-    e.setAttribute("type", "text/javascript"); 
-    e.setAttribute("src", "http://browser-update.org/update.js"); 
-    document.body.appendChild(e); 
-
     /!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+
   - block 'scripts'
+
+<script type="text/javascript"> 
+var $buoop = {
+    reminder: 0,
+    newwindow: true
+};
+
+$buoop.ol = window.onload; 
+window.onload=function(){ 
+ try {if ($buoop.ol) $buoop.ol();}catch (e) {} 
+ var e = document.createElement("script"); 
+ e.setAttribute("type", "text/javascript"); 
+ e.setAttribute("src", "//browser-update.org/update.js"); 
+ document.body.appendChild(e); 
+} 
+</script> 
