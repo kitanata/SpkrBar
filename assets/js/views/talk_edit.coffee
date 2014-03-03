@@ -5,7 +5,7 @@ SpkrBar.Views.TalkEdit = Backbone.View.extend
     initialize: (options) ->
         if @model
             @listenTo(@model, "change", @render)
-            @controlLabel "Edit Talk"
+            @controlLabel = "Edit Talk"
         else
             @controlLabel = "Add Talk"
 
