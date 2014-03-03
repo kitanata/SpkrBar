@@ -21,5 +21,5 @@ class Notification(models.Model):
 
         return note
 
-    def __str__(self):
+    def __unicode__(self):
         return self.message

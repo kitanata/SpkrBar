@@ -25,7 +25,7 @@ class UserLink(models.Model):
     other_name = models.CharField(max_length=100, default="Other Website")
     url_target = models.URLField(max_length=140)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.type_name
 
     class Meta:

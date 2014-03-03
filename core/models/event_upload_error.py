@@ -140,7 +140,7 @@ class EventUploadError(models.Model):
 
         return field_name_map[str(field)]
 
-    def __str__(self):
+    def __unicode__(self):
         if self.error_type == EventUploadTypes.ET_FIELD_REQUIRED:
             return "On row {0}, the column {1} is required.".format(int(self.row) + 1, self.name_for_column())
         elif self.error_type == EventUploadTypes.ET_FIELD_PARSE_ERROR:
