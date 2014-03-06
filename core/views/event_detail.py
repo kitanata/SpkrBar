@@ -5,19 +5,8 @@ from itertools import groupby, chain
 from django.db.models import Q, Count
 
 from engagements.models import Engagement
-from core.helpers import template
+from core.helpers import template, rank_engagement
 from core.models import SpkrbarUser
-
-def rank_engagement(engagement):
-    points = 0
-    if engagement.speaker.photo:
-        points += 250
-    points += engagement.speaker.tags.count() * 10
-    points += engagement.speaker.links.count() * 25
-    points += engagement.talk.tags.count() * 20
-    points += engagement.talk.links.count() * 30
-
-    return points
 
 @template('events/event_base.haml')
 def event_detail(request, slug):

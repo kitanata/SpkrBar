@@ -183,3 +183,14 @@ def strip_tags(value):
         return value
     else:
         return s.get_data()
+        
+def rank_engagement(engagement):
+    points = 0
+    if engagement.speaker.photo:
+        points += 250
+    points += engagement.speaker.tags.count() * 10
+    points += engagement.speaker.links.count() * 25
+    points += engagement.talk.tags.count() * 20
+    points += engagement.talk.links.count() * 30
+
+    return points

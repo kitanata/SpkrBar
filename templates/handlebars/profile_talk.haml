@@ -9,12 +9,17 @@
         {{#if userLoggedIn}}
           .grid2
             .btn-group
+              {{#if userOwnsContent }}
+                %a.btn.btn-warning{href:"{{url}}"}
+                  %i.icon-pencil
+              {{else}}
               {{#if endorsed}}
                 .btn.btn-warning.disabled.endorsed
                   %i.icon-thumbs-up
               {{else}}
                 %a.endorse-talk.btn.btn-warning{data-id:"{{id}}", data-original-title:"Endorse Talk", data-toggle:"tooltip"}
                   %i.icon-thumbs-up
+              {{/if}}
               {{/if}}
         {{/if}}
 

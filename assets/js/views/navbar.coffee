@@ -44,8 +44,11 @@ SpkrBar.Views.NavBar = Backbone.View.extend
 
     userProfileLink: ->
         if user == null
+            console.log "USER IS NULL"
             ""
         else
+            console.log "LEGIT"
+            console.log user.get('url')
             user.get('url')
 
     context: ->

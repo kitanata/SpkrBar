@@ -12,6 +12,8 @@
           .nav.btn-group.pull-right
             {{#if userLoggedIn}}
               {{#if userOwnsContent}}
+                %button#create-engagement.btn.btn-warning{data-toggle:"tooltip", data-original-title:"Create Engagement"}
+                  %i.icon-calendar
                 {{#if published }}
                   %button#publish-talk.btn.btn-warning{data-toggle:"tooltip", data-original-title:"Hide Talk"}
                     %i.icon-eye-close
@@ -19,8 +21,6 @@
                   %button#publish-talk.btn.btn-warning{data-toggle:"tooltip", data-original-title:"Publish Talk"}
                     %i.icon-eye-open
                 {{/if}}
-                  %button#create-engagement.btn.btn-warning{data-toggle:"tooltip", data-original-title:"Create Engagement"}
-                    %i.icon-bullhorn
                   %button#edit-talk.btn.btn-warning{data-toggle:"tooltip", data-original-title:"Edit Talk"}
                     %i.icon-pencil
                   %button#delete-talk.btn.btn-warning{data-toggle:"tooltip", data-original-title:"Delete Talk"}

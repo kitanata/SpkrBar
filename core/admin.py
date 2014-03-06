@@ -5,7 +5,7 @@ class UserLinkAdmin(admin.ModelAdmin):
     list_display = ['user', 'type_name', 'url_target']
 
 class SpkrbarUserAdmin(admin.ModelAdmin):
-    list_filter = ['plan_name', 'is_event_manager', 'billed_forever']
+    list_filter = ['plan_name', 'is_event_manager', 'billed_forever', 'photo']
     search_fields = ['full_name', 'email']
 
 admin.site.register(SpkrbarUser, SpkrbarUserAdmin)

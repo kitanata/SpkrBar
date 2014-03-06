@@ -1,10 +1,11 @@
+import random
 from datetime import datetime, timedelta
 
 from engagements.models import Engagement
 from engagements.serializers import EngagementSerializer
 from rest_framework.renderers import JSONRenderer
 
-from core.helpers import template
+from core.helpers import template, rank_engagement
 
 @template('talks/talk_list.haml')
 def talk_list(request):
@@ -13,6 +14,8 @@ def talk_list(request):
     recent = Engagement.objects.filter(
         date__gte=start_date, date__lt=end_date
         ).order_by('-date', '-time')
+    recent = sorted(list(recent), key=rank_engagement, reverse=True)[:40]
+    random.shuffle(recent)
 
     start_date = datetime.today()
     end_date = datetime.today() + timedelta(days=90)
