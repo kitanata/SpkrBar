@@ -490,8 +490,8 @@ form.invite, .preview-container {
         .feature {
             position: relative;
             display: flex;
-            -webkit-flex: 1 0 360px;
             flex: 1 0 360px;
+            -webkit-flex: 1 0 360px;
             margin: 0px 00px 40px 0px;
 
             img {
@@ -518,6 +518,21 @@ form.invite, .preview-container {
             }
         }
 
+    }
+}
+
+@supports not (flex-wrap: wrap) {
+    #signup {
+        .features {
+            display: block;
+            
+            .feature {
+              vertical-align: top;
+              width: 420px;
+              float: left;
+              overflow: scroll;
+            }
+        }
     }
 }
 
